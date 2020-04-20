@@ -1,0 +1,36 @@
+# 
+# 
+# This is the messsages file.
+# You can change any messages that are in this file
+# 
+# If you want to reset a message back to the default,
+# delete the entire line the message is on and restart the server.
+# 	
+#
+
+Prefix: '&6&lACubelets &l&o&f>>&r'
+
+Commands:
+  NoPerms: '%prefix% &cNo tienes permisos para usar este comando!'
+  Reload: '%prefix% &aPlugin recargado sin errores!'
+  Balance: '&aActualmente tienes &6%cubelets_available% &acubelets para abrir!'
+
+GUIs:
+  Open:
+    title: 'Cubelets'
+  Config:
+    title: '%type% | Configuración'
+
+Cubelet:
+  BoxInUse:
+    Me: '&cTu ya estás abriendo un Cubelet aquí!'
+    Other: '&6%player% &cestá abriendo un Cubelet en esta máquina!'
+
+Holograms:
+  CubeletAvailable:
+    Line1: '&e&lCubelet Machine'
+    Line2: '&dClick para abrir'
+    Line3: '%cubelets_available% Cubelets'
+  NoCubeletAvailable:
+    Line1: '&e&lCubelet Machine'
+    Line2: '&dClick para abrir'

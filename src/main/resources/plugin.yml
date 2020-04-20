@@ -1,0 +1,8 @@
+name: ACubelets
+version: ${project.version}
+main: me.davidml16.acubelets.Main
+depend: [HolographicDisplays, ProtocolLib]
+authors: [DavidML16]
+commands:
+  cubelets:
+    description: Use this to see all commands.
