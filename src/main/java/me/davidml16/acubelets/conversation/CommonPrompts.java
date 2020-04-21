@@ -132,14 +132,11 @@ public interface CommonPrompts  {
                         ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);
                 return this;
             }
-            if (!param1String.startsWith("base64:") && !param1String.startsWith("uuid:") && !param1String.startsWith("url:") && !param1String.startsWith("name:")) {
-                param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  Texture string needs to start with one of specified options!\n  'name:', 'url:', 'uuid:' or 'base64:'\n ");
-                Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
-                        ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);
-                return this;
-            }
 
             param1ConversationContext.setSessionData(this.storeValue, param1String);
+            param1ConversationContext.getForWhom().sendRawMessage(
+                    ChatColor.GREEN + "  Succesfully setup skull texture with method " +
+                        ChatColor.YELLOW + param1ConversationContext.getSessionData("method"));
             Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
                     ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.CLICK, 10, 2);
             return this.parentPrompt;

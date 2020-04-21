@@ -137,6 +137,8 @@ public class Main extends JavaPlugin {
         return databaseHandler.getDatabase();
     }
 
+    public DatabaseHandler getDatabase() { return databaseHandler; }
+
     public PlayerDataHandler getPlayerDataHandler() { return playerDataHandler; }
 
     public CubeletTypesHandler getCubeletTypesHandler() { return cubeletTypesHandler; }
