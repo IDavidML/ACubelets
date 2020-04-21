@@ -2,10 +2,9 @@ package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.RenameMenu;
+import me.davidml16.acubelets.conversation.TypeIconMenu;
 import me.davidml16.acubelets.data.CubeletType;
-import me.davidml16.acubelets.utils.ColorUtil;
-import me.davidml16.acubelets.utils.ItemBuilder;
-import me.davidml16.acubelets.utils.Sounds;
+import me.davidml16.acubelets.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,9 +18,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class TypeConfig_GUI implements Listener {
 
@@ -54,12 +51,12 @@ public class TypeConfig_GUI implements Listener {
     public void loadGUI(String id) {
         if(guis.containsKey(id)) return;
 
-        Inventory gui = Bukkit.createInventory(null, 36, main.getLanguageHandler().getMessage("GUIs.Config.title").replaceAll("%type%", id));
+        Inventory gui = Bukkit.createInventory(null, 45, main.getLanguageHandler().getMessage("GUIs.Config.title").replaceAll("%type%", id));
         ItemStack edge = new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack();
 
         FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
 
-        gui.setItem(10, new ItemBuilder(Material.ANVIL, 1).setName(ColorUtil.translate("&eCubelet type name"))
+        gui.setItem(19, new ItemBuilder(Material.ANVIL, 1).setName(ColorUtil.translate("&eCubelet type name"))
                 .setLore(
                         "",
                         ColorUtil.translate(" &7Click on the anvil "),
@@ -71,8 +68,25 @@ public class TypeConfig_GUI implements Listener {
                         ColorUtil.translate("&eClick to rename cubelet! ")
                 )
                 .toItemStack());
+
+        CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
+        List<String> lore = new ArrayList<>();
+        for(String line : type.getLore()) {
+            lore.add(ColorUtil.translate(line));
+        }
+        gui.setItem(13, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
+        gui.setItem(22, new ItemBuilder(type.getIcon()).setName(ColorUtil.translate("&aCubelet type icon"))
+                .setLore(
+                        "",
+                        ColorUtil.translate(" &7You can change the icon"),
+                        ColorUtil.translate(" &7clicking this item"),
+                        ColorUtil.translate(" &7and opening icon setup"),
+                        "",
+                        ColorUtil.translate("&eClick change skull texture")
+                )
+                .toItemStack());
         
-        gui.setItem(31, new ItemBuilder(Material.BARRIER, 1)
+        gui.setItem(40, new ItemBuilder(Material.BARRIER, 1)
                 .setName(ColorUtil.translate("&cReload configuration"))
                 .setLore(
                         "",
@@ -83,7 +97,7 @@ public class TypeConfig_GUI implements Listener {
                 )
                 .toItemStack());
 
-        for (int i = 0; i < 36; i++) {
+        for (int i = 0; i < 45; i++) {
             if(gui.getItem(i) == null) {
                 gui.setItem(i, edge);
             }
@@ -102,6 +116,23 @@ public class TypeConfig_GUI implements Listener {
         Inventory gui = guis.get(id);
 
         FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
+
+        CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
+        List<String> lore = new ArrayList<>();
+        for(String line : type.getLore()) {
+            lore.add(ColorUtil.translate(line));
+        }
+        gui.setItem(13, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
+        gui.setItem(22, new ItemBuilder(type.getIcon()).setName(ColorUtil.translate("&aCubelet type icon"))
+                .setLore(
+                        "",
+                        ColorUtil.translate(" &7You can change the icon"),
+                        ColorUtil.translate(" &7clicking a skull in"),
+                        ColorUtil.translate(" &7your inventory"),
+                        "",
+                        ColorUtil.translate("&eClick to set to default")
+                )
+                .toItemStack());
 
         for(HumanEntity pl : gui.getViewers()) {
             pl.getOpenInventory().getTopInventory().setContents(gui.getContents());
@@ -129,19 +160,23 @@ public class TypeConfig_GUI implements Listener {
             int slot = e.getRawSlot();
             String id = opened.get(p.getUniqueId());
 
-            if (slot == 31) {
+            if (slot == 22) {
+                CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
+                p.closeInventory();
+                new TypeIconMenu(main).getConversation(p, type).begin();
+                Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
+            } else if (slot == 40) {
                 if (e.getCurrentItem().getType() == Material.BARRIER) {
                     main.getPluginManager().reloadAll();
-                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 100, 3);
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
                     p.sendMessage(main.getLanguageHandler().getMessage("Commands.Reload"));
                 }
-            } else if (slot == 10 && e.getCurrentItem().getType() == Material.ANVIL) {
+            } else if (slot == 19 && e.getCurrentItem().getType() == Material.ANVIL) {
                 CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
                 p.closeInventory();
                 new RenameMenu(main).getConversation(p, type).begin();
-                Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 100, 3);
+                Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
             }
-
         }
     }
 

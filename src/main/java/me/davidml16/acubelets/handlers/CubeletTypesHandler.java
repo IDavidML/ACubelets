@@ -144,6 +144,8 @@ public class CubeletTypesHandler {
                         cubeletType.setIcon(SkullCreator.itemFromUrl(icon[1]));
                     else if (icon[0].equalsIgnoreCase("uuid"))
                         cubeletType.setIcon(SkullCreator.itemFromUuid(UUID.fromString(icon[1])));
+                    else if (icon[0].equalsIgnoreCase("name"))
+                        cubeletType.setIcon(SkullCreator.itemFromName(icon[1]));
 
                     cubeletType.setLore(config.getStringList("type.icon.lore"));
 

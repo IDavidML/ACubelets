@@ -99,6 +99,53 @@ public interface CommonPrompts  {
         }
     }
 
+    public static class SkullStringPrompt extends StringPrompt {
+        private Prompt parentPrompt;
+        private String text;
+        private String storeValue;
+        private boolean allowSpaces;
+        private Main main;
+
+        public SkullStringPrompt(Main main, Prompt param1Prompt, boolean param1Boolean, String param1String1, String param1String2) {
+            this.main = main;
+            this.parentPrompt = param1Prompt;
+            this.allowSpaces = param1Boolean;
+            this.text = param1String1;
+            this.storeValue = param1String2;
+        }
+
+        public SkullStringPrompt(Prompt param1Prompt, String param1String1, String param1String2) {
+            this(null, param1Prompt, true, param1String1, param1String2);
+        }
+
+        public String getPromptText(ConversationContext param1ConversationContext) {
+            return this.text;
+        }
+
+        public Prompt acceptInput(ConversationContext param1ConversationContext, String param1String) {
+            if (param1String.trim().equalsIgnoreCase("cancel")) {
+                return this.parentPrompt;
+            }
+            if (!this.allowSpaces && param1String.contains(" ")) {
+                param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  Spaces are not allowed!\n ");
+                Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+                        ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);
+                return this;
+            }
+            if (!param1String.startsWith("base64:") && !param1String.startsWith("uuid:") && !param1String.startsWith("url:") && !param1String.startsWith("name:")) {
+                param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  Texture string needs to start with one of specified options!\n  'name:', 'url:', 'uuid:' or 'base64:'\n ");
+                Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+                        ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);
+                return this;
+            }
+
+            param1ConversationContext.setSessionData(this.storeValue, param1String);
+            Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+                    ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.CLICK, 10, 2);
+            return this.parentPrompt;
+        }
+    }
+
     public static class BooleanPrompt extends StringPrompt {
         private Prompt parentPrompt;
         private String text;
