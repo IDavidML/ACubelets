@@ -33,6 +33,7 @@ public class Main extends JavaPlugin {
     private PlayerDataHandler playerDataHandler;
     private CubeletTypesHandler cubeletTypesHandler;
     private CubeletRarityHandler cubeletRarityHandler;
+    private CubeletRewardHandler cubeletRewardHandler;
     private CubeletBoxHandler cubeletBoxHandler;
     private HologramHandler hologramHandler;
     private CubeletOpenHandler cubeletOpenHandler;
@@ -70,11 +71,14 @@ public class Main extends JavaPlugin {
         cubeletBoxHandler = new CubeletBoxHandler(this);
         cubeletBoxHandler.loadBoxes();
 
+        cubeletTypesHandler = new CubeletTypesHandler(this);
+        cubeletTypesHandler.loadTypes();
+
         cubeletRarityHandler = new CubeletRarityHandler(this);
         cubeletRarityHandler.loadRarities();
 
-        cubeletTypesHandler = new CubeletTypesHandler(this);
-        cubeletTypesHandler.loadTypes();
+        cubeletRewardHandler = new CubeletRewardHandler(this);
+        cubeletRewardHandler.loadRewards();
 
         playerDataHandler = new PlayerDataHandler(this);
 
@@ -144,6 +148,8 @@ public class Main extends JavaPlugin {
     public CubeletTypesHandler getCubeletTypesHandler() { return cubeletTypesHandler; }
 
     public CubeletRarityHandler getCubeletRarityHandler() { return cubeletRarityHandler; }
+
+    public CubeletRewardHandler getCubeletRewardHandler() { return cubeletRewardHandler; }
 
     public CubeletBoxHandler getCubeletBoxHandler() { return cubeletBoxHandler; }
 

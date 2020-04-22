@@ -3,7 +3,9 @@ package me.davidml16.acubelets.data;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CubeletType {
 
@@ -13,12 +15,14 @@ public class CubeletType {
     private ItemStack icon;
     private List<String> lore;
 
-    private List<Reward> rewards;
+    private Map<String, List<Reward>> rewards;
+    private Map<String, Rarity> rarities;
 
     public CubeletType(String id, String name) {
         this.id = id;
         this.name = name;
-        this.rewards = new ArrayList<>();
+        this.rewards = new HashMap<>();
+        this.rarities = new HashMap<>();
     }
 
     public String getId() {
@@ -37,13 +41,13 @@ public class CubeletType {
         this.name = name;
     }
 
-    public List<Reward> getRewards() {
-        return rewards;
-    }
+    public Map<String, List<Reward>> getRewards() { return rewards; }
 
-    public void setRewards(List<Reward> rewards) {
-        this.rewards = rewards;
-    }
+    public void setRewards(Map<String, List<Reward>> rewards) { this.rewards = rewards; }
+
+    public Map<String, Rarity> getRarities() { return rarities; }
+
+    public void setRarities(Map<String, Rarity> rarities) { this.rarities = rarities; }
 
     public ItemStack getIcon() { return icon; }
 
@@ -59,7 +63,9 @@ public class CubeletType {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", icon=" + icon +
+                ", lore=" + lore +
                 ", rewards=" + rewards +
+                ", rarities=" + rarities +
                 '}';
     }
 

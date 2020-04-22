@@ -31,7 +31,7 @@ public class TypeIconMenu implements ConversationAbandonedListener, CommonPrompt
     public void conversationAbandoned(ConversationAbandonedEvent paramConversationAbandonedEvent) {}
 
     public class RenameMenuOptions extends FixedSetPrompt {
-        RenameMenuOptions() { super("1", "2", "3", "4", "5", "6"); }
+        RenameMenuOptions() { super("1", "2", "3", "4", "5"); }
 
         protected Prompt acceptValidatedInput(ConversationContext param1ConversationContext, String param1String) {
             CubeletType cubeletType = (CubeletType) param1ConversationContext.getSessionData("type");
@@ -41,28 +41,28 @@ public class TypeIconMenu implements ConversationAbandonedListener, CommonPrompt
                     param1ConversationContext.setSessionData("method", "base64");
                     return new SkullStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter base64 texture string, \"cancel\" to return.\n\n ", "texture");
                 case "2":
-                    param1ConversationContext.setSessionData("method", "url");
-                    return new SkullStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter minecraft texture string, \"cancel\" to return.\n\n ", "texture");
-                case "3":
                     param1ConversationContext.setSessionData("method", "uuid");
                     return new SkullStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter player uuid, \"cancel\" to return.\n\n ", "texture");
-                case "4":
+                case "3":
                     param1ConversationContext.setSessionData("method", "name");
                     return new SkullStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter player name, \"cancel\" to return.\n\n ", "texture");
-                case "5":
+                case "4":
                     String method = (String) param1ConversationContext.getSessionData("method");
                     String texture = (String) param1ConversationContext.getSessionData("texture");
 
                     main.getCubeletTypesHandler().getConfig(cubeletType.getId()).set("type.icon.texture", method + ":" + param1ConversationContext.getSessionData("texture"));
 
-                    if (method.equalsIgnoreCase("base64"))
-                        cubeletType.setIcon(SkullCreator.itemFromBase64(texture));
-                    else if (method.equalsIgnoreCase("url"))
-                        cubeletType.setIcon(SkullCreator.itemFromUrl(texture));
-                    else if (method.equalsIgnoreCase("uuid"))
-                        cubeletType.setIcon(SkullCreator.itemFromUuid(UUID.fromString(texture)));
-                    else if (method.equalsIgnoreCase("name"))
-                        cubeletType.setIcon(SkullCreator.itemFromName(texture));
+                    switch(method) {
+                        case "base64":
+                            cubeletType.setIcon(SkullCreator.itemFromBase64(texture));
+                            break;
+                        case "uuid":
+                            cubeletType.setIcon(SkullCreator.itemFromUuid(UUID.fromString(texture)));
+                            break;
+                        case "name":
+                            cubeletType.setIcon(SkullCreator.itemFromName(texture));
+                            break;
+                    }
 
                     main.getCubeletTypesHandler().saveConfig(cubeletType.getId());
                     param1ConversationContext.getForWhom().sendRawMessage("\n" + ColorUtil.translate(main.getLanguageHandler().getPrefix()
@@ -72,7 +72,7 @@ public class TypeIconMenu implements ConversationAbandonedListener, CommonPrompt
                     main.getTypeConfigGUI().reloadGUI(cubeletType.getId());
                     main.getTypeConfigGUI().open(player, cubeletType.getId());
                     return Prompt.END_OF_CONVERSATION;
-                case "6":
+                case "5":
                     return new CommonPrompts.ConfirmExitPrompt(main, this);
             }
             return null;
@@ -84,11 +84,11 @@ public class TypeIconMenu implements ConversationAbandonedListener, CommonPrompt
             cadena += ChatColor.GOLD + "" + ChatColor.BOLD + "\n  CUBELET TYPE ICON MENU\n ";
             cadena += ChatColor.GREEN + " \n ";
             cadena += ChatColor.GREEN + "    1 " + ChatColor.GRAY + "- Base64 String\n ";
-            cadena += ChatColor.GREEN + "    2 " + ChatColor.GRAY + "- Texture Url\n ";
-            cadena += ChatColor.GREEN + "    3 " + ChatColor.GRAY + "- Player UUID\n ";
-            cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Player Name\n ";
-            cadena += ChatColor.GOLD + "    5 " + ChatColor.GRAY + "- Save and exit\n ";
-            cadena += ChatColor.GOLD + "    6 " + ChatColor.GRAY + "- Exit and discard\n ";
+            cadena += ChatColor.GREEN + "    2 " + ChatColor.GRAY + "- Player UUID\n ";
+            cadena += ChatColor.GREEN + "    3 " + ChatColor.GRAY + "- Player Name\n ";
+            cadena += ChatColor.GREEN + " \n ";
+            cadena += ChatColor.GOLD + "    4 " + ChatColor.GRAY + "- Save and exit\n ";
+            cadena += ChatColor.GOLD + "    5 " + ChatColor.GRAY + "- Exit and discard\n ";
             cadena += ChatColor.GREEN + "\n ";
             cadena += ChatColor.GOLD + "" + ChatColor.YELLOW + "  Choose the option: \n ";
             return cadena;

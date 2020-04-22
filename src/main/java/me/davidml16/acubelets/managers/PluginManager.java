@@ -31,6 +31,8 @@ public class PluginManager {
         main.getPlayerDataHandler().loadAllPlayerData();
         main.getCubeletBoxHandler().loadBoxes();
         main.getCubeletTypesHandler().loadTypes();
+        main.getCubeletRarityHandler().loadRarities();
+        main.getCubeletRewardHandler().loadRewards();
         main.getHologramHandler().loadHolograms();
         main.getHologramTask().start();
     }

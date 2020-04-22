@@ -28,11 +28,11 @@ public class TabCompleter_ACubelets implements TabCompleter {
 		List<String> auto = new ArrayList<String>();
 
 		if (args.length == 1) {
-			list.add("balance");
 			if (main.playerHasPermission(p, "acubelets.admin")) {
 				list.add("give");
 				list.add("box");
-				list.add("create");
+				list.add("type");
+				list.add("setup");
 				list.add("reload");
 			}
 		}

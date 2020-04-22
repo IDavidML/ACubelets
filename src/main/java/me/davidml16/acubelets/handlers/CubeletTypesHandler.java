@@ -63,9 +63,10 @@ public class CubeletTypesHandler {
 
     public boolean removeType(String id) {
         if(typesFiles.containsKey(id) && typesConfigs.containsKey(id)) {
+            typesFiles.get(id).delete();
             typesFiles.remove(id);
             typesConfigs.remove(id);
-            return typesFiles.get(id).delete();
+            return true;
         }
         return false;
     }
@@ -126,6 +127,10 @@ public class CubeletTypesHandler {
                         config.set("type.icon.lore", lore);
                     }
 
+                    if (!config.contains("type.rarities")) {
+                        config.set("type.rarities", new ArrayList<>());
+                    }
+
                     if (!config.contains("type.rewards")) {
                         config.set("type.rewards", new ArrayList<>());
                     }
@@ -138,14 +143,17 @@ public class CubeletTypesHandler {
                     types.put(id, cubeletType);
 
                     String[] icon = ((String) config.get("type.icon.texture")).split(":");
-                    if (icon[0].equalsIgnoreCase("base64"))
-                        cubeletType.setIcon(SkullCreator.itemFromBase64(icon[1]));
-                    else if (icon[0].equalsIgnoreCase("url"))
-                        cubeletType.setIcon(SkullCreator.itemFromUrl(icon[1]));
-                    else if (icon[0].equalsIgnoreCase("uuid"))
-                        cubeletType.setIcon(SkullCreator.itemFromUuid(UUID.fromString(icon[1])));
-                    else if (icon[0].equalsIgnoreCase("name"))
-                        cubeletType.setIcon(SkullCreator.itemFromName(icon[1]));
+                    switch(icon[0].toLowerCase()) {
+                        case "base64":
+                            cubeletType.setIcon(SkullCreator.itemFromBase64(icon[1]));
+                            break;
+                        case "uuid":
+                            cubeletType.setIcon(SkullCreator.itemFromUuid(UUID.fromString(icon[1])));
+                            break;
+                        case "name":
+                            cubeletType.setIcon(SkullCreator.itemFromName(icon[1]));
+                            break;
+                    }
 
                     cubeletType.setLore(config.getStringList("type.icon.lore"));
 
@@ -161,7 +169,6 @@ public class CubeletTypesHandler {
         if(types.size() == 0)
             Main.log.sendMessage(ColorUtil.translate("    &cNo cubelet type has been loaded!"));
 
-        Main.log.sendMessage(" ");
     }
 
     private boolean validTypeData(FileConfiguration config) {

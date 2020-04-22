@@ -193,6 +193,36 @@ public class MySQL implements Database {
     }
 
     @Override
+    public void removeCubelet(String type) throws SQLException {
+        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+            PreparedStatement ps = null;
+            Connection connection = null;
+            try {
+                connection = hikari.getConnection();
+                ps = connection.prepareStatement("DELETE FROM ac_cubelets WHERE type = '" + type + "';");
+                ps.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (ps != null) {
+                    try {
+                        ps.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
     public Cubelet getCubelet(UUID uuid, UUID cubeletUUID) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;

@@ -21,6 +21,8 @@ public interface Database {
 
     void removeCubelet(UUID uuid, UUID cubeletUUID) throws SQLException;
 
+    void removeCubelet(String type) throws SQLException;
+
     Cubelet getCubelet(UUID uuid, UUID cubeletUUID) throws SQLException;
 
     List<Cubelet> getCubeletByType(UUID uuid, String type) throws SQLException;
