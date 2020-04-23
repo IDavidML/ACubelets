@@ -18,10 +18,12 @@ public class PluginManager {
         for(Animation task : new ArrayList<>(main.getAnimationHandler().getTasks())) {
             task.stop();
         }
+        main.getAnimationHandler().getTasks().clear();
 
         for(ArmorStand armorStand : main.getAnimationHandler().getArmorStands()) {
             armorStand.remove();
         }
+        main.getAnimationHandler().getArmorStands().clear();
 
         main.getLanguageHandler().setLanguage(main.getConfig().getString("Language").toLowerCase());
         main.getHologramTask().stop();

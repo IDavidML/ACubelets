@@ -1,9 +1,11 @@
 package me.davidml16.acubelets.animations.animation1;
 
+import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.data.CubeletBox;
 import me.davidml16.acubelets.data.CubeletType;
+import me.davidml16.acubelets.data.Reward;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
@@ -20,6 +22,7 @@ public class Animation1_Task implements Animation {
 
 	private ArmorStand armorStand;
 	private CubeletBox cubeletBox;
+	private CubeletType cubeletType;
 	private Animation1_Music music;
 
 	class Task implements Runnable {
@@ -41,9 +44,19 @@ public class Animation1_Task implements Animation {
 			if(time >= 100) {
 				stop();
 				armorStand = null;
-				cubeletBox.setUsing(false);
-				cubeletBox.setPlayerOpening(null);
-				main.getHologramHandler().reloadHologram(cubeletBox);
+
+				Reward reward = main.getCubeletRewardHandler().processReward(cubeletBox.getPlayerOpening(), cubeletType);
+				main.getHologramHandler().rewardHologram(cubeletBox, reward);
+
+				Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
+					for (Hologram hologram : cubeletBox.getHolograms().values()) {
+						hologram.clearLines();
+					}
+					cubeletBox.setUsing(false);
+					cubeletBox.setPlayerOpening(null);
+					main.getHologramHandler().reloadHologram(cubeletBox);
+				}, 100);
+
 			}
 		}
 	}
@@ -68,7 +81,9 @@ public class Animation1_Task implements Animation {
 		music = new Animation1_Music(box.getLocation());
 		music.runTaskTimer(main, 0L, 4L);
 
+		this.cubeletType = type;
 		this.cubeletBox = box;
+
 		id = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, new Task(), 0L, 1);
 
 		main.getAnimationHandler().getTasks().add(this);

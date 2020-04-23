@@ -34,3 +34,9 @@ Holograms:
   NoCubeletAvailable:
     Line1: '&e&lCubelet Machine'
     Line2: '&dClick para abrir'
+  Reward:
+    Line1:
+      You: '&aHas encontrado'
+      Other: '&a%player% encontró'
+    Line2: '%reward_name%'
+    Line3: '&5Rareza: %reward_rarity%'

@@ -6,6 +6,7 @@ import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.data.CubeletBox;
+import me.davidml16.acubelets.data.Reward;
 import me.davidml16.acubelets.utils.ColorUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -115,6 +116,17 @@ public class HologramHandler {
         }
     }
 
+    public void rewardHologram(CubeletBox box, Reward reward) {
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            if (box.getHolograms().containsKey(p.getUniqueId())) {
+                Hologram hologram = box.getHolograms().get(p.getUniqueId());
+                for (String line : getLinesReward(p, box.getPlayerOpening(), reward)) {
+                    hologram.appendTextLine(line);
+                }
+            }
+        }
+    }
+
     public void reloadHologram(Player p, CubeletBox box) {
         if(!box.isUsing()) {
             if(box.getHolograms().containsKey(p.getUniqueId())) {
@@ -155,13 +167,31 @@ public class HologramHandler {
         List<String> lines = new ArrayList<String>();
         int available = main.getPlayerDataHandler().getData(p).getCubelets().size();
         if(available > 0) {
-            lines.add(main.getLanguageHandler().getMessage("Holograms.CubeletAvailable.Line1").replaceAll("%cubelets_available%", String.valueOf(available)));
-            lines.add(main.getLanguageHandler().getMessage("Holograms.CubeletAvailable.Line2").replaceAll("%cubelets_available%", String.valueOf(available)));
+            lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.CubeletAvailable.Line1").replaceAll("%cubelets_available%", String.valueOf(available))));
+            lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.CubeletAvailable.Line2").replaceAll("%cubelets_available%", String.valueOf(available))));
             lines.add(ColorUtil.translate(this.red ? "&c" : "&f") + main.getLanguageHandler().getMessage("Holograms.CubeletAvailable.Line3").replaceAll("%cubelets_available%", String.valueOf(available)));
         } else {
-            lines.add(main.getLanguageHandler().getMessage("Holograms.CubeletAvailable.Line1"));
-            lines.add(main.getLanguageHandler().getMessage("Holograms.CubeletAvailable.Line2"));
+            lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.CubeletAvailable.Line1")));
+            lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.CubeletAvailable.Line2")));
         };
+        return lines;
+    }
+
+    public List<String> getLinesReward(Player p, Player opening, Reward reward) {
+        List<String> lines = new ArrayList<String>();
+
+        if (p.getUniqueId().equals(opening.getUniqueId())) {
+            lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.Reward.Line1.You")));
+        }else {
+            lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.Reward.Line1.You")
+                    .replaceAll("%player%", opening.getName())));
+        }
+        lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.Reward.Line2")
+                .replaceAll("%reward_name%", reward.getName())
+                .replaceAll("%reward_rarity%", reward.getRarity().getName())));
+        lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.Reward.Line3")
+                .replaceAll("%reward_name%", reward.getName())
+                .replaceAll("%reward_rarity%", reward.getRarity().getName())));
         return lines;
     }
 

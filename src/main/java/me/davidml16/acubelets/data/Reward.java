@@ -4,10 +4,10 @@ public class Reward {
 
     private String id;
     private String name;
-    private String rarity;
+    private Rarity rarity;
     private String command;
 
-    public Reward(String id, String name, String rarity, String command) {
+    public Reward(String id, String name, Rarity rarity, String command) {
         this.id = id;
         this.name = name;
         this.rarity = rarity;
@@ -26,13 +26,9 @@ public class Reward {
 
     public void setName(String name) { this.name = name; }
 
-    public String getRarity() {
-        return rarity;
-    }
+    public Rarity getRarity() { return rarity; }
 
-    public void setRarity(String rarity) {
-        this.rarity = rarity;
-    }
+    public void setRarity(Rarity rarity) { this.rarity = rarity; }
 
     public String getCommand() {
         return command;

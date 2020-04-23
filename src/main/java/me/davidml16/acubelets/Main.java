@@ -68,6 +68,9 @@ public class Main extends JavaPlugin {
         databaseHandler.openConnection();
         databaseHandler.getDatabase().loadTables();
 
+        animationHandler = new AnimationHandler(this);
+        animationHandler.loadAnimations();
+
         cubeletBoxHandler = new CubeletBoxHandler(this);
         cubeletBoxHandler.loadBoxes();
 
@@ -89,9 +92,6 @@ public class Main extends JavaPlugin {
         hologramTask.start();
 
         cubeletOpenHandler = new CubeletOpenHandler(this);
-
-        animationHandler = new AnimationHandler(this);
-        animationHandler.loadAnimations();
 
         cubeletsGUI = new Cubelets_GUI(this);
         cubeletsGUI.loadGUI();
