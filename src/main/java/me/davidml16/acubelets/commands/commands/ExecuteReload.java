@@ -19,7 +19,7 @@ public class ExecuteReload {
             }
         }
 
-        main.getPluginManager().reloadAll();
+        main.getPluginHandler().reloadAll();
         sender.sendMessage(main.getLanguageHandler().getMessage("Commands.Reload"));
 
         return true;

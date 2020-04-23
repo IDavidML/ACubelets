@@ -5,9 +5,12 @@ import me.davidml16.acubelets.data.CubeletType;
 import me.davidml16.acubelets.data.Rarity;
 import me.davidml16.acubelets.data.Reward;
 import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.SkullCreator;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -35,6 +38,7 @@ public class CubeletRewardHandler {
 							if (cubeletType.getRarities().containsKey(rarity)) {
 								String name = config.getString("type.rewards." + rewardid + ".name");
 								String command = config.getString("type.rewards." + rewardid + ".command");
+								String material = config.getString("type.rewards." + rewardid + ".icon");
 
 								List<Reward> rewardsRarity;
 								if (rewards.get(rarity) == null) {
@@ -43,7 +47,25 @@ public class CubeletRewardHandler {
 									rewardsRarity = rewards.get(rarity);
 								}
 
-								rewardsRarity.add(new Reward(rewardid, name, cubeletType.getRarities().get(rarity), command));
+								ItemStack icon = null;
+								if(material.startsWith("base64:") || material.startsWith("uuid:") || material.startsWith("name:")) {
+									String[] parts = material.split(":");
+									switch(parts[0].toLowerCase()) {
+										case "base64":
+											icon = SkullCreator.itemFromBase64(parts[1]);
+											break;
+										case "uuid":
+											icon = SkullCreator.itemFromUuid(UUID.fromString(parts[1]));
+											break;
+										case "name":
+											icon = SkullCreator.itemFromName(parts[1]);
+											break;
+									}
+								} else {
+									icon = new ItemStack(Material.matchMaterial(material));
+								}
+
+								rewardsRarity.add(new Reward(rewardid, name, cubeletType.getRarities().get(rarity), command, icon));
 								rewards.put(rarity, rewardsRarity);
 
 								rewardsLoaded++;

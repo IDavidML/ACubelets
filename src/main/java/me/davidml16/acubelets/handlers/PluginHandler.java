@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.managers;
+package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
@@ -6,10 +6,10 @@ import org.bukkit.entity.ArmorStand;
 
 import java.util.ArrayList;
 
-public class PluginManager {
+public class PluginHandler {
 
     private final Main main;
-    public PluginManager(Main main) {
+    public PluginHandler(Main main) {
         this.main = main;
     }
 

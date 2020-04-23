@@ -167,7 +167,7 @@ public class TypeConfig_GUI implements Listener {
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
             } else if (slot == 40) {
                 if (e.getCurrentItem().getType() == Material.BARRIER) {
-                    main.getPluginManager().reloadAll();
+                    main.getPluginHandler().reloadAll();
                     Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
                     p.sendMessage(main.getLanguageHandler().getMessage("Commands.Reload"));
                 }

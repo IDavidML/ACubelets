@@ -8,8 +8,10 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.data.CubeletBox;
 import me.davidml16.acubelets.data.Reward;
 import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -59,9 +61,7 @@ public class HologramHandler {
 
     public void loadHolograms(Player p) {
         for(CubeletBox box : main.getCubeletBoxHandler().getBoxes().values()) {
-            Location loc = box.getLocation().clone().add(0.5, 2, 0.5);
-
-            Hologram hologram = HologramsAPI.createHologram(main, loc);
+            Hologram hologram = HologramsAPI.createHologram(main, box.getLocation().clone().add(0.5, (3 * 0.33) + 1, 0.5));
             VisibilityManager visibilityManager = hologram.getVisibilityManager();
 
             visibilityManager.showTo(p);
@@ -71,6 +71,8 @@ public class HologramHandler {
                 for(String line : getLines(p)) {
                     hologram.appendTextLine(line);
                 }
+
+                hologram.teleport(box.getLocation().clone().add(0.5, (hologram.size() * 0.33) + 1, 0.5));
             }
 
             box.getHolograms().put(p.getUniqueId(), hologram);
@@ -78,11 +80,9 @@ public class HologramHandler {
     }
 
     public void loadHolograms(Player p, CubeletBox box) {
-        Location loc = box.getLocation().clone().add(0.5, 2, 0.5);
-
         List<String> lines = getLines(p);
 
-        Hologram hologram = HologramsAPI.createHologram(main, loc);
+        Hologram hologram = HologramsAPI.createHologram(main, box.getLocation().clone().add(0.5, (3 * 0.33) + 1, 0.5));
         VisibilityManager visibilityManager = hologram.getVisibilityManager();
 
         visibilityManager.showTo(p);
@@ -108,6 +108,9 @@ public class HologramHandler {
             for(Player p : Bukkit.getOnlinePlayers()) {
                 if (box.getHolograms().containsKey(p.getUniqueId())) {
                     Hologram hologram = box.getHolograms().get(p.getUniqueId());
+
+                    hologram.teleport(box.getLocation().clone().add(0.5, (3 * 0.33) + 1, 0.5));
+
                     for (String line : getLines(p)) {
                         hologram.appendTextLine(line);
                     }
@@ -120,9 +123,13 @@ public class HologramHandler {
         for(Player p : Bukkit.getOnlinePlayers()) {
             if (box.getHolograms().containsKey(p.getUniqueId())) {
                 Hologram hologram = box.getHolograms().get(p.getUniqueId());
+
+                hologram.teleport(box.getLocation().clone().add(0.5, (4 * 0.33) + 1, 0.5));
+
                 for (String line : getLinesReward(p, box.getPlayerOpening(), reward)) {
                     hologram.appendTextLine(line);
                 }
+                hologram.appendItemLine(reward.getIcon());
             }
         }
     }
@@ -132,6 +139,8 @@ public class HologramHandler {
             if(box.getHolograms().containsKey(p.getUniqueId())) {
                 List<String> lines = getLines(p);
                 Hologram hologram = box.getHolograms().get(p.getUniqueId());
+
+                hologram.teleport(box.getLocation().clone().add(0.5, (3 * 0.33) + 1, 0.5));
 
                 if(hologram.size() > lines.size()) {
                     hologram.getLine(2).removeLine();
@@ -180,11 +189,10 @@ public class HologramHandler {
     public List<String> getLinesReward(Player p, Player opening, Reward reward) {
         List<String> lines = new ArrayList<String>();
 
-        if (p.getUniqueId().equals(opening.getUniqueId())) {
+        if (p.getUniqueId().toString().equalsIgnoreCase(opening.getUniqueId().toString())) {
             lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.Reward.Line1.You")));
         }else {
-            lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.Reward.Line1.You")
-                    .replaceAll("%player%", opening.getName())));
+            lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.Reward.Line1.Other").replaceAll("%player%", opening.getName())));
         }
         lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.Reward.Line2")
                 .replaceAll("%reward_name%", reward.getName())

@@ -7,6 +7,7 @@ import me.davidml16.acubelets.data.CubeletBox;
 import me.davidml16.acubelets.data.CubeletType;
 import me.davidml16.acubelets.data.Reward;
 import org.bukkit.Bukkit;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -29,41 +30,42 @@ public class Animation1_Task implements Animation {
 		int time = 0;
 		@Override
 		public void run() {
-			Location loc = armorStand.getLocation().clone();
+			if(armorStand != null) {
+				Location loc = armorStand.getLocation().clone();
 
-			if(time <= 50) {
-				loc.add(0, 0.02, 0);
+				if (time <= 50) {
+					loc.add(0, 0.02, 0);
+				}
+
+				armorStand.teleport(loc);
+
+				armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.16, 0));
 			}
-
-			armorStand.teleport(loc);
-
-			armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.16, 0));
 
 			time++;
 
-			if(time >= 100) {
-				stop();
-				armorStand = null;
-
+			if(time == 100) {
+				music.cancel();
 				Reward reward = main.getCubeletRewardHandler().processReward(cubeletBox.getPlayerOpening(), cubeletType);
 				main.getHologramHandler().rewardHologram(cubeletBox, reward);
-
-				Bukkit.getScheduler().scheduleSyncDelayedTask(main, () -> {
-					for (Hologram hologram : cubeletBox.getHolograms().values()) {
-						hologram.clearLines();
-					}
-					cubeletBox.setUsing(false);
-					cubeletBox.setPlayerOpening(null);
-					main.getHologramHandler().reloadHologram(cubeletBox);
-				}, 100);
-
+				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 2, 0.5), FireworkEffect.Type.STAR);
+				armorStand.remove();
+				armorStand = null;
+			} else if(time >= 200) {
+				stop();
+				for (Hologram hologram : cubeletBox.getHolograms().values()) {
+					hologram.clearLines();
+				}
+				cubeletBox.setUsing(false);
+				cubeletBox.setPlayerOpening(null);
+				main.getHologramHandler().reloadHologram(cubeletBox);
 			}
+
 		}
 	}
 	
 	public int getId() { return id; }
 
-	@SuppressWarnings("deprecation")
 	public void start(CubeletBox box, CubeletType type) {
 		armorStand = box.getLocation().getWorld().spawn(box.getLocation().clone().add(0.5, -0.35, 0.5), ArmorStand.class);
 		armorStand.setVisible(false);
@@ -93,7 +95,6 @@ public class Animation1_Task implements Animation {
 	public void stop() {
 		main.getAnimationHandler().getTasks().remove(this);
 
-		music.cancel();
 		Bukkit.getServer().getScheduler().cancelTask(id);
 
 		if(main.getAnimationHandler().getArmorStands().contains(armorStand)) {

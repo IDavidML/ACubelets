@@ -7,14 +7,16 @@ import me.davidml16.acubelets.commands.CoreCommand;
 import me.davidml16.acubelets.commands.TabCompleter_ACubelets;
 import me.davidml16.acubelets.database.DatabaseHandler;
 import me.davidml16.acubelets.database.types.Database;
+import me.davidml16.acubelets.events.Event_Damage;
 import me.davidml16.acubelets.events.Event_Interact;
 import me.davidml16.acubelets.events.Event_JoinQuit;
 import me.davidml16.acubelets.gui.Cubelets_GUI;
 import me.davidml16.acubelets.gui.TypeConfig_GUI;
 import me.davidml16.acubelets.handlers.*;
-import me.davidml16.acubelets.managers.PluginManager;
+import me.davidml16.acubelets.handlers.PluginHandler;
 import me.davidml16.acubelets.tasks.HologramTask;
 import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.FireworkUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
@@ -39,7 +41,9 @@ public class Main extends JavaPlugin {
     private CubeletOpenHandler cubeletOpenHandler;
     private AnimationHandler animationHandler;
 
-    private PluginManager pluginManager;
+    private FireworkUtil fireworkUtil;
+
+    private PluginHandler pluginHandler;
 
     private Cubelets_GUI cubeletsGUI;
     private TypeConfig_GUI typeConfigGUI;
@@ -59,7 +63,7 @@ public class Main extends JavaPlugin {
             return;
         }
 
-        pluginManager = new PluginManager(this);
+        pluginHandler = new PluginHandler(this);
 
         languageHandler = new LanguageHandler(this, getConfig().getString("Language").toLowerCase());
         languageHandler.pushMessages();
@@ -98,6 +102,8 @@ public class Main extends JavaPlugin {
 
         typeConfigGUI = new TypeConfig_GUI(this);
         typeConfigGUI.loadGUI();
+
+        fireworkUtil = new FireworkUtil(this);
 
         registerCommands();
         registerEvents();
@@ -163,9 +169,11 @@ public class Main extends JavaPlugin {
 
     public TypeConfig_GUI getTypeConfigGUI() { return typeConfigGUI; }
 
-    public PluginManager getPluginManager() { return pluginManager; }
+    public PluginHandler getPluginHandler() { return pluginHandler; }
 
     public HologramTask getHologramTask() { return hologramTask; }
+
+    public FireworkUtil getFireworkUtil() { return fireworkUtil; }
 
     public boolean playerHasPermission(Player p, String permission) {
         return p.hasPermission(permission) || p.isOp();
@@ -179,6 +187,7 @@ public class Main extends JavaPlugin {
     private void registerEvents() {
         Bukkit.getPluginManager().registerEvents(new Event_Interact(this), this);
         Bukkit.getPluginManager().registerEvents(new Event_JoinQuit(this), this);
+        Bukkit.getPluginManager().registerEvents(new Event_Damage(), this);
     }
 
 }
