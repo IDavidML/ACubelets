@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.conversation.RewardMenu;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Pair;
 import me.davidml16.acubelets.objects.Reward;
@@ -176,7 +177,7 @@ public class Rewards_GUI implements Listener {
                 openPage(p, id, opened.get(p.getUniqueId()).getPage() + 1);
             } else if (slot == 39) {
                 p.closeInventory();
-                //new RewardMenu(main).getConversation(p, cubeletType).begin();
+                new RewardMenu(main).getConversation(p, cubeletType).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 100, 3);
             } else if (slot == 41) {
                 main.getTypeConfigGUI().open(p, cubeletType.getId());

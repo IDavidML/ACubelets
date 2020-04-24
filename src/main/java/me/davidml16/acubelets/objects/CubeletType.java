@@ -67,6 +67,16 @@ public class CubeletType {
 
     public void setLore(List<String> lore) { this.lore = lore; }
 
+    public void addReward(String rarity, Reward reward) {
+        Map<String, List<Reward>> rewardsAll = getRewards();
+        List<Reward> rewards;
+        if(getRewards().get(rarity) == null) rewards = new ArrayList<>();
+        else rewards = getRewards().get(rarity);
+        rewards.add(reward);
+        rewardsAll.put(reward.getRarity().getId(), rewards);
+        setRewards(rewardsAll);
+    }
+
     @Override
     public String toString() {
         return "CubeletType{" +
