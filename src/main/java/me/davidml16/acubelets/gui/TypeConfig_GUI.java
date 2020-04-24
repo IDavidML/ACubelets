@@ -56,7 +56,7 @@ public class TypeConfig_GUI implements Listener {
 
         FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
 
-        gui.setItem(19, new ItemBuilder(Material.ANVIL, 1).setName(ColorUtil.translate("&eCubelet type name"))
+        gui.setItem(19, new ItemBuilder(Material.ANVIL, 1).setName(ColorUtil.translate("&aCubelet type name"))
                 .setLore(
                         "",
                         ColorUtil.translate(" &7Click on the anvil "),
@@ -78,13 +78,27 @@ public class TypeConfig_GUI implements Listener {
         gui.setItem(22, new ItemBuilder(type.getIcon()).setName(ColorUtil.translate("&aCubelet type icon"))
                 .setLore(
                         "",
-                        ColorUtil.translate(" &7You can change the icon"),
-                        ColorUtil.translate(" &7clicking this item"),
+                        ColorUtil.translate(" &7You can change the"),
+                        ColorUtil.translate(" &7icon clicking this item"),
                         ColorUtil.translate(" &7and opening icon setup"),
                         "",
                         ColorUtil.translate("&eClick change skull texture")
                 )
                 .toItemStack());
+
+        gui.setItem(25, new ItemBuilder(Material.GOLD_NUGGET, 1)
+                .setName(ColorUtil.translate("&aRewards"))
+                .setLore(
+                        "",
+                        ColorUtil.translate(" &7Open rewards gui and "),
+                        ColorUtil.translate(" &7click on new reward "),
+                        ColorUtil.translate(" &7to begin reward setup. "),
+                        "",
+                        ColorUtil.translate(" &7Click the rewards item "),
+                        ColorUtil.translate(" &7in the GUI to remove it. "),
+                        "",
+                        ColorUtil.translate("&eClick to config rewards! ")
+                ).toItemStack());
         
         gui.setItem(40, new ItemBuilder(Material.BARRIER, 1)
                 .setName(ColorUtil.translate("&cReload configuration"))
@@ -160,19 +174,18 @@ public class TypeConfig_GUI implements Listener {
             int slot = e.getRawSlot();
             String id = opened.get(p.getUniqueId());
 
+            CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
+
             if (slot == 22) {
-                CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
-                p.closeInventory();
                 new TypeIconMenu(main).getConversation(p, type).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
-            } else if (slot == 40) {
-                if (e.getCurrentItem().getType() == Material.BARRIER) {
-                    main.getPluginHandler().reloadAll();
-                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
-                    p.sendMessage(main.getLanguageHandler().getMessage("Commands.Reload"));
-                }
+            } else if (slot == 25) {
+                main.getRewardsGUI().open(p, id);
+            } else if (slot == 40 && e.getCurrentItem().getType() == Material.BARRIER) {
+                main.getPluginHandler().reloadAll();
+                Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
+                p.sendMessage(main.getLanguageHandler().getMessage("Commands.Reload"));
             } else if (slot == 19 && e.getCurrentItem().getType() == Material.ANVIL) {
-                CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
                 p.closeInventory();
                 new RenameMenu(main).getConversation(p, type).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);

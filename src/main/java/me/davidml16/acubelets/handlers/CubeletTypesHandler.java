@@ -139,7 +139,7 @@ public class CubeletTypesHandler {
 
                     String name = config.getString("type.name");
 
-                    CubeletType cubeletType = new CubeletType(id, name);
+                    CubeletType cubeletType = new CubeletType(main, id, name);
                     types.put(id, cubeletType);
 
                     String[] icon = ((String) config.get("type.icon.texture")).split(":");

@@ -4,9 +4,9 @@ public class Rarity implements Comparable<Rarity> {
 
     private String id;
     private String name;
-    private int chance;
+    private double chance;
 
-    public Rarity(String id, String name, int chance) {
+    public Rarity(String id, String name, double chance) {
         this.id = id;
         this.name = name;
         this.chance = chance;
@@ -28,11 +28,11 @@ public class Rarity implements Comparable<Rarity> {
         this.name = name;
     }
 
-    public int getChance() {
+    public double getChance() {
         return chance;
     }
 
-    public void setChance(int chance) {
+    public void setChance(double chance) {
         this.chance = chance;
     }
 
@@ -47,6 +47,6 @@ public class Rarity implements Comparable<Rarity> {
 
     @Override
     public int compareTo(Rarity otherRarity) {
-        return chance - otherRarity.getChance();
+        return (int) (chance - otherRarity.getChance());
     }
 }

@@ -2,6 +2,7 @@ package me.davidml16.acubelets.events;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.data.CubeletBox;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -10,6 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 
 public class Event_Interact implements Listener {
 
@@ -26,6 +28,10 @@ public class Event_Interact implements Listener {
         if(action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
             if(e.getClickedBlock().getType() == Material.ENDER_PORTAL_FRAME && main.getCubeletBoxHandler().getBoxes().containsKey(e.getClickedBlock().getLocation())) {
                 e.setCancelled(true);
+
+                if(!Bukkit.getVersion().contains("1.8")) {
+                    if(e.getHand() == EquipmentSlot.OFF_HAND) return;
+                }
 
                 CubeletBox box = main.getCubeletBoxHandler().getBoxByLocation(e.getClickedBlock().getLocation());
                 if(!box.isUsing()) {

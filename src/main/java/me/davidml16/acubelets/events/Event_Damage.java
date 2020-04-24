@@ -1,5 +1,6 @@
 package me.davidml16.acubelets.events;
 
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Firework;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,6 +15,9 @@ public class Event_Damage implements Listener {
             if (fw.hasMetadata("nodamage")) {
                 e.setCancelled(true);
             }
+        } else if (e.getEntity() instanceof ArmorStand) {
+            if(!e.getEntity().hasMetadata("ACUBELETS")) return;
+            e.setCancelled(true);
         }
     }
 

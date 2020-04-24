@@ -76,7 +76,7 @@ public class CubeletRarityHandler {
                 if(config.getConfigurationSection("type.rarities") != null) {
                     for (String id : config.getConfigurationSection("type.rarities").getKeys(false)) {
                         String name = config.getString("type.rarities." + id + ".name");
-                        int chance = config.getInt("type.rarities." + id + ".chance");
+                        double chance = config.getDouble("type.rarities." + id + ".chance");
                         cubeletType.getRarities().put(id, new Rarity(id, name, chance));
                     }
                 }

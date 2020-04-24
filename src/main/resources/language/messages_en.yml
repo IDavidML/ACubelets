@@ -20,6 +20,8 @@ GUIs:
     title: 'Cubelets'
   Config:
     title: '%type% | Configuration'
+  Rewards:
+    title: '%type% | Rewards'
 
 Cubelet:
   BoxInUse:

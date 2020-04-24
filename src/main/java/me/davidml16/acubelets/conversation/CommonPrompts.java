@@ -3,7 +3,9 @@ package me.davidml16.acubelets.conversation;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.Sounds;
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
@@ -139,6 +141,83 @@ public interface CommonPrompts  {
                         ChatColor.YELLOW + param1ConversationContext.getSessionData("method"));
             Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
                     ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.CLICK, 10, 2);
+            return this.parentPrompt;
+        }
+    }
+
+    public static class MaterialPrompt extends StringPrompt {
+        private Prompt parentPrompt;
+        private String text;
+        private String storeValue;
+
+        public MaterialPrompt(Prompt param1Prompt, String param1String1, String param1String2) {
+            this.parentPrompt = param1Prompt;
+            this.text = param1String1;
+            this.storeValue = param1String2;
+        }
+
+        public String getPromptText(ConversationContext param1ConversationContext) { return this.text; }
+
+        public Prompt acceptInput(ConversationContext param1ConversationContext, String param1String) {
+            if (param1String.trim().equalsIgnoreCase("cancel")) {
+                return this.parentPrompt;
+            }
+            Material material = Material.matchMaterial(param1String);
+            if (material == null) {
+                param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  The specified material is not valid!\n ");
+                return this;
+            }
+
+            param1ConversationContext.setSessionData(this.storeValue, material);
+            return this.parentPrompt;
+        }
+    }
+
+    public static class NumericRangePrompt extends StringPrompt {
+        private Prompt parentPrompt;
+        private String text;
+        private String storeValue;
+        private double minValue;
+        private double maxValue;
+        private boolean hasRange;
+
+        public NumericRangePrompt(Prompt param1Prompt, String param1String1, String param1String2, double param1Float1, double param1Float2) {
+            this.parentPrompt = param1Prompt;
+            this.text = param1String1;
+            this.storeValue = param1String2;
+            this.minValue = param1Float1;
+            this.maxValue = param1Float2;
+            this.hasRange = true;
+        }
+
+        public NumericRangePrompt(Prompt param1Prompt, String param1String1, String param1String2) {
+            this.parentPrompt = param1Prompt;
+            this.text = param1String1;
+            this.storeValue = param1String2;
+            this.hasRange = false;
+        }
+
+        public String getPromptText(ConversationContext param1ConversationContext) { return this.text; }
+
+
+        public Prompt acceptInput(ConversationContext param1ConversationContext, String param1String) {
+            if (param1String.equalsIgnoreCase("cancel")) {
+                return this.parentPrompt;
+            }
+            if (!NumberUtils.isNumber(param1String)) {
+                param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  That's not a valid number!\n ");
+                return this;
+            }
+
+            double f = Double.parseDouble(param1String);
+
+            if (this.hasRange && (f < this.minValue || f > this.maxValue)) {
+                param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  The value must be between " + this.minValue + " and " + this.maxValue + "!\n ");
+                return this;
+            }
+
+
+            param1ConversationContext.setSessionData(this.storeValue, f);
             return this.parentPrompt;
         }
     }

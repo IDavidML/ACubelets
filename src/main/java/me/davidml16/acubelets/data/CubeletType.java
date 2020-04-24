@@ -1,13 +1,14 @@
 package me.davidml16.acubelets.data;
 
+import me.davidml16.acubelets.Main;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class CubeletType {
+
+    private Main main;
 
     private String id;
     private String name;
@@ -18,7 +19,8 @@ public class CubeletType {
     private Map<String, List<Reward>> rewards;
     private Map<String, Rarity> rarities;
 
-    public CubeletType(String id, String name) {
+    public CubeletType(Main main, String id, String name) {
+        this.main = main;
         this.id = id;
         this.name = name;
         this.rewards = new HashMap<>();
@@ -42,6 +44,14 @@ public class CubeletType {
     }
 
     public Map<String, List<Reward>> getRewards() { return rewards; }
+
+    public List<Reward> getAllRewards() {
+        List<Reward> rewards = new ArrayList<>();
+        for(String rarity : getRewards().keySet()) {
+            rewards.addAll(getRewards().get(rarity));
+        }
+        return rewards;
+    }
 
     public void setRewards(Map<String, List<Reward>> rewards) { this.rewards = rewards; }
 
@@ -67,6 +77,32 @@ public class CubeletType {
                 ", rewards=" + rewards +
                 ", rarities=" + rarities +
                 '}';
+    }
+
+    public void saveType() {
+        FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
+
+        config.set("type.rarities", new ArrayList<>());
+        if (config.contains("type.rarities")) {
+            List<Rarity> rts = new ArrayList<>(rarities.values());
+            rts.sort(Collections.reverseOrder());
+            for (Rarity rarity : rts) {
+                config.set("type.rarities." + rarity.getId() + ".name", rarity.getName());
+                config.set("type.rarities." + rarity.getId() + ".chance", rarity.getChance());
+            }
+        }
+
+        config.set("type.rewards", new ArrayList<>());
+        if (config.contains("type.rewards")) {
+            for (Reward reward : getAllRewards()) {
+                config.set("type.rewards." + reward.getId() + ".name", reward.getName());
+                config.set("type.rewards." + reward.getId() + ".rarity", reward.getRarity().getId());
+                config.set("type.rewards." + reward.getId() + ".command", reward.getCommand());
+                config.set("type.rewards." + reward.getId() + ".icon", reward.getIcon().getType().name() + ":" + reward.getIcon().getData().getData());
+            }
+        }
+
+        main.getCubeletTypesHandler().saveConfig(id);
     }
 
 }

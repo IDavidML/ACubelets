@@ -5,6 +5,7 @@ import me.davidml16.acubelets.data.CubeletType;
 import me.davidml16.acubelets.data.Rarity;
 import me.davidml16.acubelets.data.Reward;
 import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.SkullCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -47,22 +48,12 @@ public class CubeletRewardHandler {
 									rewardsRarity = rewards.get(rarity);
 								}
 
+								String[] parts = material.split(":");
 								ItemStack icon = null;
-								if(material.startsWith("base64:") || material.startsWith("uuid:") || material.startsWith("name:")) {
-									String[] parts = material.split(":");
-									switch(parts[0].toLowerCase()) {
-										case "base64":
-											icon = SkullCreator.itemFromBase64(parts[1]);
-											break;
-										case "uuid":
-											icon = SkullCreator.itemFromUuid(UUID.fromString(parts[1]));
-											break;
-										case "name":
-											icon = SkullCreator.itemFromName(parts[1]);
-											break;
-									}
-								} else {
-									icon = new ItemStack(Material.matchMaterial(material));
+								if(parts.length == 1) {
+									icon = new ItemStack(Material.matchMaterial(parts[0]));
+								} else if(parts.length == 2) {
+									icon = new ItemBuilder(Material.matchMaterial(parts[0]), 1, Byte.parseByte(parts[1])).toItemStack();
 								}
 
 								rewardsRarity.add(new Reward(rewardid, name, cubeletType.getRarities().get(rarity), command, icon));
@@ -84,7 +75,8 @@ public class CubeletRewardHandler {
 	private boolean validRewardData(FileConfiguration config, String rewardID) {
 		return config.contains("type.rewards." + rewardID + ".name")
 				&& config.contains("type.rewards." + rewardID + ".rarity")
-				&& config.contains("type.rewards." + rewardID + ".command");
+				&& config.contains("type.rewards." + rewardID + ".command")
+				&& config.contains("type.rewards." + rewardID + ".icon");
 	}
 
 	public Reward processReward(Player p, CubeletType cubeletType) {
