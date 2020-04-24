@@ -1,6 +1,4 @@
-package me.davidml16.acubelets.data;
-
-import org.bukkit.inventory.ItemStack;
+package me.davidml16.acubelets.objects;
 
 public class Reward {
 
@@ -8,9 +6,9 @@ public class Reward {
     private String name;
     private Rarity rarity;
     private String command;
-    private ItemStack icon;
+    private CustomIcon icon;
 
-    public Reward(String id, String name, Rarity rarity, String command, ItemStack icon) {
+    public Reward(String id, String name, Rarity rarity, String command, CustomIcon icon) {
         this.id = id;
         this.name = name;
         this.rarity = rarity;
@@ -42,11 +40,11 @@ public class Reward {
         this.command = command;
     }
 
-    public ItemStack getIcon() {
+    public CustomIcon getIcon() {
         return icon;
     }
 
-    public void setIcon(ItemStack icon) {
+    public void setIcon(CustomIcon icon) {
         this.icon = icon;
     }
 

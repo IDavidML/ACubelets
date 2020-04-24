@@ -4,11 +4,10 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.pool.HikariPool;
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.data.Cubelet;
+import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.utils.ColorUtil;
 import org.bukkit.Bukkit;
 
-import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

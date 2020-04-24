@@ -1,6 +1,6 @@
 package me.davidml16.acubelets.database.types;
 
-import me.davidml16.acubelets.data.Cubelet;
+import me.davidml16.acubelets.objects.Cubelet;
 
 import java.sql.SQLException;
 import java.util.List;

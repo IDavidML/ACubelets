@@ -1,7 +1,7 @@
 package me.davidml16.acubelets.conversation;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.data.CubeletType;
+import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.ChatColor;

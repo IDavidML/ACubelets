@@ -1,17 +1,15 @@
 package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.data.CubeletType;
-import me.davidml16.acubelets.data.Rarity;
-import me.davidml16.acubelets.data.Reward;
+import me.davidml16.acubelets.objects.CubeletType;
+import me.davidml16.acubelets.objects.Rarity;
+import me.davidml16.acubelets.objects.Reward;
+import me.davidml16.acubelets.objects.CustomIcon;
 import me.davidml16.acubelets.utils.ColorUtil;
-import me.davidml16.acubelets.utils.ItemBuilder;
-import me.davidml16.acubelets.utils.SkullCreator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -48,15 +46,26 @@ public class CubeletRewardHandler {
 									rewardsRarity = rewards.get(rarity);
 								}
 
-								String[] parts = material.split(":");
-								ItemStack icon = null;
-								if(parts.length == 1) {
-									icon = new ItemStack(Material.matchMaterial(parts[0]));
-								} else if(parts.length == 2) {
-									icon = new ItemBuilder(Material.matchMaterial(parts[0]), 1, Byte.parseByte(parts[1])).toItemStack();
+								CustomIcon customIcon = null;
+								if(material.startsWith("base64:") ||material.startsWith("uuid:") || material.startsWith("name:")) {
+									String[] icon = material.split(":");
+									switch(icon[0].toLowerCase()) {
+										case "base64":
+										case "uuid":
+										case "name":
+											customIcon = new CustomIcon(icon[0], icon[1]);
+											break;
+									}
+								} else {
+									String[] parts = material.split(":");
+									if (parts.length == 1) {
+										customIcon = new CustomIcon(Material.matchMaterial(parts[0]), (byte) 0);
+									} else if (parts.length == 2) {
+										customIcon = new CustomIcon(Material.matchMaterial(parts[0]), Byte.parseByte(parts[1]));
+									}
 								}
 
-								rewardsRarity.add(new Reward(rewardid, name, cubeletType.getRarities().get(rarity), command, icon));
+								rewardsRarity.add(new Reward(rewardid, name, cubeletType.getRarities().get(rarity), command, customIcon));
 								rewards.put(rarity, rewardsRarity);
 
 								rewardsLoaded++;

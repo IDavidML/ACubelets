@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.data;
+package me.davidml16.acubelets.objects;
 
 import me.davidml16.acubelets.Main;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -98,7 +98,11 @@ public class CubeletType {
                 config.set("type.rewards." + reward.getId() + ".name", reward.getName());
                 config.set("type.rewards." + reward.getId() + ".rarity", reward.getRarity().getId());
                 config.set("type.rewards." + reward.getId() + ".command", reward.getCommand());
-                config.set("type.rewards." + reward.getId() + ".icon", reward.getIcon().getType().name() + ":" + reward.getIcon().getData().getData());
+                if(reward.getIcon().getType() == CustomIconType.ITEM) {
+                    config.set("type.rewards." + reward.getId() + ".icon", reward.getIcon().getMaterial().name() + ":" + reward.getIcon().getData());
+                } else if(reward.getIcon().getType() == CustomIconType.SKULL) {
+                    config.set("type.rewards." + reward.getId() + ".icon", reward.getIcon().getMethod() + ":" + reward.getIcon().getTexture());
+                }
             }
         }
 

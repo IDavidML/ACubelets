@@ -1,7 +1,7 @@
 package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.data.Profile;
+import me.davidml16.acubelets.objects.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

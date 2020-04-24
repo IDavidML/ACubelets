@@ -5,13 +5,10 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.data.CubeletBox;
-import me.davidml16.acubelets.data.Reward;
+import me.davidml16.acubelets.objects.CubeletBox;
+import me.davidml16.acubelets.objects.Reward;
 import me.davidml16.acubelets.utils.ColorUtil;
-import me.davidml16.acubelets.utils.ItemBuilder;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -129,7 +126,7 @@ public class HologramHandler {
                 for (String line : getLinesReward(p, box.getPlayerOpening(), reward)) {
                     hologram.appendTextLine(line);
                 }
-                hologram.appendItemLine(reward.getIcon());
+                hologram.appendItemLine(reward.getIcon().getItem());
             }
         }
     }

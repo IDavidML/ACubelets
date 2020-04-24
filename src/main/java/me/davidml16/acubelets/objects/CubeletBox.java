@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.data;
+package me.davidml16.acubelets.objects;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import org.bukkit.Location;

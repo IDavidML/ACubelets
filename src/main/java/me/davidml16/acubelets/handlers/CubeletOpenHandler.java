@@ -3,8 +3,8 @@ package me.davidml16.acubelets.handlers;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
-import me.davidml16.acubelets.data.CubeletBox;
-import me.davidml16.acubelets.data.CubeletType;
+import me.davidml16.acubelets.objects.CubeletBox;
+import me.davidml16.acubelets.objects.CubeletType;
 import org.bukkit.entity.Player;
 
 public class CubeletOpenHandler {

@@ -1,9 +1,9 @@
 package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.data.Cubelet;
-import me.davidml16.acubelets.data.CubeletType;
-import me.davidml16.acubelets.data.Profile;
+import me.davidml16.acubelets.objects.Cubelet;
+import me.davidml16.acubelets.objects.CubeletType;
+import me.davidml16.acubelets.objects.Profile;
 import me.davidml16.acubelets.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

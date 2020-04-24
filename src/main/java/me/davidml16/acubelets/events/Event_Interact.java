@@ -1,7 +1,7 @@
 package me.davidml16.acubelets.events;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.data.CubeletBox;
+import me.davidml16.acubelets.objects.CubeletBox;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;

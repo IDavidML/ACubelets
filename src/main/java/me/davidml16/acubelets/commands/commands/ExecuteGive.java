@@ -1,7 +1,7 @@
 package me.davidml16.acubelets.commands.commands;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.data.Cubelet;
+import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.utils.ColorUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

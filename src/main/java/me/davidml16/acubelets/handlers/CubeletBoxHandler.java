@@ -2,7 +2,7 @@ package me.davidml16.acubelets.handlers;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.data.CubeletBox;
+import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.utils.ColorUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

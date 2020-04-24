@@ -1,20 +1,12 @@
 package me.davidml16.acubelets.handlers;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.data.CubeletBox;
-import me.davidml16.acubelets.data.CubeletType;
-import me.davidml16.acubelets.data.Rarity;
+import me.davidml16.acubelets.objects.CubeletType;
+import me.davidml16.acubelets.objects.Rarity;
 import me.davidml16.acubelets.utils.ColorUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CubeletRarityHandler {
 

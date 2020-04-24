@@ -3,7 +3,7 @@ package me.davidml16.acubelets.gui;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.RenameMenu;
 import me.davidml16.acubelets.conversation.TypeIconMenu;
-import me.davidml16.acubelets.data.CubeletType;
+import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.utils.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

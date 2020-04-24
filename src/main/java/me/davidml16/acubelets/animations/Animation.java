@@ -1,7 +1,7 @@
 package me.davidml16.acubelets.animations;
 
-import me.davidml16.acubelets.data.CubeletBox;
-import me.davidml16.acubelets.data.CubeletType;
+import me.davidml16.acubelets.objects.CubeletBox;
+import me.davidml16.acubelets.objects.CubeletType;
 
 public interface Animation {
 

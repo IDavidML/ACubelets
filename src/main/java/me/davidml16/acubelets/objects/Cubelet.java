@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.data;
+package me.davidml16.acubelets.objects;
 
 import java.util.UUID;
 
