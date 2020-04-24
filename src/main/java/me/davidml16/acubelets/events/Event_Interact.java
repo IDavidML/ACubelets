@@ -2,6 +2,7 @@ package me.davidml16.acubelets.events;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.CubeletBox;
+import me.davidml16.acubelets.enums.CubeletBoxState;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
@@ -34,7 +35,7 @@ public class Event_Interact implements Listener {
                 }
 
                 CubeletBox box = main.getCubeletBoxHandler().getBoxByLocation(e.getClickedBlock().getLocation());
-                if(!box.isUsing()) {
+                if(box.getState() == CubeletBoxState.EMPTY) {
                     main.getPlayerDataHandler().getData(p).setBoxOpened(box);
                     main.getCubeletsGUI().open(p);
                 } else {

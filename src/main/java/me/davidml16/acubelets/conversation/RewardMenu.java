@@ -121,7 +121,7 @@ public class RewardMenu implements ConversationAbandonedListener, CommonPrompts 
 
         public String getPromptText(ConversationContext param1ConversationContext) {
             String cadena = "";
-            cadena += ChatColor.GOLD + "" + ChatColor.BOLD + "\n  CUBEET REWARD CREATION MENU\n";
+            cadena += ChatColor.GOLD + "" + ChatColor.BOLD + "\n  CUBELET REWARD CREATION MENU\n";
             cadena += ChatColor.GREEN + " \n";
             if (param1ConversationContext.getSessionData("rewardID") == null) {
                 cadena += ChatColor.RED + "    1 " + ChatColor.GRAY + "- Set reward ID (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";

@@ -1,5 +1,6 @@
 package me.davidml16.acubelets.objects;
 
+import me.davidml16.acubelets.enums.CustomIconType;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.SkullCreator;
 import org.bukkit.Material;

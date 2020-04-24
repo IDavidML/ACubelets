@@ -4,6 +4,7 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.objects.CubeletBox;
+import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Reward;
 import org.bukkit.Bukkit;
@@ -47,8 +48,10 @@ public class Animation1_Task implements Animation {
 			if(time == 100) {
 				music.cancel();
 				Reward reward = main.getCubeletRewardHandler().processReward(cubeletBox.getPlayerOpening(), cubeletType);
+				cubeletBox.setLastReward(reward);
 				main.getHologramHandler().rewardHologram(cubeletBox, reward);
 				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 2, 0.5), FireworkEffect.Type.STAR);
+				cubeletBox.setState(CubeletBoxState.REWARD);
 				armorStand.remove();
 				armorStand = null;
 			} else if(time >= 200) {
@@ -56,7 +59,7 @@ public class Animation1_Task implements Animation {
 				for (Hologram hologram : cubeletBox.getHolograms().values()) {
 					hologram.clearLines();
 				}
-				cubeletBox.setUsing(false);
+				cubeletBox.setState(CubeletBoxState.EMPTY);
 				cubeletBox.setPlayerOpening(null);
 				main.getHologramHandler().reloadHologram(cubeletBox);
 			}
@@ -85,6 +88,8 @@ public class Animation1_Task implements Animation {
 
 		this.cubeletType = type;
 		this.cubeletBox = box;
+
+		this.cubeletBox.setState(CubeletBoxState.ANIMATION);
 
 		id = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, new Task(), 0L, 1);
 

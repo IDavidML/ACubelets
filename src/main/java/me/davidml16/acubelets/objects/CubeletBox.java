@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.objects;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
+import me.davidml16.acubelets.enums.CubeletBoxState;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -14,13 +15,16 @@ public class CubeletBox {
 
     private Player playerOpening;
 
-    private boolean using;
+    private CubeletBoxState state;
+
+    private Reward lastReward;
 
     public CubeletBox(Location location) {
         this.location = location;
         this.holograms = new HashMap<>();
-        this.using = false;
+        this.state = CubeletBoxState.EMPTY;
         this.playerOpening = null;
+        this.lastReward = null;
     }
 
     public Location getLocation() {
@@ -35,13 +39,9 @@ public class CubeletBox {
         return holograms;
     }
 
-    public boolean isUsing() {
-        return using;
-    }
+    public CubeletBoxState getState() { return state; }
 
-    public void setUsing(boolean using) {
-        this.using = using;
-    }
+    public void setState(CubeletBoxState state) { this.state = state; }
 
     public Player getPlayerOpening() {
         return playerOpening;
@@ -51,11 +51,15 @@ public class CubeletBox {
         this.playerOpening = playerOpening;
     }
 
+    public Reward getLastReward() { return lastReward; }
+
+    public void setLastReward(Reward lastReward) { this.lastReward = lastReward; }
+
     @Override
     public String toString() {
         return "CubeletBox{" +
                 "location=" + location +
-                ", using=" + using +
+                ", state=" + state.toString() +
                 '}';
     }
 

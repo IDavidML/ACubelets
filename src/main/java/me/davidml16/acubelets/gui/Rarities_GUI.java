@@ -1,10 +1,11 @@
 package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.conversation.RarityMenu;
 import me.davidml16.acubelets.conversation.RewardMenu;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Pair;
-import me.davidml16.acubelets.objects.Reward;
+import me.davidml16.acubelets.objects.Rarity;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.Sounds;
@@ -22,7 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import java.io.File;
 import java.util.*;
 
-public class Rewards_GUI implements Listener {
+public class Rarities_GUI implements Listener {
 
     private HashMap<UUID, Pair> opened;
     private HashMap<String, Inventory> guis;
@@ -30,7 +31,7 @@ public class Rewards_GUI implements Listener {
 
     private Main main;
 
-    public Rewards_GUI(Main main) {
+    public Rarities_GUI(Main main) {
         this.main = main;
         this.opened = new HashMap<UUID, Pair>();
         this.guis = new HashMap<String, Inventory>();
@@ -55,17 +56,17 @@ public class Rewards_GUI implements Listener {
     public void loadGUI(String id) {
         if (guis.containsKey(id)) return;
 
-        Inventory gui = Bukkit.createInventory(null, 45, main.getLanguageHandler().getMessage("GUIs.Rewards.title").replaceAll("%type%", id));
+        Inventory gui = Bukkit.createInventory(null, 45, main.getLanguageHandler().getMessage("GUIs.Rarities.title").replaceAll("%type%", id));
 
         ItemStack edge = new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack();
-        ItemStack newReward = new ItemBuilder(Material.DOUBLE_PLANT, 1).setName(ColorUtil.translate("&aCreate new reward")).toItemStack();
+        ItemStack newRarity = new ItemBuilder(Material.DOUBLE_PLANT, 1).setName(ColorUtil.translate("&aCreate new rarity")).toItemStack();
         ItemStack back = new ItemBuilder(Material.ARROW, 1).setName(ColorUtil.translate("&aBack to config")).toItemStack();
 
         for (Integer i : borders) {
             gui.setItem(i, edge);
         }
 
-        gui.setItem(39, newReward);
+        gui.setItem(39, newRarity);
         gui.setItem(41, back);
 
         guis.put(id, gui);
@@ -87,14 +88,15 @@ public class Rewards_GUI implements Listener {
     }
 
     private void openPage(Player p, String id, int page) {
-        List<Reward> rewards = main.getCubeletTypesHandler().getTypeBydId(id).getAllRewards();
+        List<Rarity> rarities = new ArrayList<>(main.getCubeletTypesHandler().getTypeBydId(id).getRarities().values());
+        Collections.sort(rarities, Collections.reverseOrder());
 
-        if(page > 0 && rewards.size() < (page * 21) + 1) {
+        if(page > 0 && rarities.size() < (page * 21) + 1) {
             openPage(p, id, page - 1);
             return;
         }
 
-        Inventory gui = Bukkit.createInventory(null, 45, main.getLanguageHandler().getMessage("GUIs.Rewards.title").replaceAll("%type%", id));
+        Inventory gui = Bukkit.createInventory(null, 45, main.getLanguageHandler().getMessage("GUIs.Rarities.title").replaceAll("%type%", id));
         gui.setContents(guis.get(id).getContents());
 
         for (int i = 10; i <= 16; i++)
@@ -110,32 +112,30 @@ public class Rewards_GUI implements Listener {
             gui.setItem(18, new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack());
         }
 
-        if (rewards.size() > (page + 1) * 21) {
+        if (rarities.size() > (page + 1) * 21) {
             gui.setItem(26, new ItemBuilder(Material.ENDER_PEARL, 1).setName(ColorUtil.translate("&aNext page")).toItemStack());
         } else {
             gui.setItem(26, new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack());
         }
 
-        if (rewards.size() > 21) rewards = rewards.subList(page * 21, ((page * 21) + 21) > rewards.size() ? rewards.size() : (page * 21) + 21);
+        if (rarities.size() > 21) rarities = rarities.subList(page * 21, ((page * 21) + 21) > rarities.size() ? rarities.size() : (page * 21) + 21);
 
-        if(rewards.size() > 0) {
-            for (Reward reward : rewards) {
-                gui.addItem(new ItemBuilder(reward.getIcon().getItem())
-                        .setName(ColorUtil.translate("&a" + reward.getId()))
+        if(rarities.size() > 0) {
+            for (Rarity rarity : rarities) {
+                gui.addItem(new ItemBuilder(Material.ITEM_FRAME)
+                        .setName(ColorUtil.translate("&a" + rarity.getId()))
                         .setLore(
                                 "",
-                                ColorUtil.translate(" &7Name: &6" + reward.getName() + " "),
-                                ColorUtil.translate(" &7Rarity: &6" + reward.getRarity().getId() + " "),
-                                ColorUtil.translate(" &7Command: &6" + reward.getCommand() + " "),
-                                ColorUtil.translate(" &7Icon: &6" + reward.getIcon().getItem().getType().name() + ":" + reward.getIcon().getItem().getData().getData() + " "),
+                                ColorUtil.translate(" &7Name: &6" + rarity.getName() + " "),
+                                ColorUtil.translate(" &7Chance: &6" + rarity.getChance() + "% "),
                                 "",
                                 ColorUtil.translate("&eClick to remove! ")).toItemStack());
             }
         } else {
-            gui.setItem(22, new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 14).setName(ColorUtil.translate("&cAny rewards created")).setLore(
+            gui.setItem(22, new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 14).setName(ColorUtil.translate("&cAny rarity created")).setLore(
                     "",
                     ColorUtil.translate(" &7You dont have any "),
-                    ColorUtil.translate(" &7reward created. "),
+                    ColorUtil.translate(" &7rarity created. "),
                     ""
             ).toItemStack());
         }
@@ -177,7 +177,7 @@ public class Rewards_GUI implements Listener {
                 openPage(p, id, opened.get(p.getUniqueId()).getPage() + 1);
             } else if (slot == 39) {
                 p.closeInventory();
-                new RewardMenu(main).getConversation(p, cubeletType).begin();
+                new RarityMenu(main).getConversation(p, cubeletType).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 100, 3);
             } else if (slot == 41) {
                 main.getTypeConfigGUI().open(p, cubeletType.getId());
@@ -186,18 +186,13 @@ public class Rewards_GUI implements Listener {
 
                 if (cubeletType.getAllRewards().size() == 0) return;
 
-                String rewardID = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
-                for(Reward reward : cubeletType.getAllRewards()) {
-                    if(reward.getId().equalsIgnoreCase(rewardID)) {
-
-                        Map<String, List<Reward>> rewardsAll = cubeletType.getRewards();
-                        List<Reward> rewards = cubeletType.getRewards().get(reward.getRarity().getId());
-                        rewards.remove(reward);
-                        rewardsAll.put(reward.getRarity().getId(), rewards);
-                        cubeletType.setRewards(rewardsAll);
+                String rarityID = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
+                for(Rarity rarity : cubeletType.getRarities().values()) {
+                    if(rarity.getId().equalsIgnoreCase(rarityID)) {
+                        cubeletType.getRarities().remove(rarityID);
 
                         p.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
-                                + " &aYou removed reward &e" + rewardID + " &afrom rewards of cubelet type &e" + cubeletType.getId()));
+                                + " &aYou removed rarity &e" + rarityID + " &afrom rarities of cubelet type &e" + cubeletType.getId()));
                         reloadGUI(cubeletType.getId());
                         Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
                         break;

@@ -11,6 +11,7 @@ import me.davidml16.acubelets.events.Event_Damage;
 import me.davidml16.acubelets.events.Event_Interact;
 import me.davidml16.acubelets.events.Event_JoinQuit;
 import me.davidml16.acubelets.gui.Cubelets_GUI;
+import me.davidml16.acubelets.gui.Rarities_GUI;
 import me.davidml16.acubelets.gui.Rewards_GUI;
 import me.davidml16.acubelets.gui.TypeConfig_GUI;
 import me.davidml16.acubelets.handlers.*;
@@ -49,6 +50,7 @@ public class Main extends JavaPlugin {
     private Cubelets_GUI cubeletsGUI;
     private TypeConfig_GUI typeConfigGUI;
     private Rewards_GUI rewardsGUI;
+    private Rarities_GUI raritiesGUI;
 
     @Override
     public void onEnable() {
@@ -107,6 +109,9 @@ public class Main extends JavaPlugin {
 
         rewardsGUI = new Rewards_GUI(this);
         rewardsGUI.loadGUI();
+
+        raritiesGUI = new Rarities_GUI(this);
+        raritiesGUI.loadGUI();
 
         fireworkUtil = new FireworkUtil(this);
 
@@ -175,6 +180,8 @@ public class Main extends JavaPlugin {
     public TypeConfig_GUI getTypeConfigGUI() { return typeConfigGUI; }
 
     public Rewards_GUI getRewardsGUI() { return rewardsGUI; }
+
+    public Rarities_GUI getRaritiesGUI() { return raritiesGUI; }
 
     public PluginHandler getPluginHandler() { return pluginHandler; }
 

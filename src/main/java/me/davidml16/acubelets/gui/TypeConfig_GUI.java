@@ -56,7 +56,7 @@ public class TypeConfig_GUI implements Listener {
 
         FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
 
-        gui.setItem(19, new ItemBuilder(Material.ANVIL, 1).setName(ColorUtil.translate("&aCubelet type name"))
+        gui.setItem(23, new ItemBuilder(Material.ANVIL, 1).setName(ColorUtil.translate("&aCubelet type name"))
                 .setLore(
                         "",
                         ColorUtil.translate(" &7Click on the anvil "),
@@ -75,16 +75,30 @@ public class TypeConfig_GUI implements Listener {
             lore.add(ColorUtil.translate(line));
         }
         gui.setItem(13, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
-        gui.setItem(22, new ItemBuilder(type.getIcon()).setName(ColorUtil.translate("&aCubelet type icon"))
+        gui.setItem(21, new ItemBuilder(type.getIcon()).setName(ColorUtil.translate("&aCubelet type icon"))
                 .setLore(
                         "",
-                        ColorUtil.translate(" &7You can change the"),
-                        ColorUtil.translate(" &7icon clicking this item"),
-                        ColorUtil.translate(" &7and opening icon setup"),
+                        ColorUtil.translate(" &7You can change the "),
+                        ColorUtil.translate(" &7icon clicking this item "),
+                        ColorUtil.translate(" &7and opening icon setup "),
                         "",
-                        ColorUtil.translate("&eClick change skull texture")
+                        ColorUtil.translate("&eClick change skull texture! ")
                 )
                 .toItemStack());
+
+        gui.setItem(19, new ItemBuilder(Material.ITEM_FRAME, 1)
+                .setName(ColorUtil.translate("&aRarities"))
+                .setLore(
+                        "",
+                        ColorUtil.translate(" &7Open rarities gui and "),
+                        ColorUtil.translate(" &7click on new rarity "),
+                        ColorUtil.translate(" &7to begin rarity setup. "),
+                        "",
+                        ColorUtil.translate(" &7Click the rarity item "),
+                        ColorUtil.translate(" &7in the GUI to remove it. "),
+                        "",
+                        ColorUtil.translate("&eClick to config rarities! ")
+                ).toItemStack());
 
         gui.setItem(25, new ItemBuilder(Material.GOLD_NUGGET, 1)
                 .setName(ColorUtil.translate("&aRewards"))
@@ -101,13 +115,13 @@ public class TypeConfig_GUI implements Listener {
                 ).toItemStack());
         
         gui.setItem(40, new ItemBuilder(Material.BARRIER, 1)
-                .setName(ColorUtil.translate("&cReload configuration"))
+                .setName(ColorUtil.translate("&cReload configuration "))
                 .setLore(
                         "",
-                        ColorUtil.translate(" &7Reload configuration to"),
-                        ColorUtil.translate(" &7update last changes made."),
+                        ColorUtil.translate(" &7Reload configuration to "),
+                        ColorUtil.translate(" &7update last changes made. "),
                         "",
-                        ColorUtil.translate("&eClick reload cubelets!")
+                        ColorUtil.translate("&eClick reload cubelets! ")
                 )
                 .toItemStack());
 
@@ -137,14 +151,14 @@ public class TypeConfig_GUI implements Listener {
             lore.add(ColorUtil.translate(line));
         }
         gui.setItem(13, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
-        gui.setItem(22, new ItemBuilder(type.getIcon()).setName(ColorUtil.translate("&aCubelet type icon"))
+        gui.setItem(21, new ItemBuilder(type.getIcon()).setName(ColorUtil.translate("&aCubelet type icon"))
                 .setLore(
                         "",
-                        ColorUtil.translate(" &7You can change the icon"),
-                        ColorUtil.translate(" &7clicking a skull in"),
-                        ColorUtil.translate(" &7your inventory"),
+                        ColorUtil.translate(" &7You can change the icon "),
+                        ColorUtil.translate(" &7clicking a skull in "),
+                        ColorUtil.translate(" &7your inventory "),
                         "",
-                        ColorUtil.translate("&eClick to set to default")
+                        ColorUtil.translate("&eClick to set to default! ")
                 )
                 .toItemStack());
 
@@ -176,16 +190,18 @@ public class TypeConfig_GUI implements Listener {
 
             CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
 
-            if (slot == 22) {
+            if (slot == 21) {
                 new TypeIconMenu(main).getConversation(p, type).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
+            } else if (slot == 19) {
+                main.getRaritiesGUI().open(p, id);
             } else if (slot == 25) {
                 main.getRewardsGUI().open(p, id);
             } else if (slot == 40 && e.getCurrentItem().getType() == Material.BARRIER) {
                 main.getPluginHandler().reloadAll();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
                 p.sendMessage(main.getLanguageHandler().getMessage("Commands.Reload"));
-            } else if (slot == 19 && e.getCurrentItem().getType() == Material.ANVIL) {
+            } else if (slot == 23 && e.getCurrentItem().getType() == Material.ANVIL) {
                 p.closeInventory();
                 new RenameMenu(main).getConversation(p, type).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);

@@ -1,6 +1,9 @@
 package me.davidml16.acubelets.objects;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.enums.CustomIconType;
+import me.davidml16.acubelets.objects.Rarity;
+import me.davidml16.acubelets.objects.Reward;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 

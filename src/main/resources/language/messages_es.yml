@@ -22,6 +22,8 @@ GUIs:
     title: '%type% | Configuración'
   Rewards:
     title: '%type% | Recompensas'
+  Rarities:
+    title: '%type% | Rarezas'
 
 Cubelet:
   BoxInUse:

@@ -180,8 +180,10 @@ public interface CommonPrompts  {
         private double minValue;
         private double maxValue;
         private boolean hasRange;
+        private Main main;
 
-        public NumericRangePrompt(Prompt param1Prompt, String param1String1, String param1String2, double param1Float1, double param1Float2) {
+        public NumericRangePrompt(Main main, Prompt param1Prompt, String param1String1, String param1String2, double param1Float1, double param1Float2) {
+            this.main = main;
             this.parentPrompt = param1Prompt;
             this.text = param1String1;
             this.storeValue = param1String2;
@@ -215,7 +217,6 @@ public interface CommonPrompts  {
                 param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  The value must be between " + this.minValue + " and " + this.maxValue + "!\n ");
                 return this;
             }
-
 
             param1ConversationContext.setSessionData(this.storeValue, f);
             return this.parentPrompt;
