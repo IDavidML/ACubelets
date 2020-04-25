@@ -111,14 +111,14 @@ public class Cubelets_GUI implements Listener {
             p.getOpenInventory().getTopInventory().setContents(gui.getContents());
         }
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> opened.put(p.getUniqueId(), page), 1L);
+        opened.put(p.getUniqueId(), page);
     }
 
     public void open(Player p) {
         p.updateInventory();
         openPage(p, 0);
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> opened.put(p.getUniqueId(), 0), 1L);
+        opened.put(p.getUniqueId(), 0);
     }
 
     @SuppressWarnings("deprecation")

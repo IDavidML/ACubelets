@@ -23,7 +23,7 @@ public class CubeletOpenHandler {
                 hologram.clearLines();
             }
 
-            Animation animation = main.getAnimationHandler().getAnimation("animation1");
+            Animation animation = main.getAnimationHandler().getAnimation(type.getAnimation());
             animation.start(box, type);
         } else {
             if(box.getPlayerOpening().getUniqueId() == p.getUniqueId()) {

@@ -1,16 +1,16 @@
-package me.davidml16.acubelets.animations.animation1;
+package me.davidml16.acubelets.animations.animation2;
 
 import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class Animation1_Music extends BukkitRunnable {
+public class Animation2_Music extends BukkitRunnable {
 
     private final Location musicLoc;
     private int noteValue;
     private float notePitch;
 
-    public Animation1_Music(Location musicLoc) {
+    public Animation2_Music(Location musicLoc) {
         this.musicLoc = musicLoc;
     }
 

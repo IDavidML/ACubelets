@@ -10,10 +10,7 @@ import me.davidml16.acubelets.database.types.Database;
 import me.davidml16.acubelets.events.Event_Damage;
 import me.davidml16.acubelets.events.Event_Interact;
 import me.davidml16.acubelets.events.Event_JoinQuit;
-import me.davidml16.acubelets.gui.Cubelets_GUI;
-import me.davidml16.acubelets.gui.Rarities_GUI;
-import me.davidml16.acubelets.gui.Rewards_GUI;
-import me.davidml16.acubelets.gui.TypeConfig_GUI;
+import me.davidml16.acubelets.gui.*;
 import me.davidml16.acubelets.handlers.*;
 import me.davidml16.acubelets.handlers.PluginHandler;
 import me.davidml16.acubelets.tasks.HologramTask;
@@ -51,6 +48,7 @@ public class Main extends JavaPlugin {
     private TypeConfig_GUI typeConfigGUI;
     private Rewards_GUI rewardsGUI;
     private Rarities_GUI raritiesGUI;
+    private Animations_GUI animationsGUI;
 
     @Override
     public void onEnable() {
@@ -112,6 +110,9 @@ public class Main extends JavaPlugin {
 
         raritiesGUI = new Rarities_GUI(this);
         raritiesGUI.loadGUI();
+
+        animationsGUI = new Animations_GUI(this);
+        animationsGUI.loadGUI();
 
         fireworkUtil = new FireworkUtil(this);
 
@@ -182,6 +183,8 @@ public class Main extends JavaPlugin {
     public Rewards_GUI getRewardsGUI() { return rewardsGUI; }
 
     public Rarities_GUI getRaritiesGUI() { return raritiesGUI; }
+
+    public Animations_GUI getAnimationsGUI() { return animationsGUI; }
 
     public PluginHandler getPluginHandler() { return pluginHandler; }
 

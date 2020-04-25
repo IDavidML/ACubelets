@@ -127,6 +127,10 @@ public class CubeletTypesHandler {
                         config.set("type.icon.lore", lore);
                     }
 
+                    if (!config.contains("type.animation")) {
+                        config.set("type.animation", "animation1");
+                    }
+
                     if (!config.contains("type.rarities")) {
                         config.set("type.rarities", new ArrayList<>());
                     }
@@ -141,6 +145,8 @@ public class CubeletTypesHandler {
 
                     CubeletType cubeletType = new CubeletType(main, id, name);
                     types.put(id, cubeletType);
+
+                    cubeletType.setAnimation(config.getString("type.animation").toLowerCase());
 
                     String[] icon = ((String) config.get("type.icon.texture")).split(":");
                     switch(icon[0].toLowerCase()) {

@@ -51,12 +51,29 @@ public class TypeConfig_GUI implements Listener {
     public void loadGUI(String id) {
         if(guis.containsKey(id)) return;
 
-        Inventory gui = Bukkit.createInventory(null, 45, main.getLanguageHandler().getMessage("GUIs.Config.title").replaceAll("%type%", id));
+        Inventory gui = Bukkit.createInventory(null, 45, main.getLanguageHandler().getMessage("GUIs.Config.title").replaceAll("%cubelet_type%", id));
         ItemStack edge = new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack();
 
         FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
 
-        gui.setItem(23, new ItemBuilder(Material.ANVIL, 1).setName(ColorUtil.translate("&aCubelet type name"))
+        CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
+        List<String> lore = new ArrayList<>();
+        for(String line : type.getLore()) {
+            lore.add(ColorUtil.translate(line));
+        }
+        gui.setItem(10, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
+        gui.setItem(19, new ItemBuilder(type.getIcon()).setName(ColorUtil.translate("&aCubelet type icon"))
+                .setLore(
+                        "",
+                        ColorUtil.translate(" &7You can change the "),
+                        ColorUtil.translate(" &7icon clicking this item "),
+                        ColorUtil.translate(" &7and opening icon setup "),
+                        "",
+                        ColorUtil.translate("&eClick change skull texture! ")
+                )
+                .toItemStack());
+
+        gui.setItem(21, new ItemBuilder(Material.ANVIL, 1).setName(ColorUtil.translate("&aCubelet type name"))
                 .setLore(
                         "",
                         ColorUtil.translate(" &7Click on the anvil "),
@@ -69,24 +86,18 @@ public class TypeConfig_GUI implements Listener {
                 )
                 .toItemStack());
 
-        CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
-        List<String> lore = new ArrayList<>();
-        for(String line : type.getLore()) {
-            lore.add(ColorUtil.translate(line));
-        }
-        gui.setItem(13, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
-        gui.setItem(21, new ItemBuilder(type.getIcon()).setName(ColorUtil.translate("&aCubelet type icon"))
+        gui.setItem(23, new ItemBuilder(Material.ARMOR_STAND, 1)
+                .setName(ColorUtil.translate("&aAnimations"))
                 .setLore(
                         "",
-                        ColorUtil.translate(" &7You can change the "),
-                        ColorUtil.translate(" &7icon clicking this item "),
-                        ColorUtil.translate(" &7and opening icon setup "),
+                        ColorUtil.translate(" &7Open animations gui to "),
+                        ColorUtil.translate(" &7chance cubelet animation. "),
+                        ColorUtil.translate(" &7to begin rarity setup. "),
                         "",
-                        ColorUtil.translate("&eClick change skull texture! ")
-                )
-                .toItemStack());
+                        ColorUtil.translate("&eClick to config animations! ")
+                ).toItemStack());
 
-        gui.setItem(19, new ItemBuilder(Material.ITEM_FRAME, 1)
+        gui.setItem(16, new ItemBuilder(Material.ITEM_FRAME, 1)
                 .setName(ColorUtil.translate("&aRarities"))
                 .setLore(
                         "",
@@ -150,8 +161,8 @@ public class TypeConfig_GUI implements Listener {
         for(String line : type.getLore()) {
             lore.add(ColorUtil.translate(line));
         }
-        gui.setItem(13, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
-        gui.setItem(21, new ItemBuilder(type.getIcon()).setName(ColorUtil.translate("&aCubelet type icon"))
+        gui.setItem(10, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
+        gui.setItem(19, new ItemBuilder(type.getIcon()).setName(ColorUtil.translate("&aCubelet type icon"))
                 .setLore(
                         "",
                         ColorUtil.translate(" &7You can change the icon "),
@@ -190,18 +201,21 @@ public class TypeConfig_GUI implements Listener {
 
             CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
 
-            if (slot == 21) {
+            if (slot == 19) {
+                p.closeInventory();
                 new TypeIconMenu(main).getConversation(p, type).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
-            } else if (slot == 19) {
+            } else if (slot == 16 && e.getCurrentItem().getType() == Material.ITEM_FRAME) {
                 main.getRaritiesGUI().open(p, id);
-            } else if (slot == 25) {
+            } else if (slot == 23 && e.getCurrentItem().getType() == Material.ARMOR_STAND) {
+                main.getAnimationsGUI().open(p, id);
+            } else if (slot == 25 && e.getCurrentItem().getType() == Material.GOLD_NUGGET) {
                 main.getRewardsGUI().open(p, id);
             } else if (slot == 40 && e.getCurrentItem().getType() == Material.BARRIER) {
                 main.getPluginHandler().reloadAll();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
                 p.sendMessage(main.getLanguageHandler().getMessage("Commands.Reload"));
-            } else if (slot == 23 && e.getCurrentItem().getType() == Material.ANVIL) {
+            } else if (slot == 21 && e.getCurrentItem().getType() == Material.ANVIL) {
                 p.closeInventory();
                 new RenameMenu(main).getConversation(p, type).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);

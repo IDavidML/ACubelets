@@ -5,6 +5,7 @@ import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Rarity;
 import me.davidml16.acubelets.objects.Reward;
 import me.davidml16.acubelets.objects.CustomIcon;
+import me.davidml16.acubelets.utils.CenterString;
 import me.davidml16.acubelets.utils.ColorUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -97,9 +98,6 @@ public class CubeletRewardHandler {
 
 			int randomElementIndex = ThreadLocalRandom.current().nextInt(rewards.size()) % rewards.size();
 			Reward randomReward = rewards.get(randomElementIndex);
-
-			Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(), randomReward.getCommand().replaceAll("%player%", p.getName()));
-
 			return randomReward;
 		} else {
 			p.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
@@ -129,6 +127,22 @@ public class CubeletRewardHandler {
 				return item;
 		}
 		throw new RuntimeException("Should never be shown.");
+	}
+
+	public void sendLootMessage(Player p, CubeletType cubeletType, Reward reward) {
+		List<String> lines = new ArrayList<>();
+		lines.add(main.getLanguageHandler().getMessage("Cubelet.Reward.Line1"));
+		lines.add(main.getLanguageHandler().getMessage("Cubelet.Reward.Line2"));
+		lines.add(main.getLanguageHandler().getMessage("Cubelet.Reward.Line3"));
+		lines.add(main.getLanguageHandler().getMessage("Cubelet.Reward.Line4"));
+		lines.add(main.getLanguageHandler().getMessage("Cubelet.Reward.Line5"));
+		for(String line : lines) {
+			p.sendMessage(CenterString.centeredMessage(ColorUtil.translate(line
+					.replaceAll("%cubelet_type%", cubeletType.getName())
+					.replaceAll("%reward_name%", reward.getName())
+					.replaceAll("%reward_rarity%", reward.getRarity().getName())
+			)));
+		}
 	}
 
 }

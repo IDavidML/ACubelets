@@ -19,16 +19,24 @@ GUIs:
   Open:
     title: 'Cubelets'
   Config:
-    title: '%type% | Configuration'
+    title: '%cubelet_type% | Configuration'
   Rewards:
-    title: '%type% | Rewards'
+    title: '%cubelet_type% | Rewards'
   Rarities:
-    title: '%type% | Rarities'
+    title: '%cubelet_type% | Rarities'
+  Animations:
+    title: '%cubelet_type% | Animations'
 
 Cubelet:
   BoxInUse:
     Me: '&cYou already opening a Cubelet here!'
     Other: '&6%player% &cis already opening a Cubelet at this machine!'
+  Reward:
+    Line1: ''
+    Line2: '%cubelet_type%'
+    Line3: '&5You found: %reward_name%'
+    Line4: '&5Rarity: %reward_rarity%'
+    Line5: ''
 
 Holograms:
   CubeletAvailable:

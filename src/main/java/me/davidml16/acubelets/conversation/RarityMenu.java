@@ -99,11 +99,11 @@ public class RarityMenu implements ConversationAbandonedListener, CommonPrompts 
             if (param1ConversationContext.getSessionData("rarityChance") == null) {
                 cadena += ChatColor.RED + "    3 " + ChatColor.GRAY + "- Set rarity chance (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
             } else {
-                cadena += ChatColor.GREEN + "    3 " + ChatColor.GRAY + "- Set rarity chance (" + ChatColor.YELLOW + ChatColor.translateAlternateColorCodes('&', (String)param1ConversationContext.getSessionData("rarityChance")) + "%" + ChatColor.GRAY + ")\n";
+                cadena += ChatColor.GREEN + "    3 " + ChatColor.GRAY + "- Set rarity chance (" + ChatColor.YELLOW + ChatColor.translateAlternateColorCodes('&', String.valueOf((Double) param1ConversationContext.getSessionData("rarityChance"))) + "%" + ChatColor.GRAY + ")\n";
             }
 
-            cadena += ChatColor.GREEN + "    6 " + ChatColor.GRAY + "- Save\n";
-            cadena += ChatColor.GREEN + "    7 " + ChatColor.GRAY + "- Exit and discard\n";
+            cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Save\n";
+            cadena += ChatColor.GREEN + "    5 " + ChatColor.GRAY + "- Exit and discard\n";
             cadena += ChatColor.GREEN + " \n";
             cadena += ChatColor.GOLD + "" + ChatColor.YELLOW + "  Choose the option: \n";
             cadena += ChatColor.GREEN + " \n";

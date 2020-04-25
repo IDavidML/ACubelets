@@ -67,6 +67,9 @@ public class ExecuteType {
                     main.getCubeletTypesHandler().loadTypes();
 
                     main.getTypeConfigGUI().loadGUI(id);
+                    main.getRaritiesGUI().loadGUI(id);
+                    main.getRewardsGUI().loadGUI(id);
+                    main.getAnimationsGUI().loadGUI(id);
 
                     sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
                             + " &aSuccesfully created cubelet type &e" + id + " &awith the name &e" + name));
@@ -93,6 +96,9 @@ public class ExecuteType {
             if (!Character.isDigit(id.charAt(0))) {
                 if (main.getCubeletTypesHandler().removeType(id)) {
                     main.getTypeConfigGUI().getGuis().remove(id);
+                    main.getRaritiesGUI().getGuis().remove(id);
+                    main.getRewardsGUI().getGuis().remove(id);
+                    main.getAnimationsGUI().getGuis().remove(id);
                     main.getCubeletTypesHandler().getTypes().remove(id);
 
                     try {

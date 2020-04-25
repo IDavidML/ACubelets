@@ -19,6 +19,8 @@ public class CubeletType {
     private ItemStack icon;
     private List<String> lore;
 
+    private String animation;
+
     private Map<String, List<Reward>> rewards;
     private Map<String, Rarity> rarities;
 
@@ -69,6 +71,14 @@ public class CubeletType {
     public List<String> getLore() { return lore; }
 
     public void setLore(List<String> lore) { this.lore = lore; }
+
+    public String getAnimation() {
+        return animation;
+    }
+
+    public void setAnimation(String animation) {
+        this.animation = animation;
+    }
 
     public void addReward(String rarity, Reward reward) {
         Map<String, List<Reward>> rewardsAll = getRewards();

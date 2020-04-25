@@ -9,14 +9,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class LanguageHandler {
 
 	private String language = null;
+
+	private File file;
+	private FileConfiguration config;
 
 	private HashMap<String, String> messages;
 
@@ -39,6 +39,8 @@ public class LanguageHandler {
 		this.language = language;
 	}
 
+	public FileConfiguration getConfig() { return config; }
+
 	public String getPrefix() {
 		return ColorUtil.translate(messages.get("Prefix"));
 	}
@@ -58,12 +60,12 @@ public class LanguageHandler {
 		Main.log.sendMessage(ColorUtil.translate(""));
 		Main.log.sendMessage(ColorUtil.translate("  &eLoading language:"));
 
-		File f = new File("plugins/ACubelets/language/messages_" + language + ".yml");
-		YamlConfiguration c = YamlConfiguration.loadConfiguration(f);
+		file = new File("plugins/ACubelets/language/messages_" + language + ".yml");
+		config = YamlConfiguration.loadConfiguration(file);
 
-		for(String key : c.getKeys(true)) {
-			if(!(c.get(key) instanceof MemorySection)) {
-				messages.put(key, c.getString(key));
+		for(String key : config.getKeys(true)) {
+			if (!(config.get(key) instanceof MemorySection)) {
+				messages.put(key, config.getString(key));
 			}
 		}
 

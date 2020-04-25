@@ -6,8 +6,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TabCompleter_ACubelets implements TabCompleter {
 
@@ -29,6 +31,7 @@ public class TabCompleter_ACubelets implements TabCompleter {
 
 		if (args.length == 1) {
 			if (main.playerHasPermission(p, "acubelets.admin")) {
+				list.add("help");
 				list.add("give");
 				list.add("box");
 				list.add("type");
@@ -47,6 +50,34 @@ public class TabCompleter_ACubelets implements TabCompleter {
 			} else {
 				if (main.playerHasPermission(p, "acubelets.admin")) {
 					list.addAll(main.getCubeletTypesHandler().getTypes().keySet());
+				}
+			}
+		} else if (args[0].equalsIgnoreCase("setup")) {
+			if(args.length == 2) {
+				if (main.playerHasPermission(p, "acubelets.admin")) {
+					for (File file : Objects.requireNonNull(new File(main.getDataFolder(), "types").listFiles())) {
+						list.add(file.getName().replace(".yml", ""));
+					}
+				}
+			}
+		} else if (args[0].equalsIgnoreCase("box")) {
+			if(args.length == 2) {
+				if (main.playerHasPermission(p, "acubelets.admin")) {
+					list.add("add");
+					list.add("remove");
+				}
+			}
+		} else if (args[0].equalsIgnoreCase("type")) {
+			if (main.playerHasPermission(p, "acubelets.admin")) {
+				if(args.length == 2) {
+					list.add("create");
+					list.add("remove");
+				} else if(args.length == 3) {
+					if(args[1].equalsIgnoreCase("remove")) {
+						for (String type : main.getCubeletTypesHandler().getTypes().keySet()) {
+							list.add(type.toLowerCase());
+						}
+					}
 				}
 			}
 		}

@@ -56,7 +56,7 @@ public class Rarities_GUI implements Listener {
     public void loadGUI(String id) {
         if (guis.containsKey(id)) return;
 
-        Inventory gui = Bukkit.createInventory(null, 45, main.getLanguageHandler().getMessage("GUIs.Rarities.title").replaceAll("%type%", id));
+        Inventory gui = Bukkit.createInventory(null, 45, main.getLanguageHandler().getMessage("GUIs.Rarities.title").replaceAll("%cubelet_type%", id));
 
         ItemStack edge = new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack();
         ItemStack newRarity = new ItemBuilder(Material.DOUBLE_PLANT, 1).setName(ColorUtil.translate("&aCreate new rarity")).toItemStack();
@@ -96,7 +96,7 @@ public class Rarities_GUI implements Listener {
             return;
         }
 
-        Inventory gui = Bukkit.createInventory(null, 45, main.getLanguageHandler().getMessage("GUIs.Rarities.title").replaceAll("%type%", id));
+        Inventory gui = Bukkit.createInventory(null, 45, main.getLanguageHandler().getMessage("GUIs.Rarities.title").replaceAll("%cubelet_type%", id));
         gui.setContents(guis.get(id).getContents());
 
         for (int i = 10; i <= 16; i++)

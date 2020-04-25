@@ -19,16 +19,24 @@ GUIs:
   Open:
     title: 'Cubelets'
   Config:
-    title: '%type% | Configuración'
+    title: '%cubelet_type% | Configuracion'
   Rewards:
-    title: '%type% | Recompensas'
+    title: '%cubelet_type% | Recompensas'
   Rarities:
-    title: '%type% | Rarezas'
+    title: '%cubelet_type% | Rarezas'
+  Animations:
+    title: '%cubelet_type% | Animaciones'
 
 Cubelet:
   BoxInUse:
-    Me: '&cTu ya estás abriendo un Cubelet aquí!'
-    Other: '&6%player% &cestá abriendo un Cubelet en esta máquina!'
+    Me: '&cTu ya estas abriendo un Cubelet en esta maquina!'
+    Other: '&6%player% &cesta abriendo un Cubelet en esta maquina!'
+  Reward:
+    Line1: ''
+    Line2: '%cubelet_type%'
+    Line3: '&5Has encontrado: %reward_name%'
+    Line4: '&5Rareza: %reward_rarity%'
+    Line5: ''
 
 Holograms:
   CubeletAvailable:
@@ -41,6 +49,6 @@ Holograms:
   Reward:
     Line1:
       You: '&aHas encontrado'
-      Other: '&a%player% encontró'
+      Other: '&a%player% ha encontrado'
     Line2: '%reward_name%'
     Line3: '&5Rareza: %reward_rarity%'
