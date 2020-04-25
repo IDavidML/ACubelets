@@ -2,7 +2,9 @@ package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 
@@ -14,6 +16,14 @@ public class PluginHandler {
     }
 
     public void reloadAll() {
+
+        for(Player p : Bukkit.getServer().getOnlinePlayers()) {
+            if(main.getCubeletsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
+            if(main.getTypeConfigGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
+            if(main.getRewardsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
+            if(main.getRaritiesGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
+            if(main.getAnimationsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
+        }
 
         for(Animation task : new ArrayList<>(main.getAnimationHandler().getTasks())) {
             task.stop();

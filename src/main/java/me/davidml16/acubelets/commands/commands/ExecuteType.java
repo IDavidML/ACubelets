@@ -56,15 +56,17 @@ public class ExecuteType {
                 if (main.getCubeletTypesHandler().createType(id)) {
                     FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
                     config.set("type.name", name.toString());
+                    config.set("type.animation", "animation1");
                     config.set("type.icon.texture", "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWYyMmI2YTNhMGYyNGJkZWVhYjJhNmFjZDliMWY1MmJiOTU5NGQ1ZjZiMWUyYzA1ZGRkYjIxOTQxMGM4In19fQ==");
 
-                    List<String> lore = Arrays.asList("&5Received: &a%received% ago", "", "&7This is the most common type of ", "&7Cubelet. Initial scans indicate ", "&7that the contents of this cubelet ", "&7will be probably basic. ", "", "&6Click to open.");
+                    List<String> lore = Arrays.asList("&5Received: &a%received% ago", "", "&7This is the most common type of", "&7Cubelet. Initial scans indicate", "&7that the contents of this cubelet", "&7will be probably basic.", "", "&6Click to open.");
 
                     config.set("type.icon.lore", lore);
+                    config.set("type.rarities", new ArrayList<>());
                     config.set("type.rewards", new ArrayList<>());
                     main.getCubeletTypesHandler().saveConfig(id);
 
-                    main.getCubeletTypesHandler().loadTypes();
+                    main.getPluginHandler().reloadAll();
 
                     main.getTypeConfigGUI().loadGUI(id);
                     main.getRaritiesGUI().loadGUI(id);
@@ -111,12 +113,11 @@ public class ExecuteType {
                         main.getPlayerDataHandler().getData(p).getCubelets().removeIf(cubelet -> {
                             return cubelet.getType().equalsIgnoreCase(id);
                         });
-                        if(main.getCubeletsGUI().getOpened().containsKey(p.getUniqueId())) {
-                            p.closeInventory();
-                        }
-                        if(main.getTypeConfigGUI().getOpened().containsKey(p.getUniqueId())) {
-                            p.closeInventory();
-                        }
+                        if(main.getCubeletsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
+                        if(main.getTypeConfigGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
+                        if(main.getRewardsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
+                        if(main.getRaritiesGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
+                        if(main.getAnimationsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
                     }
 
                     sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &aSuccesfully removed cubelet type &e" + id + "&a!"));
