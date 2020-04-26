@@ -43,7 +43,7 @@ public class RewardMenu implements ConversationAbandonedListener, CommonPrompts 
                 case "1":
                     return new CommonPrompts.CommonStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter reward identificator, \"cancel\" to return.\n\n ", "rewardID");
                 case "2":
-                    return new CommonPrompts.CommonStringPrompt(main, this, true, ChatColor.YELLOW + "  Enter reward name (You can use color codes), \"cancel\" to return.\n\n ", "rewardName");
+                    return new CommonPrompts.UncoloredStringPrompt(main, this, true, ChatColor.YELLOW + "  Enter reward name, \"cancel\" to return.\n\n ", "rewardName");
                 case "3":
                     List<Rarity> rts = new ArrayList<>(cubeletType.getRarities().values());
                     rts.sort(Collections.reverseOrder());

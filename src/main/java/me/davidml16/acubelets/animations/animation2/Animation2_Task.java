@@ -7,10 +7,10 @@ import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Reward;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Location;
+import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Particles;
+import me.davidml16.acubelets.utils.UtilParticles;
+import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -30,6 +30,10 @@ public class Animation2_Task implements Animation {
 	private CubeletType cubeletType;
 	private Animation2_Music music;
 	private List<Color> colors;
+
+	private ColorUtil.ColorSet<Integer, Integer, Integer> colorRarity;
+
+	Location loc1, loc2, loc3, loc4;
 
 	class Task implements Runnable {
 		int time = 0;
@@ -53,11 +57,17 @@ public class Animation2_Task implements Animation {
 				music.cancel();
 				Reward reward = main.getCubeletRewardHandler().processReward(cubeletBox.getPlayerOpening(), cubeletType);
 				cubeletBox.setLastReward(reward);
+				colorRarity = ColorUtil.getRGBbyColor(ColorUtil.getColorByText(reward.getRarity().getName()));
 				main.getHologramHandler().rewardHologram(cubeletBox, reward);
 				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 2, 0.5), FireworkEffect.Type.STAR, colors.get(0), colors.get(1));
 				cubeletBox.setState(CubeletBoxState.REWARD);
 				armorStand.remove();
 				armorStand = null;
+			} else if (time > 100 && time < 200) {
+				UtilParticles.drawParticleLine(loc1, loc2, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+				UtilParticles.drawParticleLine(loc2, loc3, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+				UtilParticles.drawParticleLine(loc3, loc4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+				UtilParticles.drawParticleLine(loc1, loc4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 			} else if(time >= 200) {
 				stop();
 				for (Hologram hologram : cubeletBox.getHolograms().values()) {
@@ -99,6 +109,11 @@ public class Animation2_Task implements Animation {
 		this.cubeletBox = box;
 		this.cubeletBox.setState(CubeletBoxState.ANIMATION);
 		this.colors = main.getFireworkUtil().getRandomColors();
+
+		loc1 = cubeletBox.getLocation().clone().add(0.05, 0.55, 0.05);
+		loc2 = cubeletBox.getLocation().clone().add(0.95, 0.55, 0.05);
+		loc3 = cubeletBox.getLocation().clone().add(0.95, 0.55, 0.95);
+		loc4 = cubeletBox.getLocation().clone().add(0.05, 0.55, 0.95);
 
 		id = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, new Task(), 0L, 1);
 

@@ -7,10 +7,8 @@ import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Reward;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Location;
+import me.davidml16.acubelets.utils.ColorUtil;
+import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -45,8 +43,9 @@ public class Animation1_Task implements Animation {
 				Reward reward = main.getCubeletRewardHandler().processReward(cubeletBox.getPlayerOpening(), cubeletType);
 				cubeletBox.setLastReward(reward);
 				main.getHologramHandler().rewardHologram(cubeletBox, reward);
-				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 2, 0.5), FireworkEffect.Type.STAR, colors.get(0), colors.get(1));
+				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 2, 0.5), FireworkEffect.Type.BALL_LARGE, colors.get(0), colors.get(1));
 				cubeletBox.setState(CubeletBoxState.REWARD);
+
 			} else if(time >= 170) {
 				stop();
 				for (Hologram hologram : cubeletBox.getHolograms().values()) {

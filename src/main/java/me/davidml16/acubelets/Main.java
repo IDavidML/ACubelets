@@ -24,6 +24,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Main extends JavaPlugin {
 
+    private static Main main;
     public static ConsoleCommandSender log;
     private MetricsLite metrics;
 
@@ -52,6 +53,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        main = this;
         log = Bukkit.getConsoleSender();
         metrics = new MetricsLite(this, 7190);
 
@@ -145,6 +147,8 @@ public class Main extends JavaPlugin {
         hologramTask.stop();
         databaseHandler.getDatabase().close();
     }
+
+    public static Main get() { return main; }
 
     public MetricsLite getMetrics() {
         return metrics;

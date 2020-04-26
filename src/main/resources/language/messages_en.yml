@@ -33,8 +33,8 @@ Cubelet:
     Other: '&6%player% &cis already opening a Cubelet at this machine!'
   Reward:
     Line1: ''
-    Line2: '%cubelet_type%'
-    Line3: '&5You found: %reward_name%'
+    Line2: '%cubelet_type% Loot'
+    Line3: '&5You found: &a%reward_name%'
     Line4: '&5Rarity: %reward_rarity%'
     Line5: ''
 
@@ -50,5 +50,5 @@ Holograms:
     Line1:
       You: '&aYou found'
       Other: '&a%player% found'
-    Line2: '%reward_name%'
+    Line2: '&e&l%reward_name%'
     Line3: '&5Rarity: %reward_rarity%'
