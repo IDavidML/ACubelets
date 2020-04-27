@@ -52,7 +52,11 @@ public class LanguageHandler {
 	}
 
 	public List<String> getMessageList(String message) {
-		return messageList.get(message);
+		List<String> lines = new ArrayList<>();
+		for(String line : messageList.get(message)) {
+			lines.add(ColorUtil.translate(line));
+		}
+		return lines;
 	}
 
 	public String checkLanguage(String lang) {

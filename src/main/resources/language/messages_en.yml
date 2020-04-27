@@ -15,17 +15,24 @@ Commands:
   Reload: '%prefix% &aPlugin reloaded with no errors!'
   Balance: '&aYou actually have &6%cubelets_available% &aCubelets to open!'
 
-GUIs:
-  Open:
-    title: 'Cubelets'
-  Config:
-    title: '%cubelet_type% | Configuration'
-  Rewards:
-    title: '%cubelet_type% | Rewards'
-  Rarities:
-    title: '%cubelet_type% | Rarities'
-  Animations:
-    title: '%cubelet_type% | Animations'
+CubeletGUI:
+  Title: 'Cubelets'
+  Items:
+    Close:
+      Name: '&9Close'
+      Lore:
+        - '&7Click to close'
+        - '&7this menu'
+    NoCubelets:
+      Name: '&4You have no Cubelets'
+      Lore:
+        - '&7You can get Cubelets by playing games.'
+        - '&7You are also able to purchase them'
+        - '&7on our store.'
+    NextPage:
+      Name: '&aNext page (%next%/%max%)'
+    PreviousPage:
+      Name: '&aPrevious page (%previous%/%max%)'
 
 Cubelet:
   BoxInUse:
@@ -47,7 +54,7 @@ Holograms:
     - '&e&lCubelet Machine'
     - '&dClick to open'
   Reward:
-    You:
+    Me:
       - '&aYou found'
       - '&e&l%reward_name%'
       - '&5Rarity: %reward_rarity%'

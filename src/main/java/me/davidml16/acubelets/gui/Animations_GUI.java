@@ -53,7 +53,7 @@ public class Animations_GUI implements Listener {
     public void loadGUI(String id) {
         if(guis.containsKey(id)) return;
 
-        Inventory gui = Bukkit.createInventory(null, 45, main.getLanguageHandler().getMessage("GUIs.Animations.title").replaceAll("%cubelet_type%", id));
+        Inventory gui = Bukkit.createInventory(null, 45, "%cubelet_type% | Animations".replaceAll("%cubelet_type%", id));
         ItemStack edge = new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack();
         ItemStack back = new ItemBuilder(Material.ARROW, 1).setName(ColorUtil.translate("&aBack to config")).toItemStack();
 

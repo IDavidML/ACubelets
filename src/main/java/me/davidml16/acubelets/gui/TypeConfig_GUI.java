@@ -51,7 +51,7 @@ public class TypeConfig_GUI implements Listener {
     public void loadGUI(String id) {
         if(guis.containsKey(id)) return;
 
-        Inventory gui = Bukkit.createInventory(null, 45, main.getLanguageHandler().getMessage("GUIs.Config.title").replaceAll("%cubelet_type%", id));
+        Inventory gui = Bukkit.createInventory(null, 45, "%cubelet_type% | Configuration".replaceAll("%cubelet_type%", id));
         ItemStack edge = new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack();
 
         FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);

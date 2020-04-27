@@ -266,7 +266,7 @@ public class HologramHandler {
         List<String> lines = new ArrayList<String>();
 
         if (p.getUniqueId().toString().equalsIgnoreCase(opening.getUniqueId().toString())) {
-            for(String line : main.getLanguageHandler().getMessageList("Holograms.Reward.You")) {
+            for(String line : main.getLanguageHandler().getMessageList("Holograms.Reward.Me")) {
                 lines.add(ColorUtil.translate(line
                         .replaceAll("%player%", opening.getName())
                         .replaceAll("%reward_name%", reward.getName())

@@ -37,9 +37,12 @@ public class Cubelets_GUI implements Listener {
     }
 
     public void loadGUI() {
-        Inventory gui = Bukkit.createInventory(null, 36, "Cubelets");
+        Inventory gui = Bukkit.createInventory(null, 36, main.getLanguageHandler().getMessage("CubeletGUI.Title"));
 
-        ItemStack back = new ItemBuilder(Material.BOOK, 1).setName(ColorUtil.translate("&9Close")).toItemStack();
+        ItemStack back = new ItemBuilder(Material.BOOK, 1)
+                .setName(main.getLanguageHandler().getMessage("CubeletGUI.Items.Close.Name"))
+                .setLore(main.getLanguageHandler().getMessageList("CubeletGUI.Items.Close.Lore"))
+                .toItemStack();
 
         gui.setItem(13, new ItemBuilder(Material.BARRIER, 1).setDurability((short) 14).setName(ColorUtil.translate("&4Loading...")).toItemStack());
 
@@ -60,7 +63,7 @@ public class Cubelets_GUI implements Listener {
 
         int neededInventories = ((int) Math.ceil(cubelets.size() / 27));
 
-        Inventory gui = Bukkit.createInventory(null, 36, main.getLanguageHandler().getMessage("GUIs.Open.title"));
+        Inventory gui = Bukkit.createInventory(null, 36, main.getLanguageHandler().getMessage("CubeletGUI.Title"));
         gui.setContents(this.gui.getContents());
 
         for (int i = 0; i <= 8; i++)
@@ -71,11 +74,19 @@ public class Cubelets_GUI implements Listener {
             gui.setItem(i, null);
 
         if (page > 0) {
-            gui.setItem(27, new ItemBuilder(Material.ARROW, 1).setName(ColorUtil.translate("&aPrevious page (" + (page) + "/" + (neededInventories + 1) + ")")).toItemStack());
+            gui.setItem(27, new ItemBuilder(Material.ARROW, 1)
+                    .setName(main.getLanguageHandler().getMessage("CubeletGUI.Items.PreviousPage.Name")
+                        .replaceAll("%previous%", String.valueOf(page))
+                        .replaceAll("%max%", String.valueOf((neededInventories + 1)))
+                    ).toItemStack());
         }
 
         if (cubelets.size() > (page + 1) * 27) {
-            gui.setItem(35, new ItemBuilder(Material.ARROW, 1).setName(ColorUtil.translate("&aNext page (" + (page + 2) + "/" + (neededInventories + 1) + ")")).toItemStack());
+            gui.setItem(35, new ItemBuilder(Material.ARROW, 1)
+                    .setName(main.getLanguageHandler().getMessage("CubeletGUI.Items.NextPage.Name")
+                            .replaceAll("%next%", String.valueOf((page + 2)))
+                            .replaceAll("%max%", String.valueOf((neededInventories + 1)))
+                    ).toItemStack());
         }
 
         if (cubelets.size() > 27) cubelets = cubelets.subList(page * 27, ((page * 27) + 27) > cubelets.size() ? cubelets.size() : (page * 27) + 27);
@@ -96,12 +107,9 @@ public class Cubelets_GUI implements Listener {
                 gui.addItem(item);
             }
         } else {
-            gui.setItem(13, new ItemBuilder(Material.BARRIER, 1).setDurability((short) 14).setName(ColorUtil.translate("&4You have no Cubelets")).setLore(
-                    "",
-                    ColorUtil.translate(" &7You can get Cubelets by playing games. "),
-                    ColorUtil.translate(" &7You are also able to purchase them "),
-                    ColorUtil.translate(" &7Yon our store. "),
-                    ""
+            gui.setItem(13, new ItemBuilder(Material.BARRIER, 1)
+                    .setName(main.getLanguageHandler().getMessage("CubeletGUI.Items.NoCubelets.Name"))
+                    .setLore(main.getLanguageHandler().getMessageList("CubeletGUI.Items.NoCubelets.Lore")
             ).toItemStack());
         }
 
