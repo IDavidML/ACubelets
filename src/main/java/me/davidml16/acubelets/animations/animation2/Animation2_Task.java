@@ -128,7 +128,7 @@ public class Animation2_Task implements Animation {
 	}
 	
 	public void stop() {
-		if(!music.isCancelled()) music.cancel();
+		music.cancel();
 
 		main.getAnimationHandler().getTasks().remove(this);
 

@@ -52,7 +52,7 @@ public class TypeConfig_GUI implements Listener {
         if(guis.containsKey(id)) return;
 
         Inventory gui = Bukkit.createInventory(null, 45, "%cubelet_type% | Configuration".replaceAll("%cubelet_type%", id));
-        ItemStack edge = new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack();
+        ItemStack edge = new ItemBuilder(ACMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
 
         FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
 
@@ -61,7 +61,7 @@ public class TypeConfig_GUI implements Listener {
         for(String line : type.getLore()) {
             lore.add(ColorUtil.translate(line));
         }
-        gui.setItem(10, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
+        gui.setItem(10, new ItemBuilder(ACMaterial.NAME_TAG.parseItem()).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
         gui.setItem(19, new ItemBuilder(type.getIcon()).setName(ColorUtil.translate("&aCubelet type icon"))
                 .setLore(
                         "",
@@ -73,7 +73,7 @@ public class TypeConfig_GUI implements Listener {
                 )
                 .toItemStack());
 
-        gui.setItem(21, new ItemBuilder(Material.ANVIL, 1).setName(ColorUtil.translate("&aCubelet type name"))
+        gui.setItem(21, new ItemBuilder(ACMaterial.ANVIL.parseItem()).setName(ColorUtil.translate("&aCubelet type name"))
                 .setLore(
                         "",
                         ColorUtil.translate(" &7Click on the anvil "),
@@ -86,7 +86,7 @@ public class TypeConfig_GUI implements Listener {
                 )
                 .toItemStack());
 
-        gui.setItem(23, new ItemBuilder(Material.ARMOR_STAND, 1)
+        gui.setItem(23, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem())
                 .setName(ColorUtil.translate("&aAnimations"))
                 .setLore(
                         "",
@@ -97,7 +97,7 @@ public class TypeConfig_GUI implements Listener {
                         ColorUtil.translate("&eClick to config animations! ")
                 ).toItemStack());
 
-        gui.setItem(16, new ItemBuilder(Material.ITEM_FRAME, 1)
+        gui.setItem(16, new ItemBuilder(ACMaterial.ITEM_FRAME.parseItem())
                 .setName(ColorUtil.translate("&aRarities"))
                 .setLore(
                         "",
@@ -111,7 +111,7 @@ public class TypeConfig_GUI implements Listener {
                         ColorUtil.translate("&eClick to config rarities! ")
                 ).toItemStack());
 
-        gui.setItem(25, new ItemBuilder(Material.GOLD_NUGGET, 1)
+        gui.setItem(25, new ItemBuilder(ACMaterial.GOLD_NUGGET.parseItem())
                 .setName(ColorUtil.translate("&aRewards"))
                 .setLore(
                         "",
@@ -125,7 +125,7 @@ public class TypeConfig_GUI implements Listener {
                         ColorUtil.translate("&eClick to config rewards! ")
                 ).toItemStack());
         
-        gui.setItem(40, new ItemBuilder(Material.BARRIER, 1)
+        gui.setItem(40, new ItemBuilder(ACMaterial.BARRIER.parseItem())
                 .setName(ColorUtil.translate("&cReload configuration "))
                 .setLore(
                         "",
@@ -161,7 +161,7 @@ public class TypeConfig_GUI implements Listener {
         for(String line : type.getLore()) {
             lore.add(ColorUtil.translate(line));
         }
-        gui.setItem(10, new ItemBuilder(Material.NAME_TAG, 1).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
+        gui.setItem(10, new ItemBuilder(ACMaterial.NAME_TAG.parseItem()).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
         gui.setItem(19, new ItemBuilder(type.getIcon()).setName(ColorUtil.translate("&aCubelet type icon"))
                 .setLore(
                         "",
@@ -205,17 +205,17 @@ public class TypeConfig_GUI implements Listener {
                 p.closeInventory();
                 new TypeIconMenu(main).getConversation(p, type).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
-            } else if (slot == 16 && e.getCurrentItem().getType() == Material.ITEM_FRAME) {
+            } else if (slot == 16 && e.getCurrentItem().getType() == ACMaterial.ITEM_FRAME.parseMaterial()) {
                 main.getRaritiesGUI().open(p, id);
-            } else if (slot == 23 && e.getCurrentItem().getType() == Material.ARMOR_STAND) {
+            } else if (slot == 23 && e.getCurrentItem().getType() == ACMaterial.ARMOR_STAND.parseMaterial()) {
                 main.getAnimationsGUI().open(p, id);
-            } else if (slot == 25 && e.getCurrentItem().getType() == Material.GOLD_NUGGET) {
+            } else if (slot == 25 && e.getCurrentItem().getType() == ACMaterial.GOLD_NUGGET.parseMaterial()) {
                 main.getRewardsGUI().open(p, id);
-            } else if (slot == 40 && e.getCurrentItem().getType() == Material.BARRIER) {
+            } else if (slot == 40 && e.getCurrentItem().getType() == ACMaterial.BARRIER.parseMaterial()) {
                 main.getPluginHandler().reloadAll();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
                 p.sendMessage(main.getLanguageHandler().getMessage("Commands.Reload"));
-            } else if (slot == 21 && e.getCurrentItem().getType() == Material.ANVIL) {
+            } else if (slot == 21 && e.getCurrentItem().getType() == ACMaterial.ANVIL.parseMaterial()) {
                 p.closeInventory();
                 new RenameMenu(main).getConversation(p, type).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);

@@ -266,7 +266,7 @@ public class ItemBuilder {
      */
     @Deprecated
     public me.davidml16.acubelets.utils.ItemBuilder setWoolColor(DyeColor color) {
-        if (!is.getType().equals(Material.WOOL)) return this;
+        if (!is.getType().equals(ACMaterial.WHITE_WOOL.parseMaterial())) return this;
         this.is.setDurability(color.getDyeData());
         return this;
     }

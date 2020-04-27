@@ -2,6 +2,7 @@ package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.CubeletType;
+import me.davidml16.acubelets.utils.ACMaterial;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.Sounds;
@@ -54,25 +55,25 @@ public class Animations_GUI implements Listener {
         if(guis.containsKey(id)) return;
 
         Inventory gui = Bukkit.createInventory(null, 45, "%cubelet_type% | Animations".replaceAll("%cubelet_type%", id));
-        ItemStack edge = new ItemBuilder(Material.STAINED_GLASS_PANE, 1).setDurability((short) 7).setName("").toItemStack();
-        ItemStack back = new ItemBuilder(Material.ARROW, 1).setName(ColorUtil.translate("&aBack to config")).toItemStack();
+        ItemStack edge = new ItemBuilder(ACMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
+        ItemStack back = new ItemBuilder(ACMaterial.ARROW.parseItem()).setName(ColorUtil.translate("&aBack to config")).toItemStack();
 
         FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
 
-        if(config.getString("type.animation").equalsIgnoreCase("animation1")) {
-            gui.setItem(11, new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 10).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
-            gui.setItem(20, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorUtil.translate("&aAnimation 1")).toItemStack());
+        if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation1")) {
+            gui.setItem(11, new ItemBuilder(ACMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
+            gui.setItem(20, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 1")).toItemStack());
         } else {
-            gui.setItem(11, new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 8).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
-            gui.setItem(20, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorUtil.translate("&cAnimation 1")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
+            gui.setItem(11, new ItemBuilder(ACMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
+            gui.setItem(20, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 1")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
         }
 
-        if(config.getString("type.animation").equalsIgnoreCase("animation2")) {
-            gui.setItem(15, new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 10).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
-            gui.setItem(24, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorUtil.translate("&aAnimation 2")).toItemStack());
+        if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation2")) {
+            gui.setItem(15, new ItemBuilder(ACMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
+            gui.setItem(24, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 2")).toItemStack());
         } else {
-            gui.setItem(15, new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 8).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
-            gui.setItem(24, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorUtil.translate("&cAnimation 2")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
+            gui.setItem(15, new ItemBuilder(ACMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
+            gui.setItem(24, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 2")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
         }
 
         for (int i = 0; i < 45; i++) {
@@ -97,20 +98,20 @@ public class Animations_GUI implements Listener {
 
         FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
 
-        if(config.getString("type.animation").equalsIgnoreCase("animation1")) {
-            gui.setItem(11, new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 10).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
-            gui.setItem(20, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorUtil.translate("&aAnimation 1")).toItemStack());
+        if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation1")) {
+            gui.setItem(11, new ItemBuilder(ACMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
+            gui.setItem(20, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 1")).toItemStack());
         } else {
-            gui.setItem(11, new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 8).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
-            gui.setItem(20, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorUtil.translate("&cAnimation 1")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
+            gui.setItem(11, new ItemBuilder(ACMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
+            gui.setItem(20, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 1")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
         }
 
-        if(config.getString("type.animation").equalsIgnoreCase("animation2")) {
-            gui.setItem(15, new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 10).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
-            gui.setItem(24, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorUtil.translate("&aAnimation 2")).toItemStack());
+        if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation2")) {
+            gui.setItem(15, new ItemBuilder(ACMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
+            gui.setItem(24, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 2")).toItemStack());
         } else {
-            gui.setItem(15, new ItemBuilder(Material.INK_SACK, 1).setDurability((short) 8).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
-            gui.setItem(24, new ItemBuilder(Material.ARMOR_STAND, 1).setName(ColorUtil.translate("&cAnimation 2")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
+            gui.setItem(15, new ItemBuilder(ACMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
+            gui.setItem(24, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 2")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
         }
 
         for(HumanEntity pl : gui.getViewers()) {
@@ -126,7 +127,6 @@ public class Animations_GUI implements Listener {
         Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> opened.put(p.getUniqueId(), id), 1L);
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler
     public void onInventoryClickEvent(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
@@ -157,14 +157,14 @@ public class Animations_GUI implements Listener {
         FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
         switch (slot) {
             case 20:
-                if(!config.getString("type.animation").equalsIgnoreCase("animation1")) {
+                if(!Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation1")) {
                     config.set("type.animation", "animation1");
                     cubeletType.setAnimation("animation1");
                     Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
                 }
                 break;
             case 24:
-                if(!config.getString("type.animation").equalsIgnoreCase("animation2")) {
+                if(!Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation2")) {
                     config.set("type.animation", "animation2");
                     cubeletType.setAnimation("animation2");
                     Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);

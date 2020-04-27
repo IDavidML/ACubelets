@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.commands.commands;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.utils.ACMaterial;
 import me.davidml16.acubelets.utils.ColorUtil;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -33,7 +34,7 @@ public class ExecuteBox {
         if (args[1].equalsIgnoreCase("add")) {
             Block block = ((Player)sender).getTargetBlock(null, 10);
 
-            if(block.getType() == Material.ENDER_PORTAL_FRAME) {
+            if(block.getType() == ACMaterial.END_PORTAL_FRAME.parseMaterial()) {
                 if (!main.getCubeletBoxHandler().getBoxes().containsKey(block.getLocation())) {
                     main.getCubeletBoxHandler().createBox(block.getLocation());
                     sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
@@ -57,7 +58,7 @@ public class ExecuteBox {
         if (args[1].equalsIgnoreCase("remove")) {
             Block block = ((Player) sender).getTargetBlock(null, 10);
 
-            if(block.getType() == Material.ENDER_PORTAL_FRAME) {
+            if(block.getType() == ACMaterial.END_PORTAL_FRAME.parseMaterial()) {
                 if (main.getCubeletBoxHandler().getBoxes().containsKey(block.getLocation())) {
                     main.getCubeletBoxHandler().removeBox(block.getLocation());
                     sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()

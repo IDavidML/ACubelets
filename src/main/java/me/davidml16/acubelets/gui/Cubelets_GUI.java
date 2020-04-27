@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
@@ -39,12 +40,12 @@ public class Cubelets_GUI implements Listener {
     public void loadGUI() {
         Inventory gui = Bukkit.createInventory(null, 36, main.getLanguageHandler().getMessage("CubeletGUI.Title"));
 
-        ItemStack back = new ItemBuilder(Material.BOOK, 1)
+        ItemStack back = new ItemBuilder(ACMaterial.BOOK.parseItem())
                 .setName(main.getLanguageHandler().getMessage("CubeletGUI.Items.Close.Name"))
                 .setLore(main.getLanguageHandler().getMessageList("CubeletGUI.Items.Close.Lore"))
                 .toItemStack();
 
-        gui.setItem(13, new ItemBuilder(Material.BARRIER, 1).setDurability((short) 14).setName(ColorUtil.translate("&4Loading...")).toItemStack());
+        gui.setItem(13, new ItemBuilder(ACMaterial.BARRIER.parseItem()).setName(ColorUtil.translate("&4Loading...")).toItemStack());
 
         gui.setItem(31, back);
 
@@ -74,7 +75,7 @@ public class Cubelets_GUI implements Listener {
             gui.setItem(i, null);
 
         if (page > 0) {
-            gui.setItem(27, new ItemBuilder(Material.ARROW, 1)
+            gui.setItem(27, new ItemBuilder(ACMaterial.ARROW.parseItem())
                     .setName(main.getLanguageHandler().getMessage("CubeletGUI.Items.PreviousPage.Name")
                         .replaceAll("%previous%", String.valueOf(page))
                         .replaceAll("%max%", String.valueOf((neededInventories + 1)))
@@ -82,7 +83,7 @@ public class Cubelets_GUI implements Listener {
         }
 
         if (cubelets.size() > (page + 1) * 27) {
-            gui.setItem(35, new ItemBuilder(Material.ARROW, 1)
+            gui.setItem(35, new ItemBuilder(ACMaterial.ARROW.parseItem())
                     .setName(main.getLanguageHandler().getMessage("CubeletGUI.Items.NextPage.Name")
                             .replaceAll("%next%", String.valueOf((page + 2)))
                             .replaceAll("%max%", String.valueOf((neededInventories + 1)))
@@ -107,7 +108,7 @@ public class Cubelets_GUI implements Listener {
                 gui.addItem(item);
             }
         } else {
-            gui.setItem(13, new ItemBuilder(Material.BARRIER, 1)
+            gui.setItem(13, new ItemBuilder(ACMaterial.BARRIER.parseItem())
                     .setName(main.getLanguageHandler().getMessage("CubeletGUI.Items.NoCubelets.Name"))
                     .setLore(main.getLanguageHandler().getMessageList("CubeletGUI.Items.NoCubelets.Lore")
             ).toItemStack());
@@ -140,33 +141,35 @@ public class Cubelets_GUI implements Listener {
         if (opened.containsKey(p.getUniqueId())) {
             e.setCancelled(true);
             int slot = e.getRawSlot();
-            if (slot == 27 && e.getCurrentItem().getType() == Material.ARROW) {
-                Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
-                openPage(p, opened.get(p.getUniqueId()) - 1);
-            } else if (slot == 35 && e.getCurrentItem().getType() == Material.ARROW) {
-                Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
-                openPage(p, opened.get(p.getUniqueId()) + 1);
-            } else if (slot == 31) {
-                p.closeInventory();
-            } else if (slot >= 0 && slot <= 26) {
-                if(main.getPlayerDataHandler().getData(p.getUniqueId()).getCubelets().size() > 0) {
-                    String cubeletUUID = NBTEditor.getString(e.getCurrentItem(), "cubeletUUID");
-                    String typeID = NBTEditor.getString(e.getCurrentItem(), "typeID");
-
-                    Profile profile = main.getPlayerDataHandler().getData(p);
-
-                    main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), main.getCubeletTypesHandler().getTypeBydId(typeID));
-
-                    try {
-                        main.getDatabaseHandler().removeCubelet(p.getUniqueId(), UUID.fromString(cubeletUUID));
-                        profile.getCubelets().removeIf(cubelet -> {
-                            return cubelet.getUuid().toString().equals(cubeletUUID);
-                        });
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-
+            if(e.getClick() != ClickType.DOUBLE_CLICK) {
+                if (slot == 27 && e.getCurrentItem().getType() == ACMaterial.ARROW.parseMaterial()) {
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
+                    openPage(p, opened.get(p.getUniqueId()) - 1);
+                } else if (slot == 35 && e.getCurrentItem().getType() == ACMaterial.ARROW.parseMaterial()) {
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
+                    openPage(p, opened.get(p.getUniqueId()) + 1);
+                } else if (slot == 31) {
                     p.closeInventory();
+                } else if (slot >= 0 && slot <= 26) {
+                    if (main.getPlayerDataHandler().getData(p.getUniqueId()).getCubelets().size() > 0) {
+                        String cubeletUUID = NBTEditor.getString(e.getCurrentItem(), "cubeletUUID");
+                        String typeID = NBTEditor.getString(e.getCurrentItem(), "typeID");
+
+                        Profile profile = main.getPlayerDataHandler().getData(p);
+
+                        main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), main.getCubeletTypesHandler().getTypeBydId(typeID));
+
+                        try {
+                            main.getDatabaseHandler().removeCubelet(p.getUniqueId(), UUID.fromString(cubeletUUID));
+                            profile.getCubelets().removeIf(cubelet -> {
+                                return cubelet.getUuid().toString().equals(cubeletUUID);
+                            });
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+
+                        p.closeInventory();
+                    }
                 }
             }
         }

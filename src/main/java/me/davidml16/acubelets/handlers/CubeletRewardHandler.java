@@ -5,6 +5,7 @@ import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Rarity;
 import me.davidml16.acubelets.objects.Reward;
 import me.davidml16.acubelets.objects.CustomIcon;
+import me.davidml16.acubelets.utils.ACMaterial;
 import me.davidml16.acubelets.utils.CenterString;
 import me.davidml16.acubelets.utils.ColorUtil;
 import org.bukkit.Bukkit;
@@ -60,9 +61,9 @@ public class CubeletRewardHandler {
 								} else {
 									String[] parts = material.split(":");
 									if (parts.length == 1) {
-										customIcon = new CustomIcon(Material.matchMaterial(parts[0]), (byte) 0);
+										customIcon = new CustomIcon(Objects.requireNonNull(ACMaterial.matchACMaterial(parts[0])).parseMaterial(), (byte) 0);
 									} else if (parts.length == 2) {
-										customIcon = new CustomIcon(Material.matchMaterial(parts[0]), Byte.parseByte(parts[1]));
+										customIcon = new CustomIcon(Objects.requireNonNull(ACMaterial.matchACMaterial(parts[0])).parseMaterial(), Byte.parseByte(parts[1]));
 									}
 								}
 
