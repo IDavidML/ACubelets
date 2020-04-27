@@ -35,6 +35,8 @@ public class PluginHandler {
         }
         main.getAnimationHandler().getArmorStands().clear();
 
+        main.reloadConfig();
+
         main.getLanguageHandler().setLanguage(main.getConfig().getString("Language").toLowerCase());
         main.getHologramTask().stop();
         main.getHologramHandler().removeHolograms();
