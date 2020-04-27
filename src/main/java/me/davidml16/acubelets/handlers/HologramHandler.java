@@ -52,10 +52,14 @@ public class HologramHandler {
     }
 
     public void reloadHolograms() {
+        this.red = !this.red;
         for(Player p : Bukkit.getOnlinePlayers()) {
             reloadHolograms(p);
         }
-        this.red = !this.red;
+    }
+
+    public String getColor() {
+        return red ? "&c" : "&f";
     }
 
     public void loadHolograms(Player p) {
@@ -71,11 +75,16 @@ public class HologramHandler {
                     hologram.appendTextLine(line);
                 }
             } else if(box.getState() == CubeletBoxState.REWARD) {
-                hologram.teleport(box.getLocation().clone().add(0.5, (4 * 0.33) + 1, 0.5));
-                for (String line : getLinesReward(p, box.getPlayerOpening(), box.getLastReward())) {
-                    hologram.appendTextLine(line);
+                List<String> lines = getLinesReward(p, box.getPlayerOpening(), box.getLastReward());
+
+                hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * 0.33) + 1, 0.5));
+
+                for (String line : lines) {
+                    if(!line.contains("%reward_icon%"))
+                        hologram.appendTextLine(line);
+                    else
+                        hologram.appendItemLine(box.getLastReward().getIcon().getItem());
                 }
-                hologram.appendItemLine(box.getLastReward().getIcon().getItem());
             }
 
             box.getHolograms().put(p.getUniqueId(), hologram);
@@ -90,15 +99,22 @@ public class HologramHandler {
         visibilityManager.setVisibleByDefault(false);
 
         if(box.getState() == CubeletBoxState.EMPTY) {
+
             for (String line : getLines(p)) {
                 hologram.appendTextLine(line);
             }
+
         } else if(box.getState() == CubeletBoxState.REWARD) {
-            hologram.teleport(box.getLocation().clone().add(0.5, (4 * 0.33) + 1, 0.5));
-            for (String line : getLinesReward(p, box.getPlayerOpening(), box.getLastReward())) {
-                hologram.appendTextLine(line);
+            List<String> lines = getLinesReward(p, box.getPlayerOpening(), box.getLastReward());
+
+            hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * 0.33) + 1, 0.5));
+
+            for (String line : lines) {
+                if(!line.contains("%reward_icon%"))
+                    hologram.appendTextLine(line);
+                else
+                    hologram.appendItemLine(box.getLastReward().getIcon().getItem());
             }
-            hologram.appendItemLine(box.getLastReward().getIcon().getItem());
         }
 
         box.getHolograms().put(p.getUniqueId(), hologram);
@@ -116,9 +132,12 @@ public class HologramHandler {
                 if (box.getHolograms().containsKey(p.getUniqueId())) {
                     Hologram hologram = box.getHolograms().get(p.getUniqueId());
 
-                    hologram.teleport(box.getLocation().clone().add(0.5, (3 * 0.33) + 1, 0.5));
+                    List<String> lines = getLines(p);
+                    int max = Math.max(main.getLanguageHandler().getMessageList("Holograms.CubeletAvailable").size(), main.getLanguageHandler().getMessageList("Holograms.NoCubeletAvailable").size());
 
-                    for (String line : getLines(p)) {
+                    hologram.teleport(box.getLocation().clone().add(0.5, (max * 0.33) + 1, 0.5));
+
+                    for (String line : lines) {
                         hologram.appendTextLine(line);
                     }
                 }
@@ -127,13 +146,18 @@ public class HologramHandler {
             for(Player p : Bukkit.getOnlinePlayers()) {
                 if (box.getHolograms().containsKey(p.getUniqueId())) {
                     Hologram hologram = box.getHolograms().get(p.getUniqueId());
-                    hologram.teleport(box.getLocation().clone().add(0.5, (4 * 0.33) + 1, 0.5));
 
                     List<String> lines = getLinesReward(p, box.getPlayerOpening(), box.getLastReward());
+
+                    hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * 0.33) + 1, 0.5));
+
                     for (int i = 0; i < lines.size(); i++) {
-                        ((TextLine) hologram.getLine(i)).setText(lines.get(i));
+                        if(!lines.get(i).contains("%reward_icon%"))
+                            ((TextLine) hologram.getLine(i)).setText(lines.get(i));
+                        else
+                            ((ItemLine) hologram.getLine(i)).setItemStack(box.getLastReward().getIcon().getItem());
                     }
-                    ((ItemLine) hologram.getLine(3)).setItemStack(box.getLastReward().getIcon().getItem());
+
                 }
             }
         }
@@ -145,12 +169,17 @@ public class HologramHandler {
                 Hologram hologram = box.getHolograms().get(p.getUniqueId());
                 hologram.clearLines();
 
-                hologram.teleport(box.getLocation().clone().add(0.5, (4 * 0.33) + 1, 0.5));
+                List<String> lines = getLinesReward(p, box.getPlayerOpening(), reward);
 
-                for (String line : getLinesReward(p, box.getPlayerOpening(), reward)) {
-                    hologram.appendTextLine(line);
+                hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * 0.33) + 1, 0.5));
+
+                for (String line : lines) {
+                    if(!line.contains("%reward_icon%"))
+                        hologram.appendTextLine(line);
+                    else
+                        hologram.appendItemLine(reward.getIcon().getItem());
                 }
-                hologram.appendItemLine(reward.getIcon().getItem());
+
             }
         }
     }
@@ -161,12 +190,17 @@ public class HologramHandler {
                 List<String> lines = getLines(p);
                 Hologram hologram = box.getHolograms().get(p.getUniqueId());
 
-                hologram.teleport(box.getLocation().clone().add(0.5, (3 * 0.33) + 1, 0.5));
+                int max = Math.max(main.getLanguageHandler().getMessageList("Holograms.CubeletAvailable").size(), main.getLanguageHandler().getMessageList("Holograms.NoCubeletAvailable").size());
+
+                hologram.teleport(box.getLocation().clone().add(0.5, (max * 0.33) + 1, 0.5));
 
                 if(hologram.size() > lines.size()) {
-                    hologram.getLine(2).removeLine();
+                    for(int i = lines.size(); i < hologram.size(); i++)
+                        hologram.getLine(i).removeLine();
+
                 } else if(hologram.size() < lines.size()) {
-                    hologram.appendTextLine(lines.get(2));
+                    for(int i = hologram.size(); i < lines.size(); i++)
+                        hologram.appendTextLine(lines.get(i));
                 }
 
                 for (int i = 0; i < lines.size(); i++) {
@@ -176,13 +210,17 @@ public class HologramHandler {
         } else if(box.getState() == CubeletBoxState.REWARD) {
             if (box.getHolograms().containsKey(p.getUniqueId())) {
                 Hologram hologram = box.getHolograms().get(p.getUniqueId());
-                hologram.teleport(box.getLocation().clone().add(0.5, (4 * 0.33) + 1, 0.5));
 
                 List<String> lines = getLinesReward(p, box.getPlayerOpening(), box.getLastReward());
+
+                hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * 0.33) + 1, 0.5));
+
                 for (int i = 0; i < lines.size(); i++) {
-                    ((TextLine) hologram.getLine(i)).setText(lines.get(i));
+                    if(!lines.get(i).contains("%reward_icon%"))
+                        ((TextLine) hologram.getLine(i)).setText(lines.get(i));
+                    else
+                        ((ItemLine) hologram.getLine(i)).setItemStack(box.getLastReward().getIcon().getItem());
                 }
-                ((ItemLine) hologram.getLine(3)).setItemStack(box.getLastReward().getIcon().getItem());
             }
         }
     }
@@ -207,12 +245,19 @@ public class HologramHandler {
         List<String> lines = new ArrayList<String>();
         int available = main.getPlayerDataHandler().getData(p).getCubelets().size();
         if(available > 0) {
-            lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.CubeletAvailable.Line1").replaceAll("%cubelets_available%", String.valueOf(available))));
-            lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.CubeletAvailable.Line2").replaceAll("%cubelets_available%", String.valueOf(available))));
-            lines.add(ColorUtil.translate(this.red ? "&c" : "&f") + main.getLanguageHandler().getMessage("Holograms.CubeletAvailable.Line3").replaceAll("%cubelets_available%", String.valueOf(available)));
+            for(String line : main.getLanguageHandler().getMessageList("Holograms.CubeletAvailable")) {
+                lines.add(ColorUtil.translate(line
+                        .replaceAll("%blink%", getColor())
+                        .replaceAll("%cubelets_available%", String.valueOf(available))
+                ));
+            }
         } else {
-            lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.CubeletAvailable.Line1")));
-            lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.CubeletAvailable.Line2")));
+            for(String line : main.getLanguageHandler().getMessageList("Holograms.NoCubeletAvailable")) {
+                lines.add(ColorUtil.translate(line
+                        .replaceAll("%blink%", getColor())
+                        .replaceAll("%cubelets_available%", String.valueOf(available))
+                ));
+            }
         };
         return lines;
     }
@@ -221,16 +266,23 @@ public class HologramHandler {
         List<String> lines = new ArrayList<String>();
 
         if (p.getUniqueId().toString().equalsIgnoreCase(opening.getUniqueId().toString())) {
-            lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.Reward.Line1.You")));
+            for(String line : main.getLanguageHandler().getMessageList("Holograms.Reward.You")) {
+                lines.add(ColorUtil.translate(line
+                        .replaceAll("%player%", opening.getName())
+                        .replaceAll("%reward_name%", reward.getName())
+                        .replaceAll("%reward_rarity%", reward.getRarity().getName())
+                ));
+            }
         }else {
-            lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.Reward.Line1.Other").replaceAll("%player%", opening.getName())));
+            for(String line : main.getLanguageHandler().getMessageList("Holograms.Reward.Other")) {
+                lines.add(ColorUtil.translate(line
+                        .replaceAll("%player%", opening.getName())
+                        .replaceAll("%reward_name%", reward.getName())
+                        .replaceAll("%reward_rarity%", reward.getRarity().getName())
+                ));
+            }
         }
-        lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.Reward.Line2")
-                .replaceAll("%reward_name%", reward.getName())
-                .replaceAll("%reward_rarity%", reward.getRarity().getName())));
-        lines.add(ColorUtil.translate(main.getLanguageHandler().getMessage("Holograms.Reward.Line3")
-                .replaceAll("%reward_name%", reward.getName())
-                .replaceAll("%reward_rarity%", reward.getRarity().getName())));
+
         return lines;
     }
 

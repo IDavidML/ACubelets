@@ -32,23 +32,28 @@ Cubelet:
     Me: '&cTu ya estas abriendo un Cubelet en esta maquina!'
     Other: '&6%player% &cesta abriendo un Cubelet en esta maquina!'
   Reward:
-    Line1: ''
-    Line2: '%cubelet_type% Loot'
-    Line3: '&5Has encontrado: &a%reward_name%'
-    Line4: '&5Rareza: %reward_rarity%'
-    Line5: ''
+    - ''
+    - '%cubelet_type% Loot'
+    - '&5Has encontrado: &a%reward_name%'
+    - '&5Rareza: %reward_rarity%'
+    - ''
 
 Holograms:
   CubeletAvailable:
-    Line1: '&e&lCubelet Machine'
-    Line2: '&dClick para abrir'
-    Line3: '%cubelets_available% Cubelets'
+    - '&e&lMaquina de Cubelets'
+    - '&dClick para abrir'
+    - '%blink%%cubelets_available% Cubelets'
   NoCubeletAvailable:
-    Line1: '&e&lCubelet Machine'
-    Line2: '&dClick para abrir'
+    - '&e&lMaquina de Cubelets'
+    - '&dClick para abrir'
   Reward:
-    Line1:
-      You: '&aHas encontrado'
-      Other: '&a%player% ha encontrado'
-    Line2: '&e&l%reward_name%'
-    Line3: '&5Rareza: %reward_rarity%'
+    You:
+      - '&aHas encontrado'
+      - '&e&l%reward_name%'
+      - '&5Rareza: %reward_rarity%'
+      - '%reward_icon%'
+    Other:
+      - '&a%player% ha encontrado'
+      - '&e&l%reward_name%'
+      - '&5Rareza: %reward_rarity%'
+      - '%reward_icon%'

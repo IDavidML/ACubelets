@@ -130,13 +130,7 @@ public class CubeletRewardHandler {
 	}
 
 	public void sendLootMessage(Player p, CubeletType cubeletType, Reward reward) {
-		List<String> lines = new ArrayList<>();
-		lines.add(main.getLanguageHandler().getMessage("Cubelet.Reward.Line1"));
-		lines.add(main.getLanguageHandler().getMessage("Cubelet.Reward.Line2"));
-		lines.add(main.getLanguageHandler().getMessage("Cubelet.Reward.Line3"));
-		lines.add(main.getLanguageHandler().getMessage("Cubelet.Reward.Line4"));
-		lines.add(main.getLanguageHandler().getMessage("Cubelet.Reward.Line5"));
-		for(String line : lines) {
+		for(String line : main.getLanguageHandler().getMessageList("Cubelet.Reward")) {
 			p.sendMessage(CenterString.centeredMessage(ColorUtil.translate(line
 					.replaceAll("%cubelet_type%", cubeletType.getName())
 					.replaceAll("%reward_name%", reward.getName())
