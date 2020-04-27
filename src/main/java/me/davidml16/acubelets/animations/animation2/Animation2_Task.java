@@ -33,7 +33,9 @@ public class Animation2_Task implements Animation {
 
 	private ColorUtil.ColorSet<Integer, Integer, Integer> colorRarity;
 
-	Location loc1, loc2, loc3, loc4;
+	Location corner1, corner2, corner3, corner4;
+
+	Location boxLocation;
 
 	class Task implements Runnable {
 		int time = 0;
@@ -64,10 +66,12 @@ public class Animation2_Task implements Animation {
 				armorStand.remove();
 				armorStand = null;
 			} else if (time > 100 && time < 200) {
-				UtilParticles.drawParticleLine(loc1, loc2, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
-				UtilParticles.drawParticleLine(loc2, loc3, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
-				UtilParticles.drawParticleLine(loc3, loc4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
-				UtilParticles.drawParticleLine(loc1, loc4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+				UtilParticles.drawParticleLine(corner1, corner2, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+				UtilParticles.drawParticleLine(corner2, corner3, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+				UtilParticles.drawParticleLine(corner3, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+				UtilParticles.drawParticleLine(corner1, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+
+				UtilParticles.display(Particles.FLAME, 0.85f, 0f, 0.85f, boxLocation, 2);
 			} else if(time >= 200) {
 				stop();
 				for (Hologram hologram : cubeletBox.getHolograms().values()) {
@@ -110,10 +114,12 @@ public class Animation2_Task implements Animation {
 		this.cubeletBox.setState(CubeletBoxState.ANIMATION);
 		this.colors = main.getFireworkUtil().getRandomColors();
 
-		loc1 = cubeletBox.getLocation().clone().add(0.05, 0.55, 0.05);
-		loc2 = cubeletBox.getLocation().clone().add(0.95, 0.55, 0.05);
-		loc3 = cubeletBox.getLocation().clone().add(0.95, 0.55, 0.95);
-		loc4 = cubeletBox.getLocation().clone().add(0.05, 0.55, 0.95);
+		corner1 = cubeletBox.getLocation().clone().add(0.05, 0.55, 0.05);
+		corner2 = cubeletBox.getLocation().clone().add(0.95, 0.55, 0.05);
+		corner3 = cubeletBox.getLocation().clone().add(0.95, 0.55, 0.95);
+		corner4 = cubeletBox.getLocation().clone().add(0.05, 0.55, 0.95);
+
+		boxLocation = cubeletBox.getLocation().clone().add(0.5, 0, 0.5);
 
 		id = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, new Task(), 0L, 1);
 

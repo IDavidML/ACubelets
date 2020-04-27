@@ -8,6 +8,8 @@ import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Reward;
 import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Particles;
+import me.davidml16.acubelets.utils.UtilParticles;
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -30,6 +32,8 @@ public class Animation1_Task implements Animation {
 	private Location startLocation;
 	private List<Color> colors;
 
+	Location boxLocation;
+
 	class Task implements Runnable {
 		int time = 0;
 		@Override
@@ -45,7 +49,8 @@ public class Animation1_Task implements Animation {
 				main.getHologramHandler().rewardHologram(cubeletBox, reward);
 				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 2, 0.5), FireworkEffect.Type.BALL_LARGE, colors.get(0), colors.get(1));
 				cubeletBox.setState(CubeletBoxState.REWARD);
-
+			} else if(time > 70 && time < 170) {
+				UtilParticles.display(Particles.FLAME, 0.45f, 0.25f, 0.45f, boxLocation, 10);
 			} else if(time >= 170) {
 				stop();
 				for (Hologram hologram : cubeletBox.getHolograms().values()) {
@@ -72,6 +77,9 @@ public class Animation1_Task implements Animation {
 		this.cubeletBox.setState(CubeletBoxState.ANIMATION);
 		this.startLocation = box.getLocation().clone().add(0.5, 26, 0.5);
 		this.colors = main.getFireworkUtil().getRandomColors();
+
+		boxLocation = cubeletBox.getLocation().clone().add(0.5, 0, 0.5);
+
 		id = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, new Task(), 0L, 1);
 		main.getAnimationHandler().getTasks().add(this);
 	}
