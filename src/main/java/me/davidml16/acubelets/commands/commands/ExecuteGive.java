@@ -49,10 +49,14 @@ public class ExecuteGive {
 
         if(args.length == 3) {
             CubeletsAPI.giveCubelet(target, id, 1);
+            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
+                    " &aGived &e1x " + main.getCubeletTypesHandler().getTypeBydId(id).getName() + " &ato &e" + target.getName()));
         } else if(args.length == 4) {
             int amount = Integer.parseInt(args[3]);
             if(amount > 0) {
                 CubeletsAPI.giveCubelet(target, id, amount);
+                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
+                        " &aGived &e" + amount + "x " + main.getCubeletTypesHandler().getTypeBydId(id).getName() + " &ato &e" + target.getName()));
                 return true;
             } else {
                 sender.sendMessage(ColorUtil.translate(

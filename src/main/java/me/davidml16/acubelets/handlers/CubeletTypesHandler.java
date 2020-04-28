@@ -1,10 +1,13 @@
 package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.api.CubeletOpenEvent;
+import me.davidml16.acubelets.api.CubeletReceivedEvent;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.SkullCreator;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -200,6 +203,8 @@ public class CubeletTypesHandler {
                         throwables.printStackTrace();
                     }
                 }
+
+                Bukkit.getPluginManager().callEvent(new CubeletReceivedEvent(player, getTypeBydId(type), amount));
             }
         }
     }
