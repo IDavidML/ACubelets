@@ -3,6 +3,7 @@ package me.davidml16.acubelets.animations.animation1;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
+import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.objects.CubeletType;
@@ -87,6 +88,8 @@ public class Animation1_Task implements Animation {
 	public void stop() {
 		main.getAnimationHandler().getTasks().remove(this);
 		Bukkit.getServer().getScheduler().cancelTask(id);
+
+		Bukkit.getPluginManager().callEvent(new CubeletOpenEvent(cubeletBox.getPlayerOpening(), cubeletType));
 	}
 	
 }

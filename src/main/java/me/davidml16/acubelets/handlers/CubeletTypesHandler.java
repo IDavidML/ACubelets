@@ -1,14 +1,17 @@
 package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.SkullCreator;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 public class CubeletTypesHandler {
@@ -183,6 +186,22 @@ public class CubeletTypesHandler {
 
     public boolean typeExist(String id) {
         return typesFiles.containsKey(id);
+    }
+
+    public void giveCubelet(Player player, String type, int amount) {
+        if (main.getCubeletTypesHandler().getTypes().containsKey(type)) {
+            if(amount > 0) {
+                for (int i = 1; i <= amount; i++) {
+                    try {
+                        Cubelet cubelet = new Cubelet(type);
+                        main.getDatabaseHandler().addCubelet(player.getUniqueId(), cubelet.getUuid(), cubelet.getType(), cubelet.getDate());
+                        main.getPlayerDataHandler().getData(player).getCubelets().add(cubelet);
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 
 }

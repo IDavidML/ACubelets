@@ -3,9 +3,11 @@ package me.davidml16.acubelets.handlers;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
+import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.objects.CubeletType;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class CubeletOpenHandler {
@@ -25,6 +27,8 @@ public class CubeletOpenHandler {
 
             Animation animation = main.getAnimationHandler().getAnimation(type.getAnimation());
             animation.start(box, type);
+            Bukkit.getPluginManager().callEvent(new CubeletOpenEvent(p, type));
+
         } else {
             if(box.getPlayerOpening().getUniqueId() == p.getUniqueId()) {
                 p.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));

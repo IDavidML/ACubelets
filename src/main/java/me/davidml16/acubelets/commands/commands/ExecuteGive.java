@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.commands.commands;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.api.CubeletsAPI;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.utils.ColorUtil;
 import org.bukkit.Bukkit;
@@ -47,25 +48,11 @@ public class ExecuteGive {
         }
 
         if(args.length == 3) {
-            try {
-                Cubelet cubelet = new Cubelet(id);
-                main.getDatabaseHandler().addCubelet(target.getUniqueId(), cubelet.getUuid(), cubelet.getType(), cubelet.getDate());
-                main.getPlayerDataHandler().getData(target).getCubelets().add(cubelet);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            CubeletsAPI.giveCubelet(target, id, 1);
         } else if(args.length == 4) {
             int amount = Integer.parseInt(args[3]);
             if(amount > 0) {
-                for (int i = 1; i <= amount; i++) {
-                    try {
-                        Cubelet cubelet = new Cubelet(id);
-                        main.getDatabaseHandler().addCubelet(target.getUniqueId(), cubelet.getUuid(), cubelet.getType(), cubelet.getDate());
-                        main.getPlayerDataHandler().getData(target).getCubelets().add(cubelet);
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                }
+                CubeletsAPI.giveCubelet(target, id, amount);
                 return true;
             } else {
                 sender.sendMessage(ColorUtil.translate(

@@ -3,6 +3,7 @@ package me.davidml16.acubelets.animations.animation2;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
+import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.CubeletType;
@@ -138,6 +139,8 @@ public class Animation2_Task implements Animation {
 			if(armorStand != null) armorStand.remove();
 			main.getAnimationHandler().getArmorStands().remove(armorStand);
 		}
+
+		Bukkit.getPluginManager().callEvent(new CubeletOpenEvent(cubeletBox.getPlayerOpening(), cubeletType));
 	}
 	
 }

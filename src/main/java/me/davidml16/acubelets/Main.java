@@ -3,6 +3,7 @@ package me.davidml16.acubelets;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.davidml16.acubelets.animations.AnimationHandler;
+import me.davidml16.acubelets.api.CubeletsAPI;
 import me.davidml16.acubelets.commands.CoreCommand;
 import me.davidml16.acubelets.commands.TabCompleter_ACubelets;
 import me.davidml16.acubelets.database.DatabaseHandler;
@@ -55,7 +56,7 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         main = this;
         log = Bukkit.getConsoleSender();
-        metrics = new MetricsLite(this, 7190);
+        metrics = new MetricsLite(this, 7349);
 
         saveDefaultConfig();
         reloadConfig();
