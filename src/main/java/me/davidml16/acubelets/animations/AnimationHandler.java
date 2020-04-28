@@ -3,6 +3,7 @@ package me.davidml16.acubelets.animations;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.animation1.Animation1_Task;
 import me.davidml16.acubelets.animations.animation2.Animation2_Task;
+import me.davidml16.acubelets.animations.animation3.Animation3_Task;
 import org.bukkit.entity.ArmorStand;
 
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class AnimationHandler {
     public void loadAnimations() {
         this.animations.add("animation1");
         this.animations.add("animation2");
+        this.animations.add("animation3");
     }
 
     public Animation getAnimation(String animation) {
@@ -37,6 +39,8 @@ public class AnimationHandler {
             return new Animation1_Task(main);
         else if(animation.equalsIgnoreCase("animation2"))
             return new Animation2_Task(main);
+        else if(animation.equalsIgnoreCase("animation3"))
+            return new Animation3_Task(main);
 
         return null;
     }

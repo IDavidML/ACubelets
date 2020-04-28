@@ -69,11 +69,19 @@ public class Animations_GUI implements Listener {
         }
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation2")) {
+            gui.setItem(13, new ItemBuilder(ACMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
+            gui.setItem(22, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 2")).toItemStack());
+        } else {
+            gui.setItem(13, new ItemBuilder(ACMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
+            gui.setItem(22, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 2")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
+        }
+
+        if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation3")) {
             gui.setItem(15, new ItemBuilder(ACMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
-            gui.setItem(24, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 2")).toItemStack());
+            gui.setItem(24, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 3")).toItemStack());
         } else {
             gui.setItem(15, new ItemBuilder(ACMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
-            gui.setItem(24, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 2")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
+            gui.setItem(24, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 3")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
         }
 
         for (int i = 0; i < 45; i++) {
@@ -107,11 +115,19 @@ public class Animations_GUI implements Listener {
         }
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation2")) {
+            gui.setItem(13, new ItemBuilder(ACMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
+            gui.setItem(22, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 2")).toItemStack());
+        } else {
+            gui.setItem(13, new ItemBuilder(ACMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
+            gui.setItem(22, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 2")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
+        }
+
+        if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation3")) {
             gui.setItem(15, new ItemBuilder(ACMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
-            gui.setItem(24, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 2")).toItemStack());
+            gui.setItem(24, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 3")).toItemStack());
         } else {
             gui.setItem(15, new ItemBuilder(ACMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
-            gui.setItem(24, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 2")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
+            gui.setItem(24, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 3")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
         }
 
         for(HumanEntity pl : gui.getViewers()) {
@@ -136,7 +152,7 @@ public class Animations_GUI implements Listener {
         if (opened.containsKey(p.getUniqueId())) {
             e.setCancelled(true);
             int slot = e.getRawSlot();
-            if (slot == 20 || slot == 24) {
+            if (slot == 20 || slot == 22 || slot == 24) {
                 chanceAnimationConfig(p, slot);
             } else if (slot == 40) {
                 String id = opened.get(p.getUniqueId());
@@ -163,10 +179,17 @@ public class Animations_GUI implements Listener {
                     Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
                 }
                 break;
-            case 24:
+            case 22:
                 if(!Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation2")) {
                     config.set("type.animation", "animation2");
                     cubeletType.setAnimation("animation2");
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+                }
+                break;
+            case 24:
+                if(!Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation3")) {
+                    config.set("type.animation", "animation3");
+                    cubeletType.setAnimation("animation3");
                     Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
                 }
                 break;

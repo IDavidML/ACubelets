@@ -46,7 +46,7 @@ public class MySQL implements Database {
 
         try {
             HikariConfig config = new HikariConfig();
-            config.setPoolName("    AParkour Pool");
+            config.setPoolName("    ACubelets Pool");
             config.setJdbcUrl("jdbc:mysql://" + this.host + ":" + this.port + "/" + this.database);
             config.setUsername(this.user);
             config.setPassword(this.password);
