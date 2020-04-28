@@ -42,7 +42,7 @@ public class CoreCommand implements CommandExecutor {
         switch (args[0]) {
             case "help":
                 return sendCommandHelp(sender);
-            case "box":
+            case "machine":
                 return executeBox.executeCommand(sender, args);
             case "give":
                 return executeGive.executeCommand(sender, args);
@@ -65,7 +65,7 @@ public class CoreCommand implements CommandExecutor {
 
         sender.sendMessage("");
         sender.sendMessage(ColorUtil.translate("&7 - &a/cubelets give [player] [typeID] [amount]"));
-        sender.sendMessage(ColorUtil.translate("&7 - &a/cubelets box [add/remove]"));
+        sender.sendMessage(ColorUtil.translate("&7 - &a/cubelets machine [add/remove]"));
         sender.sendMessage("");
         sender.sendMessage(ColorUtil.translate("&7 - &a/cubelets type"));
         sender.sendMessage("");

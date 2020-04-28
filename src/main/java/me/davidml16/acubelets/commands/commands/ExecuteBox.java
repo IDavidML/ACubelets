@@ -27,30 +27,30 @@ public class ExecuteBox {
         }
 
         if (args.length == 1) {
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /cubelets box [add/remove]"));
+            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /cubelets machine [add/remove]"));
             return false;
         }
 
-        if (args[1].equalsIgnoreCase("add")) {
+        if (args[1].equalsIgnoreCase("create")) {
             Block block = ((Player)sender).getTargetBlock(null, 10);
 
             if(block.getType() == ACMaterial.END_PORTAL_FRAME.parseMaterial()) {
                 if (!main.getCubeletBoxHandler().getBoxes().containsKey(block.getLocation())) {
                     main.getCubeletBoxHandler().createBox(block.getLocation());
                     sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
-                            + " &aSuccesfully created new cubelet box on" +
+                            + " &aSuccesfully created new cubelet machine on" +
                             " &aX: &e" + block.getLocation().getBlockX() +
                             ", &aY: &e" + block.getLocation().getBlockY() +
                             ", &aZ: &e" + block.getLocation().getBlockZ()));
                     return true;
                 } else {
                     sender.sendMessage(ColorUtil.translate(
-                            main.getLanguageHandler().getPrefix() + " &cThis cubelet box location already exists!"));
+                            main.getLanguageHandler().getPrefix() + " &cThis cubelet machine location already exists!"));
                     return false;
                 }
             } else {
                 sender.sendMessage(ColorUtil.translate(
-                        main.getLanguageHandler().getPrefix() + " &cA cubelet box needs to be a ender portal frame!"));
+                        main.getLanguageHandler().getPrefix() + " &cA cubelet machine needs to be a ender portal frame!"));
                 return false;
             }
         }
@@ -62,19 +62,19 @@ public class ExecuteBox {
                 if (main.getCubeletBoxHandler().getBoxes().containsKey(block.getLocation())) {
                     main.getCubeletBoxHandler().removeBox(block.getLocation());
                     sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
-                            + " &aSuccesfully removed cubelet box of" +
+                            + " &aSuccesfully removed cubelet machine of" +
                             " &aX: &e" + block.getLocation().getBlockX() +
                             ", &aY: &e" + block.getLocation().getBlockY() +
                             ", &aZ: &e" + block.getLocation().getBlockZ()));
                     return true;
                 } else {
                     sender.sendMessage(ColorUtil.translate(
-                            main.getLanguageHandler().getPrefix() + " &cThis cubelet box location no exists!"));
+                            main.getLanguageHandler().getPrefix() + " &cThis cubelet machine location no exists!"));
                     return false;
                 }
             } else {
                 sender.sendMessage(ColorUtil.translate(
-                        main.getLanguageHandler().getPrefix() + " &cA cubelet box needs to be a ender portal frame!"));
+                        main.getLanguageHandler().getPrefix() + " &cA cubelet machine needs to be a ender portal frame!"));
                 return false;
             }
         }

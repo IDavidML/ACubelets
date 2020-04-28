@@ -33,7 +33,7 @@ public class TabCompleter_ACubelets implements TabCompleter {
 			if (main.playerHasPermission(p, "acubelets.admin")) {
 				list.add("help");
 				list.add("give");
-				list.add("box");
+				list.add("machine");
 				list.add("type");
 				list.add("setup");
 				list.add("reload");
@@ -60,10 +60,10 @@ public class TabCompleter_ACubelets implements TabCompleter {
 					}
 				}
 			}
-		} else if (args[0].equalsIgnoreCase("box")) {
+		} else if (args[0].equalsIgnoreCase("machine")) {
 			if(args.length == 2) {
 				if (main.playerHasPermission(p, "acubelets.admin")) {
-					list.add("add");
+					list.add("create");
 					list.add("remove");
 				}
 			}

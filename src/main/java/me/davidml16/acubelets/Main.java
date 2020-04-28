@@ -121,6 +121,10 @@ public class Main extends JavaPlugin {
         registerCommands();
         registerEvents();
 
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new PlaceholderHook(this).register();
+        }
+
         PluginDescriptionFile pdf = getDescription();
         log.sendMessage(ColorUtil.translate("  &eACubelets Enabled!"));
         log.sendMessage(ColorUtil.translate("    &aVersion: &b" + pdf.getVersion()));
