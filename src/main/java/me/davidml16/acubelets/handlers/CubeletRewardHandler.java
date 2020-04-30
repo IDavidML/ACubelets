@@ -130,13 +130,16 @@ public class CubeletRewardHandler {
 		throw new RuntimeException("Should never be shown.");
 	}
 
-	public void sendLootMessage(Player p, CubeletType cubeletType, Reward reward) {
-		for(String line : main.getLanguageHandler().getMessageList("Cubelet.Reward")) {
-			p.sendMessage(CenterString.centeredMessage(ColorUtil.translate(line
-					.replaceAll("%cubelet_type%", cubeletType.getName())
-					.replaceAll("%reward_name%", reward.getName())
-					.replaceAll("%reward_rarity%", reward.getRarity().getName())
-			)));
+	public void sendLootMessage(Player opening, CubeletType cubeletType, Reward reward) {
+		Player target = Bukkit.getPlayer(opening.getUniqueId());
+		if (target != null) {
+			for(String line : main.getLanguageHandler().getMessageList("Cubelet.Reward")) {
+				target.sendMessage(CenterString.centeredMessage(ColorUtil.translate(line
+						.replaceAll("%cubelet_type%", cubeletType.getName())
+						.replaceAll("%reward_name%", reward.getName())
+						.replaceAll("%reward_rarity%", reward.getRarity().getName())
+				)));
+			}
 		}
 	}
 
