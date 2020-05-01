@@ -161,7 +161,7 @@ public class HologramHandler {
                     hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * 0.33) + 1, 0.5));
 
                     for (int i = 0; i < lines.size(); i++) {
-                        if(!lines.get(i).contains("%reward_icon%"))
+                        if (!lines.get(i).contains("%reward_icon%"))
                             ((TextLine) hologram.getLine(i)).setText(lines.get(i));
                         else
                             ((ItemLine) hologram.getLine(i)).setItemStack(box.getLastReward().getIcon().getItem());
@@ -194,26 +194,28 @@ public class HologramHandler {
     }
 
     public void reloadHologram(Player p, CubeletBox box) {
-        if(box.getState() == CubeletBoxState.EMPTY) {
-            if(box.getHolograms().containsKey(p.getUniqueId())) {
+        if (box.getLocation().distance(p.getLocation()) > 75) return;
+
+        if (box.getState() == CubeletBoxState.EMPTY) {
+            if (box.getHolograms().containsKey(p.getUniqueId())) {
                 List<String> lines = getLines(p);
                 Hologram hologram = box.getHolograms().get(p.getUniqueId());
 
                 int max = Math.max(main.getLanguageHandler().getMessageList("Holograms.CubeletAvailable").size(), main.getLanguageHandler().getMessageList("Holograms.NoCubeletAvailable").size());
-                if(hologram.size() != lines.size())
+                if (hologram.size() != lines.size())
                     hologram.teleport(box.getLocation().clone().add(0.5, (max * 0.33) + 1, 0.5));
 
-                if(hologram.size() > lines.size()) {
-                    for(int i = lines.size(); i < hologram.size(); i++)
+                if (hologram.size() > lines.size()) {
+                    for (int i = lines.size(); i < hologram.size(); i++)
                         hologram.getLine(i).removeLine();
 
-                } else if(hologram.size() < lines.size()) {
-                    for(int i = hologram.size(); i < lines.size(); i++)
+                } else if (hologram.size() < lines.size()) {
+                    for (int i = hologram.size(); i < lines.size(); i++)
                         hologram.appendTextLine(lines.get(i));
                 }
 
                 for (int i = 0; i < lines.size(); i++) {
-                    if(!((TextLine) hologram.getLine(i)).getText().equalsIgnoreCase(lines.get(i)))
+                    if (!((TextLine) hologram.getLine(i)).getText().equalsIgnoreCase(lines.get(i)))
                         ((TextLine) hologram.getLine(i)).setText(lines.get(i));
                 }
             }
