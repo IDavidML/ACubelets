@@ -93,7 +93,7 @@ public class Animation3_Task implements Animation {
 			} else if(time == 130) {
 				Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.IRONGOLEM_DEATH, 0.5f, 0);
 			} else if(time > 130 && time < 150) {
-				Objects.requireNonNull(loc).add(0, -0.81, 0);
+				Objects.requireNonNull(loc).add(0, -0.82, 0);
 				armorStand.teleport(loc);
 				armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.26, 0));
 				UtilParticles.display(Particles.SMOKE_LARGE, 0.15F, 0.15F, 0.15F, loc, 5);

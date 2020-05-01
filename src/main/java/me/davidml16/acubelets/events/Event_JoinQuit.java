@@ -23,6 +23,8 @@ public class Event_JoinQuit implements Listener {
         Bukkit.getScheduler().runTaskLater(main, () -> {
             main.getHologramHandler().loadHolograms(p);
         }, 20L);
+
+        main.setPlayerCount(main.getPlayerCount() + 1);
     }
 
     @EventHandler
@@ -36,6 +38,8 @@ public class Event_JoinQuit implements Listener {
         main.getAnimationsGUI().getOpened().remove(p.getUniqueId());
         main.getPlayerDataHandler().getPlayersData().remove(p.getUniqueId());
         main.getHologramHandler().removeHolograms(p);
+
+        main.setPlayerCount(main.getPlayerCount() - 1);
     }
 
 }

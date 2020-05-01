@@ -52,6 +52,8 @@ public class Main extends JavaPlugin {
     private Rarities_GUI raritiesGUI;
     private Animations_GUI animationsGUI;
 
+    private int playerCount;
+
     @Override
     public void onEnable() {
         main = this;
@@ -126,12 +128,13 @@ public class Main extends JavaPlugin {
             new PlaceholderHook(this).register();
         }
 
+        playerCount = getServer().getOnlinePlayers().size();
+
         PluginDescriptionFile pdf = getDescription();
         log.sendMessage(ColorUtil.translate("  &eACubelets Enabled!"));
         log.sendMessage(ColorUtil.translate("    &aVersion: &b" + pdf.getVersion()));
         log.sendMessage(ColorUtil.translate("    &aAuthor: &b" + pdf.getAuthors().get(0)));
         log.sendMessage("");
-
     }
 
     @Override
@@ -200,6 +203,10 @@ public class Main extends JavaPlugin {
     public HologramTask getHologramTask() { return hologramTask; }
 
     public FireworkUtil getFireworkUtil() { return fireworkUtil; }
+
+    public int getPlayerCount() { return playerCount; }
+
+    public void setPlayerCount(int playerCount) { this.playerCount = playerCount; }
 
     public boolean playerHasPermission(Player p, String permission) {
         return p.hasPermission(permission) || p.isOp();
