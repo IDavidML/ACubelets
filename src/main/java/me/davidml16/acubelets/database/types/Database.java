@@ -25,8 +25,6 @@ public interface Database {
 
     Cubelet getCubelet(UUID uuid, UUID cubeletUUID) throws SQLException;
 
-    List<Cubelet> getCubeletByType(UUID uuid, String type) throws SQLException;
-
     CompletableFuture<List<Cubelet>> getCubelets(UUID uuid);
 
 }
