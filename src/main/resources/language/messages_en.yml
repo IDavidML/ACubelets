@@ -15,24 +15,25 @@ Commands:
   Reload: '%prefix% &aPlugin reloaded with no errors!'
   Balance: '&aYou actually have &6%cubelets_available% &aCubelets to open!'
 
-CubeletGUI:
-  Title: 'Cubelets'
-  Items:
-    Close:
-      Name: '&9Close'
-      Lore:
-        - '&7Click to close'
-        - '&7this menu'
-    NoCubelets:
-      Name: '&4You have no Cubelets'
-      Lore:
-        - '&7You can get Cubelets by playing games.'
-        - '&7You are also able to purchase them'
-        - '&7on our store.'
-    NextPage:
-      Name: '&aNext page (%next%/%max%)'
-    PreviousPage:
-      Name: '&aPrevious page (%previous%/%max%)'
+GUI:
+  Opening:
+    Title: 'Cubelets'
+    Items:
+      Close:
+        Name: '&9Close'
+        Lore:
+          - '&7Click to close'
+          - '&7this menu'
+      NoCubelets:
+        Name: '&4You have no Cubelets'
+        Lore:
+          - '&7You can get Cubelets by playing games.'
+          - '&7You are also able to purchase them'
+          - '&7on our store.'
+      NextPage:
+        Name: '&6Next page'
+      PreviousPage:
+        Name: '&6Previous page'
 
 Cubelet:
   BoxInUse:

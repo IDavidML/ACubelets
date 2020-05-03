@@ -22,9 +22,6 @@ import java.util.*;
 public class Cubelets_GUI implements Listener {
 
     private HashMap<UUID, Integer> opened;
-
-    private Inventory gui;
-
     private Main main;
 
     public Cubelets_GUI(Main main) {
@@ -37,21 +34,6 @@ public class Cubelets_GUI implements Listener {
         return opened;
     }
 
-    public void loadGUI() {
-        Inventory gui = Bukkit.createInventory(null, 36, main.getLanguageHandler().getMessage("CubeletGUI.Title"));
-
-        ItemStack back = new ItemBuilder(ACMaterial.BOOK.parseItem())
-                .setName(main.getLanguageHandler().getMessage("CubeletGUI.Items.Close.Name"))
-                .setLore(main.getLanguageHandler().getMessageList("CubeletGUI.Items.Close.Lore"))
-                .toItemStack();
-
-        gui.setItem(13, new ItemBuilder(ACMaterial.BARRIER.parseItem()).setName(ColorUtil.translate("&4Loading...")).toItemStack());
-
-        gui.setItem(31, back);
-
-        this.gui = gui;
-    }
-
     private void openPage(Player p, int page) {
 
         List<Cubelet> cubelets = main.getPlayerDataHandler().getData(p.getUniqueId()).getCubelets();
@@ -62,35 +44,32 @@ public class Cubelets_GUI implements Listener {
             return;
         }
 
-        int neededInventories = ((int) Math.ceil(cubelets.size() / 27));
+        if (cubelets.size() > 27) cubelets = cubelets.subList(page * 27, Math.min(((page * 27) + 27), cubelets.size()));
 
-        Inventory gui = Bukkit.createInventory(null, 36, main.getLanguageHandler().getMessage("CubeletGUI.Title"));
-        gui.setContents(this.gui.getContents());
+        int neededSize = getNeededSize(cubelets.size());
 
-        for (int i = 0; i <= 8; i++)
-            gui.setItem(i, null);
-        for (int i = 9; i <= 17; i++)
-            gui.setItem(i, null);
-        for (int i = 18; i <= 26; i++)
-            gui.setItem(i, null);
+        Inventory gui = Bukkit.createInventory(null, neededSize, main.getLanguageHandler().getMessage("GUI.Opening.Title"));
 
         if (page > 0) {
-            gui.setItem(27, new ItemBuilder(ACMaterial.ARROW.parseItem())
-                    .setName(main.getLanguageHandler().getMessage("CubeletGUI.Items.PreviousPage.Name")
-                        .replaceAll("%previous%", String.valueOf(page))
-                        .replaceAll("%max%", String.valueOf((neededInventories + 1)))
-                    ).toItemStack());
+            gui.setItem((neededSize - 9), new ItemBuilder(ACMaterial.SUGAR_CANE.parseItem())
+                    .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.PreviousPage.Name"))
+                    .toItemStack());
         }
 
-        if (cubelets.size() > (page + 1) * 27) {
-            gui.setItem(35, new ItemBuilder(ACMaterial.ARROW.parseItem())
-                    .setName(main.getLanguageHandler().getMessage("CubeletGUI.Items.NextPage.Name")
-                            .replaceAll("%next%", String.valueOf((page + 2)))
-                            .replaceAll("%max%", String.valueOf((neededInventories + 1)))
-                    ).toItemStack());
+        if (main.getPlayerDataHandler().getData(p.getUniqueId()).getCubelets().size() > (page + 1) * 27) {
+            gui.setItem((neededSize - 1), new ItemBuilder(ACMaterial.SUGAR_CANE.parseItem())
+                    .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.NextPage.Name"))
+                    .toItemStack());
         }
 
-        if (cubelets.size() > 27) cubelets = cubelets.subList(page * 27, ((page * 27) + 27) > cubelets.size() ? cubelets.size() : (page * 27) + 27);
+        ItemStack back = new ItemBuilder(ACMaterial.BOOK.parseItem())
+                .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Close.Name"))
+                .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Close.Lore"))
+                .toItemStack();
+        gui.setItem(neededSize - 5, back);
+
+        for (int i = 0; i <= (neededSize-10); i++)
+            gui.setItem(i, null);
 
         if(cubelets.size() > 0) {
             for (Cubelet cubelet : cubelets) {
@@ -98,7 +77,8 @@ public class Cubelets_GUI implements Listener {
 
                 List<String> lore = new ArrayList<>();
                 for(String line : type.getLore()) {
-                    lore.add(ColorUtil.translate(line.replaceAll("%received%", TimeUtils.millisToLongDHMS(System.currentTimeMillis() - cubelet.getDate()))));
+                    lore.add(ColorUtil.translate(line
+                            .replaceAll("%received%", TimeUtils.millisToLongDHMS(System.currentTimeMillis() - cubelet.getDate()))));
                 }
 
                 ItemStack item = new ItemBuilder(type.getIcon()).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack();
@@ -108,17 +88,13 @@ public class Cubelets_GUI implements Listener {
                 gui.addItem(item);
             }
         } else {
-            gui.setItem(13, new ItemBuilder(ACMaterial.BARRIER.parseItem())
-                    .setName(main.getLanguageHandler().getMessage("CubeletGUI.Items.NoCubelets.Name"))
-                    .setLore(main.getLanguageHandler().getMessageList("CubeletGUI.Items.NoCubelets.Lore")
+            gui.setItem(0, new ItemBuilder(ACMaterial.BARRIER.parseItem())
+                    .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.NoCubelets.Name"))
+                    .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.NoCubelets.Lore")
             ).toItemStack());
         }
 
-        if (!opened.containsKey(p.getUniqueId())) {
-            p.openInventory(gui);
-        } else {
-            p.getOpenInventory().getTopInventory().setContents(gui.getContents());
-        }
+        p.openInventory(gui);
 
         opened.put(p.getUniqueId(), page);
     }
@@ -130,9 +106,15 @@ public class Cubelets_GUI implements Listener {
         opened.put(p.getUniqueId(), 0);
     }
 
-    @SuppressWarnings("deprecation")
+    public int getNeededSize(int cubelets) {
+        if(cubelets <= 9) return 18;
+        else if(cubelets <= 18) return 27;
+        else if(cubelets <= 27) return 36;
+        return 36;
+    }
+
     @EventHandler
-    public void onInventoryClickEvent(InventoryClickEvent e) {
+    public void onInventoryClickEvent(InventoryClickEvent e) throws SQLException {
         Player p = (Player) e.getWhoClicked();
 
         if (e.getCurrentItem() == null) return;
@@ -142,15 +124,15 @@ public class Cubelets_GUI implements Listener {
             e.setCancelled(true);
             int slot = e.getRawSlot();
             if(e.getClick() != ClickType.DOUBLE_CLICK) {
-                if (slot == 27 && e.getCurrentItem().getType() == ACMaterial.ARROW.parseMaterial()) {
-                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
+                if (slot == (p.getOpenInventory().getTopInventory().getSize() - 9) && e.getCurrentItem().getType() == ACMaterial.SUGAR_CANE.parseMaterial()) {
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 50, 3);
                     openPage(p, opened.get(p.getUniqueId()) - 1);
-                } else if (slot == 35 && e.getCurrentItem().getType() == ACMaterial.ARROW.parseMaterial()) {
-                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
+                } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 1) && e.getCurrentItem().getType() == ACMaterial.SUGAR_CANE.parseMaterial()) {
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 50, 3);
                     openPage(p, opened.get(p.getUniqueId()) + 1);
-                } else if (slot == 31) {
+                } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 5)) {
                     p.closeInventory();
-                } else if (slot >= 0 && slot <= 26) {
+                } else if (slot >= 0 && slot <= (p.getOpenInventory().getTopInventory().getSize() - 10)) {
                     if (main.getPlayerDataHandler().getData(p.getUniqueId()).getCubelets().size() > 0) {
                         String cubeletUUID = NBTEditor.getString(e.getCurrentItem(), "cubeletUUID");
                         String typeID = NBTEditor.getString(e.getCurrentItem(), "typeID");
@@ -159,14 +141,10 @@ public class Cubelets_GUI implements Listener {
 
                         main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), main.getCubeletTypesHandler().getTypeBydId(typeID));
 
-                        try {
-                            main.getDatabaseHandler().removeCubelet(p.getUniqueId(), UUID.fromString(cubeletUUID));
-                            profile.getCubelets().removeIf(cubelet -> {
-                                return cubelet.getUuid().toString().equals(cubeletUUID);
-                            });
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
+                        main.getDatabaseHandler().removeCubelet(p.getUniqueId(), UUID.fromString(Objects.requireNonNull(cubeletUUID)));
+                        profile.getCubelets().removeIf(cubelet -> {
+                            return cubelet.getUuid().toString().equals(cubeletUUID);
+                        });
 
                         p.closeInventory();
                     }
@@ -178,10 +156,7 @@ public class Cubelets_GUI implements Listener {
     @EventHandler
     public void InventoryCloseEvent(InventoryCloseEvent e) {
         Player p = (Player) e.getPlayer();
-        if(opened.containsKey(p.getUniqueId())) {
-            opened.remove(p.getUniqueId());
-            main.getPlayerDataHandler().getData(p).setBoxOpened(null);
-        }
+        opened.remove(p.getUniqueId());
     }
 
 }

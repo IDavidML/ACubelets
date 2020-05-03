@@ -49,7 +49,6 @@ public class PluginHandler {
         main.getCubeletRewardHandler().loadRewards();
         main.getHologramHandler().loadHolograms();
         main.getHologramTask().start();
-        main.getCubeletsGUI().loadGUI();
     }
 
 }

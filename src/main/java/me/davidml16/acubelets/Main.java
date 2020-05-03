@@ -105,7 +105,6 @@ public class Main extends JavaPlugin {
         cubeletOpenHandler = new CubeletOpenHandler(this);
 
         cubeletsGUI = new Cubelets_GUI(this);
-        cubeletsGUI.loadGUI();
 
         typeConfigGUI = new TypeConfig_GUI(this);
         typeConfigGUI.loadGUI();
