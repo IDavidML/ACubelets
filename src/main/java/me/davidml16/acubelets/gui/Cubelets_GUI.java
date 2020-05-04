@@ -147,10 +147,8 @@ public class Cubelets_GUI implements Listener {
             int slot = e.getRawSlot();
             if(e.getClick() != ClickType.DOUBLE_CLICK) {
                 if (slot == (p.getOpenInventory().getTopInventory().getSize() - 9) && e.getCurrentItem().getType() == ACMaterial.SUGAR_CANE.parseMaterial()) {
-                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 50, 3);
                     openPage(p, opened.get(p.getUniqueId()) - 1);
                 } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 1) && e.getCurrentItem().getType() == ACMaterial.SUGAR_CANE.parseMaterial()) {
-                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 50, 3);
                     openPage(p, opened.get(p.getUniqueId()) + 1);
                 } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 5)) {
                     p.closeInventory();
