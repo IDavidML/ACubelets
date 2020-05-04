@@ -34,35 +34,31 @@ public class Animation2_Task implements Animation {
 
 	private ColorUtil.ColorSet<Integer, Integer, Integer> colorRarity;
 
-	Location corner1, corner2, corner3, corner4;
+	private Location corner1, corner2, corner3, corner4;
 
-	Location boxLocation;
+	private Location boxLocation;
+	private Location armorStandLocation;
+
+	private Reward reward;
 
 	class Task implements Runnable {
 		int time = 0;
 		@Override
 		public void run() {
 			if(armorStand != null) {
-				Location loc = armorStand.getLocation().clone();
-
-				if (time <= 50) {
-					loc.add(0, 0.02, 0);
-				}
-
-				armorStand.teleport(loc);
-
+				if (time <= 50) armorStandLocation.add(0, 0.02, 0);
+				armorStand.teleport(armorStandLocation);
 				armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.16, 0));
 			}
 
 			time++;
-
-			if(time == 100) {
-				music.cancel();
-				Reward reward = main.getCubeletRewardHandler().processReward(cubeletBox.getPlayerOpening(), cubeletType);
-				cubeletBox.setLastReward(reward);
+			if(time == 98) {
 				colorRarity = ColorUtil.getRGBbyColor(ColorUtil.getColorByText(reward.getRarity().getName()));
+				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 1.50, 0.5), FireworkEffect.Type.STAR, colors.get(0), colors.get(1));
+			} else if(time == 100) {
+				music.cancel();
+				cubeletBox.setLastReward(reward);
 				main.getHologramHandler().rewardHologram(cubeletBox, reward);
-				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 2, 0.5), FireworkEffect.Type.STAR, colors.get(0), colors.get(1));
 				cubeletBox.setState(CubeletBoxState.REWARD);
 				armorStand.remove();
 				armorStand = null;
@@ -77,8 +73,8 @@ public class Animation2_Task implements Animation {
 				stop();
 
 				Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(),
-						cubeletBox.getLastReward().getCommand().replaceAll("%player%", cubeletBox.getPlayerOpening().getName()));
-				main.getCubeletRewardHandler().sendLootMessage(cubeletBox.getPlayerOpening(), cubeletType, cubeletBox.getLastReward());
+						reward.getCommand().replaceAll("%player%", cubeletBox.getPlayerOpening().getName()));
+				main.getCubeletRewardHandler().sendLootMessage(cubeletBox.getPlayerOpening(), cubeletType, reward);
 
 				cubeletBox.setState(CubeletBoxState.EMPTY);
 				cubeletBox.setPlayerOpening(null);
@@ -104,6 +100,8 @@ public class Animation2_Task implements Animation {
 		loc.setYaw(0);
 		armorStand.teleport(loc);
 
+		armorStandLocation = armorStand.getLocation();
+
 		music = new Animation2_Music(box.getLocation());
 		music.runTaskTimer(main, 0L, 4L);
 
@@ -123,6 +121,10 @@ public class Animation2_Task implements Animation {
 
 		main.getAnimationHandler().getTasks().add(this);
 		main.getAnimationHandler().getArmorStands().add(armorStand);
+
+		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+			reward = main.getCubeletRewardHandler().processReward(cubeletBox.getPlayerOpening(), cubeletType);
+		});
 	}
 	
 	public void stop() {

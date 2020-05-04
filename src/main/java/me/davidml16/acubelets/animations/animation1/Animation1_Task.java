@@ -33,7 +33,9 @@ public class Animation1_Task implements Animation {
 	private Location startLocation;
 	private List<Color> colors;
 
-	Location boxLocation;
+	private Reward reward;
+
+	private Location boxLocation;
 
 	class Task implements Runnable {
 		int time = 0;
@@ -45,7 +47,6 @@ public class Animation1_Task implements Animation {
 					startLocation.add(0, -0.75, 0);
 				}
 			} else if(time == 70) {
-				Reward reward = main.getCubeletRewardHandler().processReward(cubeletBox.getPlayerOpening(), cubeletType);
 				cubeletBox.setLastReward(reward);
 				main.getHologramHandler().rewardHologram(cubeletBox, reward);
 				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 2, 0.5), FireworkEffect.Type.BALL_LARGE, colors.get(0), colors.get(1));
@@ -56,8 +57,8 @@ public class Animation1_Task implements Animation {
 				stop();
 
 				Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(),
-						cubeletBox.getLastReward().getCommand().replaceAll("%player%", cubeletBox.getPlayerOpening().getName()));
-				main.getCubeletRewardHandler().sendLootMessage(cubeletBox.getPlayerOpening(), cubeletType, cubeletBox.getLastReward());
+						reward.getCommand().replaceAll("%player%", cubeletBox.getPlayerOpening().getName()));
+				main.getCubeletRewardHandler().sendLootMessage(cubeletBox.getPlayerOpening(), cubeletType, reward);
 
 				cubeletBox.setState(CubeletBoxState.EMPTY);
 				cubeletBox.setPlayerOpening(null);
@@ -80,6 +81,10 @@ public class Animation1_Task implements Animation {
 
 		id = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, new Task(), 0L, 1);
 		main.getAnimationHandler().getTasks().add(this);
+
+		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+			reward = main.getCubeletRewardHandler().processReward(cubeletBox.getPlayerOpening(), cubeletType);
+		});
 	}
 	
 	public void stop() {

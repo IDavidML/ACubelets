@@ -40,19 +40,20 @@ public class Animation3_Task implements Animation {
 
 	private ColorUtil.ColorSet<Integer, Integer, Integer> colorRarity;
 
-	Location corner1, corner2, corner3, corner4;
+	private Location corner1, corner2, corner3, corner4;
 
-	Location boxLocation;
+	private Location boxLocation;
+	private Location armorStandLocation;
+
+	private Reward reward;
 
 	class Task implements Runnable {
 		int time = 0;
 		@Override
 		public void run() {
-			Location loc = null;
 			if(armorStand != null) {
-				loc = armorStand.getLocation().clone();
-				if (time <= 50) loc.add(0, 0.02, 0);
-				armorStand.teleport(loc);
+				if (time <= 50) armorStandLocation.add(0, 0.02, 0);
+				armorStand.teleport(armorStandLocation);
 				armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.26, 0));
 			}
 
@@ -61,44 +62,34 @@ public class Animation3_Task implements Animation {
 			if(time == 60) {
 				music.cancel();
 				Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.FIREWORK_LAUNCH, 0.5f, 0);
-			} else if(time > 60 && time < 80) {
-				Objects.requireNonNull(loc).add(0, 0.45, 0);
-				armorStand.teleport(loc);
-				armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.26, 0));
-				UtilParticles.display(Particles.FLAME, 0.10F, 0.25F, 0.15F, loc, 5);
-			} else if(time > 80 && time < 90) {
-				Objects.requireNonNull(loc).add(0, 0.35, 0);
-				armorStand.teleport(loc);
-				armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.26, 0));
-				UtilParticles.display(Particles.FLAME, 0.10F, 0.25F, 0.15F, loc, 5);
-			} else if(time > 90 && time < 100) {
-				Objects.requireNonNull(loc).add(0, 0.25, 0);
-				armorStand.teleport(loc);
-				armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.26, 0));
-				UtilParticles.display(Particles.FLAME, 0.10F, 0.25F, 0.15F, loc, 5);
-			} else if(time > 100 && time < 110) {
-				Objects.requireNonNull(loc).add(0, 0.15, 0);
-				armorStand.teleport(loc);
-				armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.26, 0));
-				UtilParticles.display(Particles.FLAME, 0.10F, 0.25F, 0.15F, loc, 5);
-			} else if(time > 110 && time < 120) {
-				Objects.requireNonNull(loc).add(0, 0.05, 0);
-				armorStand.teleport(loc);
-				armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.26, 0));
-				UtilParticles.display(Particles.FLAME, 0.10F, 0.25F, 0.15F, loc, 5);
-			} else if(time > 120 && time < 130) {
-				Objects.requireNonNull(loc).add(0, 0.01, 0);
-				armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.26, 0));
-				UtilParticles.display(Particles.FLAME, 0.10F, 0.25F, 0.15F, loc, 5);
-			} else if(time == 130) {
+			}
+
+			if(time > 60 && time < 130) {
+				Objects.requireNonNull(armorStand).setHeadPose(armorStand.getHeadPose().add(0, 0.26, 0));
+				UtilParticles.display(Particles.FLAME, 0.10F, 0.25F, 0.15F, armorStandLocation, 5);
+			}
+
+			if(time > 60 && time < 80)
+				Objects.requireNonNull(armorStandLocation).add(0, 0.45, 0);
+			else if(time > 80 && time < 90)
+				Objects.requireNonNull(armorStandLocation).add(0, 0.35, 0);
+			else if(time > 90 && time < 100)
+				Objects.requireNonNull(armorStandLocation).add(0, 0.25, 0);
+			else if(time > 100 && time < 110)
+				Objects.requireNonNull(armorStandLocation).add(0, 0.15, 0);
+			else if(time > 110 && time < 120)
+				Objects.requireNonNull(armorStandLocation).add(0, 0.05, 0);
+
+			if(time > 60 && time < 120) armorStand.teleport(armorStandLocation);
+
+			if(time == 130) {
 				Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.IRONGOLEM_DEATH, 0.5f, 0);
 			} else if(time > 130 && time < 150) {
-				Objects.requireNonNull(loc).add(0, -0.82, 0);
-				armorStand.teleport(loc);
+				Objects.requireNonNull(armorStandLocation).add(0, -0.85, 0);
+				armorStand.teleport(armorStandLocation);
 				armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.26, 0));
-				UtilParticles.display(Particles.SMOKE_LARGE, 0.15F, 0.15F, 0.15F, loc, 5);
+				UtilParticles.display(Particles.SMOKE_LARGE, 0.15F, 0, 0.15F, armorStandLocation.clone().add(0, 0.75, 0), 4);
 			} else if(time == 150) {
-				Reward reward = main.getCubeletRewardHandler().processReward(cubeletBox.getPlayerOpening(), cubeletType);
 				cubeletBox.setLastReward(reward);
 				colorRarity = ColorUtil.getRGBbyColor(ColorUtil.getColorByText(reward.getRarity().getName()));
 				main.getHologramHandler().rewardHologram(cubeletBox, reward);
@@ -118,8 +109,8 @@ public class Animation3_Task implements Animation {
 				stop();
 
 				Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(),
-						cubeletBox.getLastReward().getCommand().replaceAll("%player%", cubeletBox.getPlayerOpening().getName()));
-				main.getCubeletRewardHandler().sendLootMessage(cubeletBox.getPlayerOpening(), cubeletType, cubeletBox.getLastReward());
+						reward.getCommand().replaceAll("%player%", cubeletBox.getPlayerOpening().getName()));
+				main.getCubeletRewardHandler().sendLootMessage(cubeletBox.getPlayerOpening(), cubeletType, reward);
 
 				cubeletBox.setState(CubeletBoxState.EMPTY);
 				cubeletBox.setPlayerOpening(null);
@@ -145,6 +136,8 @@ public class Animation3_Task implements Animation {
 		loc.setYaw(0);
 		armorStand.teleport(loc);
 
+		armorStandLocation = armorStand.getLocation();
+
 		music = new Animation3_Music(box.getLocation());
 		music.runTaskTimer(main, 5L, 1L);
 
@@ -164,6 +157,10 @@ public class Animation3_Task implements Animation {
 
 		main.getAnimationHandler().getTasks().add(this);
 		main.getAnimationHandler().getArmorStands().add(armorStand);
+
+		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+			reward = main.getCubeletRewardHandler().processReward(cubeletBox.getPlayerOpening(), cubeletType);
+		});
 	}
 	
 	public void stop() {
