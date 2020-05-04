@@ -14,28 +14,6 @@ Commands:
   NoPerms: '%prefix% &cNo tienes permisos para usar este comando!'
   Reload: '%prefix% &aPlugin recargado sin errores!'
   Balance: '&aActualmente tienes &6%cubelets_available% &acubelets para abrir!'
-
-GUI:
-  Opening:
-    Title: 'Cubelets'
-    Items:
-      Close:
-        Name: '&9Cerrar'
-        Lore:
-          - '&7Click para cerrar'
-          - '&7este menu'
-      NoCubelets:
-          Name: '&4No tienes Cubelets'
-          Lore:
-            - '&7Puedes obtener Cubelets jugando.'
-            - '&7Pero tambien puedes comprandolos'
-            - '&7en nuestra tienda.'
-      NextPage:
-        Name: '&6Siguiente pagina'
-      PreviousPage:
-        Name: '&6Pagina anterior'
-
-
 Cubelet:
   BoxInUse:
     Me: '&cTu ya estas abriendo un Cubelet en esta maquina!'
@@ -66,3 +44,36 @@ Holograms:
       - '&e&l%reward_name%'
       - '&5Rareza: %reward_rarity%'
       - '%reward_icon%'
+
+GUI:
+  Opening:
+    Title: 'Cubelets'
+    Items:
+      Close:
+        Name: '&9Cerrar'
+        Lore:
+          - '&7Click para cerrar'
+          - '&7este menu'
+      NoCubelets:
+        Name: '&4No tienes Cubelets'
+        Lore:
+          - '&7Puedes obtener Cubelets jugando.'
+          - '&7Pero tambien puedes comprandolos'
+          - '&7en nuestra tienda.'
+      Ordered:
+        Type:
+          Name: '&aOrdenado por - &a&lTipo'
+          Lore:
+            - '&7Cambia como los items se ordenan'
+            - '&7en este menu.'
+            - '&6Click para ordenar por Fecha recibida!'
+        Date:
+          Name: '&aOrdenado por - &a&lFecha recibida'
+          Lore:
+            - '&7Cambia como los items se ordenan'
+            - '&7en este menu.'
+            - '&6Click para ordenar por Tipo!'
+      NextPage:
+        Name: '&6Siguiente pagina'
+      PreviousPage:
+        Name: '&6Pagina anterior'

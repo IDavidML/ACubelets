@@ -1,6 +1,8 @@
 package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.interfaces.CubeletDateComparator;
+import me.davidml16.acubelets.interfaces.CubeletTypeComparator;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Profile;
@@ -36,8 +38,13 @@ public class Cubelets_GUI implements Listener {
 
     private void openPage(Player p, int page) {
 
-        List<Cubelet> cubelets = main.getPlayerDataHandler().getData(p.getUniqueId()).getCubelets();
-        cubelets.sort(Collections.reverseOrder());
+        Profile profile = main.getPlayerDataHandler().getData(p.getUniqueId());
+        List<Cubelet> cubelets = profile.getCubelets();
+
+        if(profile.getOrderBy().equalsIgnoreCase("date"))
+            cubelets.sort(new CubeletDateComparator());
+        else if(profile.getOrderBy().equalsIgnoreCase("type"))
+            cubelets.sort(new CubeletTypeComparator());
 
         if(page > 0 && cubelets.size() < (page * 27) + 1) {
             openPage(p, page - 1);
@@ -72,6 +79,21 @@ public class Cubelets_GUI implements Listener {
             gui.setItem(i, null);
 
         if(cubelets.size() > 0) {
+
+            if(profile.getOrderBy().equalsIgnoreCase("date")) {
+                ItemStack orderByDate = new ItemBuilder(ACMaterial.CLOCK.parseItem())
+                        .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Ordered.Date.Name"))
+                        .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Ordered.Date.Lore"))
+                        .toItemStack();
+                gui.setItem(neededSize - 3, orderByDate);
+            } else if(profile.getOrderBy().equalsIgnoreCase("type")) {
+                ItemStack orderByType = new ItemBuilder(ACMaterial.NAME_TAG.parseItem())
+                        .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Ordered.Type.Name"))
+                        .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Ordered.Type.Lore"))
+                        .toItemStack();
+                gui.setItem(neededSize - 3, orderByType);
+            }
+
             for (Cubelet cubelet : cubelets) {
                 CubeletType type = main.getCubeletTypesHandler().getTypeBydId(cubelet.getType());
 
@@ -132,6 +154,13 @@ public class Cubelets_GUI implements Listener {
                     openPage(p, opened.get(p.getUniqueId()) + 1);
                 } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 5)) {
                     p.closeInventory();
+                } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 3)) {
+                    Profile profile = main.getPlayerDataHandler().getData(p.getUniqueId());
+                    if(profile.getOrderBy().equalsIgnoreCase("date"))
+                        profile.setOrderBy("type");
+                    else if(profile.getOrderBy().equalsIgnoreCase("type"))
+                        profile.setOrderBy("date");
+                    openPage(p, opened.get(p.getUniqueId()));
                 } else if (slot >= 0 && slot <= (p.getOpenInventory().getTopInventory().getSize() - 10)) {
                     if (main.getPlayerDataHandler().getData(p.getUniqueId()).getCubelets().size() > 0) {
                         String cubeletUUID = NBTEditor.getString(e.getCurrentItem(), "cubeletUUID");

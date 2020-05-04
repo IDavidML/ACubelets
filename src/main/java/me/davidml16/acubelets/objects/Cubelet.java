@@ -2,7 +2,7 @@ package me.davidml16.acubelets.objects;
 
 import java.util.UUID;
 
-public class Cubelet implements Comparable<Cubelet> {
+public class Cubelet {
 
     private UUID uuid;
     private String type;
@@ -59,8 +59,4 @@ public class Cubelet implements Comparable<Cubelet> {
                 '}';
     }
 
-    @Override
-    public int compareTo(Cubelet o) {
-        return Math.toIntExact(date - o.getDate());
-    }
 }

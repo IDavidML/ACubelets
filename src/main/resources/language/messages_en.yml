@@ -14,27 +14,6 @@ Commands:
   NoPerms: '%prefix% &cYou dont have permissions to use this command!'
   Reload: '%prefix% &aPlugin reloaded with no errors!'
   Balance: '&aYou actually have &6%cubelets_available% &aCubelets to open!'
-
-GUI:
-  Opening:
-    Title: 'Cubelets'
-    Items:
-      Close:
-        Name: '&9Close'
-        Lore:
-          - '&7Click to close'
-          - '&7this menu'
-      NoCubelets:
-        Name: '&4You have no Cubelets'
-        Lore:
-          - '&7You can get Cubelets by playing games.'
-          - '&7You are also able to purchase them'
-          - '&7on our store.'
-      NextPage:
-        Name: '&6Next page'
-      PreviousPage:
-        Name: '&6Previous page'
-
 Cubelet:
   BoxInUse:
     Me: '&cYou already opening a Cubelet here!'
@@ -65,3 +44,36 @@ Holograms:
       - '&e&l%reward_name%'
       - '&5Rarity: %reward_rarity%'
       - '%reward_icon%'
+
+GUI:
+  Opening:
+    Title: 'Cubelets'
+    Items:
+      Close:
+        Name: '&9Close'
+        Lore:
+          - '&7Click to close'
+          - '&7this menu'
+      NoCubelets:
+        Name: '&4You have no Cubelets'
+        Lore:
+          - '&7You can get Cubelets by playing games.'
+          - '&7You are also able to purchase them'
+          - '&7on our store.'
+      Ordered:
+        Type:
+          Name: '&aOrderer by - &a&lType'
+          Lore:
+            - '&7Change how items are ordered'
+            - '&7in this menu.'
+            - '&6Click to order by Date received!'
+        Date:
+          Name: '&aOrderer by - &a&lDate received'
+          Lore:
+            - '&7Change how items are ordered'
+            - '&7in this menu.'
+            - '&6Click to order by Type!'
+      NextPage:
+        Name: '&6Next page'
+      PreviousPage:
+        Name: '&6Previous page'

@@ -16,11 +16,14 @@ public class Profile {
 
 	private List<Cubelet> cubelets;
 
+	private String orderBy;
+
 	public Profile(Main main, UUID uuid) {
 		this.main = main;
 		this.uuid = uuid;
 		this.cubelets = new ArrayList<>();
 		this.boxOpened = null;
+		this.orderBy = "date";
 	}
 
 	public UUID getUuid() {
@@ -39,11 +42,18 @@ public class Profile {
 
 	public void setBoxOpened(CubeletBox boxOpened) { this.boxOpened = boxOpened; }
 
+	public String getOrderBy() { return orderBy; }
+
+	public void setOrderBy(String orderBy) { this.orderBy = orderBy; }
+
 	@Override
 	public String toString() {
 		return "Profile{" +
-				"uuid=" + uuid +
+				"main=" + main +
+				", uuid=" + uuid +
+				", boxOpened=" + boxOpened +
 				", cubelets=" + cubelets +
+				", orderBy='" + orderBy + '\'' +
 				'}';
 	}
 
