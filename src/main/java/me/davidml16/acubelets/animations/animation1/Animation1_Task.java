@@ -54,9 +54,6 @@ public class Animation1_Task implements Animation {
 				UtilParticles.display(Particles.FLAME, 0.45f, 0.25f, 0.45f, boxLocation, 10);
 			} else if(time >= 170) {
 				stop();
-				for (Hologram hologram : cubeletBox.getHolograms().values()) {
-					hologram.clearLines();
-				}
 
 				Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(),
 						cubeletBox.getLastReward().getCommand().replaceAll("%player%", cubeletBox.getPlayerOpening().getName()));

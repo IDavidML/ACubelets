@@ -22,6 +22,9 @@ public class HologramHandler {
 
     private boolean red;
 
+    private static final double LINE_HEIGHT = 0.34;
+    private static final double LINE_HEIGHT_REWARD = 0.32;
+
     public HologramHandler(Main main) {
         this.main = main;
         this.red = false;
@@ -78,11 +81,11 @@ public class HologramHandler {
                     hologram.appendTextLine(line);
                 }
 
-                hologram.teleport(box.getLocation().clone().add(0.5, (max * 0.33) + 1, 0.5));
+                hologram.teleport(box.getLocation().clone().add(0.5, (max * LINE_HEIGHT) + 1, 0.5));
             } else if(box.getState() == CubeletBoxState.REWARD) {
                 List<String> lines = getLinesReward(p, box.getPlayerOpening(), box.getLastReward());
 
-                hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * 0.33) + 1, 0.5));
+                hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + 1, 0.5));
 
                 for (String line : lines) {
                     if(!line.contains("%reward_icon%"))
@@ -112,11 +115,11 @@ public class HologramHandler {
                 hologram.appendTextLine(line);
             }
 
-            hologram.teleport(box.getLocation().clone().add(0.5, (max * 0.33) + 1, 0.5));
+            hologram.teleport(box.getLocation().clone().add(0.5, (max * LINE_HEIGHT) + 1, 0.5));
         } else if(box.getState() == CubeletBoxState.REWARD) {
             List<String> lines = getLinesReward(p, box.getPlayerOpening(), box.getLastReward());
 
-            hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * 0.33) + 1, 0.5));
+            hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + 1, 0.5));
 
             for (String line : lines) {
                 if(!line.contains("%reward_icon%"))
@@ -136,39 +139,12 @@ public class HologramHandler {
     }
 
     public void reloadHologram(CubeletBox box) {
-        if(box.getState() == CubeletBoxState.EMPTY) {
-            for(Player p : Bukkit.getOnlinePlayers()) {
-                if (box.getHolograms().containsKey(p.getUniqueId())) {
-                    Hologram hologram = box.getHolograms().get(p.getUniqueId());
+        for (Hologram hologram : box.getHolograms().values()) {
+            hologram.clearLines();
+        }
 
-                    List<String> lines = getLines(p);
-                    int max = Math.max(main.getLanguageHandler().getMessageList("Holograms.CubeletAvailable").size(), main.getLanguageHandler().getMessageList("Holograms.NoCubeletAvailable").size());
-
-                    hologram.teleport(box.getLocation().clone().add(0.5, (max * 0.33) + 1, 0.5));
-
-                    for (String line : lines) {
-                        hologram.appendTextLine(line);
-                    }
-                }
-            }
-        } else if(box.getState() == CubeletBoxState.REWARD) {
-            for(Player p : Bukkit.getOnlinePlayers()) {
-                if (box.getHolograms().containsKey(p.getUniqueId())) {
-                    Hologram hologram = box.getHolograms().get(p.getUniqueId());
-
-                    List<String> lines = getLinesReward(p, box.getPlayerOpening(), box.getLastReward());
-
-                    hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * 0.33) + 1, 0.5));
-
-                    for (int i = 0; i < lines.size(); i++) {
-                        if (!lines.get(i).contains("%reward_icon%"))
-                            ((TextLine) hologram.getLine(i)).setText(lines.get(i));
-                        else
-                            ((ItemLine) hologram.getLine(i)).setItemStack(box.getLastReward().getIcon().getItem());
-                    }
-
-                }
-            }
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            reloadHologram(p, box);
         }
     }
 
@@ -180,7 +156,7 @@ public class HologramHandler {
 
                 List<String> lines = getLinesReward(p, box.getPlayerOpening(), reward);
 
-                hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * 0.33) + 1, 0.5));
+                hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + 1, 0.5));
 
                 for (String line : lines) {
                     if(!line.contains("%reward_icon%"))
@@ -203,7 +179,7 @@ public class HologramHandler {
 
                 int max = Math.max(main.getLanguageHandler().getMessageList("Holograms.CubeletAvailable").size(), main.getLanguageHandler().getMessageList("Holograms.NoCubeletAvailable").size());
                 if (hologram.size() != lines.size())
-                    hologram.teleport(box.getLocation().clone().add(0.5, (max * 0.33) + 1, 0.5));
+                    hologram.teleport(box.getLocation().clone().add(0.5, (max * LINE_HEIGHT) + 1, 0.5));
 
                 if (hologram.size() > lines.size()) {
                     for (int i = lines.size(); i < hologram.size(); i++)

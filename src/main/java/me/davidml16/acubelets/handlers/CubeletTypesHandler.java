@@ -117,20 +117,29 @@ public class CubeletTypesHandler {
             if(!Character.isDigit(id.charAt(0))) {
                 if (validTypeData(config)) {
 
-                    if (!config.contains("type.icon")) {
-                        config.set("type.icon.texture", "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWYyMmI2YTNhMGYyNGJkZWVhYjJhNmFjZDliMWY1MmJiOTU5NGQ1ZjZiMWUyYzA1ZGRkYjIxOTQxMGM4In19fQ==");
-
+                    if (!config.contains("type.description")) {
                         List<String> lore = Arrays.asList(
-                                "&5Received: &a%received% ago",
-                                "",
                                 "&7This is the most common type of ",
                                 "&7Cubelet. Initial scans indicate ",
                                 "&7that the contents of this cubelet ",
-                                "&7will be probably basic. ",
+                                "&7will be probably basic. "
+                        );
+                        config.set("type.description", lore);
+                    }
+
+                    if (!config.contains("type.lore.opening")) {
+                        List<String> lore = Arrays.asList(
+                                "&5Received: &a%received% ago",
+                                "",
+                                "%description%",
                                 "",
                                 "&6Click to open."
                         );
-                        config.set("type.icon.lore", lore);
+                        config.set("type.lore.opening", lore);
+                    }
+
+                    if (!config.contains("type.icon")) {
+                        config.set("type.icon.texture", "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWYyMmI2YTNhMGYyNGJkZWVhYjJhNmFjZDliMWY1MmJiOTU5NGQ1ZjZiMWUyYzA1ZGRkYjIxOTQxMGM4In19fQ==");
                     }
 
                     if (!config.contains("type.animation")) {
@@ -167,7 +176,15 @@ public class CubeletTypesHandler {
                             break;
                     }
 
-                    cubeletType.setLore(config.getStringList("type.icon.lore"));
+                    List<String> loreLines = new ArrayList<>();
+                    for(String line : config.getStringList("type.lore.opening")) {
+                        if(line.contains("%description%")) {
+                            loreLines.addAll(config.getStringList("type.description"));
+                        } else {
+                            loreLines.add(line);
+                        }
+                    }
+                    cubeletType.setLore(loreLines);
 
                     Main.log.sendMessage(ColorUtil.translate("    &a'" + id + "' &7- &aCubelet type loaded!"));
                 } else {
