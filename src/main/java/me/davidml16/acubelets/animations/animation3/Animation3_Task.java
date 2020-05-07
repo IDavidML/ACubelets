@@ -1,6 +1,5 @@
 package me.davidml16.acubelets.animations.animation3;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
@@ -9,9 +8,9 @@ import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Reward;
 import me.davidml16.acubelets.utils.ColorUtil;
-import me.davidml16.acubelets.utils.Particles;
+import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.Sounds;
-import me.davidml16.acubelets.utils.UtilParticles;
+import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -19,7 +18,6 @@ import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import javax.rmi.CORBA.Util;
 import java.util.List;
 import java.util.Objects;
 

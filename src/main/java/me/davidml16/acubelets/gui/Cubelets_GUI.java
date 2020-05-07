@@ -7,6 +7,7 @@ import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Profile;
 import me.davidml16.acubelets.utils.*;
+import me.davidml16.acubelets.utils.TimeAPI.TimeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -100,7 +101,8 @@ public class Cubelets_GUI implements Listener {
                 List<String> lore = new ArrayList<>();
                 for(String line : type.getLore()) {
                     lore.add(ColorUtil.translate(line
-                            .replaceAll("%received%", TimeUtils.millisToLongDHMS(System.currentTimeMillis() - cubelet.getDate()))));
+                            .replaceAll("%received%", TimeUtils.millisToLongDHMS(System.currentTimeMillis() - cubelet.getReceived())))
+                            .replaceAll("%expires%", TimeUtils.millisToLongDHMS(cubelet.getExpire() - System.currentTimeMillis())));
                 }
 
                 ItemStack item = new ItemBuilder(type.getIcon()).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack();

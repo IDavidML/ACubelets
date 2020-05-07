@@ -1,12 +1,12 @@
 package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.api.CubeletReceivedEvent;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.SkullCreator;
+import me.davidml16.acubelets.utils.TimeAPI.TimeAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -117,6 +117,14 @@ public class CubeletTypesHandler {
             if(!Character.isDigit(id.charAt(0))) {
                 if (validTypeData(config)) {
 
+                    if (!config.contains("type.animation")) {
+                        config.set("type.animation", "animation1");
+                    }
+
+                    if (!config.contains("type.expiration")) {
+                        config.set("type.expiration", "2w");
+                    }
+
                     if (!config.contains("type.description")) {
                         List<String> lore = Arrays.asList(
                                 "&7This is the most common type of ",
@@ -130,6 +138,7 @@ public class CubeletTypesHandler {
                     if (!config.contains("type.lore.opening")) {
                         List<String> lore = Arrays.asList(
                                 "&5Received: &a%received% ago",
+                                "&5Expires: &aIn %expires%",
                                 "",
                                 "%description%",
                                 "",
@@ -142,9 +151,6 @@ public class CubeletTypesHandler {
                         config.set("type.icon.texture", "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWYyMmI2YTNhMGYyNGJkZWVhYjJhNmFjZDliMWY1MmJiOTU5NGQ1ZjZiMWUyYzA1ZGRkYjIxOTQxMGM4In19fQ==");
                     }
 
-                    if (!config.contains("type.animation")) {
-                        config.set("type.animation", "animation1");
-                    }
 
                     if (!config.contains("type.rarities")) {
                         config.set("type.rarities", new ArrayList<>());
@@ -186,6 +192,13 @@ public class CubeletTypesHandler {
                     }
                     cubeletType.setLore(loreLines);
 
+                    long convertedTime;
+                    if(Objects.requireNonNull(config.getString("type.expiration")).equalsIgnoreCase(""))
+                        convertedTime = 0;
+                    else
+                        convertedTime = new TimeAPI(config.getString("type.expiration")).getMilliseconds();
+                    cubeletType.setExpireTime(convertedTime);
+
                     Main.log.sendMessage(ColorUtil.translate("    &a'" + id + "' &7- &aCubelet type loaded!"));
                 } else {
                     Main.log.sendMessage(ColorUtil.translate("    &c'" + id + "' not loaded because cubelet type data is not correct!"));
@@ -210,11 +223,12 @@ public class CubeletTypesHandler {
 
     public void giveCubelet(Player player, String type, int amount) {
         if (main.getCubeletTypesHandler().getTypes().containsKey(type)) {
+            CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(type);
             if(amount > 0) {
                 for (int i = 1; i <= amount; i++) {
                     try {
-                        Cubelet cubelet = new Cubelet(type);
-                        main.getDatabaseHandler().addCubelet(player.getUniqueId(), cubelet.getUuid(), cubelet.getType(), cubelet.getDate());
+                        Cubelet cubelet = new Cubelet(cubeletType);
+                        main.getDatabaseHandler().addCubelet(player.getUniqueId(), cubelet.getUuid(), cubelet.getType(), cubelet.getReceived(), cubelet.getExpire());
                         main.getPlayerDataHandler().getData(player).getCubelets().add(cubelet);
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();

@@ -1,4 +1,6 @@
-package me.davidml16.acubelets.utils;
+package me.davidml16.acubelets.utils.TimeAPI;
+
+import me.davidml16.acubelets.Main;
 
 public class TimeUtils {
 
@@ -24,34 +26,24 @@ public class TimeUtils {
             temp = duration / ONE_DAY;
             if (temp > 0) {
                 duration -= temp * ONE_DAY;
-                res.append(temp).append(" day").append(temp > 1 ? "s" : "")
-                        .append(duration >= ONE_MINUTE ? ", " : "");
+                return res.append(temp).append(" ").append(temp > 1 ? Main.get().getLanguageHandler().getMessage("Times.Days") : Main.get().getLanguageHandler().getMessage("Times.Day")).toString();
             }
 
             temp = duration / ONE_HOUR;
             if (temp > 0) {
                 duration -= temp * ONE_HOUR;
-                res.append(temp).append(" hour").append(temp > 1 ? "s" : "")
-                        .append(duration >= ONE_MINUTE ? ", " : "");
+                return res.append(temp).append(" ").append(temp > 1 ? Main.get().getLanguageHandler().getMessage("Times.Hours") : Main.get().getLanguageHandler().getMessage("Times.Hour")).toString();
             }
 
             temp = duration / ONE_MINUTE;
             if (temp > 0) {
-                duration -= temp * ONE_MINUTE;
-                res.append(temp).append(" minute").append(temp > 1 ? "s" : "");
-            }
-
-            if (!res.toString().equals("") && duration >= ONE_SECOND) {
-                res.append(" and ");
+                return res.append(temp).append(" ").append(temp > 1 ? Main.get().getLanguageHandler().getMessage("Times.Minutes") : Main.get().getLanguageHandler().getMessage("Times.Minute")).toString();
             }
 
             temp = duration / ONE_SECOND;
-            if (temp > 0) {
-                res.append(temp).append(" second").append(temp > 1 ? "s" : "");
-            }
-            return res.toString();
+            return res.append(temp).append(" ").append(temp > 1 ? Main.get().getLanguageHandler().getMessage("Times.Seconds") : Main.get().getLanguageHandler().getMessage("Times.Second")).toString();
         } else {
-            return "0 second";
+            return "0" + Main.get().getLanguageHandler().getMessage("Times.Second");
         }
     }
 }

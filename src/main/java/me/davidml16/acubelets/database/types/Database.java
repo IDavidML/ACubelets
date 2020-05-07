@@ -15,9 +15,9 @@ public interface Database {
 
     void loadTables();
 
-    void addCubelet(UUID uuid, String type, Long date) throws SQLException;
+    void addCubelet(UUID uuid, String type, Long received, Long expire) throws SQLException;
 
-    void addCubelet(UUID uuid, UUID cubeletUUID, String type, Long date) throws SQLException;
+    void addCubelet(UUID uuid, UUID cubeletUUID, String type, Long received, Long expire) throws SQLException;
 
     void removeCubelet(UUID uuid, UUID cubeletUUID) throws SQLException;
 

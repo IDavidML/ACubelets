@@ -8,7 +8,7 @@ public class CubeletDateComparator implements Comparator<Cubelet> {
 
     @Override
     public int compare(Cubelet o1, Cubelet o2) {
-        return Math.toIntExact(o2.getDate() - o1.getDate());
+        return Math.toIntExact(o2.getReceived() - o1.getReceived());
     }
 
 }

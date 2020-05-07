@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.utils;
+package me.davidml16.acubelets.utils.ParticlesAPI;
 
 
 import org.bukkit.Bukkit;

@@ -57,10 +57,11 @@ public class ExecuteType {
                     FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
                     config.set("type.name", name.toString());
                     config.set("type.animation", "animation1");
+                    config.set("type.expiration", "2w");
                     config.set("type.icon.texture", "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWYyMmI2YTNhMGYyNGJkZWVhYjJhNmFjZDliMWY1MmJiOTU5NGQ1ZjZiMWUyYzA1ZGRkYjIxOTQxMGM4In19fQ==");
 
                     List<String> description = Arrays.asList("&7This is the most common type of", "&7Cubelet. Initial scans indicate", "&7that the contents of this cubelet", "&7will be probably basic.");
-                    List<String> lore = Arrays.asList("&5Received: &a%received% ago", "", "%description%", "", "&6Click to open.");
+                    List<String> lore = Arrays.asList("&5Received: &a%received% ago", "&5Expires: &aIn %expires%", "", "%description%", "", "&6Click to open.");
 
                     config.set("type.description", description);
                     config.set("type.lore.opening", lore);

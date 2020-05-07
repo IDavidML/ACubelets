@@ -10,10 +10,21 @@
 
 Prefix: '&6&lACubelets &l&o&f>>&r'
 
+Times:
+  Days: dias
+  Day: dia
+  Hours: horas
+  Hour: hora
+  Minutes: minutos
+  Minute: minuto
+  Seconds: segundos
+  Second: segundo
+
 Commands:
   NoPerms: '%prefix% &cNo tienes permisos para usar este comando!'
   Reload: '%prefix% &aPlugin recargado sin errores!'
   Balance: '&aActualmente tienes &6%cubelets_available% &acubelets para abrir!'
+
 Cubelet:
   BoxInUse:
     Me: '&cTu ya estas abriendo un Cubelet en esta maquina!'

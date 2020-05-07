@@ -19,11 +19,6 @@ public class Event_JoinQuit implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         main.getPlayerDataHandler().loadPlayerData(p);
-
-        Bukkit.getScheduler().runTaskLater(main, () -> {
-            main.getHologramHandler().loadHolograms(p);
-        }, 20L);
-
         main.setPlayerCount(main.getPlayerCount() + 1);
     }
 

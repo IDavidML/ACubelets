@@ -16,6 +16,8 @@ public class CubeletType {
     private String id;
     private String name;
 
+    private Long expireTime;
+
     private ItemStack icon;
     private List<String> lore;
 
@@ -30,6 +32,7 @@ public class CubeletType {
         this.name = name;
         this.rewards = new HashMap<>();
         this.rarities = new HashMap<>();
+        this.expireTime = 0L;
     }
 
     public String getId() {
@@ -78,6 +81,14 @@ public class CubeletType {
 
     public void setAnimation(String animation) {
         this.animation = animation;
+    }
+
+    public Long getExpireTime() {
+        return expireTime;
+    }
+
+    public void setExpireTime(Long expireTime) {
+        this.expireTime = expireTime;
     }
 
     public void addReward(String rarity, Reward reward) {

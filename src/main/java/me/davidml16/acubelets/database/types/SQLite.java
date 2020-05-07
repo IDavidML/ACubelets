@@ -53,7 +53,7 @@ public class SQLite implements Database {
     public void loadTables() {
         PreparedStatement statement = null;
         try {
-            statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS ac_cubelets (`UUID` varchar(40) NOT NULL, `cubeletUUID` varchar(40) NOT NULL, `type` VARCHAR(15) NOT NULL, `date` bigint NOT NULL, PRIMARY KEY (`UUID`, `cubeletUUID`));");
+            statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS ac_cubelets (`UUID` varchar(40) NOT NULL, `cubeletUUID` varchar(40) NOT NULL, `type` VARCHAR(15) NOT NULL, `received` bigint NOT NULL DEFAULT 0, `expire` bigint NOT NULL DEFAULT 0, PRIMARY KEY (`UUID`, `cubeletUUID`));");
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -69,15 +69,17 @@ public class SQLite implements Database {
     }
 
     @Override
-    public void addCubelet(UUID uuid, String type, Long date) throws SQLException {
+    public void addCubelet(UUID uuid, String type, Long received, Long expire) throws SQLException {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
+            Connection connection = null;
             try {
-                ps = connection.prepareStatement("INSERT INTO ac_cubelets (UUID,cubeletUUID,type,date) VALUES(?,?,?,?)");
+                ps = connection.prepareStatement("INSERT INTO ac_cubelets (UUID,cubeletUUID,type,received,expire) VALUES(?,?,?,?,?)");
                 ps.setString(1, uuid.toString());
                 ps.setString(2, UUID.randomUUID().toString());
                 ps.setString(3, type);
-                ps.setLong(4, date);
+                ps.setLong(4, received);
+                ps.setLong(5, expire);
                 ps.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -94,15 +96,17 @@ public class SQLite implements Database {
     }
 
     @Override
-    public void addCubelet(UUID uuid, UUID cubeletUUID, String type, Long date) {
+    public void addCubelet(UUID uuid, UUID cubeletUUID, String type, Long received, Long expire) {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
+            Connection connection = null;
             try {
-                ps = connection.prepareStatement("INSERT INTO ac_cubelets (UUID,cubeletUUID,type,date) VALUES(?,?,?,?)");
+                ps = connection.prepareStatement("INSERT INTO ac_cubelets (UUID,cubeletUUID,type,received,expire) VALUES(?,?,?,?,?)");
                 ps.setString(1, uuid.toString());
                 ps.setString(2, cubeletUUID.toString());
                 ps.setString(3, type);
-                ps.setLong(4, date);
+                ps.setLong(4, received);
+                ps.setLong(5, expire);
                 ps.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -169,7 +173,7 @@ public class SQLite implements Database {
 
             rs = ps.executeQuery();
             while (rs.next()) {
-                return new Cubelet(UUID.fromString(rs.getString("cubeletUUID")), rs.getString("type"), rs.getLong("date"));
+                return new Cubelet(UUID.fromString(rs.getString("cubeletUUID")), rs.getString("type"), rs.getLong("received"), rs.getLong("expire"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -195,7 +199,7 @@ public class SQLite implements Database {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    cubelets.add(new Cubelet(UUID.fromString(rs.getString("cubeletUUID")), rs.getString("type"), rs.getLong("date")));
+                    cubelets.add(new Cubelet(UUID.fromString(rs.getString("cubeletUUID")), rs.getString("type"), rs.getLong("received"), rs.getLong("expire")));
                 }
 
                 result.complete(cubelets);

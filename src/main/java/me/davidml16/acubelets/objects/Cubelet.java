@@ -1,29 +1,34 @@
 package me.davidml16.acubelets.objects;
 
+import me.davidml16.acubelets.Main;
+
 import java.util.UUID;
 
 public class Cubelet {
 
     private UUID uuid;
     private String type;
-    private Long date;
+    private Long received;
+    private Long expire;
 
-    public Cubelet(UUID uuid, String type, Long date) {
+    public Cubelet(UUID uuid, String type, Long received, Long expire) {
         this.uuid = uuid;
         this.type = type;
-        this.date = date;
+        this.received = received;
+        this.expire = expire;
     }
 
-    public Cubelet(String type, Long date) {
+    public Cubelet(String type, Long received) {
         this.uuid = UUID.randomUUID();
         this.type = type;
-        this.date = date;
+        this.received = received;
     }
 
-    public Cubelet(String type) {
+    public Cubelet(CubeletType type) {
         this.uuid = UUID.randomUUID();
-        this.type = type;
-        this.date = System.currentTimeMillis();
+        this.type = type.getId();
+        this.received = System.currentTimeMillis();
+        this.expire = received + type.getExpireTime();
     }
 
     public UUID getUuid() {
@@ -42,20 +47,25 @@ public class Cubelet {
         this.type = type;
     }
 
-    public Long getDate() {
-        return date;
+    public Long getReceived() {
+        return received;
     }
 
-    public void setDate(Long date) {
-        this.date = date;
+    public void setReceived(Long received) {
+        this.received = received;
     }
+
+    public Long getExpire() { return expire; }
+
+    public void setExpire(Long expire) { this.expire = expire; }
 
     @Override
     public String toString() {
         return "Cubelet{" +
                 "uuid=" + uuid +
                 ", type='" + type + '\'' +
-                ", date=" + date +
+                ", received=" + received +
+                ", expire=" + expire +
                 '}';
     }
 
