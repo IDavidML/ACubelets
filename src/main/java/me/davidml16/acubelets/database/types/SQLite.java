@@ -14,7 +14,7 @@ public class SQLite implements Database {
 
     private Connection connection;
 
-    private Main main;
+    private final Main main;
 
     public SQLite(Main main) {
         this.main = main;
@@ -45,7 +45,7 @@ public class SQLite implements Database {
                 Main.log.sendMessage(ColorUtil.translate("    &aSQLite has been enabled!"));
             } catch (SQLException | ClassNotFoundException e) {
                 Main.log.sendMessage(ColorUtil.translate("    &cSQLite has an error on the conection! Plugin disabled : Database needed"));
-                Bukkit.getPluginManager().disablePlugin(Bukkit.getPluginManager().getPlugin("ACubelets"));
+                Bukkit.getPluginManager().disablePlugin(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("ACubelets")));
             }
         }
     }
@@ -69,10 +69,9 @@ public class SQLite implements Database {
     }
 
     @Override
-    public void addCubelet(UUID uuid, String type, Long received, Long expire) throws SQLException {
+    public void addCubelet(UUID uuid, String type, Long received, Long expire) {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
-            Connection connection = null;
             try {
                 ps = connection.prepareStatement("INSERT INTO ac_cubelets (UUID,cubeletUUID,type,received,expire) VALUES(?,?,?,?,?)");
                 ps.setString(1, uuid.toString());
@@ -99,7 +98,6 @@ public class SQLite implements Database {
     public void addCubelet(UUID uuid, UUID cubeletUUID, String type, Long received, Long expire) {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
-            Connection connection = null;
             try {
                 ps = connection.prepareStatement("INSERT INTO ac_cubelets (UUID,cubeletUUID,type,received,expire) VALUES(?,?,?,?,?)");
                 ps.setString(1, uuid.toString());
@@ -123,7 +121,7 @@ public class SQLite implements Database {
     }
 
     @Override
-    public void removeCubelet(UUID uuid, UUID cubeletUUID) throws SQLException {
+    public void removeCubelet(UUID uuid, UUID cubeletUUID) {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
             try {
@@ -144,7 +142,7 @@ public class SQLite implements Database {
     }
 
     @Override
-    public void removeCubelet(String type) throws SQLException {
+    public void removeCubelet(String type) {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
             try {
@@ -165,29 +163,32 @@ public class SQLite implements Database {
     }
 
     @Override
-    public Cubelet getCubelet(UUID uuid, UUID cubeletUUID) throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            ps = connection.prepareStatement("SELECT * FROM ac_cubelets WHERE UUID = '" + uuid.toString() + "' AND cubeletUUID = '" + cubeletUUID + "';");
-
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                return new Cubelet(UUID.fromString(rs.getString("cubeletUUID")), rs.getString("type"), rs.getLong("received"), rs.getLong("expire"));
+    public void removeExpiredCubelets(UUID uuid) {
+        long actualTime = System.currentTimeMillis();
+        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+            PreparedStatement ps = null;
+            try {
+                ps = connection.prepareStatement("DELETE FROM ac_cubelets WHERE UUID = '" + uuid + "' AND expire < '" + actualTime + "';");
+                ps.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (ps != null) {
+                    try {
+                        ps.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if(ps != null) ps.close();
-            if(rs != null) rs.close();
-        }
-
-        return null;
+        });
     }
 
     @Override
     public CompletableFuture<List<Cubelet>> getCubelets(UUID uuid) {
         CompletableFuture<List<Cubelet>> result = new CompletableFuture<>();
+
+        long actualTime = System.currentTimeMillis();
 
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             List<Cubelet> cubelets = new ArrayList<>();
@@ -195,7 +196,7 @@ public class SQLite implements Database {
             ResultSet rs = null;
 
             try {
-                ps = connection.prepareStatement("SELECT * FROM ac_cubelets WHERE UUID = '" + uuid.toString() + "';");
+                ps = connection.prepareStatement("SELECT * FROM ac_cubelets WHERE UUID = '" + uuid.toString() + "' AND expire > '" + actualTime + "';");
 
                 rs = ps.executeQuery();
                 while (rs.next()) {

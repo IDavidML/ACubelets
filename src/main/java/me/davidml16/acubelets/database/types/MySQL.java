@@ -19,10 +19,13 @@ public class MySQL implements Database {
 
     private HikariDataSource hikari;
 
-    private String host, user, password, database;
-    private int port;
+    private final String host;
+    private final String user;
+    private final String password;
+    private final String database;
+    private final int port;
 
-    private Main main;
+    private final Main main;
 
     public MySQL(Main main) {
         this.main = main;
@@ -94,7 +97,7 @@ public class MySQL implements Database {
     }
 
     @Override
-    public void addCubelet(UUID uuid, String type, Long received, Long expire) throws SQLException {
+    public void addCubelet(UUID uuid, String type, Long received, Long expire) {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
             Connection connection = null;
@@ -164,7 +167,7 @@ public class MySQL implements Database {
     }
 
     @Override
-    public void removeCubelet(UUID uuid, UUID cubeletUUID) throws SQLException {
+    public void removeCubelet(UUID uuid, UUID cubeletUUID) {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
             Connection connection = null;
@@ -194,7 +197,7 @@ public class MySQL implements Database {
     }
 
     @Override
-    public void removeCubelet(String type) throws SQLException {
+    public void removeCubelet(String type) {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
             Connection connection = null;
@@ -224,32 +227,41 @@ public class MySQL implements Database {
     }
 
     @Override
-    public Cubelet getCubelet(UUID uuid, UUID cubeletUUID) throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Connection connection = null;
-        try {
-            connection = hikari.getConnection();
-            ps = connection.prepareStatement("SELECT * FROM ac_cubelets WHERE UUID = '" + uuid.toString() + "' AND cubeletUUID = '" + cubeletUUID + "';");
-
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                return new Cubelet(UUID.fromString(rs.getString("cubeletUUID")), rs.getString("type"), rs.getLong("received"), rs.getLong("expire"));
+    public void removeExpiredCubelets(UUID uuid) {
+        long actualTime = System.currentTimeMillis();
+        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+            PreparedStatement ps = null;
+            Connection connection = null;
+            try {
+                connection = hikari.getConnection();
+                ps = connection.prepareStatement("DELETE FROM ac_cubelets WHERE UUID = '" + uuid + "' AND expire < '" + actualTime + "';");
+                ps.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (ps != null) {
+                    try {
+                        ps.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if(ps != null) ps.close();
-            if(rs != null) rs.close();
-            if(connection != null) connection.close();
-        }
-
-        return null;
+        });
     }
 
     @Override
     public CompletableFuture<List<Cubelet>> getCubelets(UUID uuid) {
         CompletableFuture<List<Cubelet>> result = new CompletableFuture<>();
+
+        long actualTime = System.currentTimeMillis();
 
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             List<Cubelet> cubelets = new ArrayList<>();
@@ -259,7 +271,7 @@ public class MySQL implements Database {
 
             try {
                 connection = hikari.getConnection();
-                ps = connection.prepareStatement("SELECT * FROM ac_cubelets WHERE UUID = '" + uuid.toString() + "';");
+                ps = connection.prepareStatement("SELECT * FROM ac_cubelets WHERE UUID = '" + uuid.toString() + "' AND expire > '" + actualTime + "';");
 
                 rs = ps.executeQuery();
                 while (rs.next()) {

@@ -99,10 +99,18 @@ public class Cubelets_GUI implements Listener {
                 CubeletType type = main.getCubeletTypesHandler().getTypeBydId(cubelet.getType());
 
                 List<String> lore = new ArrayList<>();
-                for(String line : type.getLore()) {
-                    lore.add(ColorUtil.translate(line
-                            .replaceAll("%received%", TimeUtils.millisToLongDHMS(System.currentTimeMillis() - cubelet.getReceived())))
-                            .replaceAll("%expires%", TimeUtils.millisToLongDHMS(cubelet.getExpire() - System.currentTimeMillis())));
+
+                if (cubelet.getExpire() > System.currentTimeMillis()) {
+                    for (String line : type.getLoreAvailable()) {
+                        lore.add(ColorUtil.translate(line
+                                .replaceAll("%received%", TimeUtils.millisToLongDHMS(System.currentTimeMillis() - cubelet.getReceived())))
+                                .replaceAll("%expires%", TimeUtils.millisToLongDHMS(cubelet.getExpire() - System.currentTimeMillis())));
+                    }
+                } else {
+                    for (String line : type.getLoreExpired()) {
+                        lore.add(ColorUtil.translate(line
+                                .replaceAll("%received%", TimeUtils.millisToLongDHMS(System.currentTimeMillis() - cubelet.getReceived()))));
+                    }
                 }
 
                 ItemStack item = new ItemBuilder(type.getIcon()).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack();
@@ -167,15 +175,20 @@ public class Cubelets_GUI implements Listener {
                         String typeID = NBTEditor.getString(e.getCurrentItem(), "typeID");
 
                         Profile profile = main.getPlayerDataHandler().getData(p);
+                        Optional<Cubelet> cubelet = profile.getCubelets().stream().filter(cbl -> {
+                            return cbl.getUuid().toString().equalsIgnoreCase(cubeletUUID);
+                        }).findFirst();
 
-                        main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), main.getCubeletTypesHandler().getTypeBydId(typeID));
+                        if(cubelet.isPresent()) {
+                            if (cubelet.get().getExpire() > System.currentTimeMillis()) {
+                                main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), main.getCubeletTypesHandler().getTypeBydId(typeID));
 
-                        main.getDatabaseHandler().removeCubelet(p.getUniqueId(), UUID.fromString(Objects.requireNonNull(cubeletUUID)));
-                        profile.getCubelets().removeIf(cubelet -> {
-                            return cubelet.getUuid().toString().equals(cubeletUUID);
-                        });
+                                main.getDatabaseHandler().removeCubelet(p.getUniqueId(), UUID.fromString(Objects.requireNonNull(cubeletUUID)));
+                                profile.getCubelets().remove(cubelet);
 
-                        p.closeInventory();
+                                p.closeInventory();
+                            }
+                        }
                     }
                 }
             }

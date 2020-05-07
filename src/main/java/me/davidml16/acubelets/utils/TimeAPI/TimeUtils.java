@@ -43,7 +43,7 @@ public class TimeUtils {
             temp = duration / ONE_SECOND;
             return res.append(temp).append(" ").append(temp > 1 ? Main.get().getLanguageHandler().getMessage("Times.Seconds") : Main.get().getLanguageHandler().getMessage("Times.Second")).toString();
         } else {
-            return "0" + Main.get().getLanguageHandler().getMessage("Times.Second");
+            return "0 " + Main.get().getLanguageHandler().getMessage("Times.Second");
         }
     }
 }

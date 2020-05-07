@@ -135,8 +135,8 @@ public class CubeletTypesHandler {
                         config.set("type.description", lore);
                     }
 
-                    if (!config.contains("type.lore.opening")) {
-                        List<String> lore = Arrays.asList(
+                    if (!config.contains("type.lore.opening.available")) {
+                        List<String> loreAvailable = Arrays.asList(
                                 "&5Received: &a%received% ago",
                                 "&5Expires: &aIn %expires%",
                                 "",
@@ -144,7 +144,18 @@ public class CubeletTypesHandler {
                                 "",
                                 "&6Click to open."
                         );
-                        config.set("type.lore.opening", lore);
+                        config.set("type.lore.opening.available", loreAvailable);
+                    }
+
+                    if (!config.contains("type.lore.opening.expired")) {
+                        List<String> loreExpired = Arrays.asList(
+                                "&5Received: &a%received% ago",
+                                "&5Expires: &cExpired",
+                                "",
+                                "%description%",
+                                ""
+                        );
+                        config.set("type.lore.opening.expired", loreExpired);
                     }
 
                     if (!config.contains("type.icon")) {
@@ -182,15 +193,25 @@ public class CubeletTypesHandler {
                             break;
                     }
 
-                    List<String> loreLines = new ArrayList<>();
-                    for(String line : config.getStringList("type.lore.opening")) {
+                    List<String> loreAvailable = new ArrayList<>();
+                    for(String line : config.getStringList("type.lore.opening.available")) {
                         if(line.contains("%description%")) {
-                            loreLines.addAll(config.getStringList("type.description"));
+                            loreAvailable.addAll(config.getStringList("type.description"));
                         } else {
-                            loreLines.add(line);
+                            loreAvailable.add(line);
                         }
                     }
-                    cubeletType.setLore(loreLines);
+                    cubeletType.setLoreAvailable(loreAvailable);
+
+                    List<String> loreExpired = new ArrayList<>();
+                    for(String line : config.getStringList("type.lore.opening.expired")) {
+                        if(line.contains("%description%")) {
+                            loreExpired.addAll(config.getStringList("type.description"));
+                        } else {
+                            loreExpired.add(line);
+                        }
+                    }
+                    cubeletType.setLoreExpired(loreExpired);
 
                     long convertedTime;
                     if(Objects.requireNonNull(config.getString("type.expiration")).equalsIgnoreCase(""))

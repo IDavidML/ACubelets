@@ -19,7 +19,8 @@ public class CubeletType {
     private Long expireTime;
 
     private ItemStack icon;
-    private List<String> lore;
+    private List<String> loreAvailable;
+    private List<String> loreExpired;
 
     private String animation;
 
@@ -71,9 +72,21 @@ public class CubeletType {
 
     public void setIcon(ItemStack icon) { this.icon = icon; }
 
-    public List<String> getLore() { return lore; }
+    public List<String> getLoreAvailable() {
+        return loreAvailable;
+    }
 
-    public void setLore(List<String> lore) { this.lore = lore; }
+    public void setLoreAvailable(List<String> loreAvailable) {
+        this.loreAvailable = loreAvailable;
+    }
+
+    public List<String> getLoreExpired() {
+        return loreExpired;
+    }
+
+    public void setLoreExpired(List<String> loreExpired) {
+        this.loreExpired = loreExpired;
+    }
 
     public String getAnimation() {
         return animation;
@@ -107,7 +120,6 @@ public class CubeletType {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", icon=" + icon +
-                ", lore=" + lore +
                 ", rewards=" + rewards +
                 ", rarities=" + rarities +
                 '}';

@@ -5,6 +5,7 @@ import me.davidml16.acubelets.objects.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -45,6 +46,12 @@ public class PlayerDataHandler {
 			profile.setCubelets(cubelets);
 			Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramHandler().loadHolograms(p), 2L);
 		});
+
+		try {
+			main.getDatabaseHandler().removeExpiredCubelets(p.getUniqueId());
+		} catch (SQLException throwables) {
+			throwables.printStackTrace();
+		}
 	}
 
 	public void loadAllPlayerData() {

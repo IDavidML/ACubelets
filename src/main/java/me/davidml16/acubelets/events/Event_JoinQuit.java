@@ -8,6 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.sql.SQLException;
+
 public class Event_JoinQuit implements Listener {
 
     private Main main;
@@ -35,6 +37,12 @@ public class Event_JoinQuit implements Listener {
         main.getHologramHandler().removeHolograms(p);
 
         main.setPlayerCount(main.getPlayerCount() - 1);
+
+        try {
+            main.getDatabaseHandler().removeExpiredCubelets(p.getUniqueId());
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
 }

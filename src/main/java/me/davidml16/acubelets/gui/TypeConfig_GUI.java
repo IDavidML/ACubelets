@@ -58,7 +58,7 @@ public class TypeConfig_GUI implements Listener {
 
         CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
         List<String> lore = new ArrayList<>();
-        for(String line : type.getLore()) {
+        for(String line : type.getLoreAvailable()) {
             lore.add(ColorUtil.translate(line));
         }
         gui.setItem(10, new ItemBuilder(ACMaterial.NAME_TAG.parseItem()).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
@@ -158,7 +158,7 @@ public class TypeConfig_GUI implements Listener {
 
         CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
         List<String> lore = new ArrayList<>();
-        for(String line : type.getLore()) {
+        for(String line : type.getLoreAvailable()) {
             lore.add(ColorUtil.translate(line));
         }
         gui.setItem(10, new ItemBuilder(ACMaterial.NAME_TAG.parseItem()).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());

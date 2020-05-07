@@ -23,7 +23,7 @@ public interface Database {
 
     void removeCubelet(String type) throws SQLException;
 
-    Cubelet getCubelet(UUID uuid, UUID cubeletUUID) throws SQLException;
+    void removeExpiredCubelets(UUID uuid) throws SQLException;
 
     CompletableFuture<List<Cubelet>> getCubelets(UUID uuid);
 
