@@ -19,8 +19,8 @@ public class TimeAPI {
         this.millis = millis;
     }
 
-    public TimeAPI reparse(String time) {
-        millis = 0;
+    public void reparse(String time) {
+        long temp = 0;
 
         TimeScanner scanner = new TimeScanner(time
                 .replace(" ", "")
@@ -35,60 +35,60 @@ public class TimeAPI {
                 case "ms":
                 case "millis":
                 case "milliseconds":
-                    millis += next;
+                    temp += next;
                     break;
                 case "s":
                 case "sec":
                 case "secs":
                 case "second":
                 case "seconds":
-                    millis += TimeUnit.SECONDS.toMillis(next);
+                    temp += TimeUnit.SECONDS.toMillis(next);
                     break;
                 case "m":
                 case "min":
                 case "mins":
                 case "minute":
                 case "minutes":
-                    millis += TimeUnit.MINUTES.toMillis(next);
+                    temp += TimeUnit.MINUTES.toMillis(next);
                     break;
                 case "h":
                 case "hr":
                 case "hrs":
                 case "hour":
                 case "hours":
-                    millis += TimeUnit.HOURS.toMillis(next);
+                    temp += TimeUnit.HOURS.toMillis(next);
                     break;
                 case "d":
                 case "dy":
                 case "dys":
                 case "day":
                 case "days":
-                    millis += TimeUnit.DAYS.toMillis(next);
+                    temp += TimeUnit.DAYS.toMillis(next);
                     break;
                 case "w":
                 case "week":
                 case "weeks":
-                    millis += TimeUnit.DAYS.toMillis(next * DAYS_IN_WEEK);
+                    temp += TimeUnit.DAYS.toMillis(next * DAYS_IN_WEEK);
                     break;
                 case "mo":
                 case "mon":
                 case "mnth":
                 case "month":
                 case "months":
-                    millis += TimeUnit.DAYS.toMillis(next * DAYS_IN_MONTH);
+                    temp += TimeUnit.DAYS.toMillis(next * DAYS_IN_MONTH);
                     break;
                 case "y":
                 case "yr":
                 case "yrs":
                 case "year":
                 case "years":
-                    millis += TimeUnit.DAYS.toMillis(next * DAYS_IN_YEAR);
+                    temp += TimeUnit.DAYS.toMillis(next * DAYS_IN_YEAR);
                     break;
                 default:
                     throw new IllegalArgumentException();
             }
         }
-        return this;
+        this.millis = temp;
     }
 
     public String getOgTime() {

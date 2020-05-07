@@ -87,10 +87,15 @@ public class Animation2_Task implements Animation {
 
 	public void start(CubeletBox box, CubeletType type) {
 		armorStand = box.getLocation().getWorld().spawn(box.getLocation().clone().add(0.5, -0.35, 0.5), ArmorStand.class);
+
+		if (!Bukkit.getVersion().contains("1.8") && !Bukkit.getVersion().contains("1.9"))
+			armorStand.setSilent(true);
+
 		armorStand.setVisible(false);
 		armorStand.setGravity(false);
 		armorStand.setHelmet(type.getIcon());
 		armorStand.setSmall(true);
+		armorStand.setMarker(true);
 		armorStand.setRemoveWhenFarAway(false);
 		armorStand.setCustomNameVisible(false);
 		armorStand.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));

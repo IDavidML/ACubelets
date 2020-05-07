@@ -34,7 +34,7 @@ public class ExecuteGive {
         String player = args[1];
         Player target = Bukkit.getPlayer(player);
 
-        if(target == null || !target.isOnline()) {
+        if(target == null) {
             sender.sendMessage(ColorUtil.translate(
                     main.getLanguageHandler().getPrefix() + " &cThis player is not online!"));
             return false;
