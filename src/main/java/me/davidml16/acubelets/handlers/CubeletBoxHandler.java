@@ -3,6 +3,7 @@ package me.davidml16.acubelets.handlers;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.CubeletBox;
+import me.davidml16.acubelets.utils.ACMaterial;
 import me.davidml16.acubelets.utils.ColorUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -12,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class CubeletBoxHandler {
 
@@ -67,6 +69,10 @@ public class CubeletBoxHandler {
                 holo.delete();
             }
             box.getHolograms().clear();
+
+            if(!loc.getChunk().isLoaded())
+                loc.getChunk().load();
+            Objects.requireNonNull(loc.getWorld()).getBlockAt(loc).setType(Objects.requireNonNull(ACMaterial.AIR.parseMaterial()));
 
             boxes.remove(loc);
 
@@ -129,6 +135,10 @@ public class CubeletBoxHandler {
                     int z = config.getInt("locations." + String.valueOf(i) + ".z");
                     Location loc = new Location(Bukkit.getWorld(world), x, y, z);
                     boxes.put(loc, new CubeletBox(loc));
+
+                    if(!loc.getChunk().isLoaded())
+                        loc.getChunk().load();
+                    Objects.requireNonNull(loc.getWorld()).getBlockAt(loc).setType(Objects.requireNonNull(ACMaterial.END_PORTAL_FRAME.parseMaterial()));
                 }
             }
         }
