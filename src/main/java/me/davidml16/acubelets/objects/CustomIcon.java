@@ -10,16 +10,14 @@ import java.util.UUID;
 
 public class CustomIcon {
 
-    private Material material;
-    private byte data;
+    private ItemStack item;
     private String method;
     private String texture;
 
     private CustomIconType type;
 
-    public CustomIcon(Material material, byte data) {
-        this.material = material;
-        this.data = data;
+    public CustomIcon(ItemStack item) {
+        this.item = item;
         this.type = CustomIconType.ITEM;
     }
 
@@ -29,20 +27,8 @@ public class CustomIcon {
         this.type = CustomIconType.SKULL;
     }
 
-    public Material getMaterial() {
-        return material;
-    }
-
-    public void setMaterial(Material material) {
-        this.material = material;
-    }
-
-    public byte getData() {
-        return data;
-    }
-
-    public void setData(byte data) {
-        this.data = data;
+    public void setItem(ItemStack item) {
+        this.item = item;
     }
 
     public String getMethod() {
@@ -67,7 +53,7 @@ public class CustomIcon {
         ItemStack icon = null;
         switch (type) {
             case ITEM:
-                icon = new ItemBuilder(material, 1, data).toItemStack();
+                icon = item;
                 break;
             case SKULL:
                 switch(method.toLowerCase()) {

@@ -35,7 +35,7 @@ public class RenameMenu implements ConversationAbandonedListener, CommonPrompts 
             Player player = (Player) param1ConversationContext.getSessionData("player");
             switch (param1String) {
                 case "1":
-                    return new CommonPrompts.CommonStringPrompt(main, this, true, ChatColor.YELLOW + "  Enter cubelet type name, \"cancel\" to return.\n\n ", "typeName");
+                    return new CommonStringPrompt(main, this, true, ChatColor.YELLOW + "  Enter cubelet type name, \"cancel\" to return.\n\n ", "typeName");
                 case "2":
                     String name = (String) param1ConversationContext.getSessionData("typeName");
                     type.setName(name);

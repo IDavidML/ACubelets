@@ -6,12 +6,14 @@ import me.davidml16.acubelets.objects.CustomIcon;
 import me.davidml16.acubelets.objects.Rarity;
 import me.davidml16.acubelets.objects.Reward;
 import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.ItemSerializer;
 import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,16 +37,14 @@ public class RewardMenu implements ConversationAbandonedListener, CommonPrompts 
     public void conversationAbandoned(ConversationAbandonedEvent paramConversationAbandonedEvent) {}
 
     public class RewardMenuOptions extends FixedSetPrompt {
-        RewardMenuOptions() { super("1", "2", "3", "4", "5", "6", "7"); }
+        RewardMenuOptions() { super("1", "2", "3", "4", "5", "6"); }
 
         protected Prompt acceptValidatedInput(ConversationContext param1ConversationContext, String param1String) {
             CubeletType cubeletType = (CubeletType) param1ConversationContext.getSessionData("cubeletType");
             switch (param1String) {
                 case "1":
-                    return new CommonPrompts.CommonStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter reward identificator, \"cancel\" to return.\n\n ", "rewardID");
-                case "2":
                     return new CommonPrompts.UncoloredStringPrompt(main, this, true, ChatColor.YELLOW + "  Enter reward name, \"cancel\" to return.\n\n ", "rewardName");
-                case "3":
+                case "2":
                     List<Rarity> rts = new ArrayList<>(cubeletType.getRarities().values());
                     rts.sort(Collections.reverseOrder());
 
@@ -53,20 +53,19 @@ public class RewardMenu implements ConversationAbandonedListener, CommonPrompts 
                         rarities.add(rarity.getId());
                     }
 
-                    return new CommonPrompts.CommonStringPrompt(main,this, false, ChatColor.YELLOW + "  Enter reward rarity, \"cancel\" to return.\n  Available rarities: " + rarities + "\n\n ", "rewardRarity");
+                    return new CommonStringPrompt(main,this, false, ChatColor.YELLOW + "  Enter reward rarity, \"cancel\" to return.\n  Available rarities: " + rarities + "\n\n ", "rewardRarity");
+                case "3":
+                    return new CommonStringPrompt(main,this, true,ChatColor.YELLOW + "  Enter reward command, \"cancel\" to return.\n  Available variables: %player%\n\n ", "rewardCommand");
                 case "4":
-                    return new CommonPrompts.CommonStringPrompt(main,this, true,ChatColor.YELLOW + "  Enter reward command, \"cancel\" to return.\n  Available variables: %player%\n\n ", "rewardCommand");
+                    return new MaterialStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter reward icon, \"cancel\" to return.\n\n  For an item icon write 'hand' to save item in hand\n\n  For an skull icon write 'base64:texture', 'uuid:playerUUID' or 'name:playerName' \n\n ", "rewardIcon");
                 case "5":
-                    return new CommonPrompts.CommonStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter reward icon, \"cancel\" to return.\n\n  For an item icon write 'materialName' or 'materialName:materialData', for example 'WOOL:14'\n\n  For an skull icon write 'base64:texture', 'uuid:playerUUID' or 'name:playerName' \n\n ", "rewardIcon");
-                case "6":
-                    if(param1ConversationContext.getSessionData("rewardID") != null
-                            && param1ConversationContext.getSessionData("rewardName") != null
+                    if(param1ConversationContext.getSessionData("rewardName") != null
                             && param1ConversationContext.getSessionData("rewardCommand") != null
                             && param1ConversationContext.getSessionData("rewardRarity") != null
                             && param1ConversationContext.getSessionData("rewardIcon") != null) {
                         if(cubeletType.getRarities().containsKey((String) param1ConversationContext.getSessionData("rewardRarity"))) {
                             if (!rewardsIdExist(cubeletType, (String) param1ConversationContext.getSessionData("rewardID"))) {
-                                String rewardID = (String) param1ConversationContext.getSessionData("rewardID");
+                                String rewardID = "r" + cubeletType.getAllRewards().size();
                                 String rewardName = (String) param1ConversationContext.getSessionData("rewardName");
                                 String rewardRarity = (String) param1ConversationContext.getSessionData("rewardRarity");
                                 String rewardCommand = (String) param1ConversationContext.getSessionData("rewardCommand");
@@ -83,11 +82,10 @@ public class RewardMenu implements ConversationAbandonedListener, CommonPrompts 
                                             break;
                                     }
                                 } else {
-                                    String[] parts = rewardIcon.split(":");
-                                    if (parts.length == 1) {
-                                        customIcon = new CustomIcon(Material.matchMaterial(parts[0]), (byte) 0);
-                                    } else if (parts.length == 2) {
-                                        customIcon = new CustomIcon(Material.matchMaterial(parts[0]), Byte.parseByte(parts[1]));
+                                    try {
+                                        customIcon = new CustomIcon(ItemSerializer.itemStackFromBase64(rewardIcon));
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
                                     }
                                 }
 
@@ -112,7 +110,7 @@ public class RewardMenu implements ConversationAbandonedListener, CommonPrompts 
                     } else {
                         return new CommonPrompts.ErrorPrompt(main, this, "\n" + ChatColor.RED + "  You need to setup ID, NAME, RARITY, COMMAND and ICON to save reward!\n  Write anything to continue\n ");
                     }
-                case "7":
+                case "6":
                     return new CommonPrompts.ConfirmExitPrompt(main, this);
             }
             return null;
@@ -123,43 +121,37 @@ public class RewardMenu implements ConversationAbandonedListener, CommonPrompts 
             String cadena = "";
             cadena += ChatColor.GOLD + "" + ChatColor.BOLD + "\n  CUBELET REWARD CREATION MENU\n";
             cadena += ChatColor.GREEN + " \n";
-            if (param1ConversationContext.getSessionData("rewardID") == null) {
-                cadena += ChatColor.RED + "    1 " + ChatColor.GRAY + "- Set reward ID (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
-            } else {
-                cadena += ChatColor.GREEN + "    1 " + ChatColor.GRAY + "- Set reward ID (" + ChatColor.YELLOW + ChatColor.translateAlternateColorCodes('&', (String)param1ConversationContext.getSessionData("rewardID")) + ChatColor.GRAY + ")\n";
-            }
-
             if (param1ConversationContext.getSessionData("rewardName") == null) {
-                cadena += ChatColor.RED + "    2 " + ChatColor.GRAY + "- Set reward name (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
+                cadena += ChatColor.RED + "    1 " + ChatColor.GRAY + "- Set reward name (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
             } else {
-                cadena += ChatColor.GREEN + "    2 " + ChatColor.GRAY + "- Set reward name (" + ChatColor.YELLOW + param1ConversationContext.getSessionData("rewardName") + ChatColor.GRAY + ")\n";
+                cadena += ChatColor.GREEN + "    1 " + ChatColor.GRAY + "- Set reward name (" + ChatColor.YELLOW + param1ConversationContext.getSessionData("rewardName") + ChatColor.GRAY + ")\n";
             }
 
             if (param1ConversationContext.getSessionData("rewardRarity") == null) {
-                cadena += ChatColor.RED + "    3 " + ChatColor.GRAY + "- Set reward rarity (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
+                cadena += ChatColor.RED + "    2 " + ChatColor.GRAY + "- Set reward rarity (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
             } else {
-                cadena += ChatColor.GREEN + "    3 " + ChatColor.GRAY + "- Set reward rarity (" + ChatColor.YELLOW + ChatColor.translateAlternateColorCodes('&', (String)param1ConversationContext.getSessionData("rewardRarity")) + ChatColor.GRAY + ")\n";
+                cadena += ChatColor.GREEN + "    2 " + ChatColor.GRAY + "- Set reward rarity (" + ChatColor.YELLOW + ChatColor.translateAlternateColorCodes('&', (String)param1ConversationContext.getSessionData("rewardRarity")) + ChatColor.GRAY + ")\n";
             }
 
             if (param1ConversationContext.getSessionData("rewardCommand") == null) {
-                cadena += ChatColor.RED + "    4 " + ChatColor.GRAY + "- Set reward command (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
+                cadena += ChatColor.RED + "    3 " + ChatColor.GRAY + "- Set reward command (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
             } else {
-                cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Set reward command (" + ChatColor.YELLOW + param1ConversationContext.getSessionData("rewardCommand") + ChatColor.GRAY + ")\n";
+                cadena += ChatColor.GREEN + "    3 " + ChatColor.GRAY + "- Set reward command (" + ChatColor.YELLOW + param1ConversationContext.getSessionData("rewardCommand") + ChatColor.GRAY + ")\n";
             }
 
             if (param1ConversationContext.getSessionData("rewardIcon") == null) {
-                cadena += ChatColor.RED + "    5 " + ChatColor.GRAY + "- Set reward icon (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
+                cadena += ChatColor.RED + "    4 " + ChatColor.GRAY + "- Set reward icon (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
             } else {
                 String icon = (String) param1ConversationContext.getSessionData("rewardIcon");
                 if(icon.startsWith("base64:") || icon.startsWith("uuid:") || icon.startsWith("name:")) {
-                    cadena += ChatColor.GREEN + "    5 " + ChatColor.GRAY + "- Set reward icon (" + ChatColor.YELLOW + "CustomSkull" + ChatColor.GRAY + ")\n";
+                    cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Set reward icon (" + ChatColor.YELLOW + "CustomSkull" + ChatColor.GRAY + ")\n";
                 } else {
-                    cadena += ChatColor.GREEN + "    5 " + ChatColor.GRAY + "- Set reward icon (" + ChatColor.YELLOW + icon + ChatColor.GRAY + ")\n";
+                    cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Set reward icon (" + ChatColor.YELLOW + "CustomIcon" + ChatColor.GRAY + ")\n";
                 }
             }
 
-            cadena += ChatColor.GREEN + "    6 " + ChatColor.GRAY + "- Save\n";
-            cadena += ChatColor.GREEN + "    7 " + ChatColor.GRAY + "- Exit and discard\n";
+            cadena += ChatColor.GREEN + "    5 " + ChatColor.GRAY + "- Save\n";
+            cadena += ChatColor.GREEN + "    6 " + ChatColor.GRAY + "- Exit and discard\n";
             cadena += ChatColor.GREEN + " \n";
             cadena += ChatColor.GOLD + "" + ChatColor.YELLOW + "  Choose the option: \n";
             cadena += ChatColor.GREEN + " \n";

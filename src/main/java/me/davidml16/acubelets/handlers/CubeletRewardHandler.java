@@ -8,11 +8,13 @@ import me.davidml16.acubelets.objects.CustomIcon;
 import me.davidml16.acubelets.utils.ACMaterial;
 import me.davidml16.acubelets.utils.CenterString;
 import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.ItemSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -59,11 +61,10 @@ public class CubeletRewardHandler {
 											break;
 									}
 								} else {
-									String[] parts = material.split(":");
-									if (parts.length == 1) {
-										customIcon = new CustomIcon(Objects.requireNonNull(ACMaterial.matchACMaterial(parts[0])).parseMaterial(), (byte) 0);
-									} else if (parts.length == 2) {
-										customIcon = new CustomIcon(Objects.requireNonNull(ACMaterial.matchACMaterial(parts[0])).parseMaterial(), Byte.parseByte(parts[1]));
+									try {
+										customIcon = new CustomIcon(ItemSerializer.itemStackFromBase64(material));
+									} catch (IOException e) {
+										e.printStackTrace();
 									}
 								}
 

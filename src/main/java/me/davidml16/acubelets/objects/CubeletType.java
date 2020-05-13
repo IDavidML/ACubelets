@@ -4,6 +4,7 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.enums.CustomIconType;
 import me.davidml16.acubelets.objects.Rarity;
 import me.davidml16.acubelets.objects.Reward;
+import me.davidml16.acubelets.utils.ItemSerializer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
@@ -140,14 +141,16 @@ public class CubeletType {
 
         config.set("type.rewards", new ArrayList<>());
         if (config.contains("type.rewards")) {
-            for (Reward reward : getAllRewards()) {
-                config.set("type.rewards." + reward.getId() + ".name", reward.getName());
-                config.set("type.rewards." + reward.getId() + ".rarity", reward.getRarity().getId());
-                config.set("type.rewards." + reward.getId() + ".command", reward.getCommand());
+            List<Reward> rewards = getAllRewards();
+            for (int i = 0; i < rewards.size(); i++) {
+                Reward reward = rewards.get(i);
+                config.set("type.rewards.r" + String.valueOf(i) + ".name", reward.getName());
+                config.set("type.rewards.r" + String.valueOf(i) + ".rarity", reward.getRarity().getId());
+                config.set("type.rewards.r" + String.valueOf(i) + ".command", reward.getCommand());
                 if(reward.getIcon().getType() == CustomIconType.ITEM) {
-                    config.set("type.rewards." + reward.getId() + ".icon", reward.getIcon().getMaterial().name() + ":" + reward.getIcon().getData());
+                    config.set("type.rewards.r" + String.valueOf(i) + ".icon", ItemSerializer.itemStackToBase64(reward.getIcon().getItem()));
                 } else if(reward.getIcon().getType() == CustomIconType.SKULL) {
-                    config.set("type.rewards." + reward.getId() + ".icon", reward.getIcon().getMethod() + ":" + reward.getIcon().getTexture());
+                    config.set("type.rewards.r" + String.valueOf(i) + ".icon", reward.getIcon().getMethod() + ":" + reward.getIcon().getTexture());
                 }
             }
         }

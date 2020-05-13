@@ -2,6 +2,7 @@ package me.davidml16.acubelets.conversation;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.ItemSerializer;
 import me.davidml16.acubelets.utils.Sounds;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.ChatColor;
@@ -145,30 +146,57 @@ public interface CommonPrompts  {
         }
     }
 
-    public static class MaterialPrompt extends StringPrompt {
+    public static class MaterialStringPrompt extends StringPrompt {
         private Prompt parentPrompt;
         private String text;
         private String storeValue;
+        private boolean allowSpaces;
+        private Main main;
 
-        public MaterialPrompt(Prompt param1Prompt, String param1String1, String param1String2) {
+        public MaterialStringPrompt(Main main, Prompt param1Prompt, boolean param1Boolean, String param1String1, String param1String2) {
+            this.main = main;
             this.parentPrompt = param1Prompt;
+            this.allowSpaces = param1Boolean;
             this.text = param1String1;
             this.storeValue = param1String2;
         }
 
-        public String getPromptText(ConversationContext param1ConversationContext) { return this.text; }
+        public MaterialStringPrompt(Prompt param1Prompt, String param1String1, String param1String2) {
+            this(null, param1Prompt, true, param1String1, param1String2);
+        }
+
+        public String getPromptText(ConversationContext param1ConversationContext) {
+            return this.text;
+        }
 
         public Prompt acceptInput(ConversationContext param1ConversationContext, String param1String) {
             if (param1String.trim().equalsIgnoreCase("cancel")) {
                 return this.parentPrompt;
             }
-            Material material = Material.matchMaterial(param1String);
-            if (material == null) {
-                param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  The specified material is not valid!\n ");
+            if (!this.allowSpaces && param1String.contains(" ")) {
+                param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  Spaces are not allowed!\n ");
+                Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+                        ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);
                 return this;
             }
 
-            param1ConversationContext.setSessionData(this.storeValue, material);
+            String line;
+            if (param1String.trim().equalsIgnoreCase("hand")) {
+                if (((Player) param1ConversationContext.getSessionData("player")).getItemInHand().getType() == Material.AIR) {
+                    param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  Air icon are not allowed!\n ");
+                    Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+                            ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);
+                    return this;
+                } else {
+                    line = ItemSerializer.itemStackToBase64(((Player) param1ConversationContext.getSessionData("player")).getItemInHand());
+                }
+            } else {
+                line = param1String;
+            }
+
+            param1ConversationContext.setSessionData(this.storeValue, line);
+            Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+                    ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.CLICK, 10, 2);
             return this.parentPrompt;
         }
     }
