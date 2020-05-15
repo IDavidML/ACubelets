@@ -91,7 +91,7 @@ public class HologramHandler {
                     if(!line.contains("%reward_icon%"))
                         hologram.appendTextLine(line);
                     else
-                        hologram.appendItemLine(box.getLastReward().getIcon().getItem());
+                        hologram.appendItemLine(box.getLastReward().getIcon());
                 }
             }
 
@@ -125,7 +125,7 @@ public class HologramHandler {
                 if(!line.contains("%reward_icon%"))
                     hologram.appendTextLine(line);
                 else
-                    hologram.appendItemLine(box.getLastReward().getIcon().getItem());
+                    hologram.appendItemLine(box.getLastReward().getIcon());
             }
         }
 
@@ -162,7 +162,7 @@ public class HologramHandler {
                     if(!line.contains("%reward_icon%"))
                         hologram.appendTextLine(line);
                     else
-                        hologram.appendItemLine(reward.getIcon().getItem());
+                        hologram.appendItemLine(reward.getIcon());
                 }
 
             }

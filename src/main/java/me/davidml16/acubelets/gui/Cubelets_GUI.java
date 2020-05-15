@@ -175,13 +175,13 @@ public class Cubelets_GUI implements Listener {
                         String typeID = NBTEditor.getString(e.getCurrentItem(), "typeID");
 
                         Profile profile = main.getPlayerDataHandler().getData(p);
-                        Optional<Cubelet> cubelet = profile.getCubelets().stream().filter(cbl -> {
-                            return cbl.getUuid().toString().equalsIgnoreCase(cubeletUUID);
-                        }).findFirst();
+                        Optional<Cubelet> cubelet = profile.getCubelets().stream().filter(cbl -> cbl.getUuid().toString().equalsIgnoreCase(cubeletUUID)).findFirst();
 
                         if(cubelet.isPresent()) {
                             if (cubelet.get().getExpire() > System.currentTimeMillis()) {
                                 main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), main.getCubeletTypesHandler().getTypeBydId(typeID));
+
+                                profile.getCubelets().removeIf(cblt -> cblt.getUuid().toString().equals(cubeletUUID));
 
                                 main.getDatabaseHandler().removeCubelet(p.getUniqueId(), UUID.fromString(Objects.requireNonNull(cubeletUUID)));
                                 profile.getCubelets().remove(cubelet);

@@ -2,9 +2,7 @@ package me.davidml16.acubelets.objects;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.enums.CustomIconType;
-import me.davidml16.acubelets.objects.Rarity;
-import me.davidml16.acubelets.objects.Reward;
-import me.davidml16.acubelets.utils.ItemSerializer;
+import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
@@ -147,11 +145,7 @@ public class CubeletType {
                 config.set("type.rewards.r" + String.valueOf(i) + ".name", reward.getName());
                 config.set("type.rewards.r" + String.valueOf(i) + ".rarity", reward.getRarity().getId());
                 config.set("type.rewards.r" + String.valueOf(i) + ".command", reward.getCommand());
-                if(reward.getIcon().getType() == CustomIconType.ITEM) {
-                    config.set("type.rewards.r" + String.valueOf(i) + ".icon", ItemSerializer.itemStackToBase64(reward.getIcon().getItem()));
-                } else if(reward.getIcon().getType() == CustomIconType.SKULL) {
-                    config.set("type.rewards.r" + String.valueOf(i) + ".icon", reward.getIcon().getMethod() + ":" + reward.getIcon().getTexture());
-                }
+                XItemStack.serialize(reward.getIcon(), config, "type.rewards.r" + String.valueOf(i) + ".icon");
             }
         }
 

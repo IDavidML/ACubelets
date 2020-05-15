@@ -5,14 +5,13 @@ import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Rarity;
 import me.davidml16.acubelets.objects.Reward;
 import me.davidml16.acubelets.objects.CustomIcon;
-import me.davidml16.acubelets.utils.ACMaterial;
 import me.davidml16.acubelets.utils.CenterString;
 import me.davidml16.acubelets.utils.ColorUtil;
-import me.davidml16.acubelets.utils.ItemSerializer;
+import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.util.*;
@@ -50,25 +49,9 @@ public class CubeletRewardHandler {
 									rewardsRarity = rewards.get(rarity);
 								}
 
-								CustomIcon customIcon = null;
-								if(material.startsWith("base64:") ||material.startsWith("uuid:") || material.startsWith("name:")) {
-									String[] icon = material.split(":");
-									switch(icon[0].toLowerCase()) {
-										case "base64":
-										case "uuid":
-										case "name":
-											customIcon = new CustomIcon(icon[0], icon[1]);
-											break;
-									}
-								} else {
-									try {
-										customIcon = new CustomIcon(ItemSerializer.itemStackFromBase64(material));
-									} catch (IOException e) {
-										e.printStackTrace();
-									}
-								}
+								ItemStack rewardIcon = XItemStack.deserialize(config, "type.rewards." + String.valueOf(rewardid) + ".icon");
 
-								rewardsRarity.add(new Reward(rewardid, name, cubeletType.getRarities().get(rarity), command, customIcon));
+								rewardsRarity.add(new Reward(rewardid, name, cubeletType.getRarities().get(rarity), command, rewardIcon));
 								rewards.put(rarity, rewardsRarity);
 
 								rewardsLoaded++;

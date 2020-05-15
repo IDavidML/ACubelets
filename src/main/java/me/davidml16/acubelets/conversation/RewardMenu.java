@@ -6,12 +6,12 @@ import me.davidml16.acubelets.objects.CustomIcon;
 import me.davidml16.acubelets.objects.Rarity;
 import me.davidml16.acubelets.objects.Reward;
 import me.davidml16.acubelets.utils.ColorUtil;
-import me.davidml16.acubelets.utils.ItemSerializer;
 import me.davidml16.acubelets.utils.Sounds;
+import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -57,7 +57,22 @@ public class RewardMenu implements ConversationAbandonedListener, CommonPrompts 
                 case "3":
                     return new CommonStringPrompt(main,this, true,ChatColor.YELLOW + "  Enter reward command, \"cancel\" to return.\n  Available variables: %player%\n\n ", "rewardCommand");
                 case "4":
-                    return new MaterialStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter reward icon, \"cancel\" to return.\n\n  For an item icon write 'hand' to save item in hand\n\n  For an skull icon write 'base64:texture', 'uuid:playerUUID' or 'name:playerName' \n\n ", "rewardIcon");
+                     Player p = (Player) param1ConversationContext.getSessionData("player");
+                     ItemStack itemHand = p.getInventory().getItemInHand();
+
+                    if(itemHand == null || itemHand.getType() == XMaterial.AIR.parseMaterial()) {
+                        param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  AIR icon not allowed!\n ");
+                        Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+                                ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);
+                    }
+
+                    param1ConversationContext.setSessionData("rewardIcon", itemHand);
+                    param1ConversationContext.getForWhom().sendRawMessage(
+                            ChatColor.GREEN + "  Succesfully setup reward icon.");
+                    Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+                            ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.CLICK, 10, 2);
+
+                    return this;
                 case "5":
                     if(param1ConversationContext.getSessionData("rewardName") != null
                             && param1ConversationContext.getSessionData("rewardCommand") != null
@@ -69,27 +84,9 @@ public class RewardMenu implements ConversationAbandonedListener, CommonPrompts 
                                 String rewardName = (String) param1ConversationContext.getSessionData("rewardName");
                                 String rewardRarity = (String) param1ConversationContext.getSessionData("rewardRarity");
                                 String rewardCommand = (String) param1ConversationContext.getSessionData("rewardCommand");
-                                String rewardIcon = (String) param1ConversationContext.getSessionData("rewardIcon");
+                                ItemStack rewardIcon = (ItemStack) param1ConversationContext.getSessionData("rewardIcon");
 
-                                CustomIcon customIcon = null;
-                                if(rewardIcon.startsWith("base64:") ||rewardIcon.startsWith("uuid:") || rewardIcon.startsWith("name:")) {
-                                    String[] icon = rewardIcon.split(":");
-                                    switch(icon[0].toLowerCase()) {
-                                        case "base64":
-                                        case "uuid":
-                                        case "name":
-                                            customIcon = new CustomIcon(icon[0], icon[1]);
-                                            break;
-                                    }
-                                } else {
-                                    try {
-                                        customIcon = new CustomIcon(ItemSerializer.itemStackFromBase64(rewardIcon));
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-
-                                Reward reward = new Reward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), rewardCommand, customIcon);
+                                Reward reward = new Reward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), rewardCommand, rewardIcon);
                                 cubeletType.addReward(rewardRarity, reward);
                                 cubeletType.saveType();
 
@@ -142,12 +139,8 @@ public class RewardMenu implements ConversationAbandonedListener, CommonPrompts 
             if (param1ConversationContext.getSessionData("rewardIcon") == null) {
                 cadena += ChatColor.RED + "    4 " + ChatColor.GRAY + "- Set reward icon (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
             } else {
-                String icon = (String) param1ConversationContext.getSessionData("rewardIcon");
-                if(icon.startsWith("base64:") || icon.startsWith("uuid:") || icon.startsWith("name:")) {
-                    cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Set reward icon (" + ChatColor.YELLOW + "CustomSkull" + ChatColor.GRAY + ")\n";
-                } else {
-                    cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Set reward icon (" + ChatColor.YELLOW + "CustomIcon" + ChatColor.GRAY + ")\n";
-                }
+                ItemStack icon = (ItemStack) param1ConversationContext.getSessionData("rewardIcon");
+                cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Set reward icon (" + ChatColor.YELLOW + icon.getType().name() + ChatColor.GRAY + ")\n";
             }
 
             cadena += ChatColor.GREEN + "    5 " + ChatColor.GRAY + "- Save\n";
