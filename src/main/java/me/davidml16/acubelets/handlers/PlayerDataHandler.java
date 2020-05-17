@@ -42,16 +42,16 @@ public class PlayerDataHandler {
 		Profile profile = new Profile(main, p.getUniqueId());
 		data.put(p.getUniqueId(), profile);
 
-		main.getDatabaseHandler().getCubelets(p.getUniqueId()).thenAccept(cubelets -> {
-			profile.setCubelets(cubelets);
-			Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramHandler().loadHolograms(p), 2L);
-		});
-
 		try {
 			main.getDatabaseHandler().removeExpiredCubelets(p.getUniqueId());
 		} catch (SQLException throwables) {
 			throwables.printStackTrace();
 		}
+
+		main.getDatabaseHandler().getCubelets(p.getUniqueId()).thenAccept(cubelets -> {
+			profile.setCubelets(cubelets);
+			Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramHandler().loadHolograms(p), 2L);
+		});
 	}
 
 	public void loadAllPlayerData() {

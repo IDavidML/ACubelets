@@ -4,8 +4,7 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Rarity;
 import me.davidml16.acubelets.objects.Reward;
-import me.davidml16.acubelets.objects.CustomIcon;
-import me.davidml16.acubelets.utils.CenterString;
+import me.davidml16.acubelets.utils.MessageUtils;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import org.bukkit.Bukkit;
@@ -13,7 +12,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -112,19 +110,6 @@ public class CubeletRewardHandler {
 				return item;
 		}
 		throw new RuntimeException("Should never be shown.");
-	}
-
-	public void sendLootMessage(Player opening, CubeletType cubeletType, Reward reward) {
-		Player target = Bukkit.getPlayer(opening.getUniqueId());
-		if (target != null) {
-			for(String line : main.getLanguageHandler().getMessageList("Cubelet.Reward")) {
-				target.sendMessage(CenterString.centeredMessage(ColorUtil.translate(line
-						.replaceAll("%cubelet_type%", cubeletType.getName())
-						.replaceAll("%reward_name%", reward.getName())
-						.replaceAll("%reward_rarity%", reward.getRarity().getName())
-				)));
-			}
-		}
 	}
 
 }

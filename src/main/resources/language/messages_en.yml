@@ -31,9 +31,14 @@ Cubelet:
     Other: '&6%player% &cis already opening a Cubelet at this machine!'
   Reward:
     - ''
-    - '%cubelet_type% Loot'
-    - '&5You found: &a%reward_name%'
-    - '&5Rarity: %reward_rarity%'
+    - '%center%%cubelet_type% Loot'
+    - '%center%&5You found: &a%reward_name%'
+    - '%center%&5Rarity: %reward_rarity%'
+    - ''
+  NoCubelets:
+    - ''
+    - '%center%&aYou can buy Cubelets on our store &c&lHERE&a!'
+    - '%center%&6https://example.com'
     - ''
 
 Holograms:
@@ -71,6 +76,7 @@ GUI:
           - '&7You can get Cubelets by playing games.'
           - '&7You are also able to purchase them'
           - '&7on our store.'
+          - '&6Click for store link.'
       Ordered:
         Type:
           Name: '&aOrderer by - &a&lType'

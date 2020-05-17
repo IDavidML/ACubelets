@@ -2,12 +2,11 @@ package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.utils.ACMaterial;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.Sounds;
+import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -55,33 +54,33 @@ public class Animations_GUI implements Listener {
         if(guis.containsKey(id)) return;
 
         Inventory gui = Bukkit.createInventory(null, 45, "%cubelet_type% | Animations".replaceAll("%cubelet_type%", id));
-        ItemStack edge = new ItemBuilder(ACMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
-        ItemStack back = new ItemBuilder(ACMaterial.ARROW.parseItem()).setName(ColorUtil.translate("&aBack to config")).toItemStack();
+        ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
+        ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(ColorUtil.translate("&aBack to config")).toItemStack();
 
         FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation1")) {
-            gui.setItem(11, new ItemBuilder(ACMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
-            gui.setItem(20, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 1")).toItemStack());
+            gui.setItem(11, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
+            gui.setItem(20, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 1")).toItemStack());
         } else {
-            gui.setItem(11, new ItemBuilder(ACMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
-            gui.setItem(20, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 1")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
+            gui.setItem(11, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
+            gui.setItem(20, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 1")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
         }
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation2")) {
-            gui.setItem(13, new ItemBuilder(ACMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
-            gui.setItem(22, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 2")).toItemStack());
+            gui.setItem(13, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
+            gui.setItem(22, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 2")).toItemStack());
         } else {
-            gui.setItem(13, new ItemBuilder(ACMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
-            gui.setItem(22, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 2")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
+            gui.setItem(13, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
+            gui.setItem(22, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 2")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
         }
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation3")) {
-            gui.setItem(15, new ItemBuilder(ACMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
-            gui.setItem(24, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 3")).toItemStack());
+            gui.setItem(15, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
+            gui.setItem(24, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 3")).toItemStack());
         } else {
-            gui.setItem(15, new ItemBuilder(ACMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
-            gui.setItem(24, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 3")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
+            gui.setItem(15, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
+            gui.setItem(24, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 3")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
         }
 
         for (int i = 0; i < 45; i++) {
@@ -107,27 +106,27 @@ public class Animations_GUI implements Listener {
         FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation1")) {
-            gui.setItem(11, new ItemBuilder(ACMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
-            gui.setItem(20, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 1")).toItemStack());
+            gui.setItem(11, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
+            gui.setItem(20, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 1")).toItemStack());
         } else {
-            gui.setItem(11, new ItemBuilder(ACMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
-            gui.setItem(20, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 1")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
+            gui.setItem(11, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
+            gui.setItem(20, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 1")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
         }
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation2")) {
-            gui.setItem(13, new ItemBuilder(ACMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
-            gui.setItem(22, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 2")).toItemStack());
+            gui.setItem(13, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
+            gui.setItem(22, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 2")).toItemStack());
         } else {
-            gui.setItem(13, new ItemBuilder(ACMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
-            gui.setItem(22, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 2")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
+            gui.setItem(13, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
+            gui.setItem(22, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 2")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
         }
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation3")) {
-            gui.setItem(15, new ItemBuilder(ACMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
-            gui.setItem(24, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 3")).toItemStack());
+            gui.setItem(15, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&a&l[+]")).toItemStack());
+            gui.setItem(24, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&aAnimation 3")).toItemStack());
         } else {
-            gui.setItem(15, new ItemBuilder(ACMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
-            gui.setItem(24, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 3")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
+            gui.setItem(15, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&c&l[-]")).toItemStack());
+            gui.setItem(24, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem()).setName(ColorUtil.translate("&cAnimation 3")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
         }
 
         for(HumanEntity pl : gui.getViewers()) {

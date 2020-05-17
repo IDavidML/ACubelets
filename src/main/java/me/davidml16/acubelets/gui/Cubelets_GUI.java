@@ -8,6 +8,7 @@ import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Profile;
 import me.davidml16.acubelets.utils.*;
 import me.davidml16.acubelets.utils.TimeAPI.TimeUtils;
+import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -37,6 +38,10 @@ public class Cubelets_GUI implements Listener {
         return opened;
     }
 
+    public void reloadPage(Player p) {
+        openPage(p, opened.get(p.getUniqueId()));
+    }
+
     private void openPage(Player p, int page) {
 
         Profile profile = main.getPlayerDataHandler().getData(p.getUniqueId());
@@ -59,18 +64,18 @@ public class Cubelets_GUI implements Listener {
         Inventory gui = Bukkit.createInventory(null, neededSize, main.getLanguageHandler().getMessage("GUI.Opening.Title"));
 
         if (page > 0) {
-            gui.setItem((neededSize - 9), new ItemBuilder(ACMaterial.SUGAR_CANE.parseItem())
+            gui.setItem((neededSize - 9), new ItemBuilder(XMaterial.SUGAR_CANE.parseItem())
                     .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.PreviousPage.Name"))
                     .toItemStack());
         }
 
         if (main.getPlayerDataHandler().getData(p.getUniqueId()).getCubelets().size() > (page + 1) * 27) {
-            gui.setItem((neededSize - 1), new ItemBuilder(ACMaterial.SUGAR_CANE.parseItem())
+            gui.setItem((neededSize - 1), new ItemBuilder(XMaterial.SUGAR_CANE.parseItem())
                     .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.NextPage.Name"))
                     .toItemStack());
         }
 
-        ItemStack back = new ItemBuilder(ACMaterial.BOOK.parseItem())
+        ItemStack back = new ItemBuilder(XMaterial.BOOK.parseItem())
                 .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Close.Name"))
                 .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Close.Lore"))
                 .toItemStack();
@@ -82,13 +87,13 @@ public class Cubelets_GUI implements Listener {
         if(cubelets.size() > 0) {
 
             if(profile.getOrderBy().equalsIgnoreCase("date")) {
-                ItemStack orderByDate = new ItemBuilder(ACMaterial.CLOCK.parseItem())
+                ItemStack orderByDate = new ItemBuilder(XMaterial.CLOCK.parseItem())
                         .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Ordered.Date.Name"))
                         .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Ordered.Date.Lore"))
                         .toItemStack();
                 gui.setItem(neededSize - 3, orderByDate);
             } else if(profile.getOrderBy().equalsIgnoreCase("type")) {
-                ItemStack orderByType = new ItemBuilder(ACMaterial.NAME_TAG.parseItem())
+                ItemStack orderByType = new ItemBuilder(XMaterial.NAME_TAG.parseItem())
                         .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Ordered.Type.Name"))
                         .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Ordered.Type.Lore"))
                         .toItemStack();
@@ -120,7 +125,7 @@ public class Cubelets_GUI implements Listener {
                 gui.addItem(item);
             }
         } else {
-            gui.setItem(0, new ItemBuilder(ACMaterial.BARRIER.parseItem())
+            gui.setItem(0, new ItemBuilder(XMaterial.BARRIER.parseItem())
                     .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.NoCubelets.Name"))
                     .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.NoCubelets.Lore")
             ).toItemStack());
@@ -156,9 +161,9 @@ public class Cubelets_GUI implements Listener {
             e.setCancelled(true);
             int slot = e.getRawSlot();
             if(e.getClick() != ClickType.DOUBLE_CLICK) {
-                if (slot == (p.getOpenInventory().getTopInventory().getSize() - 9) && e.getCurrentItem().getType() == ACMaterial.SUGAR_CANE.parseMaterial()) {
+                if (slot == (p.getOpenInventory().getTopInventory().getSize() - 9) && e.getCurrentItem().getType() == XMaterial.SUGAR_CANE.parseMaterial()) {
                     openPage(p, opened.get(p.getUniqueId()) - 1);
-                } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 1) && e.getCurrentItem().getType() == ACMaterial.SUGAR_CANE.parseMaterial()) {
+                } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 1) && e.getCurrentItem().getType() == XMaterial.SUGAR_CANE.parseMaterial()) {
                     openPage(p, opened.get(p.getUniqueId()) + 1);
                 } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 5)) {
                     p.closeInventory();
@@ -179,15 +184,24 @@ public class Cubelets_GUI implements Listener {
 
                         if(cubelet.isPresent()) {
                             if (cubelet.get().getExpire() > System.currentTimeMillis()) {
-                                main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), main.getCubeletTypesHandler().getTypeBydId(typeID));
 
-                                profile.getCubelets().removeIf(cblt -> cblt.getUuid().toString().equals(cubeletUUID));
+                                CubeletType type = main.getCubeletTypesHandler().getTypeBydId(typeID);
+                                if(type.getAllRewards().size() > 0) {
+                                    main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), type);
 
-                                main.getDatabaseHandler().removeCubelet(p.getUniqueId(), UUID.fromString(Objects.requireNonNull(cubeletUUID)));
-                                profile.getCubelets().remove(cubelet);
+                                    profile.getCubelets().removeIf(cblt -> cblt.getUuid().toString().equals(cubeletUUID));
 
-                                p.closeInventory();
+                                    main.getDatabaseHandler().removeCubelet(p.getUniqueId(), UUID.fromString(Objects.requireNonNull(cubeletUUID)));
+                                    profile.getCubelets().remove(cubelet);
+
+                                    p.closeInventory();
+                                }
                             }
+                        }
+                    } else {
+                        if(e.getCurrentItem().getType() == XMaterial.BARRIER.parseMaterial()) {
+                            p.closeInventory();
+                            MessageUtils.sendShopMessage(p);
                         }
                     }
                 }

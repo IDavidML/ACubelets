@@ -1,8 +1,16 @@
 package me.davidml16.acubelets.utils;
 
+import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.handlers.LanguageHandler;
+import me.davidml16.acubelets.objects.CubeletType;
+import me.davidml16.acubelets.objects.Reward;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
-public class CenterString {
+public class MessageUtils {
 
     public enum DefaultFontInfo {
 
@@ -168,6 +176,41 @@ public class CenterString {
         }
 
         return returnMessage.toString();
+    }
+
+    public static void sendLootMessage(Player opening, CubeletType cubeletType, Reward reward) {
+        Player target = Bukkit.getPlayer(opening.getUniqueId());
+        if (target != null) {
+            for(String line : Main.get().getLanguageHandler().getMessageList("Cubelet.Reward")) {
+                if(line.contains("%center%")) {
+                    line = line.replaceAll("%center%", "");
+                    target.sendMessage(MessageUtils.centeredMessage(ColorUtil.translate(line
+                            .replaceAll("%cubelet_type%", cubeletType.getName())
+                            .replaceAll("%reward_name%", reward.getName())
+                            .replaceAll("%reward_rarity%", reward.getRarity().getName())
+                    )));
+                } else {
+                    target.sendMessage(ColorUtil.translate(line
+                            .replaceAll("%cubelet_type%", cubeletType.getName())
+                            .replaceAll("%reward_name%", reward.getName())
+                            .replaceAll("%reward_rarity%", reward.getRarity().getName())
+                    ));
+                }
+            }
+        }
+    }
+
+    public static void sendShopMessage(Player player) {
+        if (player != null) {
+            for(String line : Main.get().getLanguageHandler().getMessageList("Cubelet.NoCubelets")) {
+                if(line.contains("%center%")) {
+                    line = line.replaceAll("%center%", "");
+                    player.sendMessage(MessageUtils.centeredMessage(ColorUtil.translate(line)));
+                } else {
+                    player.sendMessage(ColorUtil.translate(line));
+                }
+            }
+        }
     }
 
 }

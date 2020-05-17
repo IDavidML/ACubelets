@@ -3,9 +3,8 @@ package me.davidml16.acubelets.events;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.enums.CubeletBoxState;
-import me.davidml16.acubelets.utils.ACMaterial;
+import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,7 +27,7 @@ public class Event_Interact implements Listener {
         Action action = e.getAction();
 
         if(action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
-            if(e.getClickedBlock().getType() == ACMaterial.END_PORTAL_FRAME.parseMaterial() && main.getCubeletBoxHandler().getBoxes().containsKey(e.getClickedBlock().getLocation())) {
+            if(e.getClickedBlock().getType() == XMaterial.END_PORTAL_FRAME.parseMaterial() && main.getCubeletBoxHandler().getBoxes().containsKey(e.getClickedBlock().getLocation())) {
                 e.setCancelled(true);
 
                 if(!Bukkit.getVersion().contains("1.8")) {

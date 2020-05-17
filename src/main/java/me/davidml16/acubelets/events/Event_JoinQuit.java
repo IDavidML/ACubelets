@@ -21,6 +21,7 @@ public class Event_JoinQuit implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         main.getPlayerDataHandler().loadPlayerData(p);
+        main.getDatabaseHandler().updatePlayerName(p);
         main.setPlayerCount(main.getPlayerCount() + 1);
     }
 
@@ -36,6 +37,7 @@ public class Event_JoinQuit implements Listener {
         main.getPlayerDataHandler().getPlayersData().remove(p.getUniqueId());
         main.getHologramHandler().removeHolograms(p);
 
+        main.getDatabaseHandler().updatePlayerName(p);
         main.setPlayerCount(main.getPlayerCount() - 1);
 
         try {

@@ -8,6 +8,7 @@ import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Reward;
 import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.MessageUtils;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
@@ -108,7 +109,7 @@ public class Animation3_Task implements Animation {
 
 				Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(),
 						reward.getCommand().replaceAll("%player%", cubeletBox.getPlayerOpening().getName()));
-				main.getCubeletRewardHandler().sendLootMessage(cubeletBox.getPlayerOpening(), cubeletType, reward);
+				MessageUtils.sendLootMessage(cubeletBox.getPlayerOpening(), cubeletType, reward);
 
 				cubeletBox.setState(CubeletBoxState.EMPTY);
 				cubeletBox.setPlayerOpening(null);

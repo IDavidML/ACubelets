@@ -5,6 +5,7 @@ import me.davidml16.acubelets.conversation.RenameMenu;
 import me.davidml16.acubelets.conversation.TypeIconMenu;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.utils.*;
+import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -52,7 +53,7 @@ public class TypeConfig_GUI implements Listener {
         if(guis.containsKey(id)) return;
 
         Inventory gui = Bukkit.createInventory(null, 45, "%cubelet_type% | Configuration".replaceAll("%cubelet_type%", id));
-        ItemStack edge = new ItemBuilder(ACMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
+        ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
 
         FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
 
@@ -61,7 +62,7 @@ public class TypeConfig_GUI implements Listener {
         for(String line : type.getLoreAvailable()) {
             lore.add(ColorUtil.translate(line));
         }
-        gui.setItem(10, new ItemBuilder(ACMaterial.NAME_TAG.parseItem()).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
+        gui.setItem(10, new ItemBuilder(XMaterial.NAME_TAG.parseItem()).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
         gui.setItem(19, new ItemBuilder(type.getIcon()).setName(ColorUtil.translate("&aCubelet type icon"))
                 .setLore(
                         "",
@@ -73,7 +74,7 @@ public class TypeConfig_GUI implements Listener {
                 )
                 .toItemStack());
 
-        gui.setItem(21, new ItemBuilder(ACMaterial.ANVIL.parseItem()).setName(ColorUtil.translate("&aCubelet type name"))
+        gui.setItem(21, new ItemBuilder(XMaterial.ANVIL.parseItem()).setName(ColorUtil.translate("&aCubelet type name"))
                 .setLore(
                         "",
                         ColorUtil.translate(" &7Click on the anvil "),
@@ -86,7 +87,7 @@ public class TypeConfig_GUI implements Listener {
                 )
                 .toItemStack());
 
-        gui.setItem(23, new ItemBuilder(ACMaterial.ARMOR_STAND.parseItem())
+        gui.setItem(23, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem())
                 .setName(ColorUtil.translate("&aAnimations"))
                 .setLore(
                         "",
@@ -97,7 +98,7 @@ public class TypeConfig_GUI implements Listener {
                         ColorUtil.translate("&eClick to config animations! ")
                 ).toItemStack());
 
-        gui.setItem(16, new ItemBuilder(ACMaterial.ITEM_FRAME.parseItem())
+        gui.setItem(16, new ItemBuilder(XMaterial.ITEM_FRAME.parseItem())
                 .setName(ColorUtil.translate("&aRarities"))
                 .setLore(
                         "",
@@ -111,7 +112,7 @@ public class TypeConfig_GUI implements Listener {
                         ColorUtil.translate("&eClick to config rarities! ")
                 ).toItemStack());
 
-        gui.setItem(25, new ItemBuilder(ACMaterial.GOLD_NUGGET.parseItem())
+        gui.setItem(25, new ItemBuilder(XMaterial.GOLD_NUGGET.parseItem())
                 .setName(ColorUtil.translate("&aRewards"))
                 .setLore(
                         "",
@@ -125,7 +126,7 @@ public class TypeConfig_GUI implements Listener {
                         ColorUtil.translate("&eClick to config rewards! ")
                 ).toItemStack());
         
-        gui.setItem(40, new ItemBuilder(ACMaterial.BARRIER.parseItem())
+        gui.setItem(40, new ItemBuilder(XMaterial.BARRIER.parseItem())
                 .setName(ColorUtil.translate("&cReload configuration "))
                 .setLore(
                         "",
@@ -161,7 +162,7 @@ public class TypeConfig_GUI implements Listener {
         for(String line : type.getLoreAvailable()) {
             lore.add(ColorUtil.translate(line));
         }
-        gui.setItem(10, new ItemBuilder(ACMaterial.NAME_TAG.parseItem()).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
+        gui.setItem(10, new ItemBuilder(XMaterial.NAME_TAG.parseItem()).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
         gui.setItem(19, new ItemBuilder(type.getIcon()).setName(ColorUtil.translate("&aCubelet type icon"))
                 .setLore(
                         "",
@@ -205,17 +206,17 @@ public class TypeConfig_GUI implements Listener {
                 p.closeInventory();
                 new TypeIconMenu(main).getConversation(p, type).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
-            } else if (slot == 16 && e.getCurrentItem().getType() == ACMaterial.ITEM_FRAME.parseMaterial()) {
+            } else if (slot == 16 && e.getCurrentItem().getType() == XMaterial.ITEM_FRAME.parseMaterial()) {
                 main.getRaritiesGUI().open(p, id);
-            } else if (slot == 23 && e.getCurrentItem().getType() == ACMaterial.ARMOR_STAND.parseMaterial()) {
+            } else if (slot == 23 && e.getCurrentItem().getType() == XMaterial.ARMOR_STAND.parseMaterial()) {
                 main.getAnimationsGUI().open(p, id);
-            } else if (slot == 25 && e.getCurrentItem().getType() == ACMaterial.GOLD_NUGGET.parseMaterial()) {
+            } else if (slot == 25 && e.getCurrentItem().getType() == XMaterial.GOLD_NUGGET.parseMaterial()) {
                 main.getRewardsGUI().open(p, id);
-            } else if (slot == 40 && e.getCurrentItem().getType() == ACMaterial.BARRIER.parseMaterial()) {
+            } else if (slot == 40 && e.getCurrentItem().getType() == XMaterial.BARRIER.parseMaterial()) {
                 main.getPluginHandler().reloadAll();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
                 p.sendMessage(main.getLanguageHandler().getMessage("Commands.Reload"));
-            } else if (slot == 21 && e.getCurrentItem().getType() == ACMaterial.ANVIL.parseMaterial()) {
+            } else if (slot == 21 && e.getCurrentItem().getType() == XMaterial.ANVIL.parseMaterial()) {
                 p.closeInventory();
                 new RenameMenu(main).getConversation(p, type).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);

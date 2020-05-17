@@ -242,21 +242,29 @@ public class CubeletTypesHandler {
         return typesFiles.containsKey(id);
     }
 
-    public void giveCubelet(Player player, String type, int amount) {
+    public void giveCubelet(String player, String type, int amount) throws SQLException {
         if (main.getCubeletTypesHandler().getTypes().containsKey(type)) {
             CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(type);
-            if(amount > 0) {
+            UUID uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
+            if (amount > 0) {
                 for (int i = 1; i <= amount; i++) {
                     try {
                         Cubelet cubelet = new Cubelet(cubeletType);
-                        main.getDatabaseHandler().addCubelet(player.getUniqueId(), cubelet.getUuid(), cubelet.getType(), cubelet.getReceived(), cubelet.getExpire());
-                        main.getPlayerDataHandler().getData(player).getCubelets().add(cubelet);
+                        main.getDatabaseHandler().addCubelet(uuid, cubelet.getUuid(), cubelet.getType(), cubelet.getReceived(), cubelet.getExpire());
+                        if(Bukkit.getPlayer(uuid) != null) {
+                            Player target = Bukkit.getPlayer(uuid);
+                            main.getPlayerDataHandler().getData(Objects.requireNonNull(target)).getCubelets().add(cubelet);
+
+                            if(main.getCubeletsGUI().getOpened().containsKey(uuid)) {
+                                main.getCubeletsGUI().reloadPage(target);
+                            }
+
+                            Bukkit.getPluginManager().callEvent(new CubeletReceivedEvent(target, getTypeBydId(type), amount));
+                        }
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
                 }
-
-                Bukkit.getPluginManager().callEvent(new CubeletReceivedEvent(player, getTypeBydId(type), amount));
             }
         }
     }

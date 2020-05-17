@@ -1,5 +1,6 @@
 package me.davidml16.acubelets.utils;
 
+import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -266,7 +267,7 @@ public class ItemBuilder {
      */
     @Deprecated
     public me.davidml16.acubelets.utils.ItemBuilder setWoolColor(DyeColor color) {
-        if (!is.getType().equals(ACMaterial.WHITE_WOOL.parseMaterial())) return this;
+        if (!is.getType().equals(XMaterial.WHITE_WOOL.parseMaterial())) return this;
         this.is.setDurability(color.getDyeData());
         return this;
     }

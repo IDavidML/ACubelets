@@ -5,10 +5,10 @@ import me.davidml16.acubelets.conversation.RewardMenu;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Pair;
 import me.davidml16.acubelets.objects.Reward;
-import me.davidml16.acubelets.utils.ACMaterial;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.Sounds;
+import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -58,9 +58,9 @@ public class Rewards_GUI implements Listener {
 
         Inventory gui = Bukkit.createInventory(null, 45, "%cubelet_type% | Rewards".replaceAll("%cubelet_type%", id));
 
-        ItemStack edge = new ItemBuilder(ACMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
-        ItemStack newReward = new ItemBuilder(ACMaterial.SUNFLOWER.parseItem()).setName(ColorUtil.translate("&aCreate new reward")).toItemStack();
-        ItemStack back = new ItemBuilder(ACMaterial.ARROW.parseItem()).setName(ColorUtil.translate("&aBack to config")).toItemStack();
+        ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
+        ItemStack newReward = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(ColorUtil.translate("&aCreate new reward")).toItemStack();
+        ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(ColorUtil.translate("&aBack to config")).toItemStack();
 
         for (Integer i : borders) {
             gui.setItem(i, edge);
@@ -106,15 +106,15 @@ public class Rewards_GUI implements Listener {
             gui.setItem(i, null);
 
         if (page > 0) {
-            gui.setItem(18, new ItemBuilder(ACMaterial.ENDER_PEARL.parseItem()).setName(ColorUtil.translate("&aPrevious page")).toItemStack());
+            gui.setItem(18, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(ColorUtil.translate("&aPrevious page")).toItemStack());
         } else {
-            gui.setItem(18, new ItemBuilder(ACMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
+            gui.setItem(18, new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
         }
 
         if (rewards.size() > (page + 1) * 21) {
-            gui.setItem(26, new ItemBuilder(ACMaterial.ENDER_PEARL.parseItem()).setName(ColorUtil.translate("&aNext page")).toItemStack());
+            gui.setItem(26, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(ColorUtil.translate("&aNext page")).toItemStack());
         } else {
-            gui.setItem(26, new ItemBuilder(ACMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
+            gui.setItem(26, new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
         }
 
         if (rewards.size() > 21) rewards = rewards.subList(page * 21, ((page * 21) + 21) > rewards.size() ? rewards.size() : (page * 21) + 21);
@@ -133,7 +133,7 @@ public class Rewards_GUI implements Listener {
                                 ColorUtil.translate("&eClick to remove! ")).toItemStack());
             }
         } else {
-            gui.setItem(22, new ItemBuilder(ACMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorUtil.translate("&cAny rewards created")).setLore(
+            gui.setItem(22, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorUtil.translate("&cAny rewards created")).setLore(
                     "",
                     ColorUtil.translate(" &7You dont have any "),
                     ColorUtil.translate(" &7reward created. "),
@@ -170,10 +170,10 @@ public class Rewards_GUI implements Listener {
             int slot = e.getRawSlot();
             String id = opened.get(p.getUniqueId()).getCubeletType();
             CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(opened.get(p.getUniqueId()).getCubeletType());
-            if (slot == 18 && e.getCurrentItem().getType() == ACMaterial.ENDER_PEARL.parseMaterial()) {
+            if (slot == 18 && e.getCurrentItem().getType() == XMaterial.ENDER_PEARL.parseMaterial()) {
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
                 openPage(p, id, opened.get(p.getUniqueId()).getPage() - 1);
-            } else if (slot == 26 && e.getCurrentItem().getType() == ACMaterial.ENDER_PEARL.parseMaterial()) {
+            } else if (slot == 26 && e.getCurrentItem().getType() == XMaterial.ENDER_PEARL.parseMaterial()) {
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
                 openPage(p, id, opened.get(p.getUniqueId()).getPage() + 1);
             } else if (slot == 39) {

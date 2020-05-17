@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.database.types;
 
 import me.davidml16.acubelets.objects.Cubelet;
+import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -14,6 +15,12 @@ public interface Database {
     void open();
 
     void loadTables();
+
+    boolean hasName(String name) throws SQLException;
+
+    void updatePlayerName(Player p);
+
+    String getPlayerUUID(String name) throws SQLException;
 
     void addCubelet(UUID uuid, String type, Long received, Long expire) throws SQLException;
 

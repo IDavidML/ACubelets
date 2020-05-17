@@ -3,8 +3,8 @@ package me.davidml16.acubelets.handlers;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.CubeletBox;
-import me.davidml16.acubelets.utils.ACMaterial;
 import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -72,7 +72,7 @@ public class CubeletBoxHandler {
 
             if(!loc.getChunk().isLoaded())
                 loc.getChunk().load();
-            Objects.requireNonNull(loc.getWorld()).getBlockAt(loc).setType(Objects.requireNonNull(ACMaterial.AIR.parseMaterial()));
+            Objects.requireNonNull(loc.getWorld()).getBlockAt(loc).setType(Objects.requireNonNull(XMaterial.AIR.parseMaterial()));
 
             boxes.remove(loc);
 
@@ -138,7 +138,7 @@ public class CubeletBoxHandler {
 
                     if(!loc.getChunk().isLoaded())
                         loc.getChunk().load();
-                    Objects.requireNonNull(loc.getWorld()).getBlockAt(loc).setType(Objects.requireNonNull(ACMaterial.END_PORTAL_FRAME.parseMaterial()));
+                    Objects.requireNonNull(loc.getWorld()).getBlockAt(loc).setType(Objects.requireNonNull(XMaterial.END_PORTAL_FRAME.parseMaterial()));
                 }
             }
         }
