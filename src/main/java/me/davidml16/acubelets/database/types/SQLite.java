@@ -88,7 +88,6 @@ public class SQLite implements Database {
     public boolean hasName(String name) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Connection connection = null;
         try {
             ps = connection.prepareStatement("SELECT * FROM ac_playernames WHERE NAME = '" + name + "';");
             rs = ps.executeQuery();
@@ -109,7 +108,6 @@ public class SQLite implements Database {
     public void updatePlayerName(Player p) {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
-            Connection connection = null;
             try {
                 ps = connection.prepareStatement("REPLACE INTO ac_playernames (UUID,NAME) VALUES(?,?)");
                 ps.setString(1, p.getUniqueId().toString());
@@ -132,7 +130,6 @@ public class SQLite implements Database {
     public String getPlayerUUID(String name) throws SQLException {
         PreparedStatement ps = null;
         ResultSet rs = null;
-        Connection connection = null;
         try {
             ps = connection.prepareStatement("SELECT * FROM ac_playernames WHERE NAME = '" + name + "';");
             rs = ps.executeQuery();
