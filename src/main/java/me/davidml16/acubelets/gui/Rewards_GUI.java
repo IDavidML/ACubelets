@@ -96,6 +96,9 @@ public class Rewards_GUI implements Listener {
         }
 
         Inventory gui = Bukkit.createInventory(null, 45, "%cubelet_type% | Rewards".replaceAll("%cubelet_type%", id));
+
+        if(!guis.containsKey(id)) loadGUI(id);
+
         gui.setContents(guis.get(id).getContents());
 
         for (int i = 10; i <= 16; i++)

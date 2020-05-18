@@ -59,7 +59,7 @@ public class Rarities_GUI implements Listener {
         Inventory gui = Bukkit.createInventory(null, 45, "%cubelet_type% | Rarities".replaceAll("%cubelet_type%", id));
 
         ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
-        ItemStack newRarity = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(ColorUtil.translate("&aCreate new reward")).toItemStack();
+        ItemStack newRarity = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(ColorUtil.translate("&aCreate new rarity")).toItemStack();
         ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(ColorUtil.translate("&aBack to config")).toItemStack();
 
         for (Integer i : borders) {
@@ -97,6 +97,9 @@ public class Rarities_GUI implements Listener {
         }
 
         Inventory gui = Bukkit.createInventory(null, 45, "%cubelet_type% | Rarities".replaceAll("%cubelet_type%", id));
+
+        if(!guis.containsKey(id)) loadGUI(id);
+
         gui.setContents(guis.get(id).getContents());
 
         for (int i = 10; i <= 16; i++)

@@ -70,10 +70,6 @@ public class CubeletBoxHandler {
             }
             box.getHolograms().clear();
 
-            if(!loc.getChunk().isLoaded())
-                loc.getChunk().load();
-            Objects.requireNonNull(loc.getWorld()).getBlockAt(loc).setType(Objects.requireNonNull(XMaterial.AIR.parseMaterial()));
-
             boxes.remove(loc);
 
             config.set("locations", new ArrayList<>());
@@ -135,10 +131,6 @@ public class CubeletBoxHandler {
                     int z = config.getInt("locations." + String.valueOf(i) + ".z");
                     Location loc = new Location(Bukkit.getWorld(world), x, y, z);
                     boxes.put(loc, new CubeletBox(loc));
-
-                    if(!loc.getChunk().isLoaded())
-                        loc.getChunk().load();
-                    Objects.requireNonNull(loc.getWorld()).getBlockAt(loc).setType(Objects.requireNonNull(XMaterial.END_PORTAL_FRAME.parseMaterial()));
                 }
             }
         }

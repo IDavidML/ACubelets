@@ -181,6 +181,9 @@ public class TypeConfig_GUI implements Listener {
 
     public void open(Player p, String id) {
         p.updateInventory();
+
+        if(!guis.containsKey(id)) loadGUI(id);
+
         p.openInventory(guis.get(id));
 
         Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
