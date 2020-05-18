@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -45,6 +46,11 @@ public class Event_JoinQuit implements Listener {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+    }
+
+    @EventHandler
+    public void worldChange(PlayerChangedWorldEvent e) {
+        main.getHologramHandler().reloadHolograms(e.getPlayer());
     }
 
 }

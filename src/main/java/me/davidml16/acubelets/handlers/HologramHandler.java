@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HologramHandler {
 
@@ -170,6 +171,7 @@ public class HologramHandler {
     }
 
     public void reloadHologram(Player p, CubeletBox box) {
+        if (!Objects.equals(box.getLocation().getWorld(), p.getLocation().getWorld())) return;
         if (box.getLocation().distance(p.getLocation()) > 75) return;
 
         if (box.getState() == CubeletBoxState.EMPTY) {
