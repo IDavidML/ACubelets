@@ -44,17 +44,20 @@ public class CubeletBoxHandler {
         return boxes.get(loc);
     }
 
-    public void createBox(Location loc) {
-        CubeletBox box = new CubeletBox(loc);
+    public void createBox(Location loc, double blockHeight) {
+        CubeletBox box = new CubeletBox(loc, blockHeight);
         boxes.put(loc, box);
         main.getHologramHandler().loadHolograms(box);
 
+        config.set("locations", new ArrayList<>());
+
         int i = 1;
-        for(Location location : boxes.keySet()) {
-            config.set("locations." + String.valueOf(i) + ".world", location.getWorld().getName());
-            config.set("locations." + String.valueOf(i) + ".x", location.getBlockX());
-            config.set("locations." + String.valueOf(i) + ".y", location.getBlockY());
-            config.set("locations." + String.valueOf(i) + ".z", location.getBlockZ());
+        for(CubeletBox bx : boxes.values()) {
+            config.set("locations." + String.valueOf(i) + ".world", bx.getLocation().getWorld().getName());
+            config.set("locations." + String.valueOf(i) + ".x", bx.getLocation().getBlockX());
+            config.set("locations." + String.valueOf(i) + ".y", bx.getLocation().getBlockY());
+            config.set("locations." + String.valueOf(i) + ".z", bx.getLocation().getBlockZ());
+            config.set("locations." + String.valueOf(i) + ".blockHeight", bx.getBlockHeight());
             i++;
         }
 
@@ -75,11 +78,12 @@ public class CubeletBoxHandler {
             config.set("locations", new ArrayList<>());
 
             int i = 1;
-            for(Location location : boxes.keySet()) {
-                config.set("locations." + String.valueOf(i) + ".world", location.getWorld().getName());
-                config.set("locations." + String.valueOf(i) + ".x", location.getBlockX());
-                config.set("locations." + String.valueOf(i) + ".y", location.getBlockY());
-                config.set("locations." + String.valueOf(i) + ".z", location.getBlockZ());
+            for(CubeletBox bx : boxes.values()) {
+                config.set("locations." + String.valueOf(i) + ".world", bx.getLocation().getWorld().getName());
+                config.set("locations." + String.valueOf(i) + ".x", bx.getLocation().getBlockX());
+                config.set("locations." + String.valueOf(i) + ".y", bx.getLocation().getBlockY());
+                config.set("locations." + String.valueOf(i) + ".z", bx.getLocation().getBlockZ());
+                config.set("locations." + String.valueOf(i) + ".blockHeight", bx.getBlockHeight());
                 i++;
             }
 
@@ -129,10 +133,27 @@ public class CubeletBoxHandler {
                     int x = config.getInt("locations." + String.valueOf(i) + ".x");
                     int y = config.getInt("locations." + String.valueOf(i) + ".y");
                     int z = config.getInt("locations." + String.valueOf(i) + ".z");
+
+                    double blockHeight = 0.875;
+                    if(config.contains("locations." + String.valueOf(i) + ".blockHeight"))
+                        blockHeight = config.getDouble("locations." + String.valueOf(i) + ".blockHeight");
+
                     Location loc = new Location(Bukkit.getWorld(world), x, y, z);
-                    boxes.put(loc, new CubeletBox(loc));
+                    boxes.put(loc, new CubeletBox(loc, blockHeight));
                 }
             }
+
+            config.set("locations", new ArrayList<>());
+            int i = 1;
+            for(CubeletBox bx : boxes.values()) {
+                config.set("locations." + String.valueOf(i) + ".world", bx.getLocation().getWorld().getName());
+                config.set("locations." + String.valueOf(i) + ".x", bx.getLocation().getBlockX());
+                config.set("locations." + String.valueOf(i) + ".y", bx.getLocation().getBlockY());
+                config.set("locations." + String.valueOf(i) + ".z", bx.getLocation().getBlockZ());
+                config.set("locations." + String.valueOf(i) + ".blockHeight", bx.getBlockHeight());
+                i++;
+            }
+            saveConfig();
         }
 
         if(boxes.size() == 0)

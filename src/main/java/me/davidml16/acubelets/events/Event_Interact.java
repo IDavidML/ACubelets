@@ -27,7 +27,7 @@ public class Event_Interact implements Listener {
         Action action = e.getAction();
 
         if(action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
-            if(e.getClickedBlock().getType() == XMaterial.END_PORTAL_FRAME.parseMaterial() && main.getCubeletBoxHandler().getBoxes().containsKey(e.getClickedBlock().getLocation())) {
+            if(main.getCubeletBoxHandler().getBoxes().containsKey(e.getClickedBlock().getLocation())) {
                 e.setCancelled(true);
 
                 if(!Bukkit.getVersion().contains("1.8")) {

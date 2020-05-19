@@ -2,10 +2,19 @@ package me.davidml16.acubelets.commands.commands;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Sounds;
+import me.davidml16.acubelets.utils.XSeries.ParticleDisplay;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
+import me.davidml16.acubelets.utils.XSeries.XParticle;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.util.Vector;
 
 public class ExecuteBox {
 
@@ -31,16 +40,34 @@ public class ExecuteBox {
         }
 
         if (args[1].equalsIgnoreCase("create")) {
-            Block block = ((Player)sender).getTargetBlock(null, 10);
+            Block block = ((Player)sender).getTargetBlock(null, 5);
 
-            if(block.getType() == XMaterial.END_PORTAL_FRAME.parseMaterial()) {
+            if(block.getType().isBlock() && block.getType() != Material.AIR) {
                 if (!main.getCubeletBoxHandler().getBoxes().containsKey(block.getLocation())) {
-                    main.getCubeletBoxHandler().createBox(block.getLocation());
+
+                    ArmorStand armorStand = block.getLocation().getWorld().spawn(block.getLocation().clone().add(0.5, 1.5, 0.5), ArmorStand.class);
+                    armorStand.setVisible(false);
+                    armorStand.setGravity(true);
+                    armorStand.setSmall(false);
+                    armorStand.setRemoveWhenFarAway(false);
+
+                    Bukkit.getScheduler().runTaskLater(main, () -> {
+                            armorStand.setVelocity(new Vector(0, -10, 0));
+                    }, 1);
+
+                    Sounds.playSound(((Player)sender), ((Player)sender).getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
+
                     sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
                             + " &aSuccesfully created new cubelet machine on" +
                             " &aX: &e" + block.getLocation().getBlockX() +
                             ", &aY: &e" + block.getLocation().getBlockY() +
                             ", &aZ: &e" + block.getLocation().getBlockZ()));
+
+                    Bukkit.getScheduler().runTaskLater(main, () -> {
+                        double blockHeight = armorStand.getLocation().getY() - block.getLocation().getBlockY();
+                        main.getCubeletBoxHandler().createBox(block.getLocation(), blockHeight);
+                        armorStand.remove();
+                    }, 10);
                     return true;
                 } else {
                     sender.sendMessage(ColorUtil.translate(
@@ -49,17 +76,20 @@ public class ExecuteBox {
                 }
             } else {
                 sender.sendMessage(ColorUtil.translate(
-                        main.getLanguageHandler().getPrefix() + " &cA cubelet machine needs to be a ender portal frame!"));
+                        main.getLanguageHandler().getPrefix() + " &cA cubelet machine needs to be a block!"));
                 return false;
             }
         }
 
         if (args[1].equalsIgnoreCase("remove")) {
-            Block block = ((Player) sender).getTargetBlock(null, 10);
+            Block block = ((Player) sender).getTargetBlock(null, 5);
 
-            if(block.getType() == XMaterial.END_PORTAL_FRAME.parseMaterial()) {
+            if(block.getType().isBlock() && block.getType() != Material.AIR) {
                 if (main.getCubeletBoxHandler().getBoxes().containsKey(block.getLocation())) {
                     main.getCubeletBoxHandler().removeBox(block.getLocation());
+
+                    Sounds.playSound(((Player)sender), ((Player)sender).getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
+
                     sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
                             + " &aSuccesfully removed cubelet machine of" +
                             " &aX: &e" + block.getLocation().getBlockX() +
@@ -73,7 +103,7 @@ public class ExecuteBox {
                 }
             } else {
                 sender.sendMessage(ColorUtil.translate(
-                        main.getLanguageHandler().getPrefix() + " &cA cubelet machine needs to be a ender portal frame!"));
+                        main.getLanguageHandler().getPrefix() + " &cA cubelet machine needs to be a block!"));
                 return false;
             }
         }

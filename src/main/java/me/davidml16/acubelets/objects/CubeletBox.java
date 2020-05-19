@@ -11,6 +11,8 @@ import java.util.UUID;
 public class CubeletBox {
 
     private Location location;
+    private double blockHeight;
+
     private HashMap<UUID, Hologram> holograms;
 
     private Player playerOpening;
@@ -19,12 +21,13 @@ public class CubeletBox {
 
     private Reward lastReward;
 
-    public CubeletBox(Location location) {
+    public CubeletBox(Location location, double blockHeight) {
         this.location = location;
         this.holograms = new HashMap<>();
         this.state = CubeletBoxState.EMPTY;
         this.playerOpening = null;
         this.lastReward = null;
+        this.blockHeight = blockHeight;
     }
 
     public Location getLocation() {
@@ -34,6 +37,10 @@ public class CubeletBox {
     public void setLocation(Location location) {
         this.location = location;
     }
+
+    public double getBlockHeight() { return blockHeight; }
+
+    public void setBlockHeight(double blockHeight) { this.blockHeight = blockHeight; }
 
     public HashMap<UUID, Hologram> getHolograms() {
         return holograms;
