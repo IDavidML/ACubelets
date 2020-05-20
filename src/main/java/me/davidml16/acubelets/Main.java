@@ -47,6 +47,7 @@ public class Main extends JavaPlugin {
     private PluginHandler pluginHandler;
 
     private Cubelets_GUI cubeletsGUI;
+    private EditBox_GUI editBoxGUI;
     private TypeConfig_GUI typeConfigGUI;
     private Rewards_GUI rewardsGUI;
     private Rarities_GUI raritiesGUI;
@@ -117,6 +118,8 @@ public class Main extends JavaPlugin {
 
         animationsGUI = new Animations_GUI(this);
         animationsGUI.loadGUI();
+
+        editBoxGUI = new EditBox_GUI(this);
 
         fireworkUtil = new FireworkUtil(this);
 
@@ -196,6 +199,8 @@ public class Main extends JavaPlugin {
     public Rarities_GUI getRaritiesGUI() { return raritiesGUI; }
 
     public Animations_GUI getAnimationsGUI() { return animationsGUI; }
+
+    public EditBox_GUI getEditBoxGUI() { return editBoxGUI; }
 
     public PluginHandler getPluginHandler() { return pluginHandler; }
 

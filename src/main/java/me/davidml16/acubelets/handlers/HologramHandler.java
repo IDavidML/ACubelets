@@ -149,6 +149,13 @@ public class HologramHandler {
         }
     }
 
+    public void moveHologram(CubeletBox box) {
+        int max = Math.max(main.getLanguageHandler().getMessageList("Holograms.CubeletAvailable").size(), main.getLanguageHandler().getMessageList("Holograms.NoCubeletAvailable").size());
+        for (Hologram hologram : box.getHolograms().values()) {
+            hologram.teleport(box.getLocation().clone().add(0.5, (max * LINE_HEIGHT) + (box.getBlockHeight() + 0.1875), 0.5));
+        }
+    }
+
     public void rewardHologram(CubeletBox box, Reward reward) {
         for(Player p : Bukkit.getOnlinePlayers()) {
             if (box.getHolograms().containsKey(p.getUniqueId())) {

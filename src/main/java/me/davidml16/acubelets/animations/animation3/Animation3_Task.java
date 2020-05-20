@@ -150,10 +150,10 @@ public class Animation3_Task implements Animation {
 		this.cubeletBox.setState(CubeletBoxState.ANIMATION);
 		this.colors = main.getFireworkUtil().getRandomColors();
 
-		corner1 = cubeletBox.getLocation().clone().add(0.05, box.getBlockHeight() - 0.325, 0.05);
-		corner2 = cubeletBox.getLocation().clone().add(0.95, box.getBlockHeight() - 0.325, 0.05);
-		corner3 = cubeletBox.getLocation().clone().add(0.95, box.getBlockHeight() - 0.325, 0.95);
-		corner4 = cubeletBox.getLocation().clone().add(0.05, box.getBlockHeight() - 0.325, 0.95);
+		corner1 = cubeletBox.getLocation().clone().add(0.05, box.getPermanentBlockHeight() - 0.325, 0.05);
+		corner2 = cubeletBox.getLocation().clone().add(0.95, box.getPermanentBlockHeight() - 0.325, 0.05);
+		corner3 = cubeletBox.getLocation().clone().add(0.95, box.getPermanentBlockHeight() - 0.325, 0.95);
+		corner4 = cubeletBox.getLocation().clone().add(0.05, box.getPermanentBlockHeight() - 0.325, 0.95);
 
 		boxLocation = cubeletBox.getLocation().clone().add(0.5, 0, 0.5);
 

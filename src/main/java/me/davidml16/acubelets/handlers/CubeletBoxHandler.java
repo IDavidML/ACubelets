@@ -45,7 +45,7 @@ public class CubeletBoxHandler {
     }
 
     public void createBox(Location loc, double blockHeight) {
-        CubeletBox box = new CubeletBox(loc, blockHeight);
+        CubeletBox box = new CubeletBox(loc, blockHeight, blockHeight);
         boxes.put(loc, box);
         main.getHologramHandler().loadHolograms(box);
 
@@ -58,6 +58,7 @@ public class CubeletBoxHandler {
             config.set("locations." + String.valueOf(i) + ".y", bx.getLocation().getBlockY());
             config.set("locations." + String.valueOf(i) + ".z", bx.getLocation().getBlockZ());
             config.set("locations." + String.valueOf(i) + ".blockHeight", bx.getBlockHeight());
+            config.set("locations." + String.valueOf(i) + ".permanentBlockHeight", bx.getPermanentBlockHeight());
             i++;
         }
 
@@ -84,11 +85,29 @@ public class CubeletBoxHandler {
                 config.set("locations." + String.valueOf(i) + ".y", bx.getLocation().getBlockY());
                 config.set("locations." + String.valueOf(i) + ".z", bx.getLocation().getBlockZ());
                 config.set("locations." + String.valueOf(i) + ".blockHeight", bx.getBlockHeight());
+                config.set("locations." + String.valueOf(i) + ".permanentBlockHeight", bx.getPermanentBlockHeight());
                 i++;
             }
 
             saveConfig();
         }
+    }
+
+    public void saveBoxes() {
+        config.set("locations", new ArrayList<>());
+
+        int i = 1;
+        for(CubeletBox bx : boxes.values()) {
+            config.set("locations." + String.valueOf(i) + ".world", bx.getLocation().getWorld().getName());
+            config.set("locations." + String.valueOf(i) + ".x", bx.getLocation().getBlockX());
+            config.set("locations." + String.valueOf(i) + ".y", bx.getLocation().getBlockY());
+            config.set("locations." + String.valueOf(i) + ".z", bx.getLocation().getBlockZ());
+            config.set("locations." + String.valueOf(i) + ".blockHeight", bx.getBlockHeight());
+            config.set("locations." + String.valueOf(i) + ".permanentBlockHeight", bx.getPermanentBlockHeight());
+            i++;
+        }
+
+        saveConfig();
     }
 
     public void saveConfig() {
@@ -138,8 +157,12 @@ public class CubeletBoxHandler {
                     if(config.contains("locations." + String.valueOf(i) + ".blockHeight"))
                         blockHeight = config.getDouble("locations." + String.valueOf(i) + ".blockHeight");
 
+                    double permanentBlockHeight = blockHeight;
+                    if(config.contains("locations." + String.valueOf(i) + ".permanentBlockHeight"))
+                        permanentBlockHeight = config.getDouble("locations." + String.valueOf(i) + ".permanentBlockHeight");
+
                     Location loc = new Location(Bukkit.getWorld(world), x, y, z);
-                    boxes.put(loc, new CubeletBox(loc, blockHeight));
+                    boxes.put(loc, new CubeletBox(loc, blockHeight, permanentBlockHeight));
                 }
             }
 
@@ -151,6 +174,7 @@ public class CubeletBoxHandler {
                 config.set("locations." + String.valueOf(i) + ".y", bx.getLocation().getBlockY());
                 config.set("locations." + String.valueOf(i) + ".z", bx.getLocation().getBlockZ());
                 config.set("locations." + String.valueOf(i) + ".blockHeight", bx.getBlockHeight());
+                config.set("locations." + String.valueOf(i) + ".permanentBlockHeight", bx.getPermanentBlockHeight());
                 i++;
             }
             saveConfig();

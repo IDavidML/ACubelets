@@ -35,7 +35,7 @@ public class ExecuteBox {
         }
 
         if (args.length == 1) {
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /cubelets machine [add/remove]"));
+            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /cubelets machine [add/remove/edit]"));
             return false;
         }
 
@@ -95,6 +95,25 @@ public class ExecuteBox {
                             " &aX: &e" + block.getLocation().getBlockX() +
                             ", &aY: &e" + block.getLocation().getBlockY() +
                             ", &aZ: &e" + block.getLocation().getBlockZ()));
+                    return true;
+                } else {
+                    sender.sendMessage(ColorUtil.translate(
+                            main.getLanguageHandler().getPrefix() + " &cThis cubelet machine location no exists!"));
+                    return false;
+                }
+            } else {
+                sender.sendMessage(ColorUtil.translate(
+                        main.getLanguageHandler().getPrefix() + " &cA cubelet machine needs to be a block!"));
+                return false;
+            }
+        }
+
+        if (args[1].equalsIgnoreCase("edit")) {
+            Block block = ((Player) sender).getTargetBlock(null, 5);
+
+            if(block.getType().isBlock() && block.getType() != Material.AIR) {
+                if (main.getCubeletBoxHandler().getBoxes().containsKey(block.getLocation())) {
+                    main.getEditBoxGUI().open(((Player) sender), main.getCubeletBoxHandler().getBoxByLocation(block.getLocation()));
                     return true;
                 } else {
                     sender.sendMessage(ColorUtil.translate(

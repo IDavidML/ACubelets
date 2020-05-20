@@ -65,6 +65,7 @@ public class TabCompleter_ACubelets implements TabCompleter {
 				if (main.playerHasPermission(p, "acubelets.admin")) {
 					list.add("create");
 					list.add("remove");
+					list.add("edit");
 				}
 			}
 		} else if (args[0].equalsIgnoreCase("type")) {
