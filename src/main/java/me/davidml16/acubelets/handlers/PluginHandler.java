@@ -37,6 +37,9 @@ public class PluginHandler {
 
         main.reloadConfig();
 
+        main.setCubeletsCommandEnabled(main.getConfig().getBoolean("NoCubelets.ExecuteCommand"));
+        main.setNoCubeletsCommand(main.getConfig().getString("NoCubelets.Command"));
+
         main.getLanguageHandler().setLanguage(main.getConfig().getString("Language").toLowerCase());
         main.getHologramTask().stop();
         main.getHologramHandler().removeHolograms();

@@ -86,18 +86,20 @@ public class Cubelets_GUI implements Listener {
 
         if(cubelets.size() > 0) {
 
-            if(profile.getOrderBy().equalsIgnoreCase("date")) {
-                ItemStack orderByDate = new ItemBuilder(XMaterial.CLOCK.parseItem())
-                        .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Ordered.Date.Name"))
-                        .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Ordered.Date.Lore"))
-                        .toItemStack();
-                gui.setItem(neededSize - 3, orderByDate);
-            } else if(profile.getOrderBy().equalsIgnoreCase("type")) {
-                ItemStack orderByType = new ItemBuilder(XMaterial.NAME_TAG.parseItem())
-                        .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Ordered.Type.Name"))
-                        .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Ordered.Type.Lore"))
-                        .toItemStack();
-                gui.setItem(neededSize - 3, orderByType);
+            if(main.getCubeletTypesHandler().getTypes().size() > 1) {
+                if (profile.getOrderBy().equalsIgnoreCase("date")) {
+                    ItemStack orderByDate = new ItemBuilder(XMaterial.CLOCK.parseItem())
+                            .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Ordered.Date.Name"))
+                            .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Ordered.Date.Lore"))
+                            .toItemStack();
+                    gui.setItem(neededSize - 3, orderByDate);
+                } else if (profile.getOrderBy().equalsIgnoreCase("type")) {
+                    ItemStack orderByType = new ItemBuilder(XMaterial.NAME_TAG.parseItem())
+                            .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Ordered.Type.Name"))
+                            .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Ordered.Type.Lore"))
+                            .toItemStack();
+                    gui.setItem(neededSize - 3, orderByType);
+                }
             }
 
             for (Cubelet cubelet : cubelets) {

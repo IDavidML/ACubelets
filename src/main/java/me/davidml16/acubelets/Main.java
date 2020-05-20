@@ -16,12 +16,18 @@ import me.davidml16.acubelets.handlers.*;
 import me.davidml16.acubelets.handlers.PluginHandler;
 import me.davidml16.acubelets.tasks.HologramTask;
 import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.ConfigUpdater;
 import me.davidml16.acubelets.utils.FireworkUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
 
 public class Main extends JavaPlugin {
 
@@ -55,6 +61,9 @@ public class Main extends JavaPlugin {
 
     private int playerCount;
 
+    private boolean isCubeletsCommandEnabled;
+    private String noCubeletsCommand;
+
     @Override
     public void onEnable() {
         main = this;
@@ -62,6 +71,11 @@ public class Main extends JavaPlugin {
         metrics = new MetricsLite(this, 7349);
 
         saveDefaultConfig();
+        try {
+            ConfigUpdater.update(this, "config.yml", new File(main.getDataFolder(), "config.yml"), Collections.emptyList());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         reloadConfig();
 
         if (!Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays") || !Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
@@ -70,6 +84,9 @@ public class Main extends JavaPlugin {
             setEnabled(false);
             return;
         }
+
+        isCubeletsCommandEnabled = getConfig().getBoolean("NoCubelets.ExecuteCommand");
+        noCubeletsCommand = getConfig().getString("NoCubelets.Command");
 
         pluginHandler = new PluginHandler(this);
 
@@ -214,6 +231,18 @@ public class Main extends JavaPlugin {
 
     public boolean playerHasPermission(Player p, String permission) {
         return p.hasPermission(permission) || p.isOp();
+    }
+
+    public boolean isCubeletsCommandEnabled() { return isCubeletsCommandEnabled; }
+
+    public void setCubeletsCommandEnabled(boolean cubeletsCommandEnabled) { isCubeletsCommandEnabled = cubeletsCommandEnabled; }
+
+    public String getNoCubeletsCommand() {
+        return noCubeletsCommand;
+    }
+
+    public void setNoCubeletsCommand(String noCubeletsCommand) {
+        this.noCubeletsCommand = noCubeletsCommand;
     }
 
     private void registerCommands() {

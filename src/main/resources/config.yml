@@ -19,3 +19,10 @@ MySQL:
     User: root
     Password: example
     Database: acubelets
+
+
+# ENABLE/DISABLE IF EXECUTE A COMMAND WHEN CLICK ON BARRIER
+# WHEN DONT HAVE ANY CUBELETS TO OPEN
+NoCubelets:
+    ExecuteCommand: false
+    Command: 'help'

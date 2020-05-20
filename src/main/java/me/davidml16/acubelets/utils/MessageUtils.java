@@ -202,12 +202,16 @@ public class MessageUtils {
 
     public static void sendShopMessage(Player player) {
         if (player != null) {
-            for(String line : Main.get().getLanguageHandler().getMessageList("Cubelet.NoCubelets")) {
-                if(line.contains("%center%")) {
-                    line = line.replaceAll("%center%", "");
-                    player.sendMessage(MessageUtils.centeredMessage(ColorUtil.translate(line)));
-                } else {
-                    player.sendMessage(ColorUtil.translate(line));
+            if(Main.get().isCubeletsCommandEnabled()) {
+                player.performCommand(Main.get().getNoCubeletsCommand());
+            } else {
+                for (String line : Main.get().getLanguageHandler().getMessageList("Cubelet.NoCubelets")) {
+                    if (line.contains("%center%")) {
+                        line = line.replaceAll("%center%", "");
+                        player.sendMessage(MessageUtils.centeredMessage(ColorUtil.translate(line)));
+                    } else {
+                        player.sendMessage(ColorUtil.translate(line));
+                    }
                 }
             }
         }
