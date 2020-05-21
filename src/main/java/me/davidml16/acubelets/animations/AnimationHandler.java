@@ -4,6 +4,7 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.animation1.Animation1_Task;
 import me.davidml16.acubelets.animations.animation2.Animation2_Task;
 import me.davidml16.acubelets.animations.animation3.Animation3_Task;
+import me.davidml16.acubelets.animations.animation4.Animation4_Task;
 import org.bukkit.entity.ArmorStand;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class AnimationHandler {
         this.animations.add("animation1");
         this.animations.add("animation2");
         this.animations.add("animation3");
+        this.animations.add("animation4");
     }
 
     public Animation getAnimation(String animation) {
@@ -41,6 +43,8 @@ public class AnimationHandler {
             return new Animation2_Task(main);
         else if(animation.equalsIgnoreCase("animation3"))
             return new Animation3_Task(main);
+        else if(animation.equalsIgnoreCase("animation4"))
+            return new Animation4_Task(main);
 
         return null;
     }

@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.animations.animation3;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.enums.CubeletBoxState;
@@ -122,23 +123,7 @@ public class Animation3_Task implements Animation {
 	public int getId() { return id; }
 
 	public void start(CubeletBox box, CubeletType type) {
-		armorStand = box.getLocation().getWorld().spawn(box.getLocation().clone().add(0.5, -0.35, 0.5), ArmorStand.class);
-
-		if (!Bukkit.getVersion().contains("1.8") && !Bukkit.getVersion().contains("1.9"))
-			armorStand.setSilent(true);
-
-		armorStand.setVisible(false);
-		armorStand.setGravity(false);
-		armorStand.setHelmet(type.getIcon());
-		armorStand.setSmall(true);
-		armorStand.setMarker(true);
-		armorStand.setRemoveWhenFarAway(false);
-		armorStand.setCustomNameVisible(false);
-		armorStand.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
-
-		Location loc = armorStand.getLocation().clone();
-		loc.setYaw(0);
-		armorStand.teleport(loc);
+		armorStand = ASSpawner.spawn(main, box.getLocation(), type);
 
 		armorStandLocation = armorStand.getLocation();
 
