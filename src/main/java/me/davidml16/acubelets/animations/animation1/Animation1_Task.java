@@ -48,7 +48,7 @@ public class Animation1_Task implements Animation {
 				cubeletBox.setState(CubeletBoxState.REWARD);
 			} else if(time > 70 && time < 170) {
 				UtilParticles.display(Particles.FLAME, 0.45f, 0.25f, 0.45f, boxLocation, 10);
-			} else if(time >= 170) {
+			} else if(time >= 190) {
 				stop();
 
 				Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(),
