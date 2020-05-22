@@ -52,34 +52,34 @@ public class Animation4_Task implements Animation {
 		@Override
 		public void run() {
 
-			if(time == 45) {
+			if(time == 50) {
 				arch.runTaskTimer(main, 0L, 1L);
 				archSounds.runTaskTimer(main, 0L, 5L);
-			} else if(time == 95) {
-				archSounds.cancel();
 			} else if(time == 100) {
+				archSounds.cancel();
+			} else if(time == 105) {
 				music.runTaskTimer(main, 0L, 4L);
 
 				armorStand = ASSpawner.spawn(main, cubeletBox.getLocation(), cubeletType);
 				armorStandLocation = armorStand.getLocation();
 				main.getAnimationHandler().getArmorStands().add(armorStand);
-			} else if(time > 100 && time < 198) {
+			} else if(time > 105 && time < 203) {
 				if (armorStand != null) {
-					if (time <= 140) armorStandLocation.add(0, 0.02, 0);
+					if (time <= 145) armorStandLocation.add(0, 0.02, 0);
 					armorStand.teleport(armorStandLocation);
 					armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.16, 0));
 				}
-			} else if(time == 198) {
+			} else if(time == 203) {
 				colorRarity = ColorUtil.getRGBbyColor(ColorUtil.getColorByText(reward.getRarity().getName()));
-				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 1.50, 0.5), FireworkEffect.Type.STAR, colors.get(0), colors.get(1));
-			} else if(time == 200) {
+				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 1.50, 0.5), FireworkEffect.Type.BALL_LARGE, colors.get(0), colors.get(1));
+			} else if(time == 205) {
 				music.cancel();
 				cubeletBox.setLastReward(reward);
 				main.getHologramHandler().rewardHologram(cubeletBox, reward);
 				cubeletBox.setState(CubeletBoxState.REWARD);
 				armorStand.remove();
 				armorStand = null;
-			} else if(time == 320) {
+			} else if(time == 325) {
 				stop();
 				blocks.restore();
 
@@ -102,7 +102,7 @@ public class Animation4_Task implements Animation {
 		music = new Animation4_Music(box.getLocation());
 
 		blocks = new Animation4_Blocks(box.getLocation());
-		blocks.runTaskTimer(main, 0L, 5L);
+		blocks.runTaskTimer(main, 0L, 7L);
 
 		arch = new Animation4_Arch(box.getLocation());
 
