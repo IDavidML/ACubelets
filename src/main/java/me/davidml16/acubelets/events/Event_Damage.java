@@ -15,8 +15,8 @@ public class Event_Damage implements Listener {
             if (fw.hasMetadata("nodamage")) {
                 e.setCancelled(true);
             }
-        } else if (e.getEntity() instanceof ArmorStand) {
-            if(!e.getEntity().hasMetadata("ACUBELETS")) return;
+        } else {
+            if (!e.getEntity().hasMetadata("ACUBELETS")) return;
             e.setCancelled(true);
         }
     }

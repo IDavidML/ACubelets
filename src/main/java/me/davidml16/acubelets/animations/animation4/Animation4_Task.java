@@ -13,15 +13,19 @@ import me.davidml16.acubelets.utils.MessageUtils;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import me.davidml16.acubelets.utils.Sounds;
+import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.PigZombie;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -83,13 +87,16 @@ public class Animation4_Task implements Animation {
 				music.cancel();
 
 				pigman = (LivingEntity) cubeletBox.getLocation().getWorld().spawnEntity(cubeletBox.getLocation().clone().add(0.5, 3, -0.5), EntityType.PIG_ZOMBIE);
-				pigman.setCollidable(false);
-				pigman.setInvulnerable(true);
-				pigman.setSilent(true);
+				if(XMaterial.supports(9)) pigman.setCollidable(false);
+				if(XMaterial.supports(9)) pigman.setInvulnerable(true);
+				if(XMaterial.supports(10)) pigman.setSilent(true);
                 ((PigZombie )pigman).setBaby(false);
                 ((PigZombie )pigman).setAngry(false);
+				pigman.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
 			} else if(time == 160) {
-				pigman.setAI(false);
+				if(XMaterial.supports(9)) pigman.setAI(false);
+				else pigman.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 200000, 200, false, false));
+
 				Location l = pigman.getLocation().clone();
 				l.setYaw(0);
 				l.setPitch(0);

@@ -2,6 +2,7 @@ package me.davidml16.acubelets.animations;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.CubeletType;
+import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
@@ -12,8 +13,7 @@ public class ASSpawner {
     public static ArmorStand spawn(Main main, Location location, CubeletType type) {
         ArmorStand armorStand = location.getWorld().spawn(location.clone().add(0.5, -0.35, 0.5), ArmorStand.class);
 
-        if (!Bukkit.getVersion().contains("1.8") && !Bukkit.getVersion().contains("1.9"))
-            armorStand.setSilent(true);
+        if(XMaterial.supports(10)) armorStand.setSilent(true);
 
         armorStand.setVisible(false);
         armorStand.setGravity(false);
