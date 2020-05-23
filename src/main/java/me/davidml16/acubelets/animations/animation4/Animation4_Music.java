@@ -16,11 +16,12 @@ public class Animation4_Music extends BukkitRunnable {
 
     public void run() {
         this.noteValue++;
-        if (this.noteValue >= 1 && this.noteValue <= 3) {
-            Sounds.playSound(musicLoc, Sounds.MySound.NOTE_PIANO, 1F, 0.05F);
+        if (this.noteValue == 1) {
+            Sounds.playSound(musicLoc, Sounds.MySound.NOTE_PLING, 0.5F, 0F);
         } else {
-            Sounds.playSound(musicLoc, Sounds.MySound.NOTE_PIANO, 1F, 0.05F + this.notePitch);
-                this.notePitch = (float) (this.notePitch + 0.044D);
+            Sounds.playSound(musicLoc, Sounds.MySound.NOTE_PLING, 0.5F, 0F + this.notePitch);
+            if(this.noteValue == 2) this.notePitch = (float) (this.notePitch + 0.35D);
+            else this.notePitch = (float) (this.notePitch + 0.10D);
         }
     }
 }

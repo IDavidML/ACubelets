@@ -13,6 +13,6 @@ public class Animation4_ArchSounds extends BukkitRunnable {
     }
 
     public void run() {
-        Sounds.playSound(musicLoc, Sounds.MySound.FIREWORK_BLAST, 0.5F, 0);
+        Sounds.playSound(musicLoc, Sounds.MySound.FIREWORK_BLAST, 0.25F, 0);
     }
 }

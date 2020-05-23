@@ -1,5 +1,7 @@
 package me.davidml16.acubelets;
 
+import com.comphenix.protocol.ProtocolLibrary;
+import com.comphenix.protocol.ProtocolManager;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.davidml16.acubelets.animations.AnimationHandler;
@@ -34,6 +36,8 @@ public class Main extends JavaPlugin {
     private static Main main;
     public static ConsoleCommandSender log;
     private MetricsLite metrics;
+
+    private ProtocolManager protocolManager;
 
     private HologramTask hologramTask;
 
@@ -84,6 +88,8 @@ public class Main extends JavaPlugin {
             setEnabled(false);
             return;
         }
+
+        protocolManager = ProtocolLibrary.getProtocolManager();
 
         isCubeletsCommandEnabled = getConfig().getBoolean("NoCubelets.ExecuteCommand");
         noCubeletsCommand = getConfig().getString("NoCubelets.Command");
@@ -176,6 +182,8 @@ public class Main extends JavaPlugin {
     }
 
     public static Main get() { return main; }
+
+    public ProtocolManager getProtocolManager() { return protocolManager; }
 
     public MetricsLite getMetrics() {
         return metrics;
