@@ -90,7 +90,23 @@ GUI:
             - '&7Cambia como los items se ordenan'
             - '&7en este menu.'
             - '&6Click para ordenar por Tipo!'
+      Crafting:
+        Name: '&e&lFabricador de Cubelets'
+        Lore:
+          - '&7Agarra tus Cubelets actuales y'
+          - '&7juntalos entre ellos para fabricar'
+          - '&7Cubelets mas increibles que contendran'
+          - '&7objetos raros.'
+          - '&6Click para abrirlo.'
       NextPage:
         Name: '&6Siguiente pagina'
       PreviousPage:
         Name: '&6Pagina anterior'
+  Crafting:
+    Title: 'Fabricador de Cubelets'
+    Items:
+      Back:
+        Name: '&9Volver'
+        Lore:
+          - '&7Vuelve hacia el anterior'
+          - '&7menu.'

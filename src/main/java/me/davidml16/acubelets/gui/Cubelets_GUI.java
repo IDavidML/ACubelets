@@ -102,6 +102,14 @@ public class Cubelets_GUI implements Listener {
                 }
             }
 
+            if(main.isCraftingEnabled()) {
+                ItemStack crafting = new ItemBuilder(XMaterial.CRAFTING_TABLE.parseItem())
+                        .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Crafting.Name"))
+                        .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Crafting.Lore"))
+                        .toItemStack();
+                gui.setItem(neededSize - 7, crafting);
+            }
+
             for (Cubelet cubelet : cubelets) {
                 CubeletType type = main.getCubeletTypesHandler().getTypeBydId(cubelet.getType());
 
@@ -169,7 +177,9 @@ public class Cubelets_GUI implements Listener {
                     openPage(p, opened.get(p.getUniqueId()) + 1);
                 } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 5)) {
                     p.closeInventory();
-                } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 3)) {
+                } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 7) && main.isCraftingEnabled()) {
+                    main.getCraftingGUI().open(p);
+                } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 3) && main.getCubeletTypesHandler().getTypes().size() > 1) {
                     Profile profile = main.getPlayerDataHandler().getData(p.getUniqueId());
                     if(profile.getOrderBy().equalsIgnoreCase("date"))
                         profile.setOrderBy("type");

@@ -30,6 +30,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Main extends JavaPlugin {
 
@@ -51,6 +53,7 @@ public class Main extends JavaPlugin {
     private HologramHandler hologramHandler;
     private CubeletOpenHandler cubeletOpenHandler;
     private AnimationHandler animationHandler;
+    private CubeletCraftingHandler cubeletCraftingHandler;
 
     private FireworkUtil fireworkUtil;
 
@@ -62,10 +65,12 @@ public class Main extends JavaPlugin {
     private Rewards_GUI rewardsGUI;
     private Rarities_GUI raritiesGUI;
     private Animations_GUI animationsGUI;
+    private Crafting_GUI craftingGUI;
 
     private int playerCount;
 
-    private boolean isCubeletsCommandEnabled;
+    private Map<String, Boolean> settings;
+
     private String noCubeletsCommand;
 
     @Override
@@ -73,6 +78,8 @@ public class Main extends JavaPlugin {
         main = this;
         log = Bukkit.getConsoleSender();
         metrics = new MetricsLite(this, 7349);
+
+        settings = new HashMap<>();
 
         saveDefaultConfig();
         try {
@@ -91,7 +98,12 @@ public class Main extends JavaPlugin {
 
         protocolManager = ProtocolLibrary.getProtocolManager();
 
-        isCubeletsCommandEnabled = getConfig().getBoolean("NoCubelets.ExecuteCommand");
+        settings.put("Crafting", getConfig().getBoolean("Crafting"));
+        cubeletCraftingHandler = new CubeletCraftingHandler(this);
+        if(isCraftingEnabled())
+            cubeletCraftingHandler.loadCrafting();
+
+        settings.put("CubeletsCommand", getConfig().getBoolean("NoCubelets.ExecuteCommand"));
         noCubeletsCommand = getConfig().getString("NoCubelets.Command");
 
         pluginHandler = new PluginHandler(this);
@@ -143,6 +155,8 @@ public class Main extends JavaPlugin {
         animationsGUI.loadGUI();
 
         editBoxGUI = new EditBox_GUI(this);
+
+        craftingGUI = new Crafting_GUI(this);
 
         fireworkUtil = new FireworkUtil(this);
 
@@ -215,6 +229,8 @@ public class Main extends JavaPlugin {
 
     public AnimationHandler getAnimationHandler() { return animationHandler; }
 
+    public CubeletCraftingHandler getCubeletCraftingHandler() { return cubeletCraftingHandler; }
+
     public Cubelets_GUI getCubeletsGUI() { return cubeletsGUI; }
 
     public TypeConfig_GUI getTypeConfigGUI() { return typeConfigGUI; }
@@ -226,6 +242,8 @@ public class Main extends JavaPlugin {
     public Animations_GUI getAnimationsGUI() { return animationsGUI; }
 
     public EditBox_GUI getEditBoxGUI() { return editBoxGUI; }
+
+    public Crafting_GUI getCraftingGUI() { return craftingGUI; }
 
     public PluginHandler getPluginHandler() { return pluginHandler; }
 
@@ -241,9 +259,13 @@ public class Main extends JavaPlugin {
         return p.hasPermission(permission) || p.isOp();
     }
 
-    public boolean isCubeletsCommandEnabled() { return isCubeletsCommandEnabled; }
+    public boolean isCubeletsCommandEnabled() { return settings.get("CubeletsCommand"); }
 
-    public void setCubeletsCommandEnabled(boolean cubeletsCommandEnabled) { isCubeletsCommandEnabled = cubeletsCommandEnabled; }
+    public void setCubeletsCommandEnabled(boolean cubeletsCommandEnabled) { settings.put("CubeletsCommand", cubeletsCommandEnabled); }
+
+    public boolean isCraftingEnabled() { return settings.get("Crafting"); }
+
+    public void setCraftingEnabled(boolean craftingEnabled) { settings.put("Crafting", craftingEnabled); }
 
     public String getNoCubeletsCommand() {
         return noCubeletsCommand;

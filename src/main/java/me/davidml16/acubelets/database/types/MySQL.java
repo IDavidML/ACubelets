@@ -378,7 +378,8 @@ public class MySQL implements Database {
 
                 rs = ps.executeQuery();
                 while (rs.next()) {
-                    cubelets.add(new Cubelet(UUID.fromString(rs.getString("cubeletUUID")), rs.getString("type"), rs.getLong("received"), rs.getLong("expire")));
+                    if(main.getCubeletTypesHandler().getTypes().containsKey(rs.getString("type")))
+                        cubelets.add(new Cubelet(UUID.fromString(rs.getString("cubeletUUID")), rs.getString("type"), rs.getLong("received"), rs.getLong("expire")));
                 }
 
                 result.complete(cubelets);

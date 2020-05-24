@@ -90,7 +90,23 @@ GUI:
             - '&7Change how items are ordered'
             - '&7in this menu.'
             - '&6Click to order by Type!'
+      Crafting:
+        Name: '&e&lCubelet Crafting'
+        Lore:
+          - '&7Take your current Cubelets and'
+          - '&7craft them together to create'
+          - '&7more awesome Cubelets containg'
+          - '&7rarer items.'
+          - '&6Click to open.'
       NextPage:
         Name: '&6Next page'
       PreviousPage:
         Name: '&6Previous page'
+  Crafting:
+    Title: 'Cubelet Crafting'
+    Items:
+      Back:
+        Name: '&9Back'
+        Lore:
+          - '&7Go back to the previous'
+          - '&7menu.'

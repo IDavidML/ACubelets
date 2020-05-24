@@ -26,3 +26,7 @@ MySQL:
 NoCubelets:
     ExecuteCommand: false
     Command: 'help'
+
+
+# ENABLE/DISABLE CUBELET CRAFTING
+Crafting: true
