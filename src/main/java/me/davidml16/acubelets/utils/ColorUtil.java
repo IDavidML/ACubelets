@@ -5,11 +5,18 @@ import org.bukkit.ChatColor;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.regex.Pattern;
 
 public class ColorUtil {
 
+    private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf('&') + "[0-9A-FK-OR]");
+
     public static String translate(String msg) {
         return ChatColor.translateAlternateColorCodes('&', msg);
+    }
+
+    public static String removeColors(String msg) {
+        return msg == null ? null : STRIP_COLOR_PATTERN.matcher(msg).replaceAll("");
     }
 
     private static Map<ChatColor, ColorSet<Integer, Integer, Integer>> colorMap = new HashMap<ChatColor, ColorSet<Integer, Integer, Integer>>();

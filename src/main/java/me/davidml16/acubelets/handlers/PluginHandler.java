@@ -38,8 +38,6 @@ public class PluginHandler {
         main.reloadConfig();
 
         main.setCraftingEnabled(main.getConfig().getBoolean("Crafting"));
-        if(main.isCraftingEnabled())
-            main.getCubeletCraftingHandler().loadCrafting();
 
         main.setCubeletsCommandEnabled(main.getConfig().getBoolean("NoCubelets.ExecuteCommand"));
         main.setNoCubeletsCommand(main.getConfig().getString("NoCubelets.Command"));
@@ -54,6 +52,8 @@ public class PluginHandler {
         main.getCubeletTypesHandler().loadTypes();
         main.getCubeletRarityHandler().loadRarities();
         main.getCubeletRewardHandler().loadRewards();
+        if(main.isCraftingEnabled())
+            main.getCubeletCraftingHandler().loadCrafting();
         main.getHologramTask().start();
     }
 

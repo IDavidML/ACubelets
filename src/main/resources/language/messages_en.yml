@@ -104,6 +104,7 @@ GUI:
         Name: '&6Previous page'
   Crafting:
     Title: 'Cubelet Crafting'
+    NoAfford: '&cYou cannot afford to craft this Cubelet yet!'
     Items:
       Back:
         Name: '&9Back'

@@ -99,9 +99,6 @@ public class Main extends JavaPlugin {
         protocolManager = ProtocolLibrary.getProtocolManager();
 
         settings.put("Crafting", getConfig().getBoolean("Crafting"));
-        cubeletCraftingHandler = new CubeletCraftingHandler(this);
-        if(isCraftingEnabled())
-            cubeletCraftingHandler.loadCrafting();
 
         settings.put("CubeletsCommand", getConfig().getBoolean("NoCubelets.ExecuteCommand"));
         noCubeletsCommand = getConfig().getString("NoCubelets.Command");
@@ -129,6 +126,10 @@ public class Main extends JavaPlugin {
 
         cubeletRewardHandler = new CubeletRewardHandler(this);
         cubeletRewardHandler.loadRewards();
+
+        cubeletCraftingHandler = new CubeletCraftingHandler(this);
+        if(isCraftingEnabled())
+            cubeletCraftingHandler.loadCrafting();
 
         playerDataHandler = new PlayerDataHandler(this);
 

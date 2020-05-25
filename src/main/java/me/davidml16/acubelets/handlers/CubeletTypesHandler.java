@@ -213,6 +213,8 @@ public class CubeletTypesHandler {
                     }
                     cubeletType.setLoreExpired(loreExpired);
 
+                    cubeletType.setDescription(config.getStringList("type.description"));
+
                     long convertedTime;
                     if(Objects.requireNonNull(config.getString("type.expiration")).equalsIgnoreCase(""))
                         convertedTime = 0;

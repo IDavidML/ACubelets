@@ -20,6 +20,7 @@ public class CubeletType {
     private ItemStack icon;
     private List<String> loreAvailable;
     private List<String> loreExpired;
+    private List<String> description;
 
     private String animation;
 
@@ -85,6 +86,14 @@ public class CubeletType {
 
     public void setLoreExpired(List<String> loreExpired) {
         this.loreExpired = loreExpired;
+    }
+
+    public List<String> getDescription() {
+        return description;
+    }
+
+    public void setDescription(List<String> description) {
+        this.description = description;
     }
 
     public String getAnimation() {

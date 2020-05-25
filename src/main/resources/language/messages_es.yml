@@ -104,6 +104,7 @@ GUI:
         Name: '&6Pagina anterior'
   Crafting:
     Title: 'Fabricador de Cubelets'
+    NoAfford: '&c¡No puedes permitirte crear este Cubelet!'
     Items:
       Back:
         Name: '&9Volver'
