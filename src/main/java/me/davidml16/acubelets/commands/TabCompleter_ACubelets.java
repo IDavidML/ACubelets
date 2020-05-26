@@ -52,6 +52,18 @@ public class TabCompleter_ACubelets implements TabCompleter {
 					list.addAll(main.getCubeletTypesHandler().getTypes().keySet());
 				}
 			}
+		} else if (args[0].equalsIgnoreCase("remove")) {
+			if (args.length == 2) {
+				if (main.playerHasPermission(p, "acubelets.admin")) {
+					for (Player target : main.getServer().getOnlinePlayers()) {
+						list.add(target.getName());
+					}
+				}
+			} else {
+				if (main.playerHasPermission(p, "acubelets.admin")) {
+					list.addAll(main.getCubeletTypesHandler().getTypes().keySet());
+				}
+			}
 		} else if (args[0].equalsIgnoreCase("setup")) {
 			if(args.length == 2) {
 				if (main.playerHasPermission(p, "acubelets.admin")) {

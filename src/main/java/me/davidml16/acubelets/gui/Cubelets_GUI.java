@@ -81,6 +81,15 @@ public class Cubelets_GUI implements Listener {
                 .toItemStack();
         gui.setItem(neededSize - 5, back);
 
+
+        if(main.isCraftingEnabled()) {
+            ItemStack crafting = new ItemBuilder(XMaterial.CRAFTING_TABLE.parseItem())
+                    .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Crafting.Name"))
+                    .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Crafting.Lore"))
+                    .toItemStack();
+            gui.setItem(neededSize - 7, crafting);
+        }
+
         for (int i = 0; i <= (neededSize-10); i++)
             gui.setItem(i, null);
 
@@ -100,14 +109,6 @@ public class Cubelets_GUI implements Listener {
                             .toItemStack();
                     gui.setItem(neededSize - 3, orderByType);
                 }
-            }
-
-            if(main.isCraftingEnabled()) {
-                ItemStack crafting = new ItemBuilder(XMaterial.CRAFTING_TABLE.parseItem())
-                        .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Crafting.Name"))
-                        .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Crafting.Lore"))
-                        .toItemStack();
-                gui.setItem(neededSize - 7, crafting);
             }
 
             for (Cubelet cubelet : cubelets) {

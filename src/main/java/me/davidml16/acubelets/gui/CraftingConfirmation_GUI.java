@@ -52,6 +52,10 @@ public class CraftingConfirmation_GUI implements Listener {
                                 .replaceAll("%name%", ColorUtil.removeColors(main.getCubeletTypesHandler().getTypeBydId(ingredient.getName()).getName()))
                                 .replaceAll("%amount%", ""+ingredient.getAmount())
                         ));
+                    else if(ingredient.getCraftType() == CraftType.MONEY)
+                        lore.add(ColorUtil.translate(main.getLanguageHandler().getMessage("GUI.CraftingConfirmation.Ingredients.Ingredient.Money")
+                                .replaceAll("%amount%", ""+ingredient.getAmount())
+                        ));
                 }
             } else {
                 lore.add(ColorUtil.translate(line));
@@ -88,6 +92,12 @@ public class CraftingConfirmation_GUI implements Listener {
             if(slot == 1) {
                 String cubeletType = opened.get(p.getUniqueId());
                 CraftParent craft = main.getCubeletCraftingHandler().getCraftById(cubeletType);
+
+                if(!main.getCubeletCraftingHandler().haveIngredients(p, craft)) {
+                    p.sendMessage(main.getLanguageHandler().getMessage("GUI.Crafting.NoAfford"));
+                    return;
+                }
+
                 main.getCubeletCraftingHandler().removeIngredients(p, craft);
                 try {
                     main.getCubeletTypesHandler().giveCubelet(p.getUniqueId(), craft.getCubeletType(), 1);

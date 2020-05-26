@@ -140,6 +140,8 @@ public class CubeletCraftingHandler {
                     .getCubelets().stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(ingredient.getName())).count();
 
             return amount >= ingredient.getAmount();
+        } else if(ingredient.getCraftType() == CraftType.MONEY) {
+            return main.getEconomyHandler().getBalance(player) >= ingredient.getAmount();
         }
 
         return false;
@@ -160,8 +162,20 @@ public class CubeletCraftingHandler {
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
+            } else if(ingredient.getCraftType() == CraftType.MONEY) {
+                main.getEconomyHandler().removeBalance(player, ingredient.getAmount());
             }
         }
+    }
+
+    public boolean containsEconomyIngredient(List<CraftParent> crafts) {
+        if(crafts.size() == 0) return false;
+        for(CraftParent craft : crafts) {
+            for(CraftIngredient ingredient : craft.getIngrediens()) {
+                if(ingredient.getCraftType() == CraftType.MONEY) return true;
+            }
+        }
+        return false;
     }
 
 }

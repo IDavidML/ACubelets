@@ -54,6 +54,7 @@ public class Main extends JavaPlugin {
     private CubeletOpenHandler cubeletOpenHandler;
     private AnimationHandler animationHandler;
     private CubeletCraftingHandler cubeletCraftingHandler;
+    private EconomyHandler economyHandler;
 
     private FireworkUtil fireworkUtil;
 
@@ -132,6 +133,18 @@ public class Main extends JavaPlugin {
         if(isCraftingEnabled())
             cubeletCraftingHandler.loadCrafting();
 
+        if(cubeletCraftingHandler.containsEconomyIngredient(cubeletCraftingHandler.getCrafts())) {
+            if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+                getLogger().severe("*** Vault is not installed, you need Vault for Economy ingredient on crafts. ***");
+                getLogger().severe("*** This plugin will be disabled. ***");
+                setEnabled(false);
+                return;
+            } else {
+                economyHandler = new EconomyHandler();
+                economyHandler.load();
+            }
+        }
+
         playerDataHandler = new PlayerDataHandler(this);
 
         hologramHandler = new HologramHandler(this);
@@ -188,14 +201,14 @@ public class Main extends JavaPlugin {
         log.sendMessage(ColorUtil.translate("    &aAuthor: &b" + pdf.getAuthors().get(0)));
         log.sendMessage("");
 
-        hologramHandler.removeHolograms();
+        if(hologramHandler != null) hologramHandler.removeHolograms();
 
         for (Hologram hologram : HologramsAPI.getHolograms(this)) {
             hologram.delete();
         }
 
-        hologramTask.stop();
-        databaseHandler.getDatabase().close();
+        if(hologramTask != null) hologramTask.stop();
+        if(databaseHandler != null) databaseHandler.getDatabase().close();
     }
 
     public static Main get() { return main; }
@@ -233,6 +246,8 @@ public class Main extends JavaPlugin {
     public AnimationHandler getAnimationHandler() { return animationHandler; }
 
     public CubeletCraftingHandler getCubeletCraftingHandler() { return cubeletCraftingHandler; }
+
+    public EconomyHandler getEconomyHandler() { return economyHandler; }
 
     public Cubelets_GUI getCubeletsGUI() { return cubeletsGUI; }
 

@@ -70,6 +70,11 @@ public class Crafting_GUI implements Listener {
                                     .replaceAll("%amount%", ""+ingredient.getAmount())
                                     .replaceAll("%status%", status)
                             ));
+                        else if(ingredient.getCraftType() == CraftType.MONEY)
+                            lore.add(ColorUtil.translate(main.getLanguageHandler().getMessage("GUI.Crafting.Ingredients.Ingredient.Money")
+                                    .replaceAll("%amount%", ""+ingredient.getAmount())
+                                    .replaceAll("%status%", status)
+                            ));
                     }
                 } else if(line.contains("%description%")) {
                     for(String desc_line : cubeletType.getDescription())
