@@ -66,6 +66,7 @@ public class Main extends JavaPlugin {
     private Rarities_GUI raritiesGUI;
     private Animations_GUI animationsGUI;
     private Crafting_GUI craftingGUI;
+    private CraftingConfirmation_GUI craftingConfirmationGUI;
 
     private int playerCount;
 
@@ -158,6 +159,7 @@ public class Main extends JavaPlugin {
         editBoxGUI = new EditBox_GUI(this);
 
         craftingGUI = new Crafting_GUI(this);
+        craftingConfirmationGUI = new CraftingConfirmation_GUI(this);
 
         fireworkUtil = new FireworkUtil(this);
 
@@ -245,6 +247,8 @@ public class Main extends JavaPlugin {
     public EditBox_GUI getEditBoxGUI() { return editBoxGUI; }
 
     public Crafting_GUI getCraftingGUI() { return craftingGUI; }
+
+    public CraftingConfirmation_GUI getCraftingConfirmationGUI() { return craftingConfirmationGUI; }
 
     public PluginHandler getPluginHandler() { return pluginHandler; }
 

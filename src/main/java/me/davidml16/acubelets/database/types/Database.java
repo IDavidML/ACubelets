@@ -28,6 +28,8 @@ public interface Database {
 
     void removeCubelet(UUID uuid, UUID cubeletUUID) throws SQLException;
 
+    void removeCubelet(UUID uuid, String type, int amount);
+
     void removeCubelet(String type) throws SQLException;
 
     void removeExpiredCubelets(UUID uuid) throws SQLException;

@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 public class CubeletCraftingHandler {
@@ -21,11 +22,6 @@ public class CubeletCraftingHandler {
     private List<CraftParent> crafts;
 
     private int inventorySize;
-    private List<String> lore;
-    private String ingredientCubeletFormat;
-    private String ingredientMoneyFormat;
-    private String statusAvailable;
-    private String statusNoAvailable;
 
     private Main main;
 
@@ -45,16 +41,6 @@ public class CubeletCraftingHandler {
     public List<CraftParent> getCrafts() {
         return crafts;
     }
-
-    public List<String> getLore() { return lore; }
-
-    public String getIngredientMoneyFormat() { return ingredientMoneyFormat; }
-
-    public String getIngredientCubeletFormat() { return ingredientCubeletFormat; }
-
-    public String getStatusAvailable() { return statusAvailable; }
-
-    public String getStatusNoAvailable() { return statusNoAvailable; }
 
     public CraftParent getCraftById(String id) {
         for (CraftParent craftParent : crafts) {
@@ -81,11 +67,6 @@ public class CubeletCraftingHandler {
             try {
                 file.createNewFile();
                 config.set("cubelet-crafting.settings.rows", 4);
-                config.set("cubelet-crafting.settings.ingredients.lore", Arrays.asList("&5Ingredients:", "%ingredients%", "", "%description%", "", "&8&oCrafted Cubelets expire after", "&8&o2 weeks.", "", "&6Click to craft."));
-                config.set("cubelet-crafting.settings.ingredients.ingredient.cubelet", "&7- &b%name% &7x%amount% %status%");
-                config.set("cubelet-crafting.settings.ingredients.ingredient.money", "&7- &b%amount% Loot Points %status%");
-                config.set("cubelet-crafting.settings.ingredients.status.available", "&a✓");
-                config.set("cubelet-crafting.settings.ingredients.status.not-available", "&c✗");
                 config.set("cubelet-crafting.crafts", new ArrayList<>());
                 saveConfig();
             } catch (IOException e) {
@@ -96,32 +77,12 @@ public class CubeletCraftingHandler {
         if(!config.contains("cubelet-crafting.settings.rows"))
             config.set("cubelet-crafting.settings.rows", 4);
 
-        if(!config.contains("cubelet-crafting.settings.ingredients.lore"))
-            config.set("cubelet-crafting.settings.ingredients.lore", Arrays.asList("&5Ingredients:", "%ingredients%", "", "%description%", "", "&8&oCrafted Cubelets expire after", "&8&o2 weeks.", "", "&6Click to craft."));
-
-        if(!config.contains("cubelet-crafting.settings.ingredients.ingredient.cubelet"))
-            config.set("cubelet-crafting.settings.ingredients.ingredient.cubelet", "&7- &b%name% &7x%amount% %status%");
-
-        if(!config.contains("cubelet-crafting.settings.ingredients.ingredient.money"))
-            config.set("cubelet-crafting.settings.ingredients.ingredient.money", "&7- &b%amount% Loot Points %status%");
-
-        if(!config.contains("cubelet-crafting.settings.ingredients.status.available"))
-            config.set("cubelet-crafting.settings.ingredients.status.available", "&a✓");
-
-        if(!config.contains("cubelet-crafting.settings.ingredients.status.not-available"))
-            config.set("cubelet-crafting.settings.ingredients.status.not-available", "&c✗");
-
         if(!config.contains("cubelet-crafting.crafts"))
             config.set("cubelet-crafting.crafts", new ArrayList<>());
 
         saveConfig();
 
         inventorySize = config.getInt("cubelet-crafting.settings.rows");
-        lore = config.getStringList("cubelet-crafting.settings.ingredients.lore");
-        ingredientCubeletFormat = config.getString("cubelet-crafting.settings.ingredients.ingredient.cubelet");
-        ingredientMoneyFormat = config.getString("cubelet-crafting.settings.ingredients.ingredient.money");
-        statusAvailable = config.getString("cubelet-crafting.settings.ingredients.status.available");
-        statusNoAvailable = config.getString("cubelet-crafting.settings.ingredients.status.not-available");
 
         Main.log.sendMessage(ColorUtil.translate("  &eLoading crafts:"));
 
@@ -131,6 +92,8 @@ public class CubeletCraftingHandler {
                     if(!main.getCubeletTypesHandler().getTypes().containsKey(cubeletType)) continue;
 
                     int slot = config.getInt("cubelet-crafting.crafts." + cubeletType + ".slot");
+                    if(slot > (getInventorySize() - 10)) continue;
+
                     List<CraftIngredient> ingredients = new ArrayList<>();
 
                     for (int i = 1; i <= config.getConfigurationSection("cubelet-crafting.crafts." + cubeletType + ".ingredients").getKeys(false).size(); i++) {
@@ -180,6 +143,25 @@ public class CubeletCraftingHandler {
         }
 
         return false;
+    }
+
+    public boolean haveIngredients(Player player, CraftParent craft) {
+        for(CraftIngredient ingredient : craft.getIngrediens()) {
+            if(!haveIngredient(player, ingredient)) return false;
+        }
+        return true;
+    }
+
+    public void removeIngredients(Player player, CraftParent craft) {
+        for(CraftIngredient ingredient : craft.getIngrediens()) {
+            if(ingredient.getCraftType() == CraftType.CUBELET) {
+                try {
+                    main.getCubeletTypesHandler().removeCubelet(player.getUniqueId(), ingredient.getName(), ingredient.getAmount());
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        }
     }
 
 }

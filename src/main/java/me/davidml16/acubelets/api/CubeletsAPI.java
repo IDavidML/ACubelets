@@ -15,4 +15,12 @@ public class CubeletsAPI {
         }
     }
 
+    public static void removeCubelet(String player, String type, int amount) {
+        try {
+            Main.get().getCubeletTypesHandler().removeCubelet(player, type, amount);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
 }

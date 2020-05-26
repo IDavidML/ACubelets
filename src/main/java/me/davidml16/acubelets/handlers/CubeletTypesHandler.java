@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class CubeletTypesHandler {
 
@@ -244,10 +245,37 @@ public class CubeletTypesHandler {
         return typesFiles.containsKey(id);
     }
 
-    public void giveCubelet(String player, String type, int amount) throws SQLException {
+    public long getCubeletBalance(String name, String type) throws SQLException {
         if (main.getCubeletTypesHandler().getTypes().containsKey(type)) {
             CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(type);
-            UUID uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
+            UUID uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(name));
+
+            AtomicLong count = new AtomicLong();
+
+            if(Bukkit.getPlayer(uuid) != null) {
+                Player player = Bukkit.getPlayer(uuid);
+                count.set(main.getPlayerDataHandler()
+                        .getData(Objects.requireNonNull(player))
+                        .getCubelets().stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(type)).count());
+            } else {
+                main.getDatabaseHandler().getCubelets(uuid).thenAccept(cubelets -> {
+                    count.set(cubelets.size());
+                });
+            }
+
+            return count.get();
+        }
+        return 0;
+    }
+
+    public void giveCubelet(String player, String type, int amount) throws SQLException {
+        UUID uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
+        giveCubelet(uuid, type, amount);
+    }
+
+    public void giveCubelet(UUID uuid, String type, int amount) throws SQLException {
+        if (main.getCubeletTypesHandler().getTypes().containsKey(type)) {
+            CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(type);
             if (amount > 0) {
                 for (int i = 1; i <= amount; i++) {
                     try {
@@ -256,16 +284,55 @@ public class CubeletTypesHandler {
                         if(Bukkit.getPlayer(uuid) != null) {
                             Player target = Bukkit.getPlayer(uuid);
                             main.getPlayerDataHandler().getData(Objects.requireNonNull(target)).getCubelets().add(cubelet);
-
-                            if(main.getCubeletsGUI().getOpened().containsKey(uuid)) {
-                                main.getCubeletsGUI().reloadPage(target);
-                            }
-
-                            Bukkit.getPluginManager().callEvent(new CubeletReceivedEvent(target, getTypeBydId(type), amount));
                         }
                     } catch (SQLException throwables) {
                         throwables.printStackTrace();
                     }
+                }
+
+                if(Bukkit.getPlayer(uuid) != null) {
+                    Player target = Bukkit.getPlayer(uuid);
+
+                    if (main.getCubeletsGUI().getOpened().containsKey(uuid)) {
+                        main.getCubeletsGUI().reloadPage(target);
+                    }
+
+                    Bukkit.getPluginManager().callEvent(new CubeletReceivedEvent(target, getTypeBydId(type), amount));
+                }
+            }
+        }
+    }
+
+    public void removeCubelet(String player, String type, int amount) throws SQLException {
+        UUID uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
+        removeCubelet(uuid, type, amount);
+    }
+
+    public void removeCubelet(UUID uuid, String type, int amount) throws SQLException {
+        if (main.getCubeletTypesHandler().getTypes().containsKey(type)) {
+            if (amount > 0) {
+                if(Bukkit.getPlayer(uuid) != null) {
+                    Player target = Bukkit.getPlayer(uuid);
+                    for (int i = 1; i <= amount; i++) {
+                        try {
+                            Optional<Cubelet> cb = main.getPlayerDataHandler()
+                                    .getData(Objects.requireNonNull(target.getPlayer()))
+                                    .getCubelets().stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(type)).findFirst();
+
+                            if (cb.isPresent()) {
+                                main.getPlayerDataHandler().getData(Objects.requireNonNull(target)).getCubelets().remove(cb.get());
+                                main.getDatabaseHandler().removeCubelet(uuid, cb.get().getUuid());
+                            }
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                    }
+
+                    if (main.getCubeletsGUI().getOpened().containsKey(uuid))
+                        main.getCubeletsGUI().reloadPage(target);
+
+                } else {
+                    main.getDatabaseHandler().removeCubelet(uuid, type, amount);
                 }
             }
         }

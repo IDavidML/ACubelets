@@ -300,6 +300,36 @@ public class MySQL implements Database {
     }
 
     @Override
+    public void removeCubelet(UUID uuid, String type, int amount) {
+        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+            PreparedStatement ps = null;
+            Connection connection = null;
+            try {
+                connection = hikari.getConnection();
+                ps = connection.prepareStatement("DELETE FROM ac_cubelets WHERE rowid IN (SELECT rowid FROM ac_cubelets WHERE UUID = '" + uuid + "' AND type = '" + type + "' LIMIT " + amount + ");");
+                ps.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (ps != null) {
+                    try {
+                        ps.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
     public void removeCubelet(String type) {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;

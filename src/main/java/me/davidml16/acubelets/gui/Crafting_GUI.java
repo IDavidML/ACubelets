@@ -18,6 +18,7 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.sql.SQLException;
 import java.util.*;
 
 public class Crafting_GUI implements Listener {
@@ -51,23 +52,20 @@ public class Crafting_GUI implements Listener {
 
         for(CraftParent craft : main.getCubeletCraftingHandler().getCrafts()) {
             CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(craft.getCubeletType());
-            boolean playerHaveIngredients = true;
 
             List<String> lore = new ArrayList<>();
-            for (String line : main.getCubeletCraftingHandler().getLore()) {
+            for (String line : main.getLanguageHandler().getMessageList("GUI.Crafting.Ingredients.Lore")) {
                 if(line.contains("%ingredients%")) {
                     for(CraftIngredient ingredient : craft.getIngrediens()) {
 
                         String status;
                         if(main.getCubeletCraftingHandler().haveIngredient(p, ingredient))
-                            status = main.getCubeletCraftingHandler().getStatusAvailable();
-                        else {
-                            status = main.getCubeletCraftingHandler().getStatusNoAvailable();
-                            playerHaveIngredients = false;
-                        }
+                            status = main.getLanguageHandler().getMessage("GUI.Crafting.Ingredients.Status.Available");
+                        else
+                            status = main.getLanguageHandler().getMessage("GUI.Crafting.Ingredients.Status.NotAvailable");
 
                         if(ingredient.getCraftType() == CraftType.CUBELET)
-                            lore.add(ColorUtil.translate(main.getCubeletCraftingHandler().getIngredientCubeletFormat()
+                            lore.add(ColorUtil.translate(main.getLanguageHandler().getMessage("GUI.Crafting.Ingredients.Ingredient.Cubelet")
                                     .replaceAll("%name%", ColorUtil.removeColors(main.getCubeletTypesHandler().getTypeBydId(ingredient.getName()).getName()))
                                     .replaceAll("%amount%", ""+ingredient.getAmount())
                                     .replaceAll("%status%", status)
@@ -83,7 +81,7 @@ public class Crafting_GUI implements Listener {
 
             ItemStack item = new ItemBuilder(cubeletType.getIcon()).setName(ColorUtil.translate(cubeletType.getName())).setLore(lore).toItemStack();
             item = NBTEditor.setItemTag(item, craft.getCubeletType(), "cubeletType");
-            item = NBTEditor.setItemTag(item, Boolean.toString(playerHaveIngredients), "haveIngredients");
+            item = NBTEditor.setItemTag(item, Boolean.toString(main.getCubeletCraftingHandler().haveIngredients(p, craft)), "haveIngredients");
 
             gui.setItem(craft.getSlot(), item);
         }
@@ -113,6 +111,9 @@ public class Crafting_GUI implements Listener {
                         p.sendMessage(main.getLanguageHandler().getMessage("GUI.Crafting.NoAfford"));
                         return;
                     }
+
+                    String cubeletType = NBTEditor.getString(e.getCurrentItem(), "cubeletType");
+                    main.getCraftingConfirmationGUI().open(p, cubeletType);
                 } else if (slot == (inventorySize - 5)) {
                     main.getCubeletsGUI().open(p);
                 }

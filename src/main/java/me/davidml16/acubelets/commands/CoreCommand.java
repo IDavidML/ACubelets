@@ -13,6 +13,7 @@ public class CoreCommand implements CommandExecutor {
     private final Main main;
 
     private final ExecuteGive executeGive;
+    private final ExecuteRemove executeRemove;
     private final ExecuteBox executeBox;
     private final ExecuteType executeType;
     private final ExecuteReload executeReload;
@@ -21,6 +22,7 @@ public class CoreCommand implements CommandExecutor {
     public CoreCommand(Main main) {
         this.main = main;
         this.executeGive = new ExecuteGive(main);
+        this.executeRemove = new ExecuteRemove(main);
         this.executeBox = new ExecuteBox(main);
         this.executeType = new ExecuteType(main);
         this.executeReload = new ExecuteReload(main);
@@ -46,6 +48,8 @@ public class CoreCommand implements CommandExecutor {
                 return executeBox.executeCommand(sender, args);
             case "give":
                 return executeGive.executeCommand(sender, args);
+            case "remove":
+                return executeRemove.executeCommand(sender, args);
             case "type":
                 return executeType.executeCommand(sender, args);
             case "setup":
@@ -64,7 +68,7 @@ public class CoreCommand implements CommandExecutor {
         }
 
         sender.sendMessage("");
-        sender.sendMessage(ColorUtil.translate("&7 - &a/cubelets give [player] [typeID] [amount]"));
+        sender.sendMessage(ColorUtil.translate("&7 - &a/cubelets [give/remove] [player] [typeID] [amount]"));
         sender.sendMessage(ColorUtil.translate("&7 - &a/cubelets machine [add/remove/edit]"));
         sender.sendMessage("");
         sender.sendMessage(ColorUtil.translate("&7 - &a/cubelets type"));

@@ -105,9 +105,48 @@ GUI:
   Crafting:
     Title: 'Cubelet Crafting'
     NoAfford: '&cYou cannot afford to craft this Cubelet yet!'
+    Ingredients:
+      Ingredient:
+        Cubelet: '&7- &b%name% &7x%amount% %status%'
+        Money: '&7- &b%amount% Loot Points %status%'
+      Status:
+        Available: '&a✓'
+        NotAvailable: '&c✗'
+      Lore:
+        - '&5Ingredients:'
+        - '%ingredients%'
+        - ''
+        - '%description%'
+        - ''
+        - '&8&oCrafted Cubelets expire after'
+        - '&8&o2 weeks.'
+        - ''
+        - '&6Click to craft.'
     Items:
       Back:
         Name: '&9Back'
         Lore:
           - '&7Go back to the previous'
           - '&7menu.'
+  CraftingConfirmation:
+    Title: 'Crafting a Cubelet'
+    Ingredients:
+      Ingredient:
+        Cubelet: '&7- &b%name% &7x%amount%'
+        Money: '&7- &b%amount% Loot Points'
+    Items:
+      Craft:
+        Name: '&a&lCRAFT'
+        Lore:
+          - '&7You are buying a Cubelet and it will'
+          - '&7cost:'
+          - '%ingredients%'
+          - ''
+          - '&8&oThis process cannot be undone.'
+          - ''
+          - '&6Click to craft!'
+      Cancel:
+        Name: '&c&lCANCEL'
+        Lore:
+          - ''
+          - '&6Click to cancel!'
