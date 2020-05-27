@@ -19,7 +19,7 @@ public class ExecuteType {
         this.main = main;
     }
 
-    public boolean executeCommand(CommandSender sender, String[] args) {
+    public boolean executeCommand(CommandSender sender, String label, String[] args) {
         if(sender instanceof Player) {
             if (!main.playerHasPermission((Player) sender, "acubelets.admin")) {
                 sender.sendMessage(main.getLanguageHandler().getMessage("Commands.NoPerms"));
@@ -28,15 +28,15 @@ public class ExecuteType {
         }
 
         if(args.length == 1) {
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /cubelets type create [id] [name]"));
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /cubelets type remove [id]"));
+            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type create [id] [name]"));
+            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type remove [id]"));
             return false;
         }
 
         if(args[1].equalsIgnoreCase("create")) {
 
              if (args.length <= 3) {
-                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /cubelets type create [id] [name]"));
+                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type create [id] [name]"));
                 return false;
             }
 
@@ -48,7 +48,7 @@ public class ExecuteType {
             }
 
             if (main.getCubeletTypesHandler().typeExist(id)) {
-                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cThis cubelet type already exists!"));
+                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cThis " + label + " type already exists!"));
                 return true;
             }
 
@@ -82,24 +82,24 @@ public class ExecuteType {
                     main.getAnimationsGUI().loadGUI(id);
 
                     sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
-                            + " &aSuccesfully created cubelet type &e" + id + " &awith the name &e" + name));
+                            + " &aSuccesfully created " + label + " type &e" + id + " &awith the name &e" + name));
                     return true;
                 }
             } else {
                 sender.sendMessage(ColorUtil.translate(
-                        main.getLanguageHandler().getPrefix() + " &cThe cubelet type cannot start with a number, use for example 'normal'."));
+                        main.getLanguageHandler().getPrefix() + " &cThe " + label + " type cannot start with a number, use for example 'normal'."));
                 return false;
             }
         } else if(args[1].equalsIgnoreCase("remove")) {
             if (args.length < 3) {
-                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /cubelets type remove [id]"));
+                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type remove [id]"));
                 return false;
             }
 
             String id = args[2].toLowerCase();
 
             if (!main.getCubeletTypesHandler().typeExist(id)) {
-                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cThis cubelet type no exists!"));
+                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cThis " + label + " type no exists!"));
                 return true;
             }
 
@@ -128,12 +128,12 @@ public class ExecuteType {
                         if(main.getAnimationsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
                     }
 
-                    sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &aSuccesfully removed cubelet type &e" + id + "&a!"));
+                    sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &aSuccesfully removed " + label + " type &e" + id + "&a!"));
                     return true;
                 }
             } else {
                 sender.sendMessage(ColorUtil.translate(
-                        main.getLanguageHandler().getPrefix() + " &cThe cubelet type cannot start with a number, use for example 'normal'."));
+                        main.getLanguageHandler().getPrefix() + " &cThe " + label + " type cannot start with a number, use for example 'normal'."));
                 return false;
             }
         }

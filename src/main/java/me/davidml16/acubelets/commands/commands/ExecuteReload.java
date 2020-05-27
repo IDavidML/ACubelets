@@ -11,7 +11,7 @@ public class ExecuteReload {
         this.main = main;
     }
 
-    public boolean executeCommand(CommandSender sender, String[] args) {
+    public boolean executeCommand(CommandSender sender, String label, String[] args) {
         if ((sender instanceof Player)) {
             if (!main.playerHasPermission((Player) sender, "acubelets.admin")) {
                 sender.sendMessage(main.getLanguageHandler().getMessage("Commands.NoPerms"));

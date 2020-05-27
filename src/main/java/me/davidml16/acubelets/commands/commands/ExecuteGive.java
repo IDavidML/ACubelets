@@ -17,7 +17,7 @@ public class ExecuteGive {
         this.main = main;
     }
 
-    public boolean executeCommand(CommandSender sender, String[] args) {
+    public boolean executeCommand(CommandSender sender, String label, String[] args) {
 
         if(sender instanceof Player) {
             if (!main.playerHasPermission((Player) sender, "acubelets.admin")) {
@@ -27,7 +27,7 @@ public class ExecuteGive {
         }
 
         if (args.length == 1 || args.length == 2) {
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /cubelets add [player] [typeID] [amount]"));
+            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " add [player] [typeID] [amount]"));
             return false;
         }
 
@@ -36,7 +36,7 @@ public class ExecuteGive {
         String id = args[2];
         if (!main.getCubeletTypesHandler().getTypes().containsKey(id)) {
             sender.sendMessage(ColorUtil.translate(
-                    main.getLanguageHandler().getPrefix() + " &cThis cubelet type doesn't exists!"));
+                    main.getLanguageHandler().getPrefix() + " &cThis " + label + " type doesn't exists!"));
             return false;
         }
 

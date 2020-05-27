@@ -5,7 +5,6 @@ import com.comphenix.protocol.ProtocolManager;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.davidml16.acubelets.animations.AnimationHandler;
-import me.davidml16.acubelets.api.CubeletsAPI;
 import me.davidml16.acubelets.commands.CoreCommand;
 import me.davidml16.acubelets.commands.TabCompleter_ACubelets;
 import me.davidml16.acubelets.database.DatabaseHandler;
@@ -129,21 +128,11 @@ public class Main extends JavaPlugin {
         cubeletRewardHandler = new CubeletRewardHandler(this);
         cubeletRewardHandler.loadRewards();
 
-        cubeletCraftingHandler = new CubeletCraftingHandler(this);
-        if(isCraftingEnabled())
-            cubeletCraftingHandler.loadCrafting();
+        economyHandler = new EconomyHandler();
+        economyHandler.load();
 
-        if(cubeletCraftingHandler.containsEconomyIngredient(cubeletCraftingHandler.getCrafts())) {
-            if (!Bukkit.getPluginManager().isPluginEnabled("Vault")) {
-                getLogger().severe("*** Vault is not installed, you need Vault for Economy ingredient on crafts. ***");
-                getLogger().severe("*** This plugin will be disabled. ***");
-                setEnabled(false);
-                return;
-            } else {
-                economyHandler = new EconomyHandler();
-                economyHandler.load();
-            }
-        }
+        cubeletCraftingHandler = new CubeletCraftingHandler(this);
+        cubeletCraftingHandler.loadCrafting();
 
         playerDataHandler = new PlayerDataHandler(this);
 

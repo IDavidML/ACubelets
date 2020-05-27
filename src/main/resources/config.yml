@@ -6,12 +6,12 @@
 #-------------------------#
 
 
-# LANGUAGE OF THE PLUGIN
-# AVAILABLES BY DEFAULT: EN, ES
+# Language of plugin
+# Availables by default: EN, ES
 Language: EN
 
 
-# DATABASE DETAILS
+# Database details
 MySQL:
     Enabled: false
     Host: localhost
@@ -21,12 +21,12 @@ MySQL:
     Database: acubelets
 
 
-# ENABLE/DISABLE IF EXECUTE A COMMAND WHEN CLICK ON BARRIER
-# WHEN DONT HAVE ANY CUBELETS TO OPEN
+# Enable/disable if execute a command when click on barrier
+# When dont have any cubelets to open
 NoCubelets:
     ExecuteCommand: false
     Command: 'help'
 
 
-# ENABLE/DISABLE CUBELET CRAFTING
+# Enable/disable cubelet crafting
 Crafting: true

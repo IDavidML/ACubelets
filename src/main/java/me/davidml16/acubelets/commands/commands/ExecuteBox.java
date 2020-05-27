@@ -23,7 +23,7 @@ public class ExecuteBox {
         this.main = main;
     }
 
-    public boolean executeCommand(CommandSender sender, String[] args) {
+    public boolean executeCommand(CommandSender sender, String label, String[] args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(ColorUtil.translate("&cThe commands only can be use by players!"));
             return true;
@@ -35,7 +35,7 @@ public class ExecuteBox {
         }
 
         if (args.length == 1) {
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /cubelets machine [add/remove/edit]"));
+            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " machine [add/remove/edit]"));
             return false;
         }
 
@@ -58,7 +58,7 @@ public class ExecuteBox {
                     Sounds.playSound(((Player)sender), ((Player)sender).getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
 
                     sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
-                            + " &aSuccesfully created new cubelet machine on" +
+                            + " &aSuccesfully " + label + " new cubelet machine on" +
                             " &aX: &e" + block.getLocation().getBlockX() +
                             ", &aY: &e" + block.getLocation().getBlockY() +
                             ", &aZ: &e" + block.getLocation().getBlockZ()));
@@ -71,12 +71,12 @@ public class ExecuteBox {
                     return true;
                 } else {
                     sender.sendMessage(ColorUtil.translate(
-                            main.getLanguageHandler().getPrefix() + " &cThis cubelet machine location already exists!"));
+                            main.getLanguageHandler().getPrefix() + " &cThis " + label + " machine location already exists!"));
                     return false;
                 }
             } else {
                 sender.sendMessage(ColorUtil.translate(
-                        main.getLanguageHandler().getPrefix() + " &cA cubelet machine needs to be a block!"));
+                        main.getLanguageHandler().getPrefix() + " &cA " + label + " machine needs to be a block!"));
                 return false;
             }
         }
@@ -91,19 +91,19 @@ public class ExecuteBox {
                     Sounds.playSound(((Player)sender), ((Player)sender).getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
 
                     sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
-                            + " &aSuccesfully removed cubelet machine of" +
+                            + " &aSuccesfully removed " + label + " machine of" +
                             " &aX: &e" + block.getLocation().getBlockX() +
                             ", &aY: &e" + block.getLocation().getBlockY() +
                             ", &aZ: &e" + block.getLocation().getBlockZ()));
                     return true;
                 } else {
                     sender.sendMessage(ColorUtil.translate(
-                            main.getLanguageHandler().getPrefix() + " &cThis cubelet machine location no exists!"));
+                            main.getLanguageHandler().getPrefix() + " &cThis " + label + " machine location no exists!"));
                     return false;
                 }
             } else {
                 sender.sendMessage(ColorUtil.translate(
-                        main.getLanguageHandler().getPrefix() + " &cA cubelet machine needs to be a block!"));
+                        main.getLanguageHandler().getPrefix() + " &cA " + label + " machine needs to be a block!"));
                 return false;
             }
         }
@@ -117,12 +117,12 @@ public class ExecuteBox {
                     return true;
                 } else {
                     sender.sendMessage(ColorUtil.translate(
-                            main.getLanguageHandler().getPrefix() + " &cThis cubelet machine location no exists!"));
+                            main.getLanguageHandler().getPrefix() + " &cThis " + label + " machine location no exists!"));
                     return false;
                 }
             } else {
                 sender.sendMessage(ColorUtil.translate(
-                        main.getLanguageHandler().getPrefix() + " &cA cubelet machine needs to be a block!"));
+                        main.getLanguageHandler().getPrefix() + " &cA " + label + " machine needs to be a block!"));
                 return false;
             }
         }

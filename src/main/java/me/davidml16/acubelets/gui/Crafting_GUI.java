@@ -88,7 +88,7 @@ public class Crafting_GUI implements Listener {
             item = NBTEditor.setItemTag(item, craft.getCubeletType(), "cubeletType");
             item = NBTEditor.setItemTag(item, Boolean.toString(main.getCubeletCraftingHandler().haveIngredients(p, craft)), "haveIngredients");
 
-            gui.setItem(craft.getSlot(), item);
+            if(craft.getIngrediens().size() > 0) gui.setItem(craft.getSlot(), item);
         }
 
         p.openInventory(gui);

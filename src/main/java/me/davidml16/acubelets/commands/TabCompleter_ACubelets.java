@@ -33,6 +33,7 @@ public class TabCompleter_ACubelets implements TabCompleter {
 			if (main.playerHasPermission(p, "acubelets.admin")) {
 				list.add("help");
 				list.add("give");
+				list.add("remove");
 				list.add("machine");
 				list.add("type");
 				list.add("setup");

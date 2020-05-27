@@ -95,21 +95,25 @@ public class CubeletCraftingHandler {
                     if(slot > (getInventorySize() - 10)) continue;
 
                     List<CraftIngredient> ingredients = new ArrayList<>();
+                    if(config.contains("cubelet-crafting.crafts." + cubeletType + ".ingredients")) {
+                        if (config.getConfigurationSection("cubelet-crafting.crafts." + cubeletType + ".ingredients") != null) {
+                            for (int i = 1; i <= config.getConfigurationSection("cubelet-crafting.crafts." + cubeletType + ".ingredients").getKeys(false).size(); i++) {
+                                String type = config.getString("cubelet-crafting.crafts." + cubeletType + ".ingredients." + i + ".type");
+                                if (!type.equalsIgnoreCase("money") && !type.equalsIgnoreCase("cubelet")) continue;
 
-                    for (int i = 1; i <= config.getConfigurationSection("cubelet-crafting.crafts." + cubeletType + ".ingredients").getKeys(false).size(); i++) {
-                        String type = config.getString("cubelet-crafting.crafts." + cubeletType + ".ingredients." + i + ".type");
-                        if(!type.equalsIgnoreCase("money") && !type.equalsIgnoreCase("cubelet")) continue;
+                                int amount = config.getInt("cubelet-crafting.crafts." + cubeletType + ".ingredients." + i + ".amount");
 
-                        int amount = config.getInt("cubelet-crafting.crafts." + cubeletType + ".ingredients." + i + ".amount");
+                                if (type.equalsIgnoreCase("money")) {
+                                    if (main.getEconomyHandler().isLoaded())
+                                        ingredients.add(new CraftIngredient(cubeletType, CraftType.MONEY, amount));
+                                } else if (type.equalsIgnoreCase("cubelet")) {
+                                    String name = config.getString("cubelet-crafting.crafts." + cubeletType + ".ingredients." + i + ".name");
+                                    if (name == null) continue;
+                                    if (!main.getCubeletTypesHandler().getTypes().containsKey(name)) continue;
 
-                        if(type.equalsIgnoreCase("money")) {
-                            ingredients.add(new CraftIngredient(cubeletType, CraftType.MONEY, amount));
-                        } else if(type.equalsIgnoreCase("cubelet")) {
-                            String name = config.getString("cubelet-crafting.crafts." + cubeletType + ".ingredients." + i + ".name");
-                            if(name == null) continue;
-                            if(!main.getCubeletTypesHandler().getTypes().containsKey(name)) continue;
-
-                            ingredients.add(new CraftIngredient(cubeletType, CraftType.CUBELET, name, amount));
+                                    ingredients.add(new CraftIngredient(cubeletType, CraftType.CUBELET, name, amount));
+                                }
+                            }
                         }
                     }
 

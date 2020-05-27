@@ -12,7 +12,7 @@ public class ExecuteSetup {
         this.main = main;
     }
 
-    public boolean executeCommand(CommandSender sender, String[] args) {
+    public boolean executeCommand(CommandSender sender, String label, String[] args) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(ColorUtil.translate("&cThe commands only can be use by players!"));
             return true;
@@ -24,13 +24,13 @@ public class ExecuteSetup {
         }
 
         if (args.length == 1) {
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /cubelets setup [typeID]"));
+            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " setup [typeID]"));
             return true;
         }
 
         String id = args[1].toLowerCase();
         if (!main.getCubeletTypesHandler().getTypes().containsKey(id)) {
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cThis cubelet type doesn't exists!"));
+            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cThis " + label + " type doesn't exists!"));
             return true;
         }
 

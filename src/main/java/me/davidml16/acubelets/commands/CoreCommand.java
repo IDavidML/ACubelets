@@ -37,45 +37,45 @@ public class CoreCommand implements CommandExecutor {
                         .replaceAll("%cubelets_available%", ""+main.getPlayerDataHandler().getData((Player) sender).getCubelets().size()));
                 return true;
             } else {
-                return sendCommandHelp(sender);
+                return sendCommandHelp(sender, label);
             }
         }
 
         switch (args[0]) {
             case "help":
-                return sendCommandHelp(sender);
+                return sendCommandHelp(sender, label);
             case "machine":
-                return executeBox.executeCommand(sender, args);
+                return executeBox.executeCommand(sender, label, args);
             case "give":
-                return executeGive.executeCommand(sender, args);
+                return executeGive.executeCommand(sender, label, args);
             case "remove":
-                return executeRemove.executeCommand(sender, args);
+                return executeRemove.executeCommand(sender, label, args);
             case "type":
-                return executeType.executeCommand(sender, args);
+                return executeType.executeCommand(sender, label, args);
             case "setup":
-                return executeSetup.executeCommand(sender, args);
+                return executeSetup.executeCommand(sender, label, args);
             case "reload":
-                return executeReload.executeCommand(sender, args);
+                return executeReload.executeCommand(sender, label, args);
         }
 
-        sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cInvalid argument, use /cubelets help to see available commands"));
+        sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cInvalid argument, use /" + label + " help to see available commands"));
         return false;
     }
 
-    private boolean sendCommandHelp(CommandSender sender) {
+    private boolean sendCommandHelp(CommandSender sender, String label) {
         if(sender instanceof Player) {
             if (!main.playerHasPermission((Player) sender, "acubelets.admin")) return false;
         }
 
         sender.sendMessage("");
-        sender.sendMessage(ColorUtil.translate("&7 - &a/cubelets [give/remove] [player] [typeID] [amount]"));
-        sender.sendMessage(ColorUtil.translate("&7 - &a/cubelets machine [add/remove/edit]"));
+        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " [give/remove] [player] [typeID] [amount]"));
+        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " machine [add/remove/edit]"));
         sender.sendMessage("");
-        sender.sendMessage(ColorUtil.translate("&7 - &a/cubelets type"));
+        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " type"));
         sender.sendMessage("");
-        sender.sendMessage(ColorUtil.translate("&7 - &a/cubelets setup [typeID]"));
+        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " setup [typeID]"));
         sender.sendMessage("");
-        sender.sendMessage(ColorUtil.translate("&7 - &a/cubelets reload"));
+        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " reload"));
         sender.sendMessage("");
         return true;
     }

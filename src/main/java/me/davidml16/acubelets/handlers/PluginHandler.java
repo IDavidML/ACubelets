@@ -7,6 +7,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class PluginHandler {
 
@@ -52,8 +53,7 @@ public class PluginHandler {
         main.getCubeletTypesHandler().loadTypes();
         main.getCubeletRarityHandler().loadRarities();
         main.getCubeletRewardHandler().loadRewards();
-        if(main.isCraftingEnabled())
-            main.getCubeletCraftingHandler().loadCrafting();
+        main.getCubeletCraftingHandler().loadCrafting();
         main.getHologramTask().start();
     }
 

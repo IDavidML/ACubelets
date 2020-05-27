@@ -15,7 +15,7 @@ public class ExecuteRemove {
         this.main = main;
     }
 
-    public boolean executeCommand(CommandSender sender, String[] args) {
+    public boolean executeCommand(CommandSender sender, String label, String[] args) {
 
         if(sender instanceof Player) {
             if (!main.playerHasPermission((Player) sender, "acubelets.admin")) {
@@ -25,7 +25,7 @@ public class ExecuteRemove {
         }
 
         if (args.length == 1 || args.length == 2) {
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /cubelets remove [player] [typeID] [amount]"));
+            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " remove [player] [typeID] [amount]"));
             return false;
         }
 
@@ -34,7 +34,7 @@ public class ExecuteRemove {
         String id = args[2];
         if (!main.getCubeletTypesHandler().getTypes().containsKey(id)) {
             sender.sendMessage(ColorUtil.translate(
-                    main.getLanguageHandler().getPrefix() + " &cThis cubelet type doesn't exists!"));
+                    main.getLanguageHandler().getPrefix() + " &cThis " + label + " type doesn't exists!"));
             return false;
         }
 
