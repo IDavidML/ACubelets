@@ -30,3 +30,7 @@ NoCubelets:
 
 # Enable/disable cubelet crafting
 Crafting: true
+
+
+# Enable/disable cubelet rewards preview with MIDDLE-CLICK
+RewardsPreview: false

@@ -39,6 +39,7 @@ public class PluginHandler {
         main.reloadConfig();
 
         main.setCraftingEnabled(main.getConfig().getBoolean("Crafting"));
+        main.setPreviewEnabled(main.getConfig().getBoolean("RewardsPreview"));
 
         main.setCubeletsCommandEnabled(main.getConfig().getBoolean("NoCubelets.ExecuteCommand"));
         main.setNoCubeletsCommand(main.getConfig().getString("NoCubelets.Command"));

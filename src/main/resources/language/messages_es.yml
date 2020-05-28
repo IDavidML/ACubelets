@@ -134,19 +134,35 @@ GUI:
       Ingredient:
         Cubelet: '&7- &b%name% &7x%amount%'
         Money: '&7- &b%amount% Puntos de Loot'
-      Items:
-        Craft:
-          Name: '&a&lFABRICAR'
-          Lore:
-            - '&7Estas comprando un Cubelet y te'
-            - '&7costara:'
-            - '%ingredients%'
-            - ''
-            - '&8&oEste proceso no se puede deshacer.'
-            - ''
-            - '&6Click para fabricarlo!'
-        Cancel:
-          Name: '&c&lCANCELAR'
-          Lore:
-            - ''
-            - '&6Click para cancelarlo!'
+    Items:
+      Craft:
+        Name: '&a&lFABRICAR'
+        Lore:
+          - '&7Estas comprando un Cubelet y te'
+          - '&7costara:'
+          - '%ingredients%'
+          - ''
+          - '&8&oEste proceso no se puede deshacer.'
+          - ''
+          - '&6Click para fabricarlo!'
+      Cancel:
+        Name: '&c&lCANCELAR'
+        Lore:
+          - ''
+          - '&6Click para cancelarlo!'
+  Preview:
+    Title: 'Recompensas de %cubelet_type%'
+    Items:
+      Reward:
+        Name: '&e&l%reward_name%'
+        Lore:
+          - '&5Rareza: %reward_rarity%'
+      Back:
+        Name: '&9Volver'
+        Lore:
+          - '&7Vuelve hacia el anterior'
+          - '&7menu.'
+      NextPage:
+        Name: '&6Siguiente pagina'
+      PreviousPage:
+        Name: '&6Pagina anterior'

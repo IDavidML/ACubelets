@@ -2,6 +2,7 @@ package me.davidml16.acubelets.objects;
 
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.acubelets.enums.CubeletBoxState;
+import me.davidml16.acubelets.enums.Rotation;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -15,6 +16,8 @@ public class CubeletBox {
     private double blockHeight;
     private double permanentBlockHeight;
 
+    private Rotation rotation;
+
     private HashMap<UUID, Hologram> holograms;
 
     private Player playerOpening;
@@ -23,7 +26,7 @@ public class CubeletBox {
 
     private Reward lastReward;
 
-    public CubeletBox(Location location, double blockHeight, double permanentBlockHeight) {
+    public CubeletBox(Location location, double blockHeight, double permanentBlockHeight, Rotation rotation) {
         this.location = location;
         this.holograms = new HashMap<>();
         this.state = CubeletBoxState.EMPTY;
@@ -31,6 +34,7 @@ public class CubeletBox {
         this.lastReward = null;
         this.blockHeight = blockHeight;
         this.permanentBlockHeight = permanentBlockHeight;
+        this.rotation = rotation;
     }
 
     public Location getLocation() {
@@ -68,6 +72,10 @@ public class CubeletBox {
     public Reward getLastReward() { return lastReward; }
 
     public void setLastReward(Reward lastReward) { this.lastReward = lastReward; }
+
+    public Rotation getRotation() { return rotation; }
+
+    public void setRotation(Rotation rotation) { this.rotation = rotation; }
 
     @Override
     public String toString() {

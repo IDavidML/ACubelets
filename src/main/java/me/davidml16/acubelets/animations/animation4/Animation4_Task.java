@@ -5,6 +5,7 @@ import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.enums.CubeletBoxState;
+import me.davidml16.acubelets.enums.Rotation;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Reward;
@@ -74,7 +75,7 @@ public class Animation4_Task implements Animation {
 			} else if(time == 105) {
 				music.runTaskTimer(main, 0L, 5L);
 
-				armorStand = ASSpawner.spawn(main, cubeletBox.getLocation(), cubeletType);
+				armorStand = ASSpawner.spawn(main, cubeletBox, cubeletType);
 				armorStandLocation = armorStand.getLocation();
 				main.getAnimationHandler().getArmorStands().add(armorStand);
 			} else if(time > 105 && time < 145) {
@@ -86,12 +87,13 @@ public class Animation4_Task implements Animation {
 			} else if(time == 150) {
 				music.cancel();
 
-				pigman = (LivingEntity) cubeletBox.getLocation().getWorld().spawnEntity(cubeletBox.getLocation().clone().add(0.5, 3, -0.5), EntityType.PIG_ZOMBIE);
+				pigman = (LivingEntity) cubeletBox.getLocation().getWorld().spawnEntity(getLocationRotation(), EntityType.PIG_ZOMBIE);
 				if(XMaterial.supports(9)) pigman.setCollidable(false);
 				if(XMaterial.supports(9)) pigman.setInvulnerable(true);
 				if(XMaterial.supports(10)) pigman.setSilent(true);
                 ((PigZombie )pigman).setBaby(false);
                 ((PigZombie )pigman).setAngry(false);
+				pigman.setRemoveWhenFarAway(false);
 				pigman.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
 
 				particles = new Animation4_3x3Particles(pigman);
@@ -101,7 +103,7 @@ public class Animation4_Task implements Animation {
 				else pigman.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 200000, 200, false, false));
 
 				pigmanLocation = pigman.getLocation();
-				pigmanLocation.setYaw(0);
+				pigmanLocation.setYaw(cubeletBox.getRotation().value);
 				pigmanLocation.setPitch(0);
 				pigman.teleport(pigmanLocation);
 			} else if(time == 200) {
@@ -147,6 +149,28 @@ public class Animation4_Task implements Animation {
 
 			time++;
 		}
+	}
+
+	public Location getLocationRotation() {
+		switch (cubeletBox.getRotation()) {
+			case SOUTH:
+				Location s = cubeletBox.getLocation().clone().add(0.5, 3, -0.5);
+				s.setYaw(Rotation.SOUTH.value);
+				return s;
+			case NORTH:
+				Location n = cubeletBox.getLocation().clone().add(0.5, 3, 1.5);
+				n.setYaw(Rotation.NORTH.value);
+				return n;
+			case EAST:
+				Location e = cubeletBox.getLocation().clone().add(-0.5, 3, 0.5);
+				e.setYaw(Rotation.EAST.value);
+				return e;
+			case WEST:
+				Location w = cubeletBox.getLocation().clone().add(1.5, 3, 0.5);
+				w.setYaw(Rotation.WEST.value);
+				return w;
+		}
+		return null;
 	}
 	
 	public int getId() { return id; }

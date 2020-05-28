@@ -191,25 +191,31 @@ public class Cubelets_GUI implements Listener {
                     if (main.getPlayerDataHandler().getData(p.getUniqueId()).getCubelets().size() > 0) {
                         String cubeletUUID = NBTEditor.getString(e.getCurrentItem(), "cubeletUUID");
                         String typeID = NBTEditor.getString(e.getCurrentItem(), "typeID");
+                        CubeletType type = main.getCubeletTypesHandler().getTypeBydId(typeID);
 
-                        Profile profile = main.getPlayerDataHandler().getData(p);
-                        Optional<Cubelet> cubelet = profile.getCubelets().stream().filter(cbl -> cbl.getUuid().toString().equalsIgnoreCase(cubeletUUID)).findFirst();
+                        if(e.getClick() == ClickType.LEFT || e.getClick() == ClickType.RIGHT) {
 
-                        if(cubelet.isPresent()) {
-                            if (cubelet.get().getExpire() > System.currentTimeMillis()) {
+                            Profile profile = main.getPlayerDataHandler().getData(p);
+                            Optional<Cubelet> cubelet = profile.getCubelets().stream().filter(cbl -> cbl.getUuid().toString().equalsIgnoreCase(cubeletUUID)).findFirst();
 
-                                CubeletType type = main.getCubeletTypesHandler().getTypeBydId(typeID);
-                                if(type.getAllRewards().size() > 0) {
-                                    main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), type);
+                            if (cubelet.isPresent()) {
+                                if (cubelet.get().getExpire() > System.currentTimeMillis()) {
 
-                                    profile.getCubelets().removeIf(cblt -> cblt.getUuid().toString().equals(cubeletUUID));
+                                    if (type.getAllRewards().size() > 0) {
+                                        main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), type);
 
-                                    main.getDatabaseHandler().removeCubelet(p.getUniqueId(), UUID.fromString(Objects.requireNonNull(cubeletUUID)));
-                                    profile.getCubelets().remove(cubelet);
+                                        profile.getCubelets().removeIf(cblt -> cblt.getUuid().toString().equals(cubeletUUID));
 
-                                    p.closeInventory();
+                                        main.getDatabaseHandler().removeCubelet(p.getUniqueId(), UUID.fromString(Objects.requireNonNull(cubeletUUID)));
+                                        profile.getCubelets().remove(cubelet);
+
+                                        p.closeInventory();
+                                    }
                                 }
                             }
+
+                        } else if (e.getClick() == ClickType.MIDDLE) {
+                            if(main.isPreviewEnabled()) main.getRewardsPreviewGUI().open(p, typeID);
                         }
                     } else {
                         if(e.getCurrentItem().getType() == XMaterial.BARRIER.parseMaterial()) {

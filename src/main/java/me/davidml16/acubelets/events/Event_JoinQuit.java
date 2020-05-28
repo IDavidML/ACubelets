@@ -38,6 +38,7 @@ public class Event_JoinQuit implements Listener {
         main.getEditBoxGUI().getOpened().remove(p.getUniqueId());
         main.getCraftingGUI().getOpened().remove(p.getUniqueId());
         main.getCraftingConfirmationGUI().getOpened().remove(p.getUniqueId());
+        main.getRewardsPreviewGUI().getOpened().remove(p.getUniqueId());
         main.getPlayerDataHandler().getPlayersData().remove(p.getUniqueId());
         main.getHologramHandler().removeHolograms(p);
 

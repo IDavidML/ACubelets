@@ -1,17 +1,22 @@
 package me.davidml16.acubelets.animations;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.util.EulerAngle;
 
 public class ASSpawner {
 
-    public static ArmorStand spawn(Main main, Location location, CubeletType type) {
-        ArmorStand armorStand = location.getWorld().spawn(location.clone().add(0.5, -0.35, 0.5), ArmorStand.class);
+    public static ArmorStand spawn(Main main, CubeletBox box, CubeletType type) {
+        Location loc = box.getLocation().clone().add(0.5, -0.35, 0.5);
+        loc.setYaw(box.getRotation().value);
+
+        ArmorStand armorStand = box.getLocation().getWorld().spawn(loc, ArmorStand.class);
 
         if(XMaterial.supports(10)) armorStand.setSilent(true);
 
@@ -24,8 +29,6 @@ public class ASSpawner {
         armorStand.setCustomNameVisible(false);
         armorStand.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
 
-        Location loc = armorStand.getLocation().clone();
-        loc.setYaw(0);
         armorStand.teleport(loc);
 
         return armorStand;

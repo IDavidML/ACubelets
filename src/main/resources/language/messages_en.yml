@@ -150,3 +150,19 @@ GUI:
         Lore:
           - ''
           - '&6Click to cancel!'
+  Preview:
+    Title: 'Preview of %cubelet_type%'
+    Items:
+      Reward:
+        Name: '&e&l%reward_name%'
+        Lore:
+          - '&5Rarity: %reward_rarity%'
+      Back:
+        Name: '&9Back'
+        Lore:
+          - '&7Go back to the previous'
+          - '&7menu.'
+      NextPage:
+        Name: '&6Next page'
+      PreviousPage:
+        Name: '&6Previous page'

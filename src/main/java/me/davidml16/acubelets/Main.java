@@ -67,6 +67,7 @@ public class Main extends JavaPlugin {
     private Animations_GUI animationsGUI;
     private Crafting_GUI craftingGUI;
     private CraftingConfirmation_GUI craftingConfirmationGUI;
+    private RewardsPreview_GUI rewardsPreviewGUI;
 
     private int playerCount;
 
@@ -163,6 +164,9 @@ public class Main extends JavaPlugin {
         craftingGUI = new Crafting_GUI(this);
         craftingConfirmationGUI = new CraftingConfirmation_GUI(this);
 
+        settings.put("RewardsPreview", getConfig().getBoolean("RewardsPreview"));
+        rewardsPreviewGUI = new RewardsPreview_GUI(this);
+
         fireworkUtil = new FireworkUtil(this);
 
         registerCommands();
@@ -254,6 +258,8 @@ public class Main extends JavaPlugin {
 
     public CraftingConfirmation_GUI getCraftingConfirmationGUI() { return craftingConfirmationGUI; }
 
+    public RewardsPreview_GUI getRewardsPreviewGUI() { return rewardsPreviewGUI; }
+
     public PluginHandler getPluginHandler() { return pluginHandler; }
 
     public HologramTask getHologramTask() { return hologramTask; }
@@ -275,6 +281,10 @@ public class Main extends JavaPlugin {
     public boolean isCraftingEnabled() { return settings.get("Crafting"); }
 
     public void setCraftingEnabled(boolean craftingEnabled) { settings.put("Crafting", craftingEnabled); }
+
+    public boolean isPreviewEnabled() { return settings.get("RewardsPreview"); }
+
+    public void setPreviewEnabled(boolean rewardsPreview) { settings.put("RewardsPreview", rewardsPreview); }
 
     public String getNoCubeletsCommand() {
         return noCubeletsCommand;
