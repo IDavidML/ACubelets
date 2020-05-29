@@ -127,6 +127,8 @@ public class RewardsPreview_GUI implements Listener {
                     main.getCubeletsGUI().open(p);
                 }
             }
+
+            p.updateInventory();
         }
     }
 

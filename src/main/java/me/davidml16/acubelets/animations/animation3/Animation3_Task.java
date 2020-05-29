@@ -123,7 +123,7 @@ public class Animation3_Task implements Animation {
 	public int getId() { return id; }
 
 	public void start(CubeletBox box, CubeletType type) {
-		armorStand = ASSpawner.spawn(main, box, type);
+		armorStand = ASSpawner.spawn(main, box, type, true);
 
 		armorStandLocation = armorStand.getLocation();
 

@@ -4,6 +4,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -21,13 +22,15 @@ public class Animation4_EntityPackets extends BukkitRunnable {
     private final ArmorStand armorStand;
     private final PacketContainer entitySwing;
     private final ProtocolManager protocolManager;
+    private final CubeletBox box;
 
     private final Random random;
 
-    public Animation4_EntityPackets(LivingEntity entity, ArmorStand armorStand) {
+    public Animation4_EntityPackets(LivingEntity entity, ArmorStand armorStand, CubeletBox box) {
         this.entity = entity;
         this.armorStand = armorStand;
         this.random = new Random();
+        this.box = box;
 
         this.protocolManager = Main.get().getProtocolManager();
         entitySwing = protocolManager.createPacket(PacketType.Play.Server.ANIMATION);
@@ -46,7 +49,7 @@ public class Animation4_EntityPackets extends BukkitRunnable {
         }
         Sounds.playSound(this.entity.getLocation(), Sounds.MySound.DIG_STONE, 0.5F, 1F);
         Location l = armorStand.getLocation();
-        l.setYaw(random.nextInt(15 + 15) - 15);
+        l.setYaw(box.getRotation().value + random.nextInt(15 + 15) - 15);
         armorStand.teleport(l);
     }
 

@@ -49,7 +49,7 @@ public class Animation2_Task implements Animation {
 			if(armorStand != null) {
 				if (time <= 50) armorStandLocation.add(0, 0.02, 0);
 				armorStand.teleport(armorStandLocation);
-				armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.16, 0));
+				armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.159, 0));
 			}
 
 			time++;
@@ -88,7 +88,7 @@ public class Animation2_Task implements Animation {
 	public int getId() { return id; }
 
 	public void start(CubeletBox box, CubeletType type) {
-		armorStand = ASSpawner.spawn(main, box, type);
+		armorStand = ASSpawner.spawn(main, box, type, true);
 
 		armorStandLocation = armorStand.getLocation();
 

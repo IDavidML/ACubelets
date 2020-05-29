@@ -16,4 +16,5 @@ public enum Rotation {
         this.value = value;
         this.relative = relative;
     }
+
 }

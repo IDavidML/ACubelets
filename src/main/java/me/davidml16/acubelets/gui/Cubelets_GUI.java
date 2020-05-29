@@ -28,10 +28,24 @@ public class Cubelets_GUI implements Listener {
     private HashMap<UUID, Integer> opened;
     private Main main;
 
+    private ClickType clickType;
+
     public Cubelets_GUI(Main main) {
         this.main = main;
         this.opened = new HashMap<>();
         this.main.getServer().getPluginManager().registerEvents(this, this.main);
+        this.clickType = ClickType.SHIFT_LEFT;
+    }
+
+    public ClickType getClickType() {
+        return clickType;
+    }
+
+    public void setClickType(String clickType) {
+        if(Arrays.asList("LEFT", "RIGHT", "MIDDLE", "SHIFT_LEFT", "SHIFT_RIGHT").contains(clickType))
+            this.clickType = ClickType.valueOf(clickType.toUpperCase());
+        else
+            this.clickType = ClickType.SHIFT_LEFT;
     }
 
     public HashMap<UUID, Integer> getOpened() {
@@ -171,60 +185,62 @@ public class Cubelets_GUI implements Listener {
         if (opened.containsKey(p.getUniqueId())) {
             e.setCancelled(true);
             int slot = e.getRawSlot();
-            if(e.getClick() != ClickType.DOUBLE_CLICK) {
-                if (slot == (p.getOpenInventory().getTopInventory().getSize() - 9) && e.getCurrentItem().getType() == XMaterial.SUGAR_CANE.parseMaterial()) {
+            if (slot == (p.getOpenInventory().getTopInventory().getSize() - 9) && e.getCurrentItem().getType() == XMaterial.SUGAR_CANE.parseMaterial()) {
+                if(e.getClick() != ClickType.DOUBLE_CLICK)
                     openPage(p, opened.get(p.getUniqueId()) - 1);
-                } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 1) && e.getCurrentItem().getType() == XMaterial.SUGAR_CANE.parseMaterial()) {
+            } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 1) && e.getCurrentItem().getType() == XMaterial.SUGAR_CANE.parseMaterial()) {
+                if(e.getClick() != ClickType.DOUBLE_CLICK)
                     openPage(p, opened.get(p.getUniqueId()) + 1);
-                } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 5)) {
-                    p.closeInventory();
-                } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 7) && main.isCraftingEnabled()) {
-                    main.getCraftingGUI().open(p);
-                } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 3) && main.getCubeletTypesHandler().getTypes().size() > 1) {
-                    Profile profile = main.getPlayerDataHandler().getData(p.getUniqueId());
-                    if(profile.getOrderBy().equalsIgnoreCase("date"))
-                        profile.setOrderBy("type");
-                    else if(profile.getOrderBy().equalsIgnoreCase("type"))
-                        profile.setOrderBy("date");
-                    openPage(p, opened.get(p.getUniqueId()));
-                } else if (slot >= 0 && slot <= (p.getOpenInventory().getTopInventory().getSize() - 10)) {
-                    if (main.getPlayerDataHandler().getData(p.getUniqueId()).getCubelets().size() > 0) {
-                        String cubeletUUID = NBTEditor.getString(e.getCurrentItem(), "cubeletUUID");
-                        String typeID = NBTEditor.getString(e.getCurrentItem(), "typeID");
-                        CubeletType type = main.getCubeletTypesHandler().getTypeBydId(typeID);
+            } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 5)) {
+                p.closeInventory();
+            } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 7) && main.isCraftingEnabled()) {
+                main.getCraftingGUI().open(p);
+            } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 3) && main.getCubeletTypesHandler().getTypes().size() > 1) {
+                Profile profile = main.getPlayerDataHandler().getData(p.getUniqueId());
+                if(profile.getOrderBy().equalsIgnoreCase("date"))
+                    profile.setOrderBy("type");
+                else if(profile.getOrderBy().equalsIgnoreCase("type"))
+                    profile.setOrderBy("date");
+                openPage(p, opened.get(p.getUniqueId()));
+            } else if (slot >= 0 && slot <= (p.getOpenInventory().getTopInventory().getSize() - 10)) {
+                if (main.getPlayerDataHandler().getData(p.getUniqueId()).getCubelets().size() > 0) {
+                    String cubeletUUID = NBTEditor.getString(e.getCurrentItem(), "cubeletUUID");
+                    String typeID = NBTEditor.getString(e.getCurrentItem(), "typeID");
+                    CubeletType type = main.getCubeletTypesHandler().getTypeBydId(typeID);
 
-                        if(e.getClick() == ClickType.LEFT || e.getClick() == ClickType.RIGHT) {
+                    if(e.getClick() != clickType) {
 
-                            Profile profile = main.getPlayerDataHandler().getData(p);
-                            Optional<Cubelet> cubelet = profile.getCubelets().stream().filter(cbl -> cbl.getUuid().toString().equalsIgnoreCase(cubeletUUID)).findFirst();
+                        Profile profile = main.getPlayerDataHandler().getData(p);
+                        Optional<Cubelet> cubelet = profile.getCubelets().stream().filter(cbl -> cbl.getUuid().toString().equalsIgnoreCase(cubeletUUID)).findFirst();
 
-                            if (cubelet.isPresent()) {
-                                if (cubelet.get().getExpire() > System.currentTimeMillis()) {
+                        if (cubelet.isPresent()) {
+                            if (cubelet.get().getExpire() > System.currentTimeMillis()) {
 
-                                    if (type.getAllRewards().size() > 0) {
-                                        main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), type);
+                                if (type.getAllRewards().size() > 0) {
+                                    main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), type);
 
-                                        profile.getCubelets().removeIf(cblt -> cblt.getUuid().toString().equals(cubeletUUID));
+                                    profile.getCubelets().removeIf(cblt -> cblt.getUuid().toString().equals(cubeletUUID));
 
-                                        main.getDatabaseHandler().removeCubelet(p.getUniqueId(), UUID.fromString(Objects.requireNonNull(cubeletUUID)));
-                                        profile.getCubelets().remove(cubelet);
+                                    main.getDatabaseHandler().removeCubelet(p.getUniqueId(), UUID.fromString(Objects.requireNonNull(cubeletUUID)));
+                                    profile.getCubelets().remove(cubelet);
 
-                                        p.closeInventory();
-                                    }
+                                    p.closeInventory();
                                 }
                             }
+                        }
 
-                        } else if (e.getClick() == ClickType.MIDDLE) {
-                            if(main.isPreviewEnabled()) main.getRewardsPreviewGUI().open(p, typeID);
-                        }
-                    } else {
-                        if(e.getCurrentItem().getType() == XMaterial.BARRIER.parseMaterial()) {
-                            p.closeInventory();
-                            MessageUtils.sendShopMessage(p);
-                        }
+                    } else if (e.getClick() == clickType) {
+                        if(main.isPreviewEnabled()) main.getRewardsPreviewGUI().open(p, typeID);
+                    }
+                } else {
+                    if(e.getCurrentItem().getType() == XMaterial.BARRIER.parseMaterial()) {
+                        p.closeInventory();
+                        MessageUtils.sendShopMessage(p);
                     }
                 }
             }
+
+            p.updateInventory();
         }
     }
 

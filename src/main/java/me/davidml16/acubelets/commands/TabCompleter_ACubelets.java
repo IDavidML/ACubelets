@@ -33,6 +33,7 @@ public class TabCompleter_ACubelets implements TabCompleter {
 			if (main.playerHasPermission(p, "acubelets.admin")) {
 				list.add("help");
 				list.add("give");
+				list.add("info");
 				list.add("remove");
 				list.add("machine");
 				list.add("type");
@@ -63,6 +64,14 @@ public class TabCompleter_ACubelets implements TabCompleter {
 			} else {
 				if (main.playerHasPermission(p, "acubelets.admin")) {
 					list.addAll(main.getCubeletTypesHandler().getTypes().keySet());
+				}
+			}
+		} else if (args[0].equalsIgnoreCase("info")) {
+			if (args.length == 2) {
+				if (main.playerHasPermission(p, "acubelets.admin")) {
+					for (Player target : main.getServer().getOnlinePlayers()) {
+						list.add(target.getName());
+					}
 				}
 			}
 		} else if (args[0].equalsIgnoreCase("setup")) {

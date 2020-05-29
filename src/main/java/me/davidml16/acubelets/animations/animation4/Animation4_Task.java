@@ -75,7 +75,7 @@ public class Animation4_Task implements Animation {
 			} else if(time == 105) {
 				music.runTaskTimer(main, 0L, 5L);
 
-				armorStand = ASSpawner.spawn(main, cubeletBox, cubeletType);
+				armorStand = ASSpawner.spawn(main, cubeletBox, cubeletType, false);
 				armorStandLocation = armorStand.getLocation();
 				main.getAnimationHandler().getArmorStands().add(armorStand);
 			} else if(time > 105 && time < 145) {
@@ -107,7 +107,7 @@ public class Animation4_Task implements Animation {
 				pigmanLocation.setPitch(0);
 				pigman.teleport(pigmanLocation);
 			} else if(time == 200) {
-				entityPackets = new Animation4_EntityPackets(pigman, armorStand);
+				entityPackets = new Animation4_EntityPackets(pigman, armorStand, cubeletBox);
 				entityPackets.runTaskTimer(main, 0L, 5L);
 			} else if(time == 298) {
 				colorRarity = ColorUtil.getRGBbyColor(ColorUtil.getColorByText(reward.getRarity().getName()));

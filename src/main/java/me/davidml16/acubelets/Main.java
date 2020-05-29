@@ -164,8 +164,9 @@ public class Main extends JavaPlugin {
         craftingGUI = new Crafting_GUI(this);
         craftingConfirmationGUI = new CraftingConfirmation_GUI(this);
 
-        settings.put("RewardsPreview", getConfig().getBoolean("RewardsPreview"));
+        settings.put("RewardsPreview", getConfig().getBoolean("RewardsPreview.Enabled"));
         rewardsPreviewGUI = new RewardsPreview_GUI(this);
+        cubeletsGUI.setClickType(getConfig().getString("RewardsPreview.ClickType"));
 
         fireworkUtil = new FireworkUtil(this);
 

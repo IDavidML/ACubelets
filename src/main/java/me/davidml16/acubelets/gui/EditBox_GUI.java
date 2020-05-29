@@ -96,9 +96,9 @@ public class EditBox_GUI implements Listener {
                 .toItemStack();
         gui.setItem(31, back);
 
-        for(Player player : Bukkit.getOnlinePlayers()) {
-            if(opened.get(player.getUniqueId()).getLocation().equals(box.getLocation())) {
-                player.getOpenInventory().getTopInventory().setContents(gui.getContents());
+        for(UUID uuid : opened.keySet()) {
+            if(opened.get(uuid) == box) {
+                Objects.requireNonNull(Bukkit.getPlayer(uuid)).getOpenInventory().getTopInventory().setContents(gui.getContents());
             }
         }
     }

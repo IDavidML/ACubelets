@@ -18,6 +18,7 @@ public class CoreCommand implements CommandExecutor {
     private final ExecuteType executeType;
     private final ExecuteReload executeReload;
     private final ExecuteSetup executeSetup;
+    private final ExecuteInfo executeInfo;
 
     public CoreCommand(Main main) {
         this.main = main;
@@ -27,6 +28,7 @@ public class CoreCommand implements CommandExecutor {
         this.executeType = new ExecuteType(main);
         this.executeReload = new ExecuteReload(main);
         this.executeSetup = new ExecuteSetup(main);
+        this.executeInfo = new ExecuteInfo(main);
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -56,6 +58,8 @@ public class CoreCommand implements CommandExecutor {
                 return executeSetup.executeCommand(sender, label, args);
             case "reload":
                 return executeReload.executeCommand(sender, label, args);
+            case "info":
+                return executeInfo.executeCommand(sender, label, args);
         }
 
         sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cInvalid argument, use /" + label + " help to see available commands"));
@@ -69,10 +73,11 @@ public class CoreCommand implements CommandExecutor {
 
         sender.sendMessage("");
         sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " [give/remove] [player] [typeID] [amount]"));
+        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " info [player]"));
+        sender.sendMessage("");
         sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " machine [add/remove/edit]"));
         sender.sendMessage("");
         sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " type"));
-        sender.sendMessage("");
         sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " setup [typeID]"));
         sender.sendMessage("");
         sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " reload"));
