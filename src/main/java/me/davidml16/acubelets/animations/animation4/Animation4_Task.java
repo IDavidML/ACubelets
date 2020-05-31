@@ -11,6 +11,7 @@ import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Reward;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.MessageUtils;
+import me.davidml16.acubelets.utils.NBTEditor;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import me.davidml16.acubelets.utils.Sounds;
@@ -28,6 +29,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 
@@ -86,21 +88,21 @@ public class Animation4_Task implements Animation {
 				}
 			} else if(time == 150) {
 				music.cancel();
-
 				pigman = (LivingEntity) cubeletBox.getLocation().getWorld().spawnEntity(getLocationRotation(), EntityType.PIG_ZOMBIE);
+
 				if(XMaterial.supports(9)) pigman.setCollidable(false);
-				if(XMaterial.supports(9)) pigman.setInvulnerable(true);
-				if(XMaterial.supports(10)) pigman.setSilent(true);
-                ((PigZombie )pigman).setBaby(false);
-                ((PigZombie )pigman).setAngry(false);
 				pigman.setRemoveWhenFarAway(false);
 				pigman.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
+
+				NBTEditor.set( pigman, ( byte ) 0, "Anger" );
+				NBTEditor.set( pigman, ( byte ) 0, "IsBaby" );
+				NBTEditor.set( pigman, ( byte ) 1, "Silent" );
+				NBTEditor.set( pigman, ( byte ) 1, "Invulnerable" );
 
 				particles = new Animation4_3x3Particles(pigman);
 				particles.runTaskTimer(main, 0L, 1L);
 			} else if(time == 160) {
-				if(XMaterial.supports(9)) pigman.setAI(false);
-				else pigman.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 200000, 200, false, false));
+				NBTEditor.set( pigman, ( byte ) 1, "NoAI" );
 
 				pigmanLocation = pigman.getLocation();
 				pigmanLocation.setYaw(cubeletBox.getRotation().value);
@@ -141,10 +143,6 @@ public class Animation4_Task implements Animation {
 				cubeletBox.setState(CubeletBoxState.EMPTY);
 				cubeletBox.setPlayerOpening(null);
 				main.getHologramHandler().reloadHologram(cubeletBox);
-			}
-
-			if(time > 160 && time < 300) {
-				pigman.teleport(pigmanLocation);
 			}
 
 			time++;
