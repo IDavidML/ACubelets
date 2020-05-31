@@ -442,4 +442,27 @@ public class MySQL implements Database {
         return result;
     }
 
+    public int getCubeletBalance(UUID uuid, String cubeletType) throws SQLException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        Connection connection = null;
+        try {
+            connection =  hikari.getConnection();
+            ps = connection.prepareStatement("SELECT COUNT(*) AS amount FROM ac_cubelets WHERE UUID = '" + uuid.toString() + "' AND type = '" + cubeletType + "';");
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("amount");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if(ps != null) ps.close();
+            if(rs != null) rs.close();
+            if(connection != null) connection.close();
+        }
+
+        return 0;
+    }
+
 }

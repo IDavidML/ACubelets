@@ -4,6 +4,7 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.api.CubeletReceivedEvent;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.CubeletType;
+import me.davidml16.acubelets.objects.Profile;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.TimeAPI.TimeAPI;
@@ -313,11 +314,11 @@ public class CubeletTypesHandler {
             if (amount > 0) {
                 if(Bukkit.getPlayer(uuid) != null) {
                     Player target = Bukkit.getPlayer(uuid);
+                    Profile profile = main.getPlayerDataHandler().getData(target);
+
                     for (int i = 1; i <= amount; i++) {
                         try {
-                            Optional<Cubelet> cb = main.getPlayerDataHandler()
-                                    .getData(Objects.requireNonNull(target.getPlayer()))
-                                    .getCubelets().stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(type)).findFirst();
+                            Optional<Cubelet> cb = profile.getCubelets().stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(type)).findFirst();
 
                             if (cb.isPresent()) {
                                 main.getPlayerDataHandler().getData(Objects.requireNonNull(target)).getCubelets().remove(cb.get());

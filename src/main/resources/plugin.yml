@@ -5,6 +5,3 @@ depend: [HolographicDisplays, ProtocolLib]
 softdepend: [PlaceholderAPI, Vault]
 authors: [DavidML16]
 api-version: 1.13
-commands:
-  cubelets:
-    description: Use this to see all commands.

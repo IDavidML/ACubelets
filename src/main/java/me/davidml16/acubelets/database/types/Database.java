@@ -36,4 +36,6 @@ public interface Database {
 
     CompletableFuture<List<Cubelet>> getCubelets(UUID uuid);
 
+    int getCubeletBalance(UUID uuid, String cubeletType) throws SQLException;
+
 }

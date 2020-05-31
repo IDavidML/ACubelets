@@ -6,7 +6,6 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.davidml16.acubelets.animations.AnimationHandler;
 import me.davidml16.acubelets.commands.CoreCommand;
-import me.davidml16.acubelets.commands.TabCompleter_ACubelets;
 import me.davidml16.acubelets.database.DatabaseHandler;
 import me.davidml16.acubelets.database.types.Database;
 import me.davidml16.acubelets.events.Event_Damage;
@@ -20,6 +19,7 @@ import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.ConfigUpdater;
 import me.davidml16.acubelets.utils.FireworkUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -27,7 +27,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
+import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,6 +74,8 @@ public class Main extends JavaPlugin {
     private Map<String, Boolean> settings;
 
     private String noCubeletsCommand;
+
+    private CommandMap commandMap;
 
     @Override
     public void onEnable() {
@@ -295,9 +297,20 @@ public class Main extends JavaPlugin {
         this.noCubeletsCommand = noCubeletsCommand;
     }
 
+    public CommandMap getCommandMap() {
+        return commandMap;
+    }
+
     private void registerCommands() {
-        getCommand("cubelets").setExecutor(new CoreCommand(this));
-        getCommand("cubelets").setTabCompleter(new TabCompleter_ACubelets(this));
+        Field bukkitCommandMap = null;
+        try {
+            bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+            bukkitCommandMap.setAccessible(true);
+            commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+            commandMap.register("acubelets", new CoreCommand(getConfig().getString("CommandName").toLowerCase()));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     private void registerEvents() {

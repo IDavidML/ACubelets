@@ -11,6 +11,11 @@
 Language: EN
 
 
+# Command name, default: /cubelets
+# For the changes to take effect, a full server restart is required
+CommandName: cubelets
+
+
 # Database details
 MySQL:
     Enabled: false

@@ -91,11 +91,11 @@ public class Animation4_Task implements Animation {
 				pigman = (LivingEntity) cubeletBox.getLocation().getWorld().spawnEntity(getLocationRotation(), EntityType.PIG_ZOMBIE);
 
 				if(XMaterial.supports(9)) pigman.setCollidable(false);
+				((PigZombie )pigman).setBaby(false);
+				((PigZombie )pigman).setAngry(false);
 				pigman.setRemoveWhenFarAway(false);
 				pigman.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
 
-				NBTEditor.set( pigman, ( byte ) 0, "Anger" );
-				NBTEditor.set( pigman, ( byte ) 0, "IsBaby" );
 				NBTEditor.set( pigman, ( byte ) 1, "Silent" );
 				NBTEditor.set( pigman, ( byte ) 1, "Invulnerable" );
 

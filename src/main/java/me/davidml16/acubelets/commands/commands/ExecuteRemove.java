@@ -2,11 +2,15 @@ package me.davidml16.acubelets.commands.commands;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.api.CubeletsAPI;
+import me.davidml16.acubelets.objects.Profile;
 import me.davidml16.acubelets.utils.ColorUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
+import java.util.UUID;
 
 public class ExecuteRemove {
 
@@ -48,16 +52,48 @@ public class ExecuteRemove {
             throwables.printStackTrace();
         }
 
+        long actualBalance = 0;
+        if(Bukkit.getPlayer(player) != null) {
+            Profile profile = main.getPlayerDataHandler().getData(Bukkit.getPlayer(player));
+            actualBalance = profile.getCubelets().stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(id)).count();
+        } else {
+            try {
+                UUID uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
+                actualBalance = main.getDatabaseHandler().getCubeletBalance(uuid, id);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+
+        String name = main.getCubeletTypesHandler().getTypeBydId(id).getName();
+
         if(args.length == 3) {
-            CubeletsAPI.removeCubelet(player, id, 1);
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
-                    " &aRemoved &e1x " + main.getCubeletTypesHandler().getTypeBydId(id).getName() + " &afrom &e" + player));
+            if(actualBalance >= 1) {
+                CubeletsAPI.removeCubelet(player, id, 1);
+                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
+                        " &aRemoved &e1x " + name + " &afrom &e" + player));
+                return true;
+            } else {
+                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
+                        " &6" + player + " &cdoes not have &61x " + ColorUtil.removeColors(name) + "&c."));
+                return false;
+            }
         } else if(args.length == 4) {
             int amount = Integer.parseInt(args[3]);
             if(amount > 0) {
-                CubeletsAPI.removeCubelet(player, id, amount);
-                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
-                        " &aRemoved &e" + amount + "x " + main.getCubeletTypesHandler().getTypeBydId(id).getName() + " &afrom &e" + player));
+                if(actualBalance >= amount) {
+                    CubeletsAPI.removeCubelet(player, id, amount);
+                    sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
+                            " &aRemoved &e" + amount + "x " + main.getCubeletTypesHandler().getTypeBydId(id).getName() + " &afrom &e" + player));
+                } else {
+                    if(actualBalance > 0)
+                        sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
+                            " &6" + player + " &cdoes not have &6" + amount + "x " + ColorUtil.removeColors(name) + "&c. Currently balance: &6" + actualBalance));
+                    else if(actualBalance == 0)
+                        sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
+                                " &6" + player + " &cdoes not have &6" + amount + "x " + ColorUtil.removeColors(name) + "&c."));
+                    return false;
+                }
                 return true;
             } else {
                 sender.sendMessage(ColorUtil.translate(
