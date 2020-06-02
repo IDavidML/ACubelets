@@ -16,7 +16,7 @@ public class AB_13 {
         }
     }
 
-    public static void placeSlab(Location loc, Material material) {
+    public static void placeBlock(Location loc, Material material) {
         loc.getBlock().setType(material);
     }
 

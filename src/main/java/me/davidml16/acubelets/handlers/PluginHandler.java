@@ -63,6 +63,10 @@ public class PluginHandler {
         main.getCubeletRarityHandler().loadRarities();
         main.getCubeletRewardHandler().loadRewards();
         main.getCubeletCraftingHandler().loadCrafting();
+        main.getTypeConfigGUI().reloadAllGUI();
+        main.getAnimationsGUI().reloadAllGUI();
+        main.getRewardsGUI().reloadAllGUI();
+        main.getRaritiesGUI().reloadAllGUI();
         main.getHologramTask().start();
     }
 

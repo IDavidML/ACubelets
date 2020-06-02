@@ -29,7 +29,7 @@ public class AB_12 {
         state.update(true);
     }
 
-    public static void placeSlab(Location loc, Material material, byte data) {
+    public static void placeBlock(Location loc, Material material, byte data) {
         loc.getBlock().setType(material);
 
         BlockState state = loc.getBlock().getState();

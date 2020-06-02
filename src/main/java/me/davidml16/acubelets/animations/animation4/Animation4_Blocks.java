@@ -92,9 +92,9 @@ public class Animation4_Blocks extends BukkitRunnable {
 
     public void place(Location loc) {
         if(XMaterial.supports(13)) {
-            AB_13.placeSlab(loc, XMaterial.NETHER_BRICK_SLAB.parseMaterial());
+            AB_13.placeBlock(loc, XMaterial.NETHER_BRICK_SLAB.parseMaterial());
         } else {
-            AB_12.placeSlab(loc, XMaterial.NETHER_BRICK_SLAB.parseMaterial(), Byte.parseByte("6"));
+            AB_12.placeBlock(loc, XMaterial.NETHER_BRICK_SLAB.parseMaterial(), Byte.parseByte("6"));
         }
     }
 
