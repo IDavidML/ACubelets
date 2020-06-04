@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.animations.animation5;
+package me.davidml16.acubelets.animations.seasonal.summer;
 
 import me.davidml16.acubelets.utils.CuboidRegion;
 import me.davidml16.acubelets.utils.MultiVersion.AB_12;
@@ -14,14 +14,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Animation5_Blocks extends BukkitRunnable {
+public class AnimationSummer_Blocks extends BukkitRunnable {
 
     private final Location location;
     private int step;
 
     private final Set<BlockState> blockStates;
 
-    public Animation5_Blocks(Location location) {
+    public AnimationSummer_Blocks(Location location) {
         this.location = location;
         this.step = 1;
 

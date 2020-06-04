@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.animations.animation4;
+package me.davidml16.acubelets.animations.normal.animation4;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
@@ -20,16 +20,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.PigZombie;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 

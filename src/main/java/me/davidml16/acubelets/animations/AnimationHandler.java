@@ -1,11 +1,11 @@
 package me.davidml16.acubelets.animations;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.animations.animation1.Animation1_Task;
-import me.davidml16.acubelets.animations.animation2.Animation2_Task;
-import me.davidml16.acubelets.animations.animation3.Animation3_Task;
-import me.davidml16.acubelets.animations.animation4.Animation4_Task;
-import me.davidml16.acubelets.animations.animation5.Animation5_Task;
+import me.davidml16.acubelets.animations.normal.animation1.Animation1_Task;
+import me.davidml16.acubelets.animations.normal.animation2.Animation2_Task;
+import me.davidml16.acubelets.animations.normal.animation3.Animation3_Task;
+import me.davidml16.acubelets.animations.normal.animation4.Animation4_Task;
+import me.davidml16.acubelets.animations.seasonal.summer.AnimationSummer_Task;
 import org.bukkit.entity.ArmorStand;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class AnimationHandler {
         this.animations.add("animation2");
         this.animations.add("animation3");
         this.animations.add("animation4");
-        this.animations.add("animation5");
+        this.animations.add("summer");
     }
 
     public Animation getAnimation(String animation) {
@@ -47,8 +47,8 @@ public class AnimationHandler {
             return new Animation3_Task(main);
         else if(animation.equalsIgnoreCase("animation4"))
             return new Animation4_Task(main);
-        else if(animation.equalsIgnoreCase("animation5"))
-            return new Animation5_Task(main);
+        else if(animation.equalsIgnoreCase("summer"))
+            return new AnimationSummer_Task(main);
 
         return null;
     }

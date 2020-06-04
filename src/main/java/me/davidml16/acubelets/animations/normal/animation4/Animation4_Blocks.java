@@ -1,11 +1,10 @@
-package me.davidml16.acubelets.animations.animation4;
+package me.davidml16.acubelets.animations.normal.animation4;
 
 import me.davidml16.acubelets.utils.CuboidRegion;
 import me.davidml16.acubelets.utils.MultiVersion.AB_12;
 import me.davidml16.acubelets.utils.MultiVersion.AB_13;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;

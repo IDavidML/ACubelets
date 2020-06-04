@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.animations.animation1;
+package me.davidml16.acubelets.animations.normal.animation1;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;

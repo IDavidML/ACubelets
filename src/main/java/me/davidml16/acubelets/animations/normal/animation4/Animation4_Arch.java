@@ -1,20 +1,9 @@
-package me.davidml16.acubelets.animations.animation4;
+package me.davidml16.acubelets.animations.normal.animation4;
 
-import me.davidml16.acubelets.utils.CuboidRegion;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
-import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.Vector;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class Animation4_Arch extends BukkitRunnable {
 

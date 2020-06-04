@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.animations.animation3;
+package me.davidml16.acubelets.animations.normal.animation2;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
@@ -11,31 +11,25 @@ import me.davidml16.acubelets.objects.Reward;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.MessageUtils;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
-import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.List;
-import java.util.Objects;
 
-public class Animation3_Task implements Animation {
+public class Animation2_Task implements Animation {
 
 	private int id;
 
 	private Main main;
-	public Animation3_Task(Main main) {
+	public Animation2_Task(Main main) {
 		this.main = main;
 	}
 
 	private ArmorStand armorStand;
 	private CubeletBox cubeletBox;
 	private CubeletType cubeletType;
-	private Animation3_Music music;
+	private Animation2_Music music;
 	private List<Color> colors;
 
 	private ColorUtil.ColorSet<Integer, Integer, Integer> colorRarity;
@@ -54,58 +48,28 @@ public class Animation3_Task implements Animation {
 			if(armorStand != null) {
 				if (time <= 50) armorStandLocation.add(0, 0.02, 0);
 				armorStand.teleport(armorStandLocation);
-				armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.26, 0));
+				armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.159, 0));
 			}
 
 			time++;
-
-			if(time == 60) {
-				music.cancel();
-				Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.FIREWORK_LAUNCH, 0.5f, 0);
-			}
-
-			if(time > 60 && time < 130) {
-				Objects.requireNonNull(armorStand).setHeadPose(armorStand.getHeadPose().add(0, 0.26, 0));
-				UtilParticles.display(Particles.FLAME, 0.10F, 0.25F, 0.15F, armorStandLocation, 5);
-			}
-
-			if(time > 60 && time < 80)
-				Objects.requireNonNull(armorStandLocation).add(0, 0.45, 0);
-			else if(time > 80 && time < 90)
-				Objects.requireNonNull(armorStandLocation).add(0, 0.35, 0);
-			else if(time > 90 && time < 100)
-				Objects.requireNonNull(armorStandLocation).add(0, 0.25, 0);
-			else if(time > 100 && time < 110)
-				Objects.requireNonNull(armorStandLocation).add(0, 0.15, 0);
-			else if(time > 110 && time < 120)
-				Objects.requireNonNull(armorStandLocation).add(0, 0.05, 0);
-
-			if(time > 60 && time < 120) armorStand.teleport(armorStandLocation);
-
-			if(time == 130) {
-				Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.IRONGOLEM_DEATH, 0.5f, 0);
-			} else if(time > 130 && time < 150) {
-				Objects.requireNonNull(armorStandLocation).add(0, -0.85, 0);
-				armorStand.teleport(armorStandLocation);
-				armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.26, 0));
-				UtilParticles.display(Particles.SMOKE_LARGE, 0.15F, 0, 0.15F, armorStandLocation.clone().add(0, 0.75, 0), 4);
-			} else if(time == 150) {
-				cubeletBox.setLastReward(reward);
+			if(time == 98) {
 				colorRarity = ColorUtil.getRGBbyColor(ColorUtil.getColorByText(reward.getRarity().getName()));
+				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 1.50, 0.5), FireworkEffect.Type.STAR, colors.get(0), colors.get(1));
+			} else if(time == 100) {
+				music.cancel();
+				cubeletBox.setLastReward(reward);
 				main.getHologramHandler().rewardHologram(cubeletBox, reward);
-				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 2, 0.5), FireworkEffect.Type.STAR, colors.get(0), colors.get(1));
-				Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.EXPLODE, 0.5f, 0);
 				cubeletBox.setState(CubeletBoxState.REWARD);
 				armorStand.remove();
 				armorStand = null;
-			} else if (time > 150 && time < 270) {
+			} else if (time > 100 && time < 220) {
 				UtilParticles.drawParticleLine(corner1, corner2, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 				UtilParticles.drawParticleLine(corner2, corner3, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 				UtilParticles.drawParticleLine(corner3, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 				UtilParticles.drawParticleLine(corner1, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 
 				UtilParticles.display(Particles.FLAME, 1f, 0f, 1f, boxLocation, 2);
-			} else if(time >= 270) {
+			} else if(time >= 220) {
 				stop();
 
 				Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(),
@@ -127,8 +91,8 @@ public class Animation3_Task implements Animation {
 
 		armorStandLocation = armorStand.getLocation();
 
-		music = new Animation3_Music(box.getLocation());
-		music.runTaskTimer(main, 5L, 1L);
+		music = new Animation2_Music(box.getLocation());
+		music.runTaskTimer(main, 0L, 4L);
 
 		this.cubeletType = type;
 		this.cubeletBox = box;
@@ -139,7 +103,6 @@ public class Animation3_Task implements Animation {
 		corner2 = cubeletBox.getLocation().clone().add(0.95, box.getPermanentBlockHeight() - 0.325, 0.05);
 		corner3 = cubeletBox.getLocation().clone().add(0.95, box.getPermanentBlockHeight() - 0.325, 0.95);
 		corner4 = cubeletBox.getLocation().clone().add(0.05, box.getPermanentBlockHeight() - 0.325, 0.95);
-
 		boxLocation = cubeletBox.getLocation().clone().add(0.5, 0, 0.5);
 
 		id = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, new Task(), 0L, 1);

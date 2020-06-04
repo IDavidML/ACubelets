@@ -1,8 +1,7 @@
-package me.davidml16.acubelets.animations.animation4;
+package me.davidml16.acubelets.animations.normal.animation4;
 
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
-import org.bukkit.Location;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.scheduler.BukkitRunnable;
 

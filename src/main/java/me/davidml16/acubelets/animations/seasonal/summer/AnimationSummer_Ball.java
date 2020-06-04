@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.animations.animation5;
+package me.davidml16.acubelets.animations.seasonal.summer;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.utils.SkullCreator;
@@ -14,12 +14,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class Animation5_Ball extends BukkitRunnable {
+public class AnimationSummer_Ball extends BukkitRunnable {
 
     private final Location spawnLoc;
     private ArmorStand armorStand;
 
-    public Animation5_Ball(Main main, Location spawnLoc) {
+    public AnimationSummer_Ball(Main main, Location spawnLoc) {
         this.spawnLoc = spawnLoc;
 
         ArmorStand armorStand = spawnLoc.getWorld().spawn(spawnLoc.clone().add(0, -1.5, 0), ArmorStand.class);

@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.animations.animation2;
+package me.davidml16.acubelets.animations.seasonal.summer;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
@@ -14,63 +14,105 @@ import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.metadata.FixedMetadataValue;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-public class Animation2_Task implements Animation {
+public class AnimationSummer_Task implements Animation {
 
 	private int id;
 
 	private Main main;
-	public Animation2_Task(Main main) {
+	public AnimationSummer_Task(Main main) {
 		this.main = main;
 	}
 
 	private ArmorStand armorStand;
 	private CubeletBox cubeletBox;
 	private CubeletType cubeletType;
-	private Animation2_Music music;
-	private List<Color> colors;
 
+	private AnimationSummer_Music music;
+	private AnimationSummer_Blocks blocks;
+
+	private Set<AnimationSummer_Ball> balls = new HashSet<>();
+
+	private List<Color> colors;
 	private ColorUtil.ColorSet<Integer, Integer, Integer> colorRarity;
 
+	private Location boxLocation, armorStandLocation;
+
 	private Location corner1, corner2, corner3, corner4;
-
-	private Location boxLocation;
-	private Location armorStandLocation;
-
 	private Reward reward;
 
 	class Task implements Runnable {
 		int time = 0;
+		double rotSpeed = 0.1;
 		@Override
 		public void run() {
-			if(armorStand != null) {
-				if (time <= 50) armorStandLocation.add(0, 0.02, 0);
-				armorStand.teleport(armorStandLocation);
-				armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.159, 0));
+
+			if(time == 40) {
+				AnimationSummer_Ball ball = new AnimationSummer_Ball(main, boxLocation.clone().add(2, 0, 2));
+				ball.runTaskTimer(main, 0L, 1L);
+				balls.add(ball);
+			} else if(time == 50) {
+				AnimationSummer_Ball ball = new AnimationSummer_Ball(main, boxLocation.clone().add(-2, 0, 2));
+				ball.runTaskTimer(main, 0L, 1L);
+				balls.add(ball);
+			} else if(time == 60) {
+				AnimationSummer_Ball ball = new AnimationSummer_Ball(main, boxLocation.clone().add(-2, 0, -2));
+				ball.runTaskTimer(main, 0L, 1L);
+				balls.add(ball);
+			} else if(time == 70) {
+				AnimationSummer_Ball ball = new AnimationSummer_Ball(main, boxLocation.clone().add(2, 0, -2));
+				ball.runTaskTimer(main, 0L, 1L);
+				balls.add(ball);
+			} else if(time == 80) {
+				music.runTaskTimer(main, 0L, 4L);
+
+				armorStand = ASSpawner.spawn(main, cubeletBox, cubeletType, false);
+				armorStandLocation = armorStand.getLocation();
+				main.getAnimationHandler().getArmorStands().add(armorStand);
+			} else if(time > 80 && time < 180) {
+				if(armorStand != null) {
+					if (time <= 130) {
+						armorStandLocation.add(0, 0.02, 0);
+					}
+					armorStand.teleport(armorStandLocation);
+					armorStand.setHeadPose(armorStand.getHeadPose().add(0, rotSpeed, 0));
+					rotSpeed += 0.0030;
+				}
 			}
 
-			time++;
-			if(time == 98) {
+			if(time == 178) {
 				colorRarity = ColorUtil.getRGBbyColor(ColorUtil.getColorByText(reward.getRarity().getName()));
-				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 1.50, 0.5), FireworkEffect.Type.STAR, colors.get(0), colors.get(1));
-			} else if(time == 100) {
+				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 1.50, 0.5), FireworkEffect.Type.BALL_LARGE, colors.get(0), colors.get(1));
+			} else if(time == 180) {
 				music.cancel();
 				cubeletBox.setLastReward(reward);
 				main.getHologramHandler().rewardHologram(cubeletBox, reward);
 				cubeletBox.setState(CubeletBoxState.REWARD);
 				armorStand.remove();
 				armorStand = null;
-			} else if (time > 100 && time < 220) {
+
+				for(AnimationSummer_Ball ball : balls) {
+					ball.cancel();
+					if(main.getAnimationHandler().getArmorStands().contains(ball.getArmorStand())) {
+						ArmorStand ballStand = ball.getArmorStand();
+						if(ballStand != null) ballStand.remove();
+						main.getAnimationHandler().getArmorStands().remove(ballStand);
+					}
+				}
+
+			} else if (time > 180 && time < 300) {
 				UtilParticles.drawParticleLine(corner1, corner2, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 				UtilParticles.drawParticleLine(corner2, corner3, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 				UtilParticles.drawParticleLine(corner3, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 				UtilParticles.drawParticleLine(corner1, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 
 				UtilParticles.display(Particles.FLAME, 1f, 0f, 1f, boxLocation, 2);
-			} else if(time >= 220) {
+			} else if(time >= 300) {
 				stop();
 
 				Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(),
@@ -82,23 +124,22 @@ public class Animation2_Task implements Animation {
 				main.getHologramHandler().reloadHologram(cubeletBox);
 			}
 
+			time++;
 		}
 	}
 	
 	public int getId() { return id; }
 
 	public void start(CubeletBox box, CubeletType type) {
-		armorStand = ASSpawner.spawn(main, box, type, true);
+		blocks = new AnimationSummer_Blocks(box.getLocation());
+		blocks.runTaskTimer(main, 0L, 7L);
 
-		armorStandLocation = armorStand.getLocation();
-
-		music = new Animation2_Music(box.getLocation());
-		music.runTaskTimer(main, 0L, 4L);
+		music = new AnimationSummer_Music(box.getLocation());
 
 		this.cubeletType = type;
 		this.cubeletBox = box;
 		this.cubeletBox.setState(CubeletBoxState.ANIMATION);
-		this.colors = main.getFireworkUtil().getRandomColors();
+		this.colors = Arrays.asList(Color.YELLOW, Color.WHITE);
 
 		corner1 = cubeletBox.getLocation().clone().add(0.05, box.getPermanentBlockHeight() - 0.325, 0.05);
 		corner2 = cubeletBox.getLocation().clone().add(0.95, box.getPermanentBlockHeight() - 0.325, 0.05);
@@ -117,7 +158,24 @@ public class Animation2_Task implements Animation {
 	}
 	
 	public void stop() {
-		music.cancel();
+		blocks.cancel();
+
+		try {
+			music.cancel();
+		} catch(IllegalStateException | NullPointerException ignored) {}
+
+		try {
+			for(AnimationSummer_Ball ball : balls) {
+				ball.cancel();
+				if(main.getAnimationHandler().getArmorStands().contains(ball.getArmorStand())) {
+					ArmorStand ballStand = ball.getArmorStand();
+					if(ballStand != null) ballStand.remove();
+					main.getAnimationHandler().getArmorStands().remove(ballStand);
+				}
+			}
+		} catch(IllegalStateException | NullPointerException ignored) {}
+
+		if(blocks != null) blocks.restore();
 
 		main.getAnimationHandler().getTasks().remove(this);
 

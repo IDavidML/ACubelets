@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.animations.animation4;
+package me.davidml16.acubelets.animations.normal.animation4;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolManager;

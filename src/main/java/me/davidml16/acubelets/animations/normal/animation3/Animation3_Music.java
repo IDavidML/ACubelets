@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.animations.animation3;
+package me.davidml16.acubelets.animations.normal.animation3;
 
 import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.Location;
