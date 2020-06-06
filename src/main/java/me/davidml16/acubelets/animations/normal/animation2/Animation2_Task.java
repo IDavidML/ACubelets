@@ -108,7 +108,7 @@ public class Animation2_Task implements Animation {
 		id = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, new Task(), 0L, 1);
 
 		main.getAnimationHandler().getTasks().add(this);
-		main.getAnimationHandler().getArmorStands().add(armorStand);
+		main.getAnimationHandler().getEntities().add(armorStand);
 
 		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
 			reward = main.getCubeletRewardHandler().processReward(cubeletBox.getPlayerOpening(), cubeletType);
@@ -122,9 +122,9 @@ public class Animation2_Task implements Animation {
 
 		Bukkit.getServer().getScheduler().cancelTask(id);
 
-		if(main.getAnimationHandler().getArmorStands().contains(armorStand)) {
+		if(main.getAnimationHandler().getEntities().contains(armorStand)) {
 			if(armorStand != null) armorStand.remove();
-			main.getAnimationHandler().getArmorStands().remove(armorStand);
+			main.getAnimationHandler().getEntities().remove(armorStand);
 		}
 
 		Bukkit.getPluginManager().callEvent(new CubeletOpenEvent(cubeletBox.getPlayerOpening(), cubeletType));

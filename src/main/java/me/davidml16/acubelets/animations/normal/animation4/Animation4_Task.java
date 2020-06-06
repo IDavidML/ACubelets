@@ -75,7 +75,7 @@ public class Animation4_Task implements Animation {
 
 				armorStand = ASSpawner.spawn(main, cubeletBox, cubeletType, false);
 				armorStandLocation = armorStand.getLocation();
-				main.getAnimationHandler().getArmorStands().add(armorStand);
+				main.getAnimationHandler().getEntities().add(armorStand);
 			} else if(time > 105 && time < 145) {
 				if (armorStand != null) {
 					if(time < 144)armorStandLocation.add(0, 0.025, 0);
@@ -229,9 +229,9 @@ public class Animation4_Task implements Animation {
 
 		Bukkit.getServer().getScheduler().cancelTask(id);
 
-		if(main.getAnimationHandler().getArmorStands().contains(armorStand)) {
+		if(main.getAnimationHandler().getEntities().contains(armorStand)) {
 			if(armorStand != null) armorStand.remove();
-			main.getAnimationHandler().getArmorStands().remove(armorStand);
+			main.getAnimationHandler().getEntities().remove(armorStand);
 		}
 
 		Bukkit.getPluginManager().callEvent(new CubeletOpenEvent(cubeletBox.getPlayerOpening(), cubeletType));

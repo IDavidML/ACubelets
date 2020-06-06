@@ -9,6 +9,7 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
@@ -38,10 +39,10 @@ public class PluginHandler {
         }
         main.getAnimationHandler().getTasks().clear();
 
-        for(ArmorStand armorStand : main.getAnimationHandler().getArmorStands()) {
-            armorStand.remove();
+        for(Entity entity : main.getAnimationHandler().getEntities()) {
+            entity.remove();
         }
-        main.getAnimationHandler().getArmorStands().clear();
+        main.getAnimationHandler().getEntities().clear();
 
         main.reloadConfig();
 

@@ -155,8 +155,6 @@ public class TypeConfig_GUI implements Listener {
     public void reloadGUI(String id) {
         Inventory gui = guis.get(id);
 
-        FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
-
         CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
         List<String> lore = new ArrayList<>();
         for(String line : type.getLoreAvailable()) {

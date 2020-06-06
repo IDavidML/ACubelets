@@ -46,7 +46,7 @@ public class AnimationSummer_Ball extends BukkitRunnable {
 
         armorStand.teleport(spawnLoc.clone().add(0, -2.5, 0));
 
-        main.getAnimationHandler().getArmorStands().add(armorStand);
+        main.getAnimationHandler().getEntities().add(armorStand);
 
         Sounds.playSound(spawnLoc, Sounds.MySound.CHICKEN_EGG_POP, 1F, 0);
 

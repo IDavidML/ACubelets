@@ -5,8 +5,9 @@ import me.davidml16.acubelets.animations.normal.animation1.Animation1_Task;
 import me.davidml16.acubelets.animations.normal.animation2.Animation2_Task;
 import me.davidml16.acubelets.animations.normal.animation3.Animation3_Task;
 import me.davidml16.acubelets.animations.normal.animation4.Animation4_Task;
+import me.davidml16.acubelets.animations.seasonal.easter.AnimationEaster_Task;
 import me.davidml16.acubelets.animations.seasonal.summer.AnimationSummer_Task;
-import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +19,13 @@ public class AnimationHandler {
     private final List<String> animations;
 
     private List<Animation> tasks;
-    private List<ArmorStand> armorStands;
+    private List<Entity> entities;
 
     public AnimationHandler(Main main) {
         this.main = main;
         this.animations = new ArrayList<>();
         this.tasks = new ArrayList<>();
-        this.armorStands = new ArrayList<>();
+        this.entities = new ArrayList<>();
     }
 
     public void loadAnimations() {
@@ -33,6 +34,7 @@ public class AnimationHandler {
         this.animations.add("animation3");
         this.animations.add("animation4");
         this.animations.add("summer");
+        this.animations.add("easter");
     }
 
     public Animation getAnimation(String animation) {
@@ -49,6 +51,8 @@ public class AnimationHandler {
             return new Animation4_Task(main);
         else if(animation.equalsIgnoreCase("summer"))
             return new AnimationSummer_Task(main);
+        else if(animation.equalsIgnoreCase("easter"))
+            return new AnimationEaster_Task(main);
 
         return null;
     }
@@ -61,12 +65,12 @@ public class AnimationHandler {
         this.tasks = tasks;
     }
 
-    public List<ArmorStand> getArmorStands() {
-        return armorStands;
+    public List<Entity> getEntities() {
+        return entities;
     }
 
-    public void setArmorStands(List<ArmorStand> armorStands) {
-        this.armorStands = armorStands;
+    public void setEntities(List<Entity> entities) {
+        this.entities = entities;
     }
 
 }
