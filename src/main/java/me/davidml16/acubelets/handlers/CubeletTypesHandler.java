@@ -300,9 +300,8 @@ public class CubeletTypesHandler {
                 if(Bukkit.getPlayer(uuid) != null) {
                     Player target = Bukkit.getPlayer(uuid);
 
-                    if (main.getCubeletsGUI().getOpened().containsKey(uuid)) {
-                        main.getCubeletsGUI().reloadPage(target);
-                    }
+                    if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(target);
+                    if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(target);
 
                     Bukkit.getPluginManager().callEvent(new CubeletReceivedEvent(target, getTypeBydId(type), amount));
                 }
@@ -341,8 +340,8 @@ public class CubeletTypesHandler {
                         }
                     }
 
-                    if (main.getCubeletsGUI().getOpened().containsKey(uuid))
-                        main.getCubeletsGUI().reloadPage(target);
+                    if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(target);
+                    if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(target);
 
                 } else {
                     main.getDatabaseHandler().removeCubelet(uuid, type, amount);

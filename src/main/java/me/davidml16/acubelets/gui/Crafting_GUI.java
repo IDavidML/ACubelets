@@ -50,6 +50,16 @@ public class Crafting_GUI implements Listener {
                 .toItemStack();
         gui.setItem(inventorySize - 5, back);
 
+        List<String> lorePoints = new ArrayList<>();
+        for (String line : main.getLanguageHandler().getMessageList("GUI.Crafting.Items.Points.Lore")) {
+            lorePoints.add(line.replaceAll("%points_available%", ""+main.getPlayerDataHandler().getData(p).getLootPoints()));
+        }
+        ItemStack points = new ItemBuilder(XMaterial.POPPY.parseItem())
+                .setName(main.getLanguageHandler().getMessage("GUI.Crafting.Items.Points.Name"))
+                .setLore(lorePoints)
+                .toItemStack();
+        gui.setItem(inventorySize - 4, points);
+
         for(CraftParent craft : main.getCubeletCraftingHandler().getCrafts()) {
             CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(craft.getCubeletType());
 
@@ -72,6 +82,11 @@ public class Crafting_GUI implements Listener {
                             ));
                         else if(ingredient.getCraftType() == CraftType.MONEY)
                             lore.add(ColorUtil.translate(main.getLanguageHandler().getMessage("GUI.Crafting.Ingredients.Ingredient.Money")
+                                    .replaceAll("%amount%", ""+ingredient.getAmount())
+                                    .replaceAll("%status%", status)
+                            ));
+                        else if(ingredient.getCraftType() == CraftType.POINTS)
+                            lore.add(ColorUtil.translate(main.getLanguageHandler().getMessage("GUI.Crafting.Ingredients.Ingredient.Points")
                                     .replaceAll("%amount%", ""+ingredient.getAmount())
                                     .replaceAll("%status%", status)
                             ));

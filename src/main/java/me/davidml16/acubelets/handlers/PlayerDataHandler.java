@@ -92,9 +92,11 @@ public class PlayerDataHandler {
 	}
 
 	public void givePoints(UUID uuid, int amount) throws SQLException {
-		if(Bukkit.getPlayer(uuid) != null)
+		if(Bukkit.getPlayer(uuid) != null) {
 			data.get(uuid).setLootPoints(data.get(uuid).getLootPoints() + amount);
-		else {
+			if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(Bukkit.getPlayer(uuid));
+			if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(Bukkit.getPlayer(uuid));
+		} else {
 			long actualBalance = main.getDatabaseHandler().getPlayerLootPoints(uuid);
 			main.getDatabaseHandler().setPlayerLootPoints(uuid, actualBalance + amount);
 		}
@@ -113,12 +115,15 @@ public class PlayerDataHandler {
 	}
 
 	public void removePoints(UUID uuid, int amount) throws SQLException {
-		if(Bukkit.getPlayer(uuid) != null)
-			if((data.get(uuid).getLootPoints() - amount) < 0)
+		if(Bukkit.getPlayer(uuid) != null) {
+			if ((data.get(uuid).getLootPoints() - amount) < 0)
 				data.get(uuid).setLootPoints(0);
 			else
 				data.get(uuid).setLootPoints(data.get(uuid).getLootPoints() - amount);
-		else {
+
+			if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(Bukkit.getPlayer(uuid));
+			if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(Bukkit.getPlayer(uuid));
+		} else {
 			long actualBalance = main.getDatabaseHandler().getPlayerLootPoints(uuid);
 
 			if((actualBalance - amount) < 0)
@@ -140,9 +145,11 @@ public class PlayerDataHandler {
 	}
 
 	public void setPoints(UUID uuid, int amount) throws SQLException {
-		if(Bukkit.getPlayer(uuid) != null)
+		if(Bukkit.getPlayer(uuid) != null) {
 			data.get(uuid).setLootPoints(amount);
-		else {
+			if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(Bukkit.getPlayer(uuid));
+			if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(Bukkit.getPlayer(uuid));
+		} else {
 			main.getDatabaseHandler().setPlayerLootPoints(uuid, amount);
 		}
 	}

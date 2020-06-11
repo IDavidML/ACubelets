@@ -5,6 +5,7 @@ import me.davidml16.acubelets.enums.CraftType;
 import me.davidml16.acubelets.objects.CraftIngredient;
 import me.davidml16.acubelets.objects.CraftParent;
 import me.davidml16.acubelets.objects.CubeletType;
+import me.davidml16.acubelets.objects.Profile;
 import me.davidml16.acubelets.utils.ColorUtil;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -99,7 +100,9 @@ public class CubeletCraftingHandler {
                         if (config.getConfigurationSection("cubelet-crafting.crafts." + cubeletType + ".ingredients") != null) {
                             for (int i = 1; i <= config.getConfigurationSection("cubelet-crafting.crafts." + cubeletType + ".ingredients").getKeys(false).size(); i++) {
                                 String type = config.getString("cubelet-crafting.crafts." + cubeletType + ".ingredients." + i + ".type");
-                                if (!type.equalsIgnoreCase("money") && !type.equalsIgnoreCase("cubelet")) continue;
+                                if (!type.equalsIgnoreCase("money")
+                                        && !type.equalsIgnoreCase("cubelet")
+                                        && !type.equalsIgnoreCase("points")) continue;
 
                                 int amount = config.getInt("cubelet-crafting.crafts." + cubeletType + ".ingredients." + i + ".amount");
 
@@ -112,6 +115,8 @@ public class CubeletCraftingHandler {
                                     if (!main.getCubeletTypesHandler().getTypes().containsKey(name)) continue;
 
                                     ingredients.add(new CraftIngredient(cubeletType, CraftType.CUBELET, name, amount));
+                                } else if (type.equalsIgnoreCase("points")) {
+                                    ingredients.add(new CraftIngredient(cubeletType, CraftType.POINTS, amount));
                                 }
                             }
                         }
@@ -146,6 +151,8 @@ public class CubeletCraftingHandler {
             return amount >= ingredient.getAmount();
         } else if(ingredient.getCraftType() == CraftType.MONEY) {
             return main.getEconomyHandler().getBalance(player) >= ingredient.getAmount();
+        } else if(ingredient.getCraftType() == CraftType.POINTS) {
+            return main.getPlayerDataHandler().getData(player).getLootPoints() >= ingredient.getAmount();
         }
 
         return false;
@@ -168,18 +175,11 @@ public class CubeletCraftingHandler {
                 }
             } else if(ingredient.getCraftType() == CraftType.MONEY) {
                 main.getEconomyHandler().removeBalance(player, ingredient.getAmount());
+            } else if(ingredient.getCraftType() == CraftType.POINTS) {
+                Profile profile = main.getPlayerDataHandler().getData(player);
+                profile.setLootPoints(profile.getLootPoints() - ingredient.getAmount());
             }
         }
-    }
-
-    public boolean containsEconomyIngredient(List<CraftParent> crafts) {
-        if(crafts.size() == 0) return false;
-        for(CraftParent craft : crafts) {
-            for(CraftIngredient ingredient : craft.getIngrediens()) {
-                if(ingredient.getCraftType() == CraftType.MONEY) return true;
-            }
-        }
-        return false;
     }
 
 }

@@ -59,6 +59,8 @@ public class PlaceholderHook extends PlaceholderExpansion {
                             .getCubelets().stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(identifiers[1])).count());
                 }
                 break;
+            case "points":
+                return String.valueOf(main.getPlayerDataHandler().getData(Objects.requireNonNull(player.getPlayer())).getLootPoints());
         }
         return null;
     }

@@ -56,6 +56,10 @@ public class CraftingConfirmation_GUI implements Listener {
                         lore.add(ColorUtil.translate(main.getLanguageHandler().getMessage("GUI.CraftingConfirmation.Ingredients.Ingredient.Money")
                                 .replaceAll("%amount%", ""+ingredient.getAmount())
                         ));
+                    else if(ingredient.getCraftType() == CraftType.POINTS)
+                        lore.add(ColorUtil.translate(main.getLanguageHandler().getMessage("GUI.CraftingConfirmation.Ingredients.Ingredient.Points")
+                                .replaceAll("%amount%", ""+ingredient.getAmount())
+                        ));
                 }
             } else {
                 lore.add(ColorUtil.translate(line));

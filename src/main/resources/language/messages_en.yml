@@ -110,7 +110,8 @@ GUI:
     Ingredients:
       Ingredient:
         Cubelet: '&7- &b%name% &7x%amount% %status%'
-        Money: '&7- &b%amount% Loot Points %status%'
+        Money: '&7- &b%amount% Coins %status%'
+        Points: '&7- &b%amount% Loot Points %status%'
       Status:
         Available: '&a✓'
         NotAvailable: '&c✗'
@@ -125,6 +126,14 @@ GUI:
         - ''
         - '&6Click to craft.'
     Items:
+      Points:
+        Name: '&e&lLoot Points'
+        Lore:
+          - '&5You have: &a%points_available%'
+          - '&7Loot points are given from finding'
+          - '&7duplicates inside of Cubelets, and'
+          - '&7can be crafted into Cubelets inside'
+          - '&7Cubelet Machines.'
       Back:
         Name: '&9Back'
         Lore:
@@ -135,7 +144,8 @@ GUI:
     Ingredients:
       Ingredient:
         Cubelet: '&7- &b%name% &7x%amount%'
-        Money: '&7- &b%amount% Loot Points'
+        Money: '&7- &b%amount% Coins'
+        Points: '&7- &b%amount% Loot Points'
     Items:
       Craft:
         Name: '&a&lCRAFT'

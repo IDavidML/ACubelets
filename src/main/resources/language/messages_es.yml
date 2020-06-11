@@ -110,7 +110,8 @@ GUI:
     Ingredients:
       Ingredient:
         Cubelet: '&7- &b%name% &7x%amount% %status%'
-        Money: '&7- &b%amount% Puntos de Loot %status%'
+        Money: '&7- &b%amount% Monedas %status%'
+        Points: '&7- &b%amount% Puntos de Loot %status%'
       Status:
         Available: '&a✓'
         NotAvailable: '&c✗'
@@ -125,6 +126,14 @@ GUI:
         - ''
         - '&6Click para fabricarlo.'
     Items:
+      Points:
+        Name: '&e&lPuntos de Loot'
+        Lore:
+          - '&5Tienes: &a%points_available%'
+          - '&7Los puntos de loot se reciben encontrando'
+          - '&7duplicados en los Cubelets, y'
+          - '&7pueden usarse para fabricar Cubelets'
+          - '&7dentro de las Maquinas de Cubelets.'
       Back:
         Name: '&9Volver'
         Lore:
@@ -135,7 +144,8 @@ GUI:
     Ingredients:
       Ingredient:
         Cubelet: '&7- &b%name% &7x%amount%'
-        Money: '&7- &b%amount% Puntos de Loot'
+        Money: '&7- &b%amount% Monedas'
+        Points: '&7- &b%amount% Puntos de Loot'
     Items:
       Craft:
         Name: '&a&lFABRICAR'
