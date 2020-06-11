@@ -1,0 +1,122 @@
+package me.davidml16.acubelets.commands.points;
+
+import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.commands.points.subcommands.*;
+import me.davidml16.acubelets.utils.ColorUtil;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+public class CoreCommand extends Command {
+
+    private final Main main = Main.get();
+
+    private final ExecuteGive executeGive = new ExecuteGive(main);
+    private final ExecuteRemove executeRemove = new ExecuteRemove(main);
+    private final ExecuteSet executeSet = new ExecuteSet(main);
+
+    public CoreCommand(String name) {
+        super(name);
+    }
+
+    @Override
+    public boolean execute(CommandSender sender, String label, String[] args) {
+
+        if(args.length == 0) {
+            if(sender instanceof Player) {
+                sender.sendMessage(main.getLanguageHandler().getMessage("Commands.Balance.Points")
+                        .replaceAll("%points_available%", ""+main.getPlayerDataHandler().getData((Player) sender).getLootPoints()));
+                return true;
+            } else {
+                return sendCommandHelp(sender, label);
+            }
+        }
+
+        switch (args[0]) {
+            case "help":
+                return sendCommandHelp(sender, label);
+            case "give":
+                return executeGive.executeCommand(sender, label, args);
+            case "remove":
+                return executeRemove.executeCommand(sender, label, args);
+            case "set":
+                return executeSet.executeCommand(sender, label, args);
+        }
+
+        sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cInvalid argument, use /" + label + " help to see available commands"));
+        return false;
+    }
+
+    private boolean sendCommandHelp(CommandSender sender, String label) {
+        if(sender instanceof Player) {
+            if (!main.playerHasPermission((Player) sender, "acubelets.admin")) return false;
+        }
+
+        sender.sendMessage("");
+        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " give [player] [amount]"));
+        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " remove [player] [amount]"));
+        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " set [player] [amount]"));
+        sender.sendMessage("");
+        return true;
+    }
+
+    @Override
+    public List<String> tabComplete(CommandSender sender, String alias, String[] args) {
+        if (!(sender instanceof Player)) {
+            return null;
+        }
+
+        Player p = (Player) sender;
+
+        List<String> list = new ArrayList<String>();
+        List<String> auto = new ArrayList<String>();
+
+        if (args.length == 1) {
+            if (main.playerHasPermission(p, "acubelets.admin")) {
+                list.add("give");
+                list.add("remove");
+                list.add("set");
+            }
+        }
+
+        if (args[0].equalsIgnoreCase("give")) {
+            if (args.length == 2) {
+                if (main.playerHasPermission(p, "acubelets.admin")) {
+                    for (Player target : main.getServer().getOnlinePlayers()) {
+                        list.add(target.getName());
+                    }
+                }
+            }
+        } else if (args[0].equalsIgnoreCase("remove")) {
+            if (args.length == 2) {
+                if (main.playerHasPermission(p, "acubelets.admin")) {
+                    for (Player target : main.getServer().getOnlinePlayers()) {
+                        list.add(target.getName());
+                    }
+                }
+            }
+        } else if (args[0].equalsIgnoreCase("info")) {
+            if (args.length == 2) {
+                if (main.playerHasPermission(p, "acubelets.admin")) {
+                    for (Player target : main.getServer().getOnlinePlayers()) {
+                        list.add(target.getName());
+                    }
+                }
+            }
+        }
+
+        for (String s : list) {
+            if (s.startsWith(args[args.length - 1])) {
+                auto.add(s);
+            }
+        }
+
+        return auto.isEmpty() ? list : auto;
+    }
+
+}

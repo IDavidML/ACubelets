@@ -11,9 +11,11 @@
 Language: EN
 
 
-# Command name, default: /cubelets
+# Command name, default: /cubelets and /points
 # For the changes to take effect, a full server restart is required
-CommandName: cubelets
+Commands:
+    Cubelets: cubelets
+    Points: points
 
 
 # Database details

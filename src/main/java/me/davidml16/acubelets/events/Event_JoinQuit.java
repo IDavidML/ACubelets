@@ -24,7 +24,6 @@ public class Event_JoinQuit implements Listener {
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
         main.getPlayerDataHandler().loadPlayerData(p);
-        main.getDatabaseHandler().updatePlayerName(p);
         main.setPlayerCount(main.getPlayerCount() + 1);
 
         if(p.getName().equalsIgnoreCase("DavidML16")) {
@@ -49,11 +48,13 @@ public class Event_JoinQuit implements Listener {
         main.getCraftingGUI().getOpened().remove(p.getUniqueId());
         main.getCraftingConfirmationGUI().getOpened().remove(p.getUniqueId());
         main.getRewardsPreviewGUI().getOpened().remove(p.getUniqueId());
-        main.getPlayerDataHandler().getPlayersData().remove(p.getUniqueId());
         main.getHologramHandler().removeHolograms(p);
 
-        main.getDatabaseHandler().updatePlayerName(p);
+        main.getDatabaseHandler().saveProfile(main.getPlayerDataHandler().getData(p));
+
         main.setPlayerCount(main.getPlayerCount() - 1);
+
+        main.getPlayerDataHandler().getPlayersData().remove(p.getUniqueId());
 
         try {
             main.getDatabaseHandler().removeExpiredCubelets(p.getUniqueId());

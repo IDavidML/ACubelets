@@ -16,6 +16,8 @@ public class Profile {
 
 	private List<Cubelet> cubelets;
 
+	private long lootPoints;
+
 	private String orderBy;
 
 	public Profile(Main main, UUID uuid) {
@@ -24,6 +26,7 @@ public class Profile {
 		this.cubelets = new ArrayList<>();
 		this.boxOpened = null;
 		this.orderBy = "date";
+		this.lootPoints = 0;
 	}
 
 	public UUID getUuid() {
@@ -45,6 +48,10 @@ public class Profile {
 	public String getOrderBy() { return orderBy; }
 
 	public void setOrderBy(String orderBy) { this.orderBy = orderBy; }
+
+	public long getLootPoints() { return lootPoints; }
+
+	public void setLootPoints(long lootPoints) { this.lootPoints = lootPoints; }
 
 	@Override
 	public String toString() {

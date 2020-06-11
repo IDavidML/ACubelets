@@ -270,7 +270,13 @@ public class CubeletTypesHandler {
     }
 
     public void giveCubelet(String player, String type, int amount) throws SQLException {
-        UUID uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
+        UUID uuid;
+
+        if(Bukkit.getPlayer(player) != null)
+            uuid = Bukkit.getPlayer(player).getUniqueId();
+        else
+            uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
+
         giveCubelet(uuid, type, amount);
     }
 
@@ -305,7 +311,13 @@ public class CubeletTypesHandler {
     }
 
     public void removeCubelet(String player, String type, int amount) throws SQLException {
-        UUID uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
+        UUID uuid;
+
+        if(Bukkit.getPlayer(player) != null)
+            uuid = Bukkit.getPlayer(player).getUniqueId();
+        else
+            uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
+
         removeCubelet(uuid, type, amount);
     }
 

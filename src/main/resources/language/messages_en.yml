@@ -23,7 +23,9 @@ Times:
 Commands:
   NoPerms: '%prefix% &cYou dont have permissions to use this command!'
   Reload: '%prefix% &aPlugin reloaded with no errors!'
-  Balance: '&aYou actually have &6%cubelets_available% &aCubelets to open!'
+  Balance:
+    Cubelets: '&aYou actually have &6%cubelets_available% &aCubelets to open!'
+    Points: '&aYou actually have &6%points_available% &aLoot Points!'
 
 Cubelet:
   BoxInUse:

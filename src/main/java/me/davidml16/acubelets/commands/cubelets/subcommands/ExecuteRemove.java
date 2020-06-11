@@ -1,11 +1,10 @@
-package me.davidml16.acubelets.commands.commands;
+package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.api.CubeletsAPI;
 import me.davidml16.acubelets.objects.Profile;
 import me.davidml16.acubelets.utils.ColorUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

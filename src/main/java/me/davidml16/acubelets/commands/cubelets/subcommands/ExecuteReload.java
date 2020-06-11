@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.commands.commands;
+package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
 import org.bukkit.command.CommandSender;

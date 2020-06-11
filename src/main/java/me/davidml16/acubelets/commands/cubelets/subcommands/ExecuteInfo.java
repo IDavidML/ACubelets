@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.commands.commands;
+package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.Cubelet;
@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 public class ExecuteInfo {

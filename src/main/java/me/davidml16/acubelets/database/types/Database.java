@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.database.types;
 
 import me.davidml16.acubelets.objects.Cubelet;
+import me.davidml16.acubelets.objects.Profile;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
@@ -18,9 +19,21 @@ public interface Database {
 
     boolean hasName(String name) throws SQLException;
 
+    void createPlayerData(Player p);
+
     void updatePlayerName(Player p);
 
     String getPlayerUUID(String name) throws SQLException;
+
+    long getPlayerLootPoints(UUID uuid) throws SQLException;
+
+    void setPlayerLootPoints(UUID uuid, long amount) throws SQLException;
+
+    void setPlayerOrderSetting(UUID uuid, String orderBy) throws SQLException;
+
+    void saveProfile(Profile profile);
+
+    String getPlayerOrderSetting(UUID uuid) throws SQLException;
 
     void addCubelet(UUID uuid, String type, Long received, Long expire) throws SQLException;
 

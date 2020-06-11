@@ -5,7 +5,7 @@ import com.comphenix.protocol.ProtocolManager;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.davidml16.acubelets.animations.AnimationHandler;
-import me.davidml16.acubelets.commands.CoreCommand;
+import me.davidml16.acubelets.commands.cubelets.CoreCommand;
 import me.davidml16.acubelets.database.DatabaseHandler;
 import me.davidml16.acubelets.database.types.Database;
 import me.davidml16.acubelets.events.Event_Damage;
@@ -307,7 +307,8 @@ public class Main extends JavaPlugin {
             bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
             bukkitCommandMap.setAccessible(true);
             commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
-            commandMap.register("acubelets", new CoreCommand(getConfig().getString("CommandName").toLowerCase()));
+            commandMap.register("acubelets", new me.davidml16.acubelets.commands.cubelets.CoreCommand(getConfig().getString("Commands.Cubelets").toLowerCase()));
+            commandMap.register("acubelets", new me.davidml16.acubelets.commands.points.CoreCommand(getConfig().getString("Commands.Points").toLowerCase()));
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }

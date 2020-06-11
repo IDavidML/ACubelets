@@ -1,10 +1,9 @@
-package me.davidml16.acubelets.commands;
+package me.davidml16.acubelets.commands.cubelets;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.commands.commands.*;
+import me.davidml16.acubelets.commands.cubelets.subcommands.*;
 import me.davidml16.acubelets.utils.ColorUtil;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -34,7 +33,7 @@ public class CoreCommand extends Command {
 
         if(args.length == 0) {
             if(sender instanceof Player) {
-                sender.sendMessage(main.getLanguageHandler().getMessage("Commands.Balance")
+                sender.sendMessage(main.getLanguageHandler().getMessage("Commands.Balance.Cubelets")
                         .replaceAll("%cubelets_available%", ""+main.getPlayerDataHandler().getData((Player) sender).getCubelets().size()));
                 return true;
             } else {

@@ -1,10 +1,8 @@
-package me.davidml16.acubelets.commands.commands;
+package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.api.CubeletsAPI;
-import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.utils.ColorUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -27,7 +25,7 @@ public class ExecuteGive {
         }
 
         if (args.length == 1 || args.length == 2) {
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " add [player] [typeID] [amount]"));
+            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " give [player] [typeID] [amount]"));
             return false;
         }
 
