@@ -5,6 +5,7 @@ import me.davidml16.acubelets.interfaces.CubeletDateComparator;
 import me.davidml16.acubelets.interfaces.CubeletTypeComparator;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.CubeletType;
+import me.davidml16.acubelets.objects.GUILayout;
 import me.davidml16.acubelets.objects.Profile;
 import me.davidml16.acubelets.utils.*;
 import me.davidml16.acubelets.utils.TimeAPI.TimeUtils;
@@ -61,6 +62,8 @@ public class Cubelets_GUI implements Listener {
         Profile profile = main.getPlayerDataHandler().getData(p.getUniqueId());
         List<Cubelet> cubelets = profile.getCubelets();
 
+        GUILayout guiLayout = main.getLayoutHandler().getLayout("opencubelet");
+
         if(profile.getOrderBy().equalsIgnoreCase("date"))
             cubelets.sort(new CubeletDateComparator());
         else if(profile.getOrderBy().equalsIgnoreCase("type"))
@@ -75,31 +78,31 @@ public class Cubelets_GUI implements Listener {
 
         int neededSize = getNeededSize(cubelets.size());
 
-        Inventory gui = Bukkit.createInventory(null, neededSize, main.getLanguageHandler().getMessage("GUI.Opening.Title"));
+        Inventory gui = Bukkit.createInventory(null, neededSize, guiLayout.getMessage("Title"));
 
         if (page > 0) {
-            gui.setItem((neededSize - 9), new ItemBuilder(XMaterial.SUGAR_CANE.parseItem())
-                    .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.PreviousPage.Name"))
+            gui.setItem((neededSize - 9), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.PreviousPage.Material")).get().parseItem())
+                    .setName(guiLayout.getMessage("Items.PreviousPage.Name"))
                     .toItemStack());
         }
 
         if (main.getPlayerDataHandler().getData(p.getUniqueId()).getCubelets().size() > (page + 1) * 27) {
-            gui.setItem((neededSize - 1), new ItemBuilder(XMaterial.SUGAR_CANE.parseItem())
-                    .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.NextPage.Name"))
+            gui.setItem((neededSize - 1), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NextPage.Material")).get().parseItem())
+                    .setName(guiLayout.getMessage("Items.NextPage.Name"))
                     .toItemStack());
         }
 
-        ItemStack back = new ItemBuilder(XMaterial.BOOK.parseItem())
-                .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Close.Name"))
-                .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Close.Lore"))
+        ItemStack back = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Close.Material")).get().parseItem())
+                .setName(guiLayout.getMessage("Items.Close.Name"))
+                .setLore(guiLayout.getMessageList("Items.Close.Lore"))
                 .toItemStack();
         gui.setItem(neededSize - 5, back);
 
 
         if(main.isCraftingEnabled()) {
-            ItemStack crafting = new ItemBuilder(XMaterial.CRAFTING_TABLE.parseItem())
-                    .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Crafting.Name"))
-                    .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Crafting.Lore"))
+            ItemStack crafting = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Crafting.Material")).get().parseItem())
+                    .setName(guiLayout.getMessage("Items.Crafting.Name"))
+                    .setLore(guiLayout.getMessageList("Items.Crafting.Lore"))
                     .toItemStack();
             gui.setItem(neededSize - 7, crafting);
         }
@@ -111,15 +114,15 @@ public class Cubelets_GUI implements Listener {
 
             if(main.getCubeletTypesHandler().getTypes().size() > 1) {
                 if (profile.getOrderBy().equalsIgnoreCase("date")) {
-                    ItemStack orderByDate = new ItemBuilder(XMaterial.CLOCK.parseItem())
-                            .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Ordered.Date.Name"))
-                            .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Ordered.Date.Lore"))
+                    ItemStack orderByDate = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Ordered.Date.Material")).get().parseItem())
+                            .setName(guiLayout.getMessage("Items.Ordered.Date.Name"))
+                            .setLore(guiLayout.getMessageList("Items.Ordered.Date.Lore"))
                             .toItemStack();
                     gui.setItem(neededSize - 3, orderByDate);
                 } else if (profile.getOrderBy().equalsIgnoreCase("type")) {
-                    ItemStack orderByType = new ItemBuilder(XMaterial.NAME_TAG.parseItem())
-                            .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Ordered.Type.Name"))
-                            .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Ordered.Type.Lore"))
+                    ItemStack orderByType = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Ordered.Type.Material")).get().parseItem())
+                            .setName(guiLayout.getMessage("Items.Ordered.Type.Name"))
+                            .setLore(guiLayout.getMessageList("Items.Ordered.Type.Lore"))
                             .toItemStack();
                     gui.setItem(neededSize - 3, orderByType);
                 }
@@ -150,9 +153,9 @@ public class Cubelets_GUI implements Listener {
                 gui.addItem(item);
             }
         } else {
-            gui.setItem(0, new ItemBuilder(XMaterial.BARRIER.parseItem())
-                    .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.NoCubelets.Name"))
-                    .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.NoCubelets.Lore")
+            gui.setItem(0, new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NoCubelets.Material")).get().parseItem())
+                    .setName(guiLayout.getMessage("Items.NoCubelets.Name"))
+                    .setLore(guiLayout.getMessageList("Items.NoCubelets.Lore")
             ).toItemStack());
         }
 
@@ -185,10 +188,10 @@ public class Cubelets_GUI implements Listener {
         if (opened.containsKey(p.getUniqueId())) {
             e.setCancelled(true);
             int slot = e.getRawSlot();
-            if (slot == (p.getOpenInventory().getTopInventory().getSize() - 9) && e.getCurrentItem().getType() == XMaterial.SUGAR_CANE.parseMaterial()) {
+            if (slot == (p.getOpenInventory().getTopInventory().getSize() - 9)) {
                 if(e.getClick() != ClickType.DOUBLE_CLICK)
                     openPage(p, opened.get(p.getUniqueId()) - 1);
-            } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 1) && e.getCurrentItem().getType() == XMaterial.SUGAR_CANE.parseMaterial()) {
+            } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 1)) {
                 if(e.getClick() != ClickType.DOUBLE_CLICK)
                     openPage(p, opened.get(p.getUniqueId()) + 1);
             } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 5)) {
@@ -233,7 +236,7 @@ public class Cubelets_GUI implements Listener {
                         if(main.isPreviewEnabled()) main.getRewardsPreviewGUI().open(p, typeID);
                     }
                 } else {
-                    if(e.getCurrentItem().getType() == XMaterial.BARRIER.parseMaterial()) {
+                    if(slot == 0) {
                         p.closeInventory();
                         MessageUtils.sendShopMessage(p);
                     }

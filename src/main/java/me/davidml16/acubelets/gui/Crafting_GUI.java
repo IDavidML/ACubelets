@@ -5,6 +5,7 @@ import me.davidml16.acubelets.enums.CraftType;
 import me.davidml16.acubelets.objects.CraftIngredient;
 import me.davidml16.acubelets.objects.CraftParent;
 import me.davidml16.acubelets.objects.CubeletType;
+import me.davidml16.acubelets.objects.GUILayout;
 import me.davidml16.acubelets.utils.*;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
@@ -42,20 +43,22 @@ public class Crafting_GUI implements Listener {
 
         int inventorySize = main.getCubeletCraftingHandler().getInventorySize();
 
-        Inventory gui = Bukkit.createInventory(null, inventorySize, main.getLanguageHandler().getMessage("GUI.Crafting.Title"));
+        GUILayout guiLayout = main.getLayoutHandler().getLayout("crafting");
 
-        ItemStack back = new ItemBuilder(XMaterial.BOOK.parseItem())
-                .setName(main.getLanguageHandler().getMessage("GUI.Crafting.Items.Back.Name"))
-                .setLore(main.getLanguageHandler().getMessageList("GUI.Crafting.Items.Back.Lore"))
+        Inventory gui = Bukkit.createInventory(null, inventorySize, guiLayout.getMessage("Title"));
+
+        ItemStack back = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Back.Material")).get().parseItem())
+                .setName(guiLayout.getMessage("Items.Back.Name"))
+                .setLore(guiLayout.getMessageList("Items.Back.Lore"))
                 .toItemStack();
         gui.setItem(inventorySize - 5, back);
 
         List<String> lorePoints = new ArrayList<>();
-        for (String line : main.getLanguageHandler().getMessageList("GUI.Crafting.Items.Points.Lore")) {
+        for (String line : guiLayout.getMessageList("Items.Points.Lore")) {
             lorePoints.add(line.replaceAll("%points_available%", ""+main.getPlayerDataHandler().getData(p).getLootPoints()));
         }
-        ItemStack points = new ItemBuilder(XMaterial.POPPY.parseItem())
-                .setName(main.getLanguageHandler().getMessage("GUI.Crafting.Items.Points.Name"))
+        ItemStack points = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Points.Material")).get().parseItem())
+                .setName(guiLayout.getMessage("Items.Points.Name"))
                 .setLore(lorePoints)
                 .toItemStack();
         gui.setItem(inventorySize - 4, points);
@@ -64,29 +67,29 @@ public class Crafting_GUI implements Listener {
             CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(craft.getCubeletType());
 
             List<String> lore = new ArrayList<>();
-            for (String line : main.getLanguageHandler().getMessageList("GUI.Crafting.Ingredients.Lore")) {
+            for (String line : guiLayout.getMessageList("Ingredients.Lore")) {
                 if(line.contains("%ingredients%")) {
                     for(CraftIngredient ingredient : craft.getIngrediens()) {
 
                         String status;
                         if(main.getCubeletCraftingHandler().haveIngredient(p, ingredient))
-                            status = main.getLanguageHandler().getMessage("GUI.Crafting.Ingredients.Status.Available");
+                            status = guiLayout.getMessage("Ingredients.Status.Available");
                         else
-                            status = main.getLanguageHandler().getMessage("GUI.Crafting.Ingredients.Status.NotAvailable");
+                            status = guiLayout.getMessage("Ingredients.Status.NotAvailable");
 
                         if(ingredient.getCraftType() == CraftType.CUBELET)
-                            lore.add(ColorUtil.translate(main.getLanguageHandler().getMessage("GUI.Crafting.Ingredients.Ingredient.Cubelet")
+                            lore.add(ColorUtil.translate(guiLayout.getMessage("Ingredients.Ingredient.Cubelet")
                                     .replaceAll("%name%", ColorUtil.removeColors(main.getCubeletTypesHandler().getTypeBydId(ingredient.getName()).getName()))
                                     .replaceAll("%amount%", ""+ingredient.getAmount())
                                     .replaceAll("%status%", status)
                             ));
                         else if(ingredient.getCraftType() == CraftType.MONEY)
-                            lore.add(ColorUtil.translate(main.getLanguageHandler().getMessage("GUI.Crafting.Ingredients.Ingredient.Money")
+                            lore.add(ColorUtil.translate(guiLayout.getMessage("Ingredients.Ingredient.Money")
                                     .replaceAll("%amount%", ""+ingredient.getAmount())
                                     .replaceAll("%status%", status)
                             ));
                         else if(ingredient.getCraftType() == CraftType.POINTS)
-                            lore.add(ColorUtil.translate(main.getLanguageHandler().getMessage("GUI.Crafting.Ingredients.Ingredient.Points")
+                            lore.add(ColorUtil.translate(guiLayout.getMessage("Ingredients.Ingredient.Points")
                                     .replaceAll("%amount%", ""+ingredient.getAmount())
                                     .replaceAll("%status%", status)
                             ));
@@ -128,7 +131,7 @@ public class Crafting_GUI implements Listener {
                 if (slot >= 0 && slot <= (inventorySize - 10)) {
                     String haveIngredients = NBTEditor.getString(e.getCurrentItem(), "haveIngredients");
                     if (haveIngredients.equalsIgnoreCase("false")) {
-                        p.sendMessage(main.getLanguageHandler().getMessage("GUI.Crafting.NoAfford"));
+                        p.sendMessage(main.getLayoutHandler().getLayout("crafting").getMessage("NoAfford"));
                         return;
                     }
 

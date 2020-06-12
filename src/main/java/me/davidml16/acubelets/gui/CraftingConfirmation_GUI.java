@@ -4,6 +4,7 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.enums.CraftType;
 import me.davidml16.acubelets.objects.CraftIngredient;
 import me.davidml16.acubelets.objects.CraftParent;
+import me.davidml16.acubelets.objects.GUILayout;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.Sounds;
@@ -40,24 +41,26 @@ public class CraftingConfirmation_GUI implements Listener {
     public void open(Player p, String id) {
         p.updateInventory();
 
-        Inventory gui = Bukkit.createInventory(null, InventoryType.HOPPER, main.getLanguageHandler().getMessage("GUI.CraftingConfirmation.Title"));
+        GUILayout guiLayout = main.getLayoutHandler().getLayout("craftingconfirmation");
+
+        Inventory gui = Bukkit.createInventory(null, InventoryType.HOPPER, guiLayout.getMessage("Title"));
         CraftParent craftParent = main.getCubeletCraftingHandler().getCraftById(id);
 
         List<String> lore = new ArrayList<>();
-        for (String line : main.getLanguageHandler().getMessageList("GUI.CraftingConfirmation.Items.Craft.Lore")) {
+        for (String line : guiLayout.getMessageList("Items.Craft.Lore")) {
             if(line.contains("%ingredients%")) {
                 for(CraftIngredient ingredient : craftParent.getIngrediens()) {
                     if(ingredient.getCraftType() == CraftType.CUBELET)
-                        lore.add(ColorUtil.translate(main.getLanguageHandler().getMessage("GUI.CraftingConfirmation.Ingredients.Ingredient.Cubelet")
+                        lore.add(ColorUtil.translate(guiLayout.getMessage("Ingredients.Ingredient.Cubelet")
                                 .replaceAll("%name%", ColorUtil.removeColors(main.getCubeletTypesHandler().getTypeBydId(ingredient.getName()).getName()))
                                 .replaceAll("%amount%", ""+ingredient.getAmount())
                         ));
                     else if(ingredient.getCraftType() == CraftType.MONEY)
-                        lore.add(ColorUtil.translate(main.getLanguageHandler().getMessage("GUI.CraftingConfirmation.Ingredients.Ingredient.Money")
+                        lore.add(ColorUtil.translate(guiLayout.getMessage("Ingredients.Ingredient.Money")
                                 .replaceAll("%amount%", ""+ingredient.getAmount())
                         ));
                     else if(ingredient.getCraftType() == CraftType.POINTS)
-                        lore.add(ColorUtil.translate(main.getLanguageHandler().getMessage("GUI.CraftingConfirmation.Ingredients.Ingredient.Points")
+                        lore.add(ColorUtil.translate(guiLayout.getMessage("Ingredients.Ingredient.Points")
                                 .replaceAll("%amount%", ""+ingredient.getAmount())
                         ));
                 }
@@ -66,14 +69,14 @@ public class CraftingConfirmation_GUI implements Listener {
             }
         }
 
-        ItemStack craft = new ItemBuilder(XMaterial.LIME_STAINED_GLASS_PANE.parseItem())
-                .setName(ColorUtil.translate(main.getLanguageHandler().getMessage("GUI.CraftingConfirmation.Items.Craft.Name")))
+        ItemStack craft = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Craft.Material")).get().parseItem())
+                .setName(ColorUtil.translate(guiLayout.getMessage("Items.Craft.Name")))
                 .setLore(lore)
                 .toItemStack();
 
-        ItemStack cancel = new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem())
-                .setName(ColorUtil.translate(main.getLanguageHandler().getMessage("GUI.CraftingConfirmation.Items.Cancel.Name")))
-                .setLore(main.getLanguageHandler().getMessageList("GUI.CraftingConfirmation.Items.Cancel.Lore"))
+        ItemStack cancel = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Cancel.Material")).get().parseItem())
+                .setName(ColorUtil.translate(guiLayout.getMessage("Items.Cancel.Name")))
+                .setLore(guiLayout.getMessageList("Items.Cancel.Lore"))
                 .toItemStack();
 
         gui.setItem(1, craft);
@@ -98,7 +101,7 @@ public class CraftingConfirmation_GUI implements Listener {
                 CraftParent craft = main.getCubeletCraftingHandler().getCraftById(cubeletType);
 
                 if(!main.getCubeletCraftingHandler().haveIngredients(p, craft)) {
-                    p.sendMessage(main.getLanguageHandler().getMessage("GUI.Crafting.NoAfford"));
+                    p.sendMessage(main.getLayoutHandler().getLayout("crafting").getMessage("NoAfford"));
                     return;
                 }
 

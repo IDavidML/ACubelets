@@ -1,0 +1,47 @@
+Layout:
+  Title: 'Cubelets'
+  Items:
+    Close:
+      Name: '&9Close'
+      Material: 'BOOK'
+      Lore:
+        - '&7Click to close'
+        - '&7this menu'
+    NoCubelets:
+      Name: '&4You have no Cubelets'
+      Material: 'BARRIER'
+      Lore:
+        - '&7You can get Cubelets by playing games.'
+        - '&7You are also able to purchase them'
+        - '&7on our store.'
+        - '&6Click for store link.'
+    Ordered:
+      Type:
+        Name: '&aOrderer by - &a&lType'
+        Material: 'NAME_TAG'
+        Lore:
+          - '&7Change how items are ordered'
+          - '&7in this menu.'
+          - '&6Click to order by Date received!'
+      Date:
+        Name: '&aOrderer by - &a&lDate received'
+        Material: 'CLOCK'
+        Lore:
+          - '&7Change how items are ordered'
+          - '&7in this menu.'
+          - '&6Click to order by Type!'
+    Crafting:
+      Name: '&e&lCubelet Crafting'
+      Material: 'CRAFTING_TABLE'
+      Lore:
+        - '&7Take your current Cubelets and'
+        - '&7craft them together to create'
+        - '&7more awesome Cubelets containg'
+        - '&7rarer items.'
+        - '&6Click to open.'
+    NextPage:
+      Name: '&6Next page'
+      Material: 'SUGAR_CANE'
+    PreviousPage:
+      Name: '&6Previous page'
+      Material: 'SUGAR_CANE'

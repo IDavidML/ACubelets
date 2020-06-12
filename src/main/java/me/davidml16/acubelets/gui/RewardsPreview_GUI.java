@@ -39,6 +39,8 @@ public class RewardsPreview_GUI implements Listener {
         CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(type);
         List<Reward> rewards = cubeletType.getAllRewards();
 
+        GUILayout guiLayout = main.getLayoutHandler().getLayout("preview");
+
         if(page > 0 && rewards.size() < (page * 27) + 1) {
             openPage(p, type, page - 1);
             return;
@@ -48,23 +50,23 @@ public class RewardsPreview_GUI implements Listener {
 
         int neededSize = getNeededSize(rewards.size());
 
-        Inventory gui = Bukkit.createInventory(null, neededSize, main.getLanguageHandler().getMessage("GUI.Preview.Title").replaceAll("%cubelet_type%", ColorUtil.removeColors(cubeletType.getName())));
+        Inventory gui = Bukkit.createInventory(null, neededSize, guiLayout.getMessage("Title").replaceAll("%cubelet_type%", ColorUtil.removeColors(cubeletType.getName())));
 
         if (page > 0) {
-            gui.setItem((neededSize - 9), new ItemBuilder(XMaterial.SUGAR_CANE.parseItem())
-                    .setName(main.getLanguageHandler().getMessage("GUI.Preview.Items.PreviousPage.Name"))
+            gui.setItem((neededSize - 9), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.PreviousPage.Material")).get().parseItem())
+                    .setName(guiLayout.getMessage("Items.PreviousPage.Name"))
                     .toItemStack());
         }
 
         if (cubeletType.getAllRewards().size() > (page + 1) * 27) {
-            gui.setItem((neededSize - 1), new ItemBuilder(XMaterial.SUGAR_CANE.parseItem())
-                    .setName(main.getLanguageHandler().getMessage("GUI.Preview.Items.NextPage.Name"))
+            gui.setItem((neededSize - 1), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NextPage.Material")).get().parseItem())
+                    .setName(guiLayout.getMessage("Items.NextPage.Name"))
                     .toItemStack());
         }
 
-        ItemStack back = new ItemBuilder(XMaterial.BOOK.parseItem())
-                .setName(main.getLanguageHandler().getMessage("GUI.Preview.Items.Back.Name"))
-                .setLore(main.getLanguageHandler().getMessageList("GUI.Preview.Items.Back.Lore"))
+        ItemStack back = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Back.Material")).get().parseItem())
+                .setName(guiLayout.getMessage("Items.Back.Name"))
+                .setLore(guiLayout.getMessageList("Items.Back.Lore"))
                 .toItemStack();
         gui.setItem(neededSize - 5, back);
 
@@ -75,12 +77,12 @@ public class RewardsPreview_GUI implements Listener {
             for (Reward reward : rewards) {
 
                 List<String> lore = new ArrayList<>();
-                for (String line : main.getLanguageHandler().getMessageList("GUI.Preview.Items.Reward.Lore")) {
+                for (String line : guiLayout.getMessageList("Items.Reward.Lore")) {
                     lore.add(ColorUtil.translate(line.replaceAll("%reward_rarity%", reward.getRarity().getName())));
                 }
 
                 gui.addItem(new ItemBuilder(reward.getIcon())
-                    .setName(ColorUtil.translate(main.getLanguageHandler().getMessage("GUI.Preview.Items.Reward.Name").replaceAll("%reward_name%", reward.getName())))
+                    .setName(ColorUtil.translate(guiLayout.getMessage("Items.Reward.Name").replaceAll("%reward_name%", reward.getName())))
                     .setLore(lore)
                     .hideAttributes()
                     .toItemStack());
@@ -119,9 +121,9 @@ public class RewardsPreview_GUI implements Listener {
             e.setCancelled(true);
             int slot = e.getRawSlot();
             if(e.getClick() != ClickType.DOUBLE_CLICK) {
-                if (slot == (p.getOpenInventory().getTopInventory().getSize() - 9) && e.getCurrentItem().getType() == XMaterial.SUGAR_CANE.parseMaterial()) {
+                if (slot == (p.getOpenInventory().getTopInventory().getSize() - 9)) {
                     openPage(p, opened.get(p.getUniqueId()).getCubeletType(), opened.get(p.getUniqueId()).getPage() - 1);
-                } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 1) && e.getCurrentItem().getType() == XMaterial.SUGAR_CANE.parseMaterial()) {
+                } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 1)) {
                     openPage(p, opened.get(p.getUniqueId()).getCubeletType(), opened.get(p.getUniqueId()).getPage() + 1);
                 } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 5)) {
                     main.getCubeletsGUI().open(p);

@@ -1,0 +1,37 @@
+Layout:
+  Title: 'Cubelet Crafting'
+  NoAfford: '&cYou cannot afford to craft this Cubelet yet!'
+  Ingredients:
+    Ingredient:
+      Cubelet: '&7- &b%name% &7x%amount% %status%'
+      Money: '&7- &b%amount% Coins %status%'
+      Points: '&7- &b%amount% Loot Points %status%'
+    Status:
+      Available: '&a✓'
+      NotAvailable: '&c✗'
+    Lore:
+      - '&5Ingredients:'
+      - '%ingredients%'
+      - ''
+      - '%description%'
+      - ''
+      - '&8&oCrafted Cubelets expire after'
+      - '&8&o2 weeks.'
+      - ''
+      - '&6Click to craft.'
+  Items:
+    Points:
+      Name: '&e&lLoot Points'
+      Material: 'POPPY'
+      Lore:
+        - '&5You have: &a%points_available%'
+        - '&7Loot points are given from finding'
+        - '&7duplicates inside of Cubelets, and'
+        - '&7can be crafted into Cubelets inside'
+        - '&7Cubelet Machines.'
+    Back:
+      Name: '&9Back'
+      Material: 'BOOK'
+      Lore:
+        - '&7Go back to the previous'
+        - '&7menu.'

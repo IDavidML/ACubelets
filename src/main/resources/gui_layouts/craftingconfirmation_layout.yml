@@ -1,0 +1,25 @@
+Layout:
+  Title: 'Crafting a Cubelet'
+  Ingredients:
+    Ingredient:
+      Cubelet: '&7- &b%name% &7x%amount%'
+      Money: '&7- &b%amount% Coins'
+      Points: '&7- &b%amount% Loot Points'
+  Items:
+    Craft:
+      Name: '&a&lCRAFT'
+      Material: 'LIME_STAINED_GLASS_PANE'
+      Lore:
+        - '&7You are buying a Cubelet and it will'
+        - '&7cost:'
+        - '%ingredients%'
+        - ''
+        - '&8&oThis process cannot be undone.'
+        - ''
+        - '&6Click to craft!'
+    Cancel:
+      Name: '&c&lCANCEL'
+      Material: 'RED_STAINED_GLASS_PANE'
+      Lore:
+        - ''
+        - '&6Click to cancel!'

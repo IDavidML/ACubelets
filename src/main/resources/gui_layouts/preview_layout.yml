@@ -1,0 +1,19 @@
+Layout:
+  Title: 'Preview of %cubelet_type%'
+  Items:
+    Reward:
+      Name: '&e&l%reward_name%'
+      Lore:
+        - '&5Rarity: %reward_rarity%'
+    Back:
+      Name: '&9Back'
+      Material: 'BOOK'
+      Lore:
+        - '&7Go back to the previous'
+        - '&7menu.'
+    NextPage:
+      Name: '&6Next page'
+      Material: 'SUGAR_CANE'
+    PreviousPage:
+      Name: '&6Previous page'
+      Material: 'SUGAR_CANE'

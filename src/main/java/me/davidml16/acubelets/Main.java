@@ -54,6 +54,7 @@ public class Main extends JavaPlugin {
     private AnimationHandler animationHandler;
     private CubeletCraftingHandler cubeletCraftingHandler;
     private EconomyHandler economyHandler;
+    private LayoutHandler layoutHandler;
 
     private FireworkUtil fireworkUtil;
 
@@ -146,6 +147,8 @@ public class Main extends JavaPlugin {
         hologramTask.start();
 
         cubeletOpenHandler = new CubeletOpenHandler(this);
+
+        layoutHandler = new LayoutHandler(this);
 
         cubeletsGUI = new Cubelets_GUI(this);
 
@@ -244,6 +247,8 @@ public class Main extends JavaPlugin {
     public CubeletCraftingHandler getCubeletCraftingHandler() { return cubeletCraftingHandler; }
 
     public EconomyHandler getEconomyHandler() { return economyHandler; }
+
+    public LayoutHandler getLayoutHandler() { return layoutHandler; }
 
     public Cubelets_GUI getCubeletsGUI() { return cubeletsGUI; }
 
