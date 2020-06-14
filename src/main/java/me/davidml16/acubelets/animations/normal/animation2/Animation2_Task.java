@@ -72,8 +72,7 @@ public class Animation2_Task implements Animation {
 			} else if(time >= 220) {
 				stop();
 
-				Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(),
-						reward.getCommand().replaceAll("%player%", cubeletBox.getPlayerOpening().getName()));
+				main.getCubeletRewardHandler().giveReward(cubeletBox, reward);
 				MessageUtils.sendLootMessage(cubeletBox.getPlayerOpening(), cubeletType, reward);
 
 				cubeletBox.setState(CubeletBoxState.EMPTY);

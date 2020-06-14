@@ -118,8 +118,7 @@ public class AnimationSummer_Task implements Animation {
 			} else if(time >= 300) {
 				stop();
 
-				Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(),
-						reward.getCommand().replaceAll("%player%", cubeletBox.getPlayerOpening().getName()));
+				main.getCubeletRewardHandler().giveReward(cubeletBox, reward);
 				MessageUtils.sendLootMessage(cubeletBox.getPlayerOpening(), cubeletType, reward);
 
 				cubeletBox.setState(CubeletBoxState.EMPTY);

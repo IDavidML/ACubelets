@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -84,7 +85,7 @@ public class RewardMenu implements ConversationAbandonedListener, CommonPrompts 
                                 String rewardCommand = (String) param1ConversationContext.getSessionData("rewardCommand");
                                 ItemStack rewardIcon = (ItemStack) param1ConversationContext.getSessionData("rewardIcon");
 
-                                Reward reward = new Reward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), rewardCommand, rewardIcon);
+                                Reward reward = new Reward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), Arrays.asList(rewardCommand), rewardIcon);
                                 cubeletType.addReward(rewardRarity, reward);
                                 cubeletType.saveType();
 

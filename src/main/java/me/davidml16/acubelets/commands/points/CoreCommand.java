@@ -19,6 +19,7 @@ public class CoreCommand extends Command {
     private final ExecuteGive executeGive = new ExecuteGive(main);
     private final ExecuteRemove executeRemove = new ExecuteRemove(main);
     private final ExecuteSet executeSet = new ExecuteSet(main);
+    private final ExecuteInfo executeInfo = new ExecuteInfo(main);
 
     public CoreCommand(String name) {
         super(name);
@@ -46,6 +47,8 @@ public class CoreCommand extends Command {
                 return executeRemove.executeCommand(sender, label, args);
             case "set":
                 return executeSet.executeCommand(sender, label, args);
+            case "info":
+                return executeInfo.executeCommand(sender, label, args);
         }
 
         sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cInvalid argument, use /" + label + " help to see available commands"));
@@ -61,6 +64,7 @@ public class CoreCommand extends Command {
         sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " give [player] [amount]"));
         sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " remove [player] [amount]"));
         sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " set [player] [amount]"));
+        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " info [player]"));
         sender.sendMessage("");
         return true;
     }
@@ -81,26 +85,12 @@ public class CoreCommand extends Command {
                 list.add("give");
                 list.add("remove");
                 list.add("set");
+                list.add("info");
             }
         }
 
-        if (args[0].equalsIgnoreCase("give")) {
-            if (args.length == 2) {
-                if (main.playerHasPermission(p, "acubelets.admin")) {
-                    for (Player target : main.getServer().getOnlinePlayers()) {
-                        list.add(target.getName());
-                    }
-                }
-            }
-        } else if (args[0].equalsIgnoreCase("remove")) {
-            if (args.length == 2) {
-                if (main.playerHasPermission(p, "acubelets.admin")) {
-                    for (Player target : main.getServer().getOnlinePlayers()) {
-                        list.add(target.getName());
-                    }
-                }
-            }
-        } else if (args[0].equalsIgnoreCase("info")) {
+        if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("remove")
+                || args[0].equalsIgnoreCase("set") || args[0].equalsIgnoreCase("info")) {
             if (args.length == 2) {
                 if (main.playerHasPermission(p, "acubelets.admin")) {
                     for (Player target : main.getServer().getOnlinePlayers()) {

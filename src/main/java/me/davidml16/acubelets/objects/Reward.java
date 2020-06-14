@@ -2,19 +2,21 @@ package me.davidml16.acubelets.objects;
 
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+
 public class Reward {
 
     private String id;
     private String name;
     private Rarity rarity;
-    private String command;
+    private List<String> commands;
     private ItemStack icon;
 
-    public Reward(String id, String name, Rarity rarity, String command, ItemStack icon) {
+    public Reward(String id, String name, Rarity rarity, List<String> commands, ItemStack icon) {
         this.id = id;
         this.name = name;
         this.rarity = rarity;
-        this.command = command;
+        this.commands = commands;
         this.icon = icon;
     }
 
@@ -34,12 +36,12 @@ public class Reward {
 
     public void setRarity(Rarity rarity) { this.rarity = rarity; }
 
-    public String getCommand() {
-        return command;
+    public List<String> getCommands() {
+        return commands;
     }
 
-    public void setCommand(String command) {
-        this.command = command;
+    public void setCommands(List<String> commands) {
+        this.commands = commands;
     }
 
     public ItemStack getIcon() {
@@ -56,7 +58,7 @@ public class Reward {
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", rarity=" + rarity +
-                ", command='" + command + '\'' +
+                ", command='" + commands + '\'' +
                 ", icon=" + icon +
                 '}';
     }

@@ -124,14 +124,15 @@ public class Rewards_GUI implements Listener {
 
         if(rewards.size() > 0) {
             for (Reward reward : rewards) {
+
                 gui.addItem(new ItemBuilder(reward.getIcon())
                         .setName(ColorUtil.translate("&a" + reward.getId()))
                         .setLore(
                                 "",
                                 ColorUtil.translate(" &7Name: &6" + reward.getName() + " "),
                                 ColorUtil.translate(" &7Rarity: &6" + reward.getRarity().getId() + " "),
-                                ColorUtil.translate(" &7Command: &6" + reward.getCommand() + " "),
                                 ColorUtil.translate(" &7Icon: &6" + reward.getIcon().getType().name() + " "),
+                                ColorUtil.translate(" &7Commands: &6" + reward.getCommands().size() + " "),
                                 "",
                                 ColorUtil.translate("&eClick to remove! ")).toItemStack());
             }

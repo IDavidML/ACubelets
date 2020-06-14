@@ -152,7 +152,7 @@ public class CubeletType {
                 Reward reward = rewards.get(i);
                 config.set("type.rewards.r" + String.valueOf(i) + ".name", reward.getName());
                 config.set("type.rewards.r" + String.valueOf(i) + ".rarity", reward.getRarity().getId());
-                config.set("type.rewards.r" + String.valueOf(i) + ".command", reward.getCommand());
+                config.set("type.rewards.r" + String.valueOf(i) + ".command", reward.getCommands());
                 XItemStack.serialize(reward.getIcon(), config, "type.rewards.r" + String.valueOf(i) + ".icon");
             }
         }

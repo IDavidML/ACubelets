@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Rarity;
 import me.davidml16.acubelets.objects.Reward;
@@ -37,8 +38,12 @@ public class CubeletRewardHandler {
 							String rarity = config.getString("type.rewards." + rewardid + ".rarity");
 							if (cubeletType.getRarities().containsKey(rarity)) {
 								String name = config.getString("type.rewards." + rewardid + ".name");
-								String command = config.getString("type.rewards." + rewardid + ".command");
-								String material = config.getString("type.rewards." + rewardid + ".icon");
+
+								List<String> commands = new ArrayList<>();
+								if(config.get("type.rewards." + rewardid + ".command") instanceof ArrayList)
+									commands.addAll(config.getStringList("type.rewards." + rewardid + ".command"));
+								else
+									commands.add(config.getString("type.rewards." + rewardid + ".command"));
 
 								List<Reward> rewardsRarity;
 								if (rewards.get(rarity) == null) {
@@ -49,7 +54,7 @@ public class CubeletRewardHandler {
 
 								ItemStack rewardIcon = XItemStack.deserialize(config, "type.rewards." + String.valueOf(rewardid) + ".icon");
 
-								rewardsRarity.add(new Reward(rewardid, name, cubeletType.getRarities().get(rarity), command, rewardIcon));
+								rewardsRarity.add(new Reward(rewardid, name, cubeletType.getRarities().get(rarity), commands, rewardIcon));
 								rewards.put(rarity, rewardsRarity);
 
 								rewardsLoaded++;
@@ -59,6 +64,8 @@ public class CubeletRewardHandler {
 				}
 			}
 			cubeletType.setRewards(rewards);
+			cubeletType.saveType();
+
 			Main.log.sendMessage(ColorUtil.translate("    &a'" + cubeletType.getId() + "' &7- " + (rewardsLoaded > 0 ? "&a" : "&c") + rewardsLoaded + " rewards"));
 		}
 
@@ -87,6 +94,12 @@ public class CubeletRewardHandler {
 					" &cThere has been a problem with your reward, please notify the server staff."));
 		}
 		return null;
+	}
+
+	public void giveReward(CubeletBox cubeletBox, Reward reward) {
+		for(String command : reward.getCommands()) {
+			Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(), command.replaceAll("%player%", cubeletBox.getPlayerOpening().getName()));
+		}
 	}
 
 	public List<Rarity> getAvailableRarities(CubeletType cubeletType) {
