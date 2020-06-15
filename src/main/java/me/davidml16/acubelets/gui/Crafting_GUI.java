@@ -51,7 +51,7 @@ public class Crafting_GUI implements Listener {
                 .setName(guiLayout.getMessage("Items.Back.Name"))
                 .setLore(guiLayout.getMessageList("Items.Back.Lore"))
                 .toItemStack();
-        gui.setItem(inventorySize - 5, back);
+        gui.setItem((inventorySize - 10) + guiLayout.getSlot("Back"), back);
 
         List<String> lorePoints = new ArrayList<>();
         for (String line : guiLayout.getMessageList("Items.Points.Lore")) {
@@ -61,7 +61,7 @@ public class Crafting_GUI implements Listener {
                 .setName(guiLayout.getMessage("Items.Points.Name"))
                 .setLore(lorePoints)
                 .toItemStack();
-        gui.setItem(inventorySize - 4, points);
+        gui.setItem((inventorySize - 10) + guiLayout.getSlot("Points"), points);
 
         for(CraftParent craft : main.getCubeletCraftingHandler().getCrafts()) {
             CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(craft.getCubeletType());
@@ -126,6 +126,7 @@ public class Crafting_GUI implements Listener {
 
             int inventorySize = main.getCubeletCraftingHandler().getInventorySize();
             int slot = e.getRawSlot();
+            GUILayout guiLayout = main.getLayoutHandler().getLayout("crafting");
 
             if(e.getClick() != ClickType.DOUBLE_CLICK) {
                 if (slot >= 0 && slot <= (inventorySize - 10)) {
@@ -137,7 +138,7 @@ public class Crafting_GUI implements Listener {
 
                     String cubeletType = NBTEditor.getString(e.getCurrentItem(), "cubeletType");
                     main.getCraftingConfirmationGUI().open(p, cubeletType);
-                } else if (slot == (inventorySize - 5)) {
+                } else if (slot == ((inventorySize - 10) + guiLayout.getSlot("Back"))) {
                     main.getCubeletsGUI().open(p);
                 }
             }

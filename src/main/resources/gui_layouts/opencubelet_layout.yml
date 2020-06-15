@@ -4,6 +4,7 @@ Layout:
     Close:
       Name: '&9Close'
       Material: 'BOOK'
+      Slot: 5
       Lore:
         - '&7Click to close'
         - '&7this menu'
@@ -16,6 +17,7 @@ Layout:
         - '&7on our store.'
         - '&6Click for store link.'
     Ordered:
+      Slot: 7
       Type:
         Name: '&aOrderer by - &a&lType'
         Material: 'NAME_TAG'
@@ -33,6 +35,7 @@ Layout:
     Crafting:
       Name: '&e&lCubelet Crafting'
       Material: 'CRAFTING_TABLE'
+      Slot: 3
       Lore:
         - '&7Take your current Cubelets and'
         - '&7craft them together to create'
@@ -42,6 +45,8 @@ Layout:
     NextPage:
       Name: '&6Next page'
       Material: 'SUGAR_CANE'
+      Slot: 9
     PreviousPage:
       Name: '&6Previous page'
       Material: 'SUGAR_CANE'
+      Slot: 1

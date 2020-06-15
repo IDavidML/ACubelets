@@ -23,6 +23,7 @@ Layout:
     Points:
       Name: '&e&lLoot Points'
       Material: 'POPPY'
+      Slot: 6
       Lore:
         - '&5You have: &a%points_available%'
         - '&7Loot points are given from finding'
@@ -32,6 +33,7 @@ Layout:
     Back:
       Name: '&9Back'
       Material: 'BOOK'
+      Slot: 5
       Lore:
         - '&7Go back to the previous'
         - '&7menu.'

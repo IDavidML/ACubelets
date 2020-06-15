@@ -81,13 +81,13 @@ public class Cubelets_GUI implements Listener {
         Inventory gui = Bukkit.createInventory(null, neededSize, guiLayout.getMessage("Title"));
 
         if (page > 0) {
-            gui.setItem((neededSize - 9), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.PreviousPage.Material")).get().parseItem())
+            gui.setItem(((neededSize - 10) + guiLayout.getSlot("PreviousPage")), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.PreviousPage.Material")).get().parseItem())
                     .setName(guiLayout.getMessage("Items.PreviousPage.Name"))
                     .toItemStack());
         }
 
         if (main.getPlayerDataHandler().getData(p.getUniqueId()).getCubelets().size() > (page + 1) * 27) {
-            gui.setItem((neededSize - 1), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NextPage.Material")).get().parseItem())
+            gui.setItem((neededSize - 10) + guiLayout.getSlot("NextPage"), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NextPage.Material")).get().parseItem())
                     .setName(guiLayout.getMessage("Items.NextPage.Name"))
                     .toItemStack());
         }
@@ -96,7 +96,7 @@ public class Cubelets_GUI implements Listener {
                 .setName(guiLayout.getMessage("Items.Close.Name"))
                 .setLore(guiLayout.getMessageList("Items.Close.Lore"))
                 .toItemStack();
-        gui.setItem(neededSize - 5, back);
+        gui.setItem((neededSize - 10) + guiLayout.getSlot("Close"), back);
 
 
         if(main.isCraftingEnabled()) {
@@ -104,7 +104,7 @@ public class Cubelets_GUI implements Listener {
                     .setName(guiLayout.getMessage("Items.Crafting.Name"))
                     .setLore(guiLayout.getMessageList("Items.Crafting.Lore"))
                     .toItemStack();
-            gui.setItem(neededSize - 7, crafting);
+            gui.setItem((neededSize - 10) + guiLayout.getSlot("Crafting"), crafting);
         }
 
         for (int i = 0; i <= (neededSize-10); i++)
@@ -118,13 +118,13 @@ public class Cubelets_GUI implements Listener {
                             .setName(guiLayout.getMessage("Items.Ordered.Date.Name"))
                             .setLore(guiLayout.getMessageList("Items.Ordered.Date.Lore"))
                             .toItemStack();
-                    gui.setItem(neededSize - 3, orderByDate);
+                    gui.setItem((neededSize - 10) + guiLayout.getSlot("Ordered"), orderByDate);
                 } else if (profile.getOrderBy().equalsIgnoreCase("type")) {
                     ItemStack orderByType = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Ordered.Type.Material")).get().parseItem())
                             .setName(guiLayout.getMessage("Items.Ordered.Type.Name"))
                             .setLore(guiLayout.getMessageList("Items.Ordered.Type.Lore"))
                             .toItemStack();
-                    gui.setItem(neededSize - 3, orderByType);
+                    gui.setItem((neededSize - 10) + guiLayout.getSlot("Ordered"), orderByType);
                 }
             }
 
@@ -187,18 +187,22 @@ public class Cubelets_GUI implements Listener {
 
         if (opened.containsKey(p.getUniqueId())) {
             e.setCancelled(true);
+
             int slot = e.getRawSlot();
-            if (slot == (p.getOpenInventory().getTopInventory().getSize() - 9)) {
+            int size = p.getOpenInventory().getTopInventory().getSize();
+            GUILayout guiLayout = main.getLayoutHandler().getLayout("opencubelet");
+
+            if (slot == ((size - 10) + guiLayout.getSlot("PreviousPage"))) {
                 if(e.getClick() != ClickType.DOUBLE_CLICK)
                     openPage(p, opened.get(p.getUniqueId()) - 1);
-            } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 1)) {
+            } else if (slot == ((size - 10) + guiLayout.getSlot("NextPage"))) {
                 if(e.getClick() != ClickType.DOUBLE_CLICK)
                     openPage(p, opened.get(p.getUniqueId()) + 1);
-            } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 5)) {
+            } else if (slot == ((size - 10) + guiLayout.getSlot("Close"))) {
                 p.closeInventory();
-            } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 7) && main.isCraftingEnabled()) {
+            } else if (slot == ((size - 10) + guiLayout.getSlot("Crafting")) && main.isCraftingEnabled()) {
                 main.getCraftingGUI().open(p);
-            } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 3) && main.getCubeletTypesHandler().getTypes().size() > 1) {
+            } else if (slot == ((size - 10) + guiLayout.getSlot("Ordered")) && main.getCubeletTypesHandler().getTypes().size() > 1) {
                 Profile profile = main.getPlayerDataHandler().getData(p.getUniqueId());
                 if(profile.getOrderBy().equalsIgnoreCase("date"))
                     profile.setOrderBy("type");

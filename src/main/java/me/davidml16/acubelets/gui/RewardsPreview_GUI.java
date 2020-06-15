@@ -53,13 +53,13 @@ public class RewardsPreview_GUI implements Listener {
         Inventory gui = Bukkit.createInventory(null, neededSize, guiLayout.getMessage("Title").replaceAll("%cubelet_type%", ColorUtil.removeColors(cubeletType.getName())));
 
         if (page > 0) {
-            gui.setItem((neededSize - 9), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.PreviousPage.Material")).get().parseItem())
+            gui.setItem((neededSize - 10) + guiLayout.getSlot("PreviousPage"), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.PreviousPage.Material")).get().parseItem())
                     .setName(guiLayout.getMessage("Items.PreviousPage.Name"))
                     .toItemStack());
         }
 
         if (cubeletType.getAllRewards().size() > (page + 1) * 27) {
-            gui.setItem((neededSize - 1), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NextPage.Material")).get().parseItem())
+            gui.setItem((neededSize - 10) + guiLayout.getSlot("NextPage"), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NextPage.Material")).get().parseItem())
                     .setName(guiLayout.getMessage("Items.NextPage.Name"))
                     .toItemStack());
         }
@@ -68,7 +68,7 @@ public class RewardsPreview_GUI implements Listener {
                 .setName(guiLayout.getMessage("Items.Back.Name"))
                 .setLore(guiLayout.getMessageList("Items.Back.Lore"))
                 .toItemStack();
-        gui.setItem(neededSize - 5, back);
+        gui.setItem((neededSize - 10) + guiLayout.getSlot("Back"), back);
 
         for (int i = 0; i <= (neededSize-10); i++)
             gui.setItem(i, null);
@@ -119,13 +119,17 @@ public class RewardsPreview_GUI implements Listener {
 
         if (opened.containsKey(p.getUniqueId())) {
             e.setCancelled(true);
+
             int slot = e.getRawSlot();
+            int size = p.getOpenInventory().getTopInventory().getSize();
+            GUILayout guiLayout = main.getLayoutHandler().getLayout("preview");
+
             if(e.getClick() != ClickType.DOUBLE_CLICK) {
-                if (slot == (p.getOpenInventory().getTopInventory().getSize() - 9)) {
+                if (slot == ((size - 10) + guiLayout.getSlot("PreviousPage"))) {
                     openPage(p, opened.get(p.getUniqueId()).getCubeletType(), opened.get(p.getUniqueId()).getPage() - 1);
-                } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 1)) {
+                } else if (slot == ((size - 10) + guiLayout.getSlot("NextPage"))) {
                     openPage(p, opened.get(p.getUniqueId()).getCubeletType(), opened.get(p.getUniqueId()).getPage() + 1);
-                } else if (slot == (p.getOpenInventory().getTopInventory().getSize() - 5)) {
+                } else if (slot == ((size - 10) + guiLayout.getSlot("Back"))) {
                     main.getCubeletsGUI().open(p);
                 }
             }

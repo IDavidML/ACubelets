@@ -42,7 +42,7 @@ public class LayoutHandler {
 		}
 		YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 
-		cfg.options().header("\nThis is the gui layout file.\nYou can change any messages that are in this file\n\nIf you want to reset a message back to the default,\ndelete the entire line the message is on and restart the server.\n\t");
+		cfg.options().header("\nThis is the gui layout file.\nYou can change any messages that are in this file\n\nIf you want to reset a message back to the default,\ndelete the entire line the message is on and restart the server.\n\nIMPORTANT: Slots numbers between 1-9, if not, the plugin will crash\n\t");
 
 		Map<String, Object> msgDefaults = new LinkedHashMap<String, Object>();
 

@@ -36,6 +36,10 @@ public class GUILayout {
         this.messageList = messageList;
     }
 
+    public int getSlot(String path) {
+        return Integer.parseInt(messages.get("Layout.Items." + path + ".Slot"));
+    }
+
     public String getMessage(String message) {
         return ColorUtil.translate(messages.get("Layout." + message));
     }
