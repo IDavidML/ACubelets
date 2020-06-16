@@ -48,7 +48,8 @@ RewardsPreview:
 
 # Enable/disable reward duplication system
 # Change the command to execute to the one of the plugin you are using
+# Change the command to give duplicated points
 RewardsDuplication:
     Enabled: false
-    Command: 'lp user %player% permission set %permission% true'
-    PointsRange: 50-450
+    PermissionCommand: 'lp user %player% permission set %permission% true'
+    PointsCommand: 'points give %player% %points%'

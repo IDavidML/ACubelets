@@ -5,7 +5,6 @@ import com.comphenix.protocol.ProtocolManager;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.davidml16.acubelets.animations.AnimationHandler;
-import me.davidml16.acubelets.commands.cubelets.CoreCommand;
 import me.davidml16.acubelets.database.DatabaseHandler;
 import me.davidml16.acubelets.database.types.Database;
 import me.davidml16.acubelets.events.Event_Damage;
@@ -76,8 +75,8 @@ public class Main extends JavaPlugin {
 
     private String noCubeletsCommand;
 
-    private String duplicationCommand;
-    private String duplicationPointsRange;
+    private String duplicationPermissionCommand;
+    private String duplicationPointsCommand;
 
     private CommandMap commandMap;
 
@@ -136,8 +135,8 @@ public class Main extends JavaPlugin {
         cubeletRewardHandler.loadRewards();
 
         settings.put("RewardsDuplication", getConfig().getBoolean("RewardsDuplication.Enabled"));
-        duplicationCommand = getConfig().getString("RewardsDuplication.Command");
-        duplicationPointsRange = getConfig().getString("RewardsDuplication.PointsRange");
+        duplicationPermissionCommand = getConfig().getString("RewardsDuplication.PermissionCommand");
+        duplicationPointsCommand = getConfig().getString("RewardsDuplication.PointsCommand");
 
         economyHandler = new EconomyHandler();
         economyHandler.load();
@@ -313,10 +312,10 @@ public class Main extends JavaPlugin {
         return commandMap;
     }
 
-    public String getDuplicationCommand() { return duplicationCommand; }
-    public void setDuplicationCommand(String duplicationCommand) { this.duplicationCommand = duplicationCommand; }
-    public String getDuplicationPointsRange() { return duplicationPointsRange; }
-    public void setDuplicationPointsRange(String duplicationPointsRange) { this.duplicationPointsRange = duplicationPointsRange; }
+    public String getDuplicationPermissionCommand() { return duplicationPermissionCommand; }
+    public void setDuplicationPermissionCommand(String duplicationPermissionCommand) { this.duplicationPermissionCommand = duplicationPermissionCommand; }
+    public String getDuplicationPointsCommand() { return duplicationPointsCommand; }
+    public void setDuplicationPointsCommand(String duplicationPointsCommand) { this.duplicationPointsCommand = duplicationPointsCommand; }
     public void setDuplicationEnabled(boolean duplicationEnabled) { settings.put("RewardsDuplication", duplicationEnabled); }
     public boolean isDuplicationEnabled() { return settings.get("RewardsDuplication"); }
 

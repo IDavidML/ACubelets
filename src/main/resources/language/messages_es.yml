@@ -32,11 +32,19 @@ Cubelet:
     Me: '&cTu ya estas abriendo un Cubelet en esta maquina!'
     Other: '&6%player% &cesta abriendo un Cubelet en esta maquina!'
   Reward:
-    - ''
-    - '%center%%cubelet_type% Loot'
-    - '%center%&5Has encontrado: &a%reward_name%'
-    - '%center%&5Rareza: %reward_rarity%'
-    - ''
+    New:
+      - ''
+      - '%center%%cubelet_type% Loot'
+      - '%center%&5Has encontrado: &a%reward_name%'
+      - '%center%&5Rareza: %reward_rarity%'
+      - ''
+    Duplicate:
+      - ''
+      - '%center%%cubelet_type% Loot'
+      - '%center%&5Has encontrado: &a%reward_name%'
+      - '%center%&5Rareza: %reward_rarity%'
+      - '%center%&5Recompensa duplicada: %points% Puntos de Loot'
+      - ''
   NoCubelets:
     - ''
     - '%center%&aPuedes comprar Cubelets &c&lAQUI&a!'

@@ -10,6 +10,7 @@ import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.objects.CommandReward;
 import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.RepeatingTask;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -177,22 +178,39 @@ public class HologramHandler {
         }
     }
 
-    public void duplicationRewardHologram(CubeletBox box, Reward reward) {
+    public RepeatingTask duplicationRewardHologram(CubeletBox box, Reward reward) {
         int duplicationPoints = box.getLastDuplicationPoints();
-        List<String> lines = getLinesRewardDuplicated(reward, duplicationPoints);
-        for(Player p : Bukkit.getOnlinePlayers()) {
-            if (box.getHolograms().containsKey(p.getUniqueId())) {
-                Hologram hologram = box.getHolograms().get(p.getUniqueId());
-                hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + (box.getBlockHeight() + 0.1875), 0.5));
 
-                for (int i = 0; i < lines.size(); i++) {
-                    if(!lines.get(i).equalsIgnoreCase("%reward_icon%")) {
-                        ((TextLine) hologram.getLine(i)).setText(lines.get(i));
+        return new RepeatingTask(main, 0, 1) {
+
+            final int pointsPerTick = duplicationPoints / 40;
+            int pointsToShow = 0;
+
+            @Override
+            public void run() {
+                if(pointsToShow < duplicationPoints) {
+                    List<String> lines = getLinesRewardDuplicated(reward, pointsToShow);
+                    for(Player p : Bukkit.getOnlinePlayers()) {
+                        if (box.getHolograms().containsKey(p.getUniqueId())) {
+                            Hologram hologram = box.getHolograms().get(p.getUniqueId());
+                            hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + (box.getBlockHeight() + 0.1875), 0.5));
+
+                            for (int i = 0; i < lines.size(); i++) {
+                                if(!lines.get(i).equalsIgnoreCase("%reward_icon%")) {
+                                    ((TextLine) hologram.getLine(i)).setText(lines.get(i));
+                                }
+                            }
+
+                        }
                     }
-                }
 
+                    pointsToShow += pointsPerTick;
+                } else {
+                    pointsToShow = duplicationPoints;
+                    canncel();
+                }
             }
-        }
+        };
     }
 
     public void reloadHologram(Player p, CubeletBox box) {

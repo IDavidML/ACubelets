@@ -2,6 +2,7 @@ package me.davidml16.acubelets.utils;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.interfaces.Reward;
+import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.CommandReward;
 import org.bukkit.Bukkit;
@@ -176,24 +177,55 @@ public class MessageUtils {
         return returnMessage.toString();
     }
 
-    public static void sendLootMessage(Player opening, CubeletType cubeletType, Reward commandReward) {
-        Player target = Bukkit.getPlayer(opening.getUniqueId());
+    public static void sendLootMessage(CubeletBox cubeletBox, CubeletType cubeletType, Reward reward) {
+        Player target = Bukkit.getPlayer(cubeletBox.getPlayerOpening().getUniqueId());
         if (target != null) {
-            for(String line : Main.get().getLanguageHandler().getMessageList("Cubelet.Reward")) {
-                if(line.contains("%center%")) {
-                    line = line.replaceAll("%center%", "");
-                    target.sendMessage(MessageUtils.centeredMessage(ColorUtil.translate(line
-                            .replaceAll("%cubelet_type%", cubeletType.getName())
-                            .replaceAll("%reward_name%", commandReward.getName())
-                            .replaceAll("%reward_rarity%", commandReward.getRarity().getName())
-                    )));
-                } else {
-                    target.sendMessage(ColorUtil.translate(line
-                            .replaceAll("%cubelet_type%", cubeletType.getName())
-                            .replaceAll("%reward_name%", commandReward.getName())
-                            .replaceAll("%reward_rarity%", commandReward.getRarity().getName())
-                    ));
-                }
+            if(!Main.get().isDuplicationEnabled()) {
+                newLootMessage(target, cubeletType, reward);
+            } else if (!Main.get().getCubeletRewardHandler().isDuplicated(cubeletBox, reward)) {
+                newLootMessage(target, cubeletType, reward);
+            } else if(Main.get().isDuplicationEnabled() && Main.get().getCubeletRewardHandler().isDuplicated(cubeletBox, reward)) {
+                duplicateLootMessage(target, cubeletType, reward, cubeletBox.getLastDuplicationPoints());
+            }
+        }
+    }
+
+    private static void newLootMessage(Player target, CubeletType cubeletType, Reward reward) {
+        for (String line : Main.get().getLanguageHandler().getMessageList("Cubelet.Reward.New")) {
+            if (line.contains("%center%")) {
+                line = line.replaceAll("%center%", "");
+                target.sendMessage(MessageUtils.centeredMessage(ColorUtil.translate(line
+                        .replaceAll("%cubelet_type%", cubeletType.getName())
+                        .replaceAll("%reward_name%", reward.getName())
+                        .replaceAll("%reward_rarity%", reward.getRarity().getName())
+                )));
+            } else {
+                target.sendMessage(ColorUtil.translate(line
+                        .replaceAll("%cubelet_type%", cubeletType.getName())
+                        .replaceAll("%reward_name%", reward.getName())
+                        .replaceAll("%reward_rarity%", reward.getRarity().getName())
+                ));
+            }
+        }
+    }
+
+    private static void duplicateLootMessage(Player target, CubeletType cubeletType, Reward reward, int duplicatePoints) {
+        for (String line : Main.get().getLanguageHandler().getMessageList("Cubelet.Reward.Duplicate")) {
+            if (line.contains("%center%")) {
+                line = line.replaceAll("%center%", "");
+                target.sendMessage(MessageUtils.centeredMessage(ColorUtil.translate(line
+                        .replaceAll("%cubelet_type%", cubeletType.getName())
+                        .replaceAll("%reward_name%", reward.getName())
+                        .replaceAll("%reward_rarity%", reward.getRarity().getName())
+                        .replaceAll("%points%", ""+duplicatePoints)
+                )));
+            } else {
+                target.sendMessage(ColorUtil.translate(line
+                        .replaceAll("%cubelet_type%", cubeletType.getName())
+                        .replaceAll("%reward_name%", reward.getName())
+                        .replaceAll("%reward_rarity%", reward.getRarity().getName())
+                        .replaceAll("%points%", ""+duplicatePoints)
+                ));
             }
         }
     }

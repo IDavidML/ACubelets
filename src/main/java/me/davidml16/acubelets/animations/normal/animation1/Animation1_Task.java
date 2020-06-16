@@ -8,9 +8,11 @@ import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.CommandReward;
+import me.davidml16.acubelets.objects.PermissionReward;
 import me.davidml16.acubelets.utils.MessageUtils;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
+import me.davidml16.acubelets.utils.RepeatingTask;
 import org.bukkit.*;
 
 import java.util.List;
@@ -33,6 +35,8 @@ public class Animation1_Task implements Animation {
 
 	private Location boxLocation;
 
+	private RepeatingTask hologramAnimation;
+
 	class Task implements Runnable {
 		int time = 0;
 		@Override
@@ -47,13 +51,17 @@ public class Animation1_Task implements Animation {
 				main.getHologramHandler().rewardHologram(cubeletBox, reward);
 				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 2, 0.5), FireworkEffect.Type.BALL_LARGE, colors.get(0), colors.get(1));
 				cubeletBox.setState(CubeletBoxState.REWARD);
-			} else if(time > 70 && time < 170) {
+			} else if(time == 110) {
+				if(main.isDuplicationEnabled())
+					if(reward instanceof PermissionReward)
+						hologramAnimation = main.getCubeletRewardHandler().permissionReward(cubeletBox, reward);
+			} else if(time > 70 && time < 210) {
 				UtilParticles.display(Particles.FLAME, 0.45f, 0.25f, 0.45f, boxLocation, 10);
-			} else if(time >= 190) {
+			} else if(time >= 210) {
 				stop();
 
 				main.getCubeletRewardHandler().giveReward(cubeletBox, reward);
-				MessageUtils.sendLootMessage(cubeletBox.getPlayerOpening(), cubeletType, reward);
+				MessageUtils.sendLootMessage(cubeletBox, cubeletType, reward);
 
 				cubeletBox.setState(CubeletBoxState.EMPTY);
 				cubeletBox.setPlayerOpening(null);
@@ -83,6 +91,8 @@ public class Animation1_Task implements Animation {
 	}
 	
 	public void stop() {
+		if(hologramAnimation != null) hologramAnimation.canncel();
+
 		main.getAnimationHandler().getTasks().remove(this);
 		Bukkit.getServer().getScheduler().cancelTask(id);
 

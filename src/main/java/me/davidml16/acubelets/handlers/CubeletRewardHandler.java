@@ -4,6 +4,7 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.interfaces.Reward;
 import me.davidml16.acubelets.objects.*;
 import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.RepeatingTask;
 import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -109,26 +110,45 @@ public class CubeletRewardHandler {
 				Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(), command.replaceAll("%player%", cubeletBox.getPlayerOpening().getName()));
 			}
 		} else if(reward instanceof PermissionReward) {
-			Bukkit.getServer().dispatchCommand(
-					main.getServer().getConsoleSender(),
-					main.getDuplicationCommand()
-							.replaceAll("%player%", cubeletBox.getPlayerOpening().getName())
-							.replaceAll("%permission%", ((PermissionReward) reward).getPermission()));
+			if(main.isDuplicationEnabled() && isDuplicated(cubeletBox, reward)) {
+				Bukkit.getServer().dispatchCommand(
+						main.getServer().getConsoleSender(),
+						main.getDuplicationPointsCommand()
+								.replaceAll("%player%", cubeletBox.getPlayerOpening().getName())
+								.replaceAll("%points%", ""+cubeletBox.getLastDuplicationPoints()));
+			} else {
+				Bukkit.getServer().dispatchCommand(
+						main.getServer().getConsoleSender(),
+						main.getDuplicationPermissionCommand()
+								.replaceAll("%player%", cubeletBox.getPlayerOpening().getName())
+								.replaceAll("%permission%", ((PermissionReward) reward).getPermission()));
+			}
 		}
 	}
 
-	public void permissionReward(CubeletBox cubeletBox, Reward reward) {
-		if(cubeletBox.getPlayerOpening().hasPermission(((PermissionReward) reward).getPermission())) {
+	public RepeatingTask permissionReward(CubeletBox cubeletBox, Reward reward) {
+		if(isDuplicated(cubeletBox, reward)) {
 
-			int min = Math.min(Integer.parseInt(main.getDuplicationPointsRange().split("-")[0]),
-					Integer.parseInt(main.getDuplicationPointsRange().split("-")[1]));
-			int max = Math.max(Integer.parseInt(main.getDuplicationPointsRange().split("-")[0]),
-					Integer.parseInt(main.getDuplicationPointsRange().split("-")[1]));
+			int min = Math.min(Integer.parseInt(reward.getRarity().getDuplicatePointsRange().split("-")[0]),
+					Integer.parseInt(reward.getRarity().getDuplicatePointsRange().split("-")[1]));
+			int max = Math.max(Integer.parseInt(reward.getRarity().getDuplicatePointsRange().split("-")[0]),
+					Integer.parseInt(reward.getRarity().getDuplicatePointsRange().split("-")[1]));
 
 			int randomPoints = ThreadLocalRandom.current().nextInt(min, max);
 			cubeletBox.setLastDuplicationPoints(randomPoints);
-			main.getHologramHandler().duplicationRewardHologram(cubeletBox, reward);
+			return main.getHologramHandler().duplicationRewardHologram(cubeletBox, reward);
 		}
+		return null;
+	}
+
+	public boolean isDuplicated(CubeletBox cubeletBox, Reward reward) {
+		if(reward instanceof PermissionReward) {
+			if(cubeletBox.getPlayerOpening().hasPermission(((PermissionReward) reward).getPermission())) {
+				return true;
+			}
+			return false;
+		}
+		return false;
 	}
 
 	public List<Rarity> getAvailableRarities(CubeletType cubeletType) {

@@ -32,11 +32,19 @@ Cubelet:
     Me: '&cYou already opening a Cubelet here!'
     Other: '&6%player% &cis already opening a Cubelet at this machine!'
   Reward:
-    - ''
-    - '%center%%cubelet_type% Loot'
-    - '%center%&5You found: &a%reward_name%'
-    - '%center%&5Rarity: %reward_rarity%'
-    - ''
+    New:
+      - ''
+      - '%center%%cubelet_type% Loot'
+      - '%center%&5You found: &a%reward_name%'
+      - '%center%&5Rarity: %reward_rarity%'
+      - ''
+    Duplicate:
+      - ''
+      - '%center%%cubelet_type% Loot'
+      - '%center%&5You found: &a%reward_name%'
+      - '%center%&5Rarity: %reward_rarity%'
+      - '%center%&5Duplicate item reward: %points% Loot Points'
+      - ''
   NoCubelets:
     - ''
     - '%center%&aYou can buy Cubelets on our store &c&lHERE&a!'

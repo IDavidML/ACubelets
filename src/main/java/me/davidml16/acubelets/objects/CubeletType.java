@@ -143,6 +143,7 @@ public class CubeletType {
             for (Rarity rarity : rts) {
                 config.set("type.rarities." + rarity.getId() + ".name", rarity.getName());
                 config.set("type.rarities." + rarity.getId() + ".chance", rarity.getChance());
+                config.set("type.rarities." + rarity.getId() + ".duplicatePointsRange", rarity.getDuplicatePointsRange());
             }
         }
 

@@ -5,11 +5,13 @@ public class Rarity implements Comparable<Rarity> {
     private String id;
     private String name;
     private double chance;
+    private String duplicatePointsRange;
 
-    public Rarity(String id, String name, double chance) {
+    public Rarity(String id, String name, double chance, String duplicatePointsRange) {
         this.id = id;
         this.name = name;
         this.chance = chance;
+        this.duplicatePointsRange = duplicatePointsRange;
     }
 
     public String getId() {
@@ -35,6 +37,10 @@ public class Rarity implements Comparable<Rarity> {
     public void setChance(double chance) {
         this.chance = chance;
     }
+
+    public String getDuplicatePointsRange() { return duplicatePointsRange; }
+
+    public void setDuplicatePointsRange(String duplicatePointsRange) { this.duplicatePointsRange = duplicatePointsRange; }
 
     @Override
     public String toString() {

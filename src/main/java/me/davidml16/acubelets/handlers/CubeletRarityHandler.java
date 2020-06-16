@@ -20,14 +20,15 @@ public class CubeletRarityHandler {
         return main.getCubeletTypesHandler().getTypeBydId(type).getRarities().get(id);
     }
 
-    public boolean createRarity(String type, String id, String name, int chance) {
+    public boolean createRarity(String type, String id, String name, int chance, String duplicatePointsRange) {
         CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(type);
-        cubeletType.getRarities().put(id, new Rarity(id, name, chance));
+        cubeletType.getRarities().put(id, new Rarity(id, name, chance, duplicatePointsRange));
         FileConfiguration config = main.getCubeletTypesHandler().getConfig(type);
         config.set("type.rarities", new ArrayList<>());
         for(Rarity rarity : cubeletType.getRarities().values()) {
             config.set("type.rarities." + rarity.getId() + ".name", rarity.getName());
             config.set("type.rarities." + rarity.getId() + ".chance", rarity.getChance());
+            config.set("type.rarities." + rarity.getId() + ".duplicatePointsRange", rarity.getDuplicatePointsRange());
         }
         main.getCubeletTypesHandler().saveConfig(type);
         return true;
@@ -42,6 +43,7 @@ public class CubeletRarityHandler {
             for(Rarity rarity : cubeletType.getRarities().values()) {
                 config.set("type.rarities." + rarity.getId() + ".name", rarity.getName());
                 config.set("type.rarities." + rarity.getId() + ".chance", rarity.getChance());
+                config.set("type.rarities." + rarity.getId() + ".duplicatePointsRange", rarity.getDuplicatePointsRange());
             }
             main.getCubeletTypesHandler().saveConfig(type);
             return true;
@@ -69,7 +71,14 @@ public class CubeletRarityHandler {
                     for (String id : config.getConfigurationSection("type.rarities").getKeys(false)) {
                         String name = config.getString("type.rarities." + id + ".name");
                         double chance = config.getDouble("type.rarities." + id + ".chance");
-                        cubeletType.getRarities().put(id, new Rarity(id, name, chance));
+
+                        String duplicatePointsRange;
+                        if(config.contains("type.rarities." + id + ".duplicatePointsRange"))
+                            duplicatePointsRange = config.getString("type.rarities." + id + ".duplicatePointsRange");
+                        else
+                            duplicatePointsRange = "50-450";
+
+                        cubeletType.getRarities().put(id, new Rarity(id, name, chance, duplicatePointsRange));
                     }
                 }
             }

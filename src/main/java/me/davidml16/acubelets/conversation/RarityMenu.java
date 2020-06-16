@@ -28,7 +28,7 @@ public class RarityMenu implements ConversationAbandonedListener, CommonPrompts 
     public void conversationAbandoned(ConversationAbandonedEvent paramConversationAbandonedEvent) {}
 
     public class RewardMenuOptions extends FixedSetPrompt {
-        RewardMenuOptions() { super("1", "2", "3", "4", "5"); }
+        RewardMenuOptions() { super("1", "2", "3", "4", "5", "6"); }
 
         protected Prompt acceptValidatedInput(ConversationContext param1ConversationContext, String param1String) {
             CubeletType cubeletType = (CubeletType) param1ConversationContext.getSessionData("cubeletType");
@@ -40,15 +40,19 @@ public class RarityMenu implements ConversationAbandonedListener, CommonPrompts 
                 case "3":
                     return new NumericRangePrompt(main, this, ChatColor.YELLOW + "  Enter rarity chance, \"cancel\" to return.\n  Range: 0 to 100\n\n ", "rarityChance", Double.valueOf(0), Double.valueOf(100));
                 case "4":
+                    return new DuplicateRangeStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter rarity duplicate points range, \"cancel\" to return.\n  Format: min-max. Example: 50-450\n\n ", "rarityDuplicate");
+                case "5":
                     if(param1ConversationContext.getSessionData("rarityID") != null
                             && param1ConversationContext.getSessionData("rarityName") != null
-                            && param1ConversationContext.getSessionData("rarityChance") != null) {
+                            && param1ConversationContext.getSessionData("rarityChance") != null
+                            && param1ConversationContext.getSessionData("rarityDuplicate") != null) {
                         if (!rarityIdExist(cubeletType, (String) param1ConversationContext.getSessionData("rarityID"))) {
                             String rarityID = (String) param1ConversationContext.getSessionData("rarityID");
                             String rarityName = (String) param1ConversationContext.getSessionData("rarityName");
                             double rarityChance = (Double) param1ConversationContext.getSessionData("rarityChance");
+                            String rarityDuplicate = (String) param1ConversationContext.getSessionData("rarityDuplicate");
 
-                            Rarity rarity = new Rarity(rarityID, rarityName, rarityChance);
+                            Rarity rarity = new Rarity(rarityID, rarityName, rarityChance, rarityDuplicate);
                             cubeletType.getRarities().put(rarityID, rarity);
                             cubeletType.saveType();
 
@@ -66,7 +70,7 @@ public class RarityMenu implements ConversationAbandonedListener, CommonPrompts 
                     } else {
                         return new ErrorPrompt(main, this, "\n" + ChatColor.RED + "  You need to setup ID, NAME and CHANCE to save rarity!\n  Write anything to continue\n ");
                     }
-                case "5":
+                case "6":
                     return new ConfirmExitPrompt(main, this);
             }
             return null;
@@ -95,8 +99,14 @@ public class RarityMenu implements ConversationAbandonedListener, CommonPrompts 
                 cadena += ChatColor.GREEN + "    3 " + ChatColor.GRAY + "- Set rarity chance (" + ChatColor.YELLOW + ChatColor.translateAlternateColorCodes('&', String.valueOf((Double) param1ConversationContext.getSessionData("rarityChance"))) + "%" + ChatColor.GRAY + ")\n";
             }
 
-            cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Save\n";
-            cadena += ChatColor.GREEN + "    5 " + ChatColor.GRAY + "- Exit and discard\n";
+            if (param1ConversationContext.getSessionData("rarityDuplicate") == null) {
+                cadena += ChatColor.RED + "    4 " + ChatColor.GRAY + "- Set rarity duplicate points range (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
+            } else {
+                cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Set rarity duplicate points range (" + ChatColor.YELLOW + ChatColor.translateAlternateColorCodes('&', String.valueOf(param1ConversationContext.getSessionData("rarityDuplicate"))) + ChatColor.GRAY + ")\n";
+            }
+
+            cadena += ChatColor.GREEN + "    5 " + ChatColor.GRAY + "- Save\n";
+            cadena += ChatColor.GREEN + "    6 " + ChatColor.GRAY + "- Exit and discard\n";
             cadena += ChatColor.GREEN + " \n";
             cadena += ChatColor.GOLD + "" + ChatColor.YELLOW + "  Choose the option: \n";
             cadena += ChatColor.GREEN + " \n";

@@ -8,10 +8,12 @@ import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.interfaces.Reward;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.CubeletType;
+import me.davidml16.acubelets.objects.PermissionReward;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.MessageUtils;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
+import me.davidml16.acubelets.utils.RepeatingTask;
 import me.davidml16.acubelets.utils.XSeries.XParticle;
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
@@ -44,6 +46,8 @@ public class AnimationEaster_Task implements Animation {
 
 	private Location corner1, corner2, corner3, corner4, pc1, pc2;
 	private Reward reward;
+
+	private RepeatingTask hologramAnimation;
 
 	class Task implements Runnable {
 		int time = 0;
@@ -113,8 +117,11 @@ public class AnimationEaster_Task implements Animation {
 						main.getAnimationHandler().getEntities().remove(entity);
 					}
 				}
-
-			} else if (time > 100 && time < 220) {
+			} else if(time == 140) {
+				if(main.isDuplicationEnabled())
+					if(reward instanceof PermissionReward)
+						hologramAnimation = main.getCubeletRewardHandler().permissionReward(cubeletBox, reward);
+			} else if (time > 100 && time < 240) {
 				UtilParticles.drawParticleLine(corner1, corner2, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 				UtilParticles.drawParticleLine(corner2, corner3, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 				UtilParticles.drawParticleLine(corner3, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
@@ -125,7 +132,7 @@ public class AnimationEaster_Task implements Animation {
 				stop();
 
 				main.getCubeletRewardHandler().giveReward(cubeletBox, reward);
-				MessageUtils.sendLootMessage(cubeletBox.getPlayerOpening(), cubeletType, reward);
+				MessageUtils.sendLootMessage(cubeletBox, cubeletType, reward);
 
 				cubeletBox.setState(CubeletBoxState.EMPTY);
 				cubeletBox.setPlayerOpening(null);
@@ -203,6 +210,8 @@ public class AnimationEaster_Task implements Animation {
 				}
 			}
 		} catch(IllegalStateException | NullPointerException ignored) {}
+
+		if(hologramAnimation != null) hologramAnimation.canncel();
 
 		main.getAnimationHandler().getTasks().remove(this);
 

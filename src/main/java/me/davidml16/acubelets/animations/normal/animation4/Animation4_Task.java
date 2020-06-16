@@ -9,12 +9,10 @@ import me.davidml16.acubelets.enums.Rotation;
 import me.davidml16.acubelets.interfaces.Reward;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.utils.ColorUtil;
-import me.davidml16.acubelets.utils.MessageUtils;
-import me.davidml16.acubelets.utils.NBTEditor;
+import me.davidml16.acubelets.objects.PermissionReward;
+import me.davidml16.acubelets.utils.*;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
-import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -59,6 +57,8 @@ public class Animation4_Task implements Animation {
 	private LivingEntity pigman;
 
 	private Reward reward;
+
+	private RepeatingTask hologramAnimation;
 
 	class Task implements Runnable {
 		int time = 0;
@@ -121,19 +121,23 @@ public class Animation4_Task implements Animation {
 				cubeletBox.setState(CubeletBoxState.REWARD);
 				armorStand.remove();
 				armorStand = null;
-			} else if(time > 300 && time < 420) {
+			} else if(time == 340) {
+				if(main.isDuplicationEnabled())
+					if(reward instanceof PermissionReward)
+						hologramAnimation = main.getCubeletRewardHandler().permissionReward(cubeletBox, reward);
+			} else if(time > 300 && time < 440) {
 				UtilParticles.drawParticleLine(corner1, corner2, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 				UtilParticles.drawParticleLine(corner2, corner3, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 				UtilParticles.drawParticleLine(corner3, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 				UtilParticles.drawParticleLine(corner1, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 
 				UtilParticles.display(Particles.FLAME, 1f, 0f, 1f, cubeletBox.getLocation(), 2);
-			} else if(time == 420) {
+			} else if(time == 440) {
 				stop();
 				blocks.restore();
 
 				main.getCubeletRewardHandler().giveReward(cubeletBox, reward);
-				MessageUtils.sendLootMessage(cubeletBox.getPlayerOpening(), cubeletType, reward);
+				MessageUtils.sendLootMessage(cubeletBox, cubeletType, reward);
 
 				cubeletBox.setState(CubeletBoxState.EMPTY);
 				cubeletBox.setPlayerOpening(null);
@@ -199,6 +203,8 @@ public class Animation4_Task implements Animation {
 	
 	public void stop() {
 		blocks.cancel();
+
+		if(hologramAnimation != null) hologramAnimation.canncel();
 
 		try {
 			music.cancel();
