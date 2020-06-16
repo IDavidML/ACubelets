@@ -18,10 +18,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class RewardMenu implements ConversationAbandonedListener, CommonPrompts {
+public class CommandRewardMenu implements ConversationAbandonedListener, CommonPrompts {
 
     private Main main;
-    public RewardMenu(Main main) {
+    public CommandRewardMenu(Main main) {
         this.main = main;
     }
 
@@ -86,7 +86,7 @@ public class RewardMenu implements ConversationAbandonedListener, CommonPrompts 
                                 String rewardCommand = (String) param1ConversationContext.getSessionData("rewardCommand");
                                 ItemStack rewardIcon = (ItemStack) param1ConversationContext.getSessionData("rewardIcon");
 
-                                CommandReward commandReward = new CommandReward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), Arrays.asList(rewardCommand), rewardIcon);
+                                Reward commandReward = new CommandReward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), Arrays.asList(rewardCommand), rewardIcon);
                                 cubeletType.addReward(rewardRarity, commandReward);
                                 cubeletType.saveType();
 
@@ -137,10 +137,10 @@ public class RewardMenu implements ConversationAbandonedListener, CommonPrompts 
             }
 
             if (param1ConversationContext.getSessionData("rewardIcon") == null) {
-                cadena += ChatColor.RED + "    4 " + ChatColor.GRAY + "- Set reward icon (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
+                cadena += ChatColor.RED + "    4 " + ChatColor.GRAY + "- Set reward icon 'Item in Hand' (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
             } else {
                 ItemStack icon = (ItemStack) param1ConversationContext.getSessionData("rewardIcon");
-                cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Set reward icon (" + ChatColor.YELLOW + icon.getType().name() + ChatColor.GRAY + ")\n";
+                cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Set reward icon 'Item in Hand' (" + ChatColor.YELLOW + icon.getType().name() + ChatColor.GRAY + ")\n";
             }
 
             cadena += ChatColor.GREEN + "    5 " + ChatColor.GRAY + "- Save\n";

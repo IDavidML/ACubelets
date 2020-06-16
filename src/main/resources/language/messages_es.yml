@@ -43,7 +43,7 @@ Cubelet:
       - '%center%%cubelet_type% Loot'
       - '%center%&5Has encontrado: &a%reward_name%'
       - '%center%&5Rareza: %reward_rarity%'
-      - '%center%&5Recompensa duplicada: %points% Puntos de Loot'
+      - '%center%&5Recompensa duplicada: &a%points% Puntos de Loot'
       - ''
   NoCubelets:
     - ''

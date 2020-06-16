@@ -112,13 +112,13 @@ public class CubeletType {
         this.expireTime = expireTime;
     }
 
-    public void addReward(String rarity, CommandReward commandReward) {
+    public void addReward(String rarity, Reward reward) {
         Map<String, List<Reward>> rewardsAll = getRewards();
         List<Reward> commandRewards;
         if(getRewards().get(rarity) == null) commandRewards = new ArrayList<>();
         else commandRewards = getRewards().get(rarity);
-        commandRewards.add(commandReward);
-        rewardsAll.put(commandReward.getRarity().getId(), commandRewards);
+        commandRewards.add(reward);
+        rewardsAll.put(reward.getRarity().getId(), commandRewards);
         setRewards(rewardsAll);
     }
 

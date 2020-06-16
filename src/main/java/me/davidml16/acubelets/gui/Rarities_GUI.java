@@ -131,6 +131,7 @@ public class Rarities_GUI implements Listener {
                                 "",
                                 ColorUtil.translate(" &7Name: &6" + rarity.getName() + " "),
                                 ColorUtil.translate(" &7Chance: &6" + rarity.getChance() + "% "),
+                                ColorUtil.translate(" &7Duplicate Points: &6" + rarity.getDuplicatePointsRange() + " "),
                                 "",
                                 ColorUtil.translate("&eClick to remove! ")).toItemStack());
             }

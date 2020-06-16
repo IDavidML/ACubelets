@@ -1,7 +1,8 @@
 package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.conversation.RewardMenu;
+import me.davidml16.acubelets.conversation.CommandRewardMenu;
+import me.davidml16.acubelets.conversation.PermissionRewardMenu;
 import me.davidml16.acubelets.interfaces.Reward;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Pair;
@@ -17,6 +18,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
@@ -61,7 +63,12 @@ public class Rewards_GUI implements Listener {
         Inventory gui = Bukkit.createInventory(null, 45, "%cubelet_type% | Rewards".replaceAll("%cubelet_type%", id));
 
         ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
-        ItemStack newReward = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(ColorUtil.translate("&aCreate new reward")).toItemStack();
+        ItemStack newReward = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(ColorUtil.translate("&aCreate new reward"))
+                .setLore(
+                    "",
+                    ColorUtil.translate("&eLeft-Click > Command reward! "),
+                    ColorUtil.translate("&eRight-Click > Permission reward! "))
+                .toItemStack();
         ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(ColorUtil.translate("&aBack to config")).toItemStack();
 
         for (Integer i : borders) {
@@ -196,7 +203,10 @@ public class Rewards_GUI implements Listener {
                 openPage(p, id, opened.get(p.getUniqueId()).getPage() + 1);
             } else if (slot == 39) {
                 p.closeInventory();
-                new RewardMenu(main).getConversation(p, cubeletType).begin();
+                if(e.getClick() == ClickType.LEFT || e.getClick() == ClickType.SHIFT_LEFT)
+                    new CommandRewardMenu(main).getConversation(p, cubeletType).begin();
+                else if(e.getClick() == ClickType.RIGHT || e.getClick() == ClickType.SHIFT_RIGHT)
+                    new PermissionRewardMenu(main).getConversation(p, cubeletType).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 100, 3);
             } else if (slot == 41) {
                 main.getTypeConfigGUI().open(p, cubeletType.getId());
