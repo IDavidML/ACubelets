@@ -1,11 +1,8 @@
 package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.objects.CubeletBox;
-import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.objects.Rarity;
-import me.davidml16.acubelets.objects.Reward;
-import me.davidml16.acubelets.utils.MessageUtils;
+import me.davidml16.acubelets.interfaces.Reward;
+import me.davidml16.acubelets.objects.*;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import org.bukkit.Bukkit;
@@ -37,13 +34,9 @@ public class CubeletRewardHandler {
 						if(validRewardData(config, rewardid)) {
 							String rarity = config.getString("type.rewards." + rewardid + ".rarity");
 							if (cubeletType.getRarities().containsKey(rarity)) {
-								String name = config.getString("type.rewards." + rewardid + ".name");
 
-								List<String> commands = new ArrayList<>();
-								if(config.get("type.rewards." + rewardid + ".command") instanceof ArrayList)
-									commands.addAll(config.getStringList("type.rewards." + rewardid + ".command"));
-								else
-									commands.add(config.getString("type.rewards." + rewardid + ".command"));
+								String name = config.getString("type.rewards." + rewardid + ".name");
+								ItemStack rewardIcon = XItemStack.deserialize(config, "type.rewards." + rewardid + ".icon");
 
 								List<Reward> rewardsRarity;
 								if (rewards.get(rarity) == null) {
@@ -52,9 +45,24 @@ public class CubeletRewardHandler {
 									rewardsRarity = rewards.get(rarity);
 								}
 
-								ItemStack rewardIcon = XItemStack.deserialize(config, "type.rewards." + String.valueOf(rewardid) + ".icon");
+								if(config.contains("type.rewards." + rewardid + ".command")) {
 
-								rewardsRarity.add(new Reward(rewardid, name, cubeletType.getRarities().get(rarity), commands, rewardIcon));
+									List<String> commands = new ArrayList<>();
+									if (config.get("type.rewards." + rewardid + ".command") instanceof ArrayList)
+										commands.addAll(config.getStringList("type.rewards." + rewardid + ".command"));
+									else
+										commands.add(config.getString("type.rewards." + rewardid + ".command"));
+
+									rewardsRarity.add(new CommandReward(rewardid, name, cubeletType.getRarities().get(rarity), commands, rewardIcon));
+
+								} else if(config.contains("type.rewards." + rewardid + ".permission")) {
+
+									String permission = config.getString("type.rewards." + rewardid + ".permission");
+
+									rewardsRarity.add(new PermissionReward(rewardid, name, cubeletType.getRarities().get(rarity), permission, rewardIcon));
+
+								}
+
 								rewards.put(rarity, rewardsRarity);
 
 								rewardsLoaded++;
@@ -75,7 +83,6 @@ public class CubeletRewardHandler {
 	private boolean validRewardData(FileConfiguration config, String rewardID) {
 		return config.contains("type.rewards." + rewardID + ".name")
 				&& config.contains("type.rewards." + rewardID + ".rarity")
-				&& config.contains("type.rewards." + rewardID + ".command")
 				&& config.contains("type.rewards." + rewardID + ".icon");
 	}
 
@@ -84,10 +91,10 @@ public class CubeletRewardHandler {
 
 		Rarity randomRarity = chooseOnWeight(rarities);
 		if(cubeletType.getRewards().containsKey(randomRarity.getId())) {
-			List<Reward> rewards = cubeletType.getRewards().get(randomRarity.getId());
+			List<Reward> commandRewards = cubeletType.getRewards().get(randomRarity.getId());
 
-			int randomElementIndex = ThreadLocalRandom.current().nextInt(rewards.size()) % rewards.size();
-			Reward randomReward = rewards.get(randomElementIndex);
+			int randomElementIndex = ThreadLocalRandom.current().nextInt(commandRewards.size()) % commandRewards.size();
+			Reward randomReward = commandRewards.get(randomElementIndex);
 			return randomReward;
 		} else {
 			p.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
@@ -97,8 +104,30 @@ public class CubeletRewardHandler {
 	}
 
 	public void giveReward(CubeletBox cubeletBox, Reward reward) {
-		for(String command : reward.getCommands()) {
-			Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(), command.replaceAll("%player%", cubeletBox.getPlayerOpening().getName()));
+		if (reward instanceof CommandReward) {
+			for (String command : ((CommandReward) reward).getCommands()) {
+				Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(), command.replaceAll("%player%", cubeletBox.getPlayerOpening().getName()));
+			}
+		} else if(reward instanceof PermissionReward) {
+			Bukkit.getServer().dispatchCommand(
+					main.getServer().getConsoleSender(),
+					main.getDuplicationCommand()
+							.replaceAll("%player%", cubeletBox.getPlayerOpening().getName())
+							.replaceAll("%permission%", ((PermissionReward) reward).getPermission()));
+		}
+	}
+
+	public void permissionReward(CubeletBox cubeletBox, Reward reward) {
+		if(cubeletBox.getPlayerOpening().hasPermission(((PermissionReward) reward).getPermission())) {
+
+			int min = Math.min(Integer.parseInt(main.getDuplicationPointsRange().split("-")[0]),
+					Integer.parseInt(main.getDuplicationPointsRange().split("-")[1]));
+			int max = Math.max(Integer.parseInt(main.getDuplicationPointsRange().split("-")[0]),
+					Integer.parseInt(main.getDuplicationPointsRange().split("-")[1]));
+
+			int randomPoints = ThreadLocalRandom.current().nextInt(min, max);
+			cubeletBox.setLastDuplicationPoints(randomPoints);
+			main.getHologramHandler().duplicationRewardHologram(cubeletBox, reward);
 		}
 	}
 

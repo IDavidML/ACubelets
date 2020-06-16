@@ -3,12 +3,12 @@ package me.davidml16.acubelets.handlers;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
-import com.gmail.filoghost.holographicdisplays.api.line.ItemLine;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.interfaces.Reward;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.enums.CubeletBoxState;
-import me.davidml16.acubelets.objects.Reward;
+import me.davidml16.acubelets.objects.CommandReward;
 import me.davidml16.acubelets.utils.ColorUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -177,6 +177,24 @@ public class HologramHandler {
         }
     }
 
+    public void duplicationRewardHologram(CubeletBox box, Reward reward) {
+        int duplicationPoints = box.getLastDuplicationPoints();
+        List<String> lines = getLinesRewardDuplicated(reward, duplicationPoints);
+        for(Player p : Bukkit.getOnlinePlayers()) {
+            if (box.getHolograms().containsKey(p.getUniqueId())) {
+                Hologram hologram = box.getHolograms().get(p.getUniqueId());
+                hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + (box.getBlockHeight() + 0.1875), 0.5));
+
+                for (int i = 0; i < lines.size(); i++) {
+                    if(!lines.get(i).equalsIgnoreCase("%reward_icon%")) {
+                        ((TextLine) hologram.getLine(i)).setText(lines.get(i));
+                    }
+                }
+
+            }
+        }
+    }
+
     public void reloadHologram(Player p, CubeletBox box) {
         if (!Objects.equals(box.getLocation().getWorld(), p.getLocation().getWorld())) return;
         if (box.getLocation().distance(p.getLocation()) > 75) return;
@@ -248,21 +266,35 @@ public class HologramHandler {
         List<String> lines = new ArrayList<String>();
 
         if (p.getUniqueId().toString().equalsIgnoreCase(opening.getUniqueId().toString())) {
-            for(String line : main.getLanguageHandler().getMessageList("Holograms.Reward.Me")) {
+            for(String line : main.getLanguageHandler().getMessageList("Holograms.Reward.New.Me")) {
                 lines.add(ColorUtil.translate(line
                         .replaceAll("%player%", opening.getName())
                         .replaceAll("%reward_name%", reward.getName())
                         .replaceAll("%reward_rarity%", reward.getRarity().getName())
                 ));
             }
-        }else {
-            for(String line : main.getLanguageHandler().getMessageList("Holograms.Reward.Other")) {
+        } else {
+            for(String line : main.getLanguageHandler().getMessageList("Holograms.Reward.New.Other")) {
                 lines.add(ColorUtil.translate(line
                         .replaceAll("%player%", opening.getName())
                         .replaceAll("%reward_name%", reward.getName())
                         .replaceAll("%reward_rarity%", reward.getRarity().getName())
                 ));
             }
+        }
+
+        return lines;
+    }
+
+    public List<String> getLinesRewardDuplicated(Reward reward, int duplicatePoints) {
+        List<String> lines = new ArrayList<String>();
+
+        for(String line : main.getLanguageHandler().getMessageList("Holograms.Reward.Duplicate")) {
+            lines.add(ColorUtil.translate(line
+                    .replaceAll("%points%", ""+duplicatePoints)
+                    .replaceAll("%reward_name%", reward.getName())
+                    .replaceAll("%reward_rarity%", reward.getRarity().getName())
+            ));
         }
 
         return lines;

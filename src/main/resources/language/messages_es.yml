@@ -52,13 +52,20 @@ Holograms:
     - '&e&lMaquina de Cubelets'
     - '&dClick para abrir'
   Reward:
-    Me:
-      - '&aHas encontrado'
-      - '&e&l%reward_name%'
-      - '&5Rareza: %reward_rarity%'
-      - '%reward_icon%'
-    Other:
-      - '&a%player% ha encontrado'
+    New:
+      Me:
+        - '&aHas encontrado'
+        - '&e&l%reward_name%'
+        - '&5Rareza: %reward_rarity%'
+        - '%reward_icon%'
+      Other:
+        - '&a%player% ha encontrado'
+        - '&e&l%reward_name%'
+        - '&5Rareza: %reward_rarity%'
+        - '%reward_icon%'
+    Duplicate:
+      - '&b&lDUPLICADO'
+      - '&6+%points% Puntos de Loot'
       - '&e&l%reward_name%'
       - '&5Rareza: %reward_rarity%'
       - '%reward_icon%'

@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.objects;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.interfaces.Reward;
 import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -54,11 +55,11 @@ public class CubeletType {
     public Map<String, List<Reward>> getRewards() { return rewards; }
 
     public List<Reward> getAllRewards() {
-        List<Reward> rewards = new ArrayList<>();
+        List<Reward> commandRewards = new ArrayList<>();
         for(String rarity : getRewards().keySet()) {
-            rewards.addAll(getRewards().get(rarity));
+            commandRewards.addAll(getRewards().get(rarity));
         }
-        return rewards;
+        return commandRewards;
     }
 
     public void setRewards(Map<String, List<Reward>> rewards) { this.rewards = rewards; }
@@ -111,13 +112,13 @@ public class CubeletType {
         this.expireTime = expireTime;
     }
 
-    public void addReward(String rarity, Reward reward) {
+    public void addReward(String rarity, CommandReward commandReward) {
         Map<String, List<Reward>> rewardsAll = getRewards();
-        List<Reward> rewards;
-        if(getRewards().get(rarity) == null) rewards = new ArrayList<>();
-        else rewards = getRewards().get(rarity);
-        rewards.add(reward);
-        rewardsAll.put(reward.getRarity().getId(), rewards);
+        List<Reward> commandRewards;
+        if(getRewards().get(rarity) == null) commandRewards = new ArrayList<>();
+        else commandRewards = getRewards().get(rarity);
+        commandRewards.add(commandReward);
+        rewardsAll.put(commandReward.getRarity().getId(), commandRewards);
         setRewards(rewardsAll);
     }
 
@@ -147,12 +148,17 @@ public class CubeletType {
 
         config.set("type.rewards", new ArrayList<>());
         if (config.contains("type.rewards")) {
-            List<Reward> rewards = getAllRewards();
-            for (int i = 0; i < rewards.size(); i++) {
-                Reward reward = rewards.get(i);
+            List<Reward> commandRewards = getAllRewards();
+            for (int i = 0; i < commandRewards.size(); i++) {
+                Reward reward = commandRewards.get(i);
                 config.set("type.rewards.r" + String.valueOf(i) + ".name", reward.getName());
                 config.set("type.rewards.r" + String.valueOf(i) + ".rarity", reward.getRarity().getId());
-                config.set("type.rewards.r" + String.valueOf(i) + ".command", reward.getCommands());
+
+                if(reward instanceof CommandReward)
+                    config.set("type.rewards.r" + String.valueOf(i) + ".command", ((CommandReward) reward).getCommands());
+                else if(reward instanceof PermissionReward)
+                    config.set("type.rewards.r" + String.valueOf(i) + ".permission", ((PermissionReward) reward).getPermission());
+
                 XItemStack.serialize(reward.getIcon(), config, "type.rewards.r" + String.valueOf(i) + ".icon");
             }
         }

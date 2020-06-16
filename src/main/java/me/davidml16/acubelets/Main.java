@@ -76,6 +76,9 @@ public class Main extends JavaPlugin {
 
     private String noCubeletsCommand;
 
+    private String duplicationCommand;
+    private String duplicationPointsRange;
+
     private CommandMap commandMap;
 
     @Override
@@ -131,6 +134,10 @@ public class Main extends JavaPlugin {
 
         cubeletRewardHandler = new CubeletRewardHandler(this);
         cubeletRewardHandler.loadRewards();
+
+        settings.put("RewardsDuplication", getConfig().getBoolean("RewardsDuplication.Enabled"));
+        duplicationCommand = getConfig().getString("RewardsDuplication.Command");
+        duplicationPointsRange = getConfig().getString("RewardsDuplication.PointsRange");
 
         economyHandler = new EconomyHandler();
         economyHandler.load();
@@ -305,6 +312,13 @@ public class Main extends JavaPlugin {
     public CommandMap getCommandMap() {
         return commandMap;
     }
+
+    public String getDuplicationCommand() { return duplicationCommand; }
+    public void setDuplicationCommand(String duplicationCommand) { this.duplicationCommand = duplicationCommand; }
+    public String getDuplicationPointsRange() { return duplicationPointsRange; }
+    public void setDuplicationPointsRange(String duplicationPointsRange) { this.duplicationPointsRange = duplicationPointsRange; }
+    public void setDuplicationEnabled(boolean duplicationEnabled) { settings.put("RewardsDuplication", duplicationEnabled); }
+    public boolean isDuplicationEnabled() { return settings.get("RewardsDuplication"); }
 
     private void registerCommands() {
         Field bukkitCommandMap = null;

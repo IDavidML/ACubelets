@@ -1,22 +1,21 @@
-package me.davidml16.acubelets.objects;
+package me.davidml16.acubelets.interfaces;
 
+import me.davidml16.acubelets.objects.Rarity;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class Reward {
+public abstract class Reward {
 
     private String id;
     private String name;
     private Rarity rarity;
-    private List<String> commands;
     private ItemStack icon;
 
-    public Reward(String id, String name, Rarity rarity, List<String> commands, ItemStack icon) {
+    public Reward(String id, String name, Rarity rarity, ItemStack icon) {
         this.id = id;
         this.name = name;
         this.rarity = rarity;
-        this.commands = commands;
         this.icon = icon;
     }
 
@@ -36,31 +35,12 @@ public class Reward {
 
     public void setRarity(Rarity rarity) { this.rarity = rarity; }
 
-    public List<String> getCommands() {
-        return commands;
-    }
-
-    public void setCommands(List<String> commands) {
-        this.commands = commands;
-    }
-
     public ItemStack getIcon() {
         return icon;
     }
 
     public void setIcon(ItemStack icon) {
         this.icon = icon;
-    }
-
-    @Override
-    public String toString() {
-        return "Reward{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", rarity=" + rarity +
-                ", command='" + commands + '\'' +
-                ", icon=" + icon +
-                '}';
     }
 
 }

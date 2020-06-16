@@ -44,6 +44,10 @@ public class PluginHandler {
         main.setCubeletsCommandEnabled(main.getConfig().getBoolean("NoCubelets.ExecuteCommand"));
         main.setNoCubeletsCommand(main.getConfig().getString("NoCubelets.Command"));
 
+        main.setDuplicationEnabled(main.getConfig().getBoolean("RewardsDuplication.Enabled"));
+        main.setDuplicationCommand(main.getConfig().getString("RewardsDuplication.Command"));
+        main.setDuplicationPointsRange(main.getConfig().getString("RewardsDuplication.PointsRange"));
+
         main.getLanguageHandler().setLanguage(main.getConfig().getString("Language").toLowerCase());
         main.getHologramTask().stop();
         main.getHologramHandler().removeHolograms();

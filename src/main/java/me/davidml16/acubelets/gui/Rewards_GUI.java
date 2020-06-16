@@ -2,9 +2,11 @@ package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.RewardMenu;
+import me.davidml16.acubelets.interfaces.Reward;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Pair;
-import me.davidml16.acubelets.objects.Reward;
+import me.davidml16.acubelets.objects.CommandReward;
+import me.davidml16.acubelets.objects.PermissionReward;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.Sounds;
@@ -124,17 +126,29 @@ public class Rewards_GUI implements Listener {
 
         if(rewards.size() > 0) {
             for (Reward reward : rewards) {
-
-                gui.addItem(new ItemBuilder(reward.getIcon())
-                        .setName(ColorUtil.translate("&a" + reward.getId()))
-                        .setLore(
-                                "",
-                                ColorUtil.translate(" &7Name: &6" + reward.getName() + " "),
-                                ColorUtil.translate(" &7Rarity: &6" + reward.getRarity().getId() + " "),
-                                ColorUtil.translate(" &7Icon: &6" + reward.getIcon().getType().name() + " "),
-                                ColorUtil.translate(" &7Commands: &6" + reward.getCommands().size() + " "),
-                                "",
-                                ColorUtil.translate("&eClick to remove! ")).toItemStack());
+                if (reward instanceof CommandReward) {
+                    gui.addItem(new ItemBuilder(reward.getIcon())
+                            .setName(ColorUtil.translate("&a" + reward.getId()))
+                            .setLore(
+                                    "",
+                                    ColorUtil.translate(" &7Name: &6" + reward.getName() + " "),
+                                    ColorUtil.translate(" &7Rarity: &6" + reward.getRarity().getId() + " "),
+                                    ColorUtil.translate(" &7Icon: &6" + reward.getIcon().getType().name() + " "),
+                                    ColorUtil.translate(" &7Commands: &6" + ((CommandReward) reward).getCommands().size() + " "),
+                                    "",
+                                    ColorUtil.translate("&eClick to remove! ")).toItemStack());
+                } else if(reward instanceof PermissionReward) {
+                    gui.addItem(new ItemBuilder(reward.getIcon())
+                            .setName(ColorUtil.translate("&a" + reward.getId()))
+                            .setLore(
+                                    "",
+                                    ColorUtil.translate(" &7Name: &6" + reward.getName() + " "),
+                                    ColorUtil.translate(" &7Rarity: &6" + reward.getRarity().getId() + " "),
+                                    ColorUtil.translate(" &7Icon: &6" + reward.getIcon().getType().name() + " "),
+                                    ColorUtil.translate(" &7Permission: &6" + ((PermissionReward) reward).getPermission() + " "),
+                                    "",
+                                    ColorUtil.translate("&eClick to remove! ")).toItemStack());
+                }
             }
         } else {
             gui.setItem(22, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorUtil.translate("&cAny rewards created")).setLore(
@@ -196,9 +210,9 @@ public class Rewards_GUI implements Listener {
                     if(reward.getId().equalsIgnoreCase(rewardID)) {
 
                         Map<String, List<Reward>> rewardsAll = cubeletType.getRewards();
-                        List<Reward> rewards = cubeletType.getRewards().get(reward.getRarity().getId());
-                        rewards.remove(reward);
-                        rewardsAll.put(reward.getRarity().getId(), rewards);
+                        List<Reward> commandRewards = cubeletType.getRewards().get(reward.getRarity().getId());
+                        commandRewards.remove(reward);
+                        rewardsAll.put(reward.getRarity().getId(), commandRewards);
                         cubeletType.setRewards(rewardsAll);
 
                         p.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()

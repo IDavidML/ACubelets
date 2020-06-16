@@ -1,9 +1,10 @@
 package me.davidml16.acubelets.conversation;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.interfaces.Reward;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Rarity;
-import me.davidml16.acubelets.objects.Reward;
+import me.davidml16.acubelets.objects.CommandReward;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
@@ -85,12 +86,12 @@ public class RewardMenu implements ConversationAbandonedListener, CommonPrompts 
                                 String rewardCommand = (String) param1ConversationContext.getSessionData("rewardCommand");
                                 ItemStack rewardIcon = (ItemStack) param1ConversationContext.getSessionData("rewardIcon");
 
-                                Reward reward = new Reward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), Arrays.asList(rewardCommand), rewardIcon);
-                                cubeletType.addReward(rewardRarity, reward);
+                                CommandReward commandReward = new CommandReward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), Arrays.asList(rewardCommand), rewardIcon);
+                                cubeletType.addReward(rewardRarity, commandReward);
                                 cubeletType.saveType();
 
                                 param1ConversationContext.getForWhom().sendRawMessage("\n" + ColorUtil.translate(main.getLanguageHandler().getPrefix()
-                                        + " &aYou added reward &e" + reward.getId() + " &ato rewards of cubelet type &e" + cubeletType.getId()));
+                                        + " &aYou added reward &e" + commandReward.getId() + " &ato rewards of cubelet type &e" + cubeletType.getId()));
 
                                 Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
                                         ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);

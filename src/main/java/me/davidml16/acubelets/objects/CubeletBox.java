@@ -3,6 +3,7 @@ package me.davidml16.acubelets.objects;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.enums.Rotation;
+import me.davidml16.acubelets.interfaces.Reward;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -25,6 +26,7 @@ public class CubeletBox {
     private CubeletBoxState state;
 
     private Reward lastReward;
+    private int lastDuplicationPoints;
 
     public CubeletBox(Location location, double blockHeight, double permanentBlockHeight, Rotation rotation) {
         this.location = location;
@@ -32,6 +34,7 @@ public class CubeletBox {
         this.state = CubeletBoxState.EMPTY;
         this.playerOpening = null;
         this.lastReward = null;
+        this.lastDuplicationPoints = 0;
         this.blockHeight = blockHeight;
         this.permanentBlockHeight = permanentBlockHeight;
         this.rotation = rotation;
@@ -72,6 +75,10 @@ public class CubeletBox {
     public Reward getLastReward() { return lastReward; }
 
     public void setLastReward(Reward lastReward) { this.lastReward = lastReward; }
+
+    public int getLastDuplicationPoints() { return lastDuplicationPoints; }
+
+    public void setLastDuplicationPoints(int lastDuplicationPoints) { this.lastDuplicationPoints = lastDuplicationPoints; }
 
     public Rotation getRotation() { return rotation; }
 

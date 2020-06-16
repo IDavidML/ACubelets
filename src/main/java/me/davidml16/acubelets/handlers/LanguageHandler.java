@@ -124,6 +124,21 @@ public class LanguageHandler {
 			}
 		}
 
+		int newSize = Math.max(cfg.getStringList("Holograms.Reward.New.Me").size(), cfg.getStringList("Holograms.Reward.New.Other").size());
+		int duplicateSize = cfg.getStringList("Holograms.Reward.Duplicate").size();
+
+		List<String> newLinesMe = new ArrayList<>();
+		for(int i = 0; i < (duplicateSize - newSize); i++)
+			newLinesMe.add("");
+		newLinesMe.addAll(cfg.getStringList("Holograms.Reward.New.Me"));
+		cfg.set("Holograms.Reward.New.Me", newLinesMe);
+
+		List<String> newLinesOther = new ArrayList<>();
+		for(int i = 0; i < (duplicateSize - newSize); i++)
+			newLinesOther.add("");
+		newLinesOther.addAll(cfg.getStringList("Holograms.Reward.New.Other"));
+		cfg.set("Holograms.Reward.New.Other", newLinesOther);
+
 		try {
 			cfg.save(file);
 		} catch (IOException e) {

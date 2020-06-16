@@ -52,13 +52,20 @@ Holograms:
     - '&e&lCubelet Machine'
     - '&dClick to open'
   Reward:
-    Me:
-      - '&aYou found'
-      - '&e&l%reward_name%'
-      - '&5Rarity: %reward_rarity%'
-      - '%reward_icon%'
-    Other:
-      - '&a%player% found'
+    New:
+      Me:
+        - '&aYou found'
+        - '&e&l%reward_name%'
+        - '&5Rarity: %reward_rarity%'
+        - '%reward_icon%'
+      Other:
+        - '&a%player% found'
+        - '&e&l%reward_name%'
+        - '&5Rarity: %reward_rarity%'
+        - '%reward_icon%'
+    Duplicate:
+      - '&b&lDUPLICATE'
+      - '&6+%points% Loot Points'
       - '&e&l%reward_name%'
       - '&5Rarity: %reward_rarity%'
       - '%reward_icon%'

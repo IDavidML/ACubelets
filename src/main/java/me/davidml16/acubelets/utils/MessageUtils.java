@@ -1,11 +1,9 @@
 package me.davidml16.acubelets.utils;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.handlers.LanguageHandler;
+import me.davidml16.acubelets.interfaces.Reward;
 import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.objects.Reward;
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.chat.ComponentSerializer;
+import me.davidml16.acubelets.objects.CommandReward;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -178,7 +176,7 @@ public class MessageUtils {
         return returnMessage.toString();
     }
 
-    public static void sendLootMessage(Player opening, CubeletType cubeletType, Reward reward) {
+    public static void sendLootMessage(Player opening, CubeletType cubeletType, Reward commandReward) {
         Player target = Bukkit.getPlayer(opening.getUniqueId());
         if (target != null) {
             for(String line : Main.get().getLanguageHandler().getMessageList("Cubelet.Reward")) {
@@ -186,14 +184,14 @@ public class MessageUtils {
                     line = line.replaceAll("%center%", "");
                     target.sendMessage(MessageUtils.centeredMessage(ColorUtil.translate(line
                             .replaceAll("%cubelet_type%", cubeletType.getName())
-                            .replaceAll("%reward_name%", reward.getName())
-                            .replaceAll("%reward_rarity%", reward.getRarity().getName())
+                            .replaceAll("%reward_name%", commandReward.getName())
+                            .replaceAll("%reward_rarity%", commandReward.getRarity().getName())
                     )));
                 } else {
                     target.sendMessage(ColorUtil.translate(line
                             .replaceAll("%cubelet_type%", cubeletType.getName())
-                            .replaceAll("%reward_name%", reward.getName())
-                            .replaceAll("%reward_rarity%", reward.getRarity().getName())
+                            .replaceAll("%reward_name%", commandReward.getName())
+                            .replaceAll("%reward_rarity%", commandReward.getRarity().getName())
                     ));
                 }
             }
