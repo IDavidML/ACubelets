@@ -76,11 +76,6 @@ public class ExecuteType {
 
                     main.getPluginHandler().reloadAll();
 
-                    main.getTypeConfigGUI().loadGUI(id);
-                    main.getRaritiesGUI().loadGUI(id);
-                    main.getRewardsGUI().loadGUI(id);
-                    main.getAnimationsGUI().loadGUI(id);
-
                     sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
                             + " &aSuccesfully created " + label + " type &e" + id + " &awith the name &e" + name));
                     return true;

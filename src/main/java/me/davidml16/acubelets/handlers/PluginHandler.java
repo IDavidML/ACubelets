@@ -25,6 +25,8 @@ public class PluginHandler {
             if(main.getAnimationsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
         }
 
+        main.getPlayerDataHandler().saveAllPlayerData();
+
         for(Animation task : new ArrayList<>(main.getAnimationHandler().getTasks())) {
             task.stop();
         }
@@ -52,8 +54,6 @@ public class PluginHandler {
         main.getHologramTask().stop();
         main.getHologramHandler().removeHolograms();
         main.getLanguageHandler().pushMessages();
-        main.getDatabaseHandler().loadTables();
-        main.getPlayerDataHandler().loadAllPlayerData();
         main.getCubeletBoxHandler().loadBoxes();
         main.getCubeletTypesHandler().loadTypes();
         main.getCubeletRarityHandler().loadRarities();
@@ -64,6 +64,7 @@ public class PluginHandler {
         main.getAnimationsGUI().reloadAllGUI();
         main.getRewardsGUI().reloadAllGUI();
         main.getRaritiesGUI().reloadAllGUI();
+        main.getHologramHandler().loadHolograms();
         main.getHologramTask().start();
     }
 

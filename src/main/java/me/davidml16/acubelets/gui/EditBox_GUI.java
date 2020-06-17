@@ -4,6 +4,7 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.enums.Rotation;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.CubeletType;
+import me.davidml16.acubelets.objects.GUILayout;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.SkullCreator;
@@ -90,9 +91,10 @@ public class EditBox_GUI implements Listener {
             }
         }
 
-        ItemStack back = new ItemBuilder(XMaterial.BOOK.parseItem())
-                .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Close.Name"))
-                .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Close.Lore"))
+        GUILayout guiLayout = main.getLayoutHandler().getLayout("opencubelet");
+        ItemStack back = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Close.Material")).get().parseItem())
+                .setName(guiLayout.getMessage("Items.Close.Name"))
+                .setLore(guiLayout.getMessageList("Items.Close.Lore"))
                 .toItemStack();
         gui.setItem(31, back);
 
@@ -153,9 +155,10 @@ public class EditBox_GUI implements Listener {
             }
         }
 
-        ItemStack back = new ItemBuilder(XMaterial.BOOK.parseItem())
-                .setName(main.getLanguageHandler().getMessage("GUI.Opening.Items.Close.Name"))
-                .setLore(main.getLanguageHandler().getMessageList("GUI.Opening.Items.Close.Lore"))
+        GUILayout guiLayout = main.getLayoutHandler().getLayout("opencubelet");
+        ItemStack back = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Close.Material")).get().parseItem())
+                .setName(guiLayout.getMessage("Items.Close.Name"))
+                .setLore(guiLayout.getMessageList("Items.Close.Lore"))
                 .toItemStack();
         gui.setItem(31, back);
 

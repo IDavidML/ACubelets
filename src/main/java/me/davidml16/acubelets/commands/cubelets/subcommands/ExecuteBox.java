@@ -30,7 +30,7 @@ public class ExecuteBox {
         }
 
         if (args.length == 1) {
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " machine [add/remove/edit]"));
+            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " machine [create/remove/edit]"));
             return false;
         }
 

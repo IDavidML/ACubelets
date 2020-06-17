@@ -148,6 +148,7 @@ public class TypeConfig_GUI implements Listener {
 
     public void reloadAllGUI() {
         for(String id : main.getCubeletTypesHandler().getTypes().keySet()) {
+            loadGUI(id);
             reloadGUI(id);
         }
     }
@@ -207,17 +208,17 @@ public class TypeConfig_GUI implements Listener {
                 p.closeInventory();
                 new TypeIconMenu(main).getConversation(p, type).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
-            } else if (slot == 16 && e.getCurrentItem().getType() == XMaterial.ITEM_FRAME.parseMaterial()) {
+            } else if (slot == 16) {
                 main.getRaritiesGUI().open(p, id);
-            } else if (slot == 23 && e.getCurrentItem().getType() == XMaterial.ARMOR_STAND.parseMaterial()) {
+            } else if (slot == 23) {
                 main.getAnimationsGUI().open(p, id);
-            } else if (slot == 25 && e.getCurrentItem().getType() == XMaterial.GOLD_NUGGET.parseMaterial()) {
+            } else if (slot == 25) {
                 main.getRewardsGUI().open(p, id);
-            } else if (slot == 40 && e.getCurrentItem().getType() == XMaterial.BARRIER.parseMaterial()) {
+            } else if (slot == 40) {
                 main.getPluginHandler().reloadAll();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
                 p.sendMessage(main.getLanguageHandler().getMessage("Commands.Reload"));
-            } else if (slot == 21 && e.getCurrentItem().getType() == XMaterial.ANVIL.parseMaterial()) {
+            } else if (slot == 21) {
                 p.closeInventory();
                 new RenameMenu(main).getConversation(p, type).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);

@@ -62,6 +62,13 @@ public class CubeletType {
         return commandRewards;
     }
 
+    public Reward getReward(String id) {
+        for(Reward reward : getAllRewards())
+            if(reward.getId().equalsIgnoreCase(id))
+                return reward;
+        return  null;
+    }
+
     public void setRewards(Map<String, List<Reward>> rewards) { this.rewards = rewards; }
 
     public Map<String, Rarity> getRarities() { return rarities; }

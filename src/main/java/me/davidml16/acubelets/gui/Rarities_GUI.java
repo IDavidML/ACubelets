@@ -1,6 +1,9 @@
 package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.conversation.CommandRewardMenu;
+import me.davidml16.acubelets.conversation.EditRarityMenu;
+import me.davidml16.acubelets.conversation.PermissionRewardMenu;
 import me.davidml16.acubelets.conversation.RarityMenu;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Pair;
@@ -15,6 +18,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
@@ -74,6 +78,7 @@ public class Rarities_GUI implements Listener {
 
     public void reloadAllGUI() {
         for(String id : main.getCubeletTypesHandler().getTypes().keySet()) {
+            loadGUI(id);
             reloadGUI(id);
         }
     }
@@ -133,7 +138,8 @@ public class Rarities_GUI implements Listener {
                                 ColorUtil.translate(" &7Chance: &6" + rarity.getChance() + "% "),
                                 ColorUtil.translate(" &7Duplicate Points: &6" + rarity.getDuplicatePointsRange() + " "),
                                 "",
-                                ColorUtil.translate("&eClick to remove! ")).toItemStack());
+                                ColorUtil.translate("&eLeft-Click » &aRemove rarity "),
+                                ColorUtil.translate("&eRight-Click » &aEdit rarity ")).toItemStack());
             }
         } else {
             gui.setItem(22, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorUtil.translate("&cAny rarity created")).setLore(
@@ -191,17 +197,22 @@ public class Rarities_GUI implements Listener {
                 if (cubeletType.getAllRewards().size() == 0) return;
 
                 String rarityID = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
-                for(Rarity rarity : cubeletType.getRarities().values()) {
-                    if(rarity.getId().equalsIgnoreCase(rarityID)) {
-                        cubeletType.getRarities().remove(rarityID);
+                Rarity rarity = cubeletType.getRarities().get(rarityID);
 
-                        p.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
-                                + " &aYou removed rarity &e" + rarityID + " &afrom rarities of cubelet type &e" + cubeletType.getId()));
-                        reloadGUI(cubeletType.getId());
-                        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
-                        break;
-                    }
+                if(e.getClick() == ClickType.LEFT || e.getClick() == ClickType.SHIFT_LEFT) {
+
+                    cubeletType.getRarities().remove(rarityID);
+                    p.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
+                            + " &aYou removed rarity &e" + rarityID + " &afrom rarities of cubelet type &e" + cubeletType.getId()));
+                    reloadGUI(cubeletType.getId());
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
+
+                } else if(e.getClick() == ClickType.RIGHT || e.getClick() == ClickType.SHIFT_RIGHT) {
+                    p.closeInventory();
+                    new EditRarityMenu(main).getConversation(p, cubeletType, rarity).begin();
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
                 }
+
             }
         }
     }

@@ -80,6 +80,12 @@ public class PlayerDataHandler {
 		}
 	}
 
+	public void saveAllPlayerData() {
+		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+			main.getDatabaseHandler().saveProfile(getData(p));
+		}
+	}
+
 	public void givePoints(String player, int amount) throws SQLException {
 		UUID uuid;
 

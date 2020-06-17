@@ -13,6 +13,7 @@ import me.davidml16.acubelets.events.Event_JoinQuit;
 import me.davidml16.acubelets.gui.*;
 import me.davidml16.acubelets.handlers.*;
 import me.davidml16.acubelets.handlers.PluginHandler;
+import me.davidml16.acubelets.tasks.DataSaveTask;
 import me.davidml16.acubelets.tasks.HologramTask;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.ConfigUpdater;
@@ -40,6 +41,7 @@ public class Main extends JavaPlugin {
     private ProtocolManager protocolManager;
 
     private HologramTask hologramTask;
+    private DataSaveTask dataSaveTask;
 
     private LanguageHandler languageHandler;
     private DatabaseHandler databaseHandler;
@@ -152,6 +154,9 @@ public class Main extends JavaPlugin {
         hologramTask = new HologramTask(this);
         hologramTask.start();
 
+        dataSaveTask = new DataSaveTask(this);
+        dataSaveTask.start();
+
         cubeletOpenHandler = new CubeletOpenHandler(this);
 
         layoutHandler = new LayoutHandler(this);
@@ -212,7 +217,10 @@ public class Main extends JavaPlugin {
             hologram.delete();
         }
 
+        main.getPlayerDataHandler().saveAllPlayerData();
+
         if(hologramTask != null) hologramTask.stop();
+        if(dataSaveTask != null) dataSaveTask.stop();
         if(databaseHandler != null) databaseHandler.getDatabase().close();
     }
 

@@ -73,7 +73,7 @@ public class CoreCommand extends Command {
         sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " [give/remove] [player] [typeID] [amount]"));
         sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " info [player]"));
         sender.sendMessage("");
-        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " machine [add/remove/edit]"));
+        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " machine [create/remove/edit]"));
         sender.sendMessage("");
         sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " type"));
         sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " setup [typeID]"));

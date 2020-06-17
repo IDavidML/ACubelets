@@ -122,6 +122,7 @@ public class Animations_GUI implements Listener {
 
     public void reloadAllGUI() {
         for(String id : main.getCubeletTypesHandler().getTypes().keySet()) {
+            loadGUI(id);
             reloadGUI(id);
         }
     }

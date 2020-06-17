@@ -210,6 +210,12 @@ public class MessageUtils {
     }
 
     private static void duplicateLootMessage(Player target, CubeletType cubeletType, Reward reward, int duplicatePoints) {
+
+        if(duplicatePoints <= 0) {
+            newLootMessage(target, cubeletType, reward);
+            return;
+        }
+
         for (String line : Main.get().getLanguageHandler().getMessageList("Cubelet.Reward.Duplicate")) {
             if (line.contains("%center%")) {
                 line = line.replaceAll("%center%", "");

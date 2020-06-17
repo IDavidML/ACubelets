@@ -1,8 +1,7 @@
 package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.conversation.CommandRewardMenu;
-import me.davidml16.acubelets.conversation.PermissionRewardMenu;
+import me.davidml16.acubelets.conversation.*;
 import me.davidml16.acubelets.interfaces.Reward;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Pair;
@@ -66,8 +65,8 @@ public class Rewards_GUI implements Listener {
         ItemStack newReward = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(ColorUtil.translate("&aCreate new reward"))
                 .setLore(
                     "",
-                    ColorUtil.translate("&eLeft-Click > Command reward! "),
-                    ColorUtil.translate("&eRight-Click > Permission reward! "))
+                    ColorUtil.translate("&eLeft-Click » &aCommand reward "),
+                    ColorUtil.translate("&eRight-Click » &aPermission reward "))
                 .toItemStack();
         ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(ColorUtil.translate("&aBack to config")).toItemStack();
 
@@ -83,6 +82,7 @@ public class Rewards_GUI implements Listener {
 
     public void reloadAllGUI() {
         for(String id : main.getCubeletTypesHandler().getTypes().keySet()) {
+            loadGUI(id);
             reloadGUI(id);
         }
     }
@@ -143,7 +143,9 @@ public class Rewards_GUI implements Listener {
                                     ColorUtil.translate(" &7Icon: &6" + reward.getIcon().getType().name() + " "),
                                     ColorUtil.translate(" &7Commands: &6" + ((CommandReward) reward).getCommands().size() + " "),
                                     "",
-                                    ColorUtil.translate("&eClick to remove! ")).toItemStack());
+                                    ColorUtil.translate("&eLeft-Click » &aRemove reward "),
+                                    ColorUtil.translate("&eRight-Click » &aEdit reward ")
+                            ).toItemStack());
                 } else if(reward instanceof PermissionReward) {
                     gui.addItem(new ItemBuilder(reward.getIcon())
                             .setName(ColorUtil.translate("&a" + reward.getId()))
@@ -154,7 +156,9 @@ public class Rewards_GUI implements Listener {
                                     ColorUtil.translate(" &7Icon: &6" + reward.getIcon().getType().name() + " "),
                                     ColorUtil.translate(" &7Permission: &6" + ((PermissionReward) reward).getPermission() + " "),
                                     "",
-                                    ColorUtil.translate("&eClick to remove! ")).toItemStack());
+                                    ColorUtil.translate("&eLeft-Click » &aRemove reward "),
+                                    ColorUtil.translate("&eRight-Click » &aEdit reward ")
+                            ).toItemStack());
                 }
             }
         } else {
@@ -216,22 +220,32 @@ public class Rewards_GUI implements Listener {
                 if (cubeletType.getAllRewards().size() == 0) return;
 
                 String rewardID = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
-                for(Reward reward : cubeletType.getAllRewards()) {
-                    if(reward.getId().equalsIgnoreCase(rewardID)) {
+                Reward reward = cubeletType.getReward(rewardID);
 
-                        Map<String, List<Reward>> rewardsAll = cubeletType.getRewards();
-                        List<Reward> commandRewards = cubeletType.getRewards().get(reward.getRarity().getId());
-                        commandRewards.remove(reward);
-                        rewardsAll.put(reward.getRarity().getId(), commandRewards);
-                        cubeletType.setRewards(rewardsAll);
+                if(e.getClick() == ClickType.LEFT || e.getClick() == ClickType.SHIFT_LEFT) {
 
-                        p.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
-                                + " &aYou removed reward &e" + rewardID + " &afrom rewards of cubelet type &e" + cubeletType.getId()));
-                        reloadGUI(cubeletType.getId());
-                        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
-                        break;
-                    }
+                    Map<String, List<Reward>> rewardsAll = cubeletType.getRewards();
+                    List<Reward> commandRewards = cubeletType.getRewards().get(reward.getRarity().getId());
+                    commandRewards.remove(reward);
+                    rewardsAll.put(reward.getRarity().getId(), commandRewards);
+                    cubeletType.setRewards(rewardsAll);
+
+                    p.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
+                            + " &aYou removed reward &e" + rewardID + " &afrom rewards of cubelet type &e" + cubeletType.getId()));
+                    reloadGUI(cubeletType.getId());
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
+
+                } else if(e.getClick() == ClickType.RIGHT || e.getClick() == ClickType.SHIFT_RIGHT) {
+                    p.closeInventory();
+
+                    if(reward instanceof CommandReward)
+                        new EditCommandRewardMenu(main).getConversation(p, cubeletType, reward).begin();
+                    else if(reward instanceof PermissionReward)
+                        new EditPermissionRewardMenu(main).getConversation(p, cubeletType, reward).begin();
+
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
                 }
+
             }
         }
     }
