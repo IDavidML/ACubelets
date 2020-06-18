@@ -96,10 +96,13 @@ public class EditCommandRewardMenu implements ConversationAbandonedListener, Com
 
                                 Reward commandReward = cubeletType.getReward(rewardID);
                                 commandReward.setName(rewardName);
-                                commandReward.setRarity(cubeletType.getRarities().get(rewardRarity));
                                 ((CommandReward) commandReward).setCommands(Arrays.asList(rewardCommand));
                                 commandReward.setIcon(rewardIcon);
+                                commandReward.setRarity(cubeletType.getRarities().get(rewardRarity));
+
                                 cubeletType.saveType();
+
+                                main.getCubeletRewardHandler().loadReward(cubeletType, false);
 
                                 param1ConversationContext.getForWhom().sendRawMessage("\n" + ColorUtil.translate(main.getLanguageHandler().getPrefix()
                                         + " &aYou edited reward &e" + commandReward.getId() + " &afrom rewards of cubelet type &e" + cubeletType.getId()));

@@ -24,61 +24,64 @@ public class CubeletRewardHandler {
 	public void loadRewards() {
 		Main.log.sendMessage(ColorUtil.translate("  &eLoading rewards:"));
 		for(CubeletType cubeletType : main.getCubeletTypesHandler().getTypes().values()) {
-			FileConfiguration config = main.getCubeletTypesHandler().getConfig(cubeletType.getId());
+			loadReward(cubeletType, true);
+		}
+		Main.log.sendMessage(ColorUtil.translate(""));
+	}
 
-			Map<String, List<Reward>> rewards = new HashMap<>();
-			int rewardsLoaded = 0;
+	public void loadReward(CubeletType cubeletType, boolean log) {
+		FileConfiguration config = main.getCubeletTypesHandler().getConfig(cubeletType.getId());
 
-			if (config.contains("type.rewards")) {
-				if (config.getConfigurationSection("type.rewards") != null) {
-					for (String rewardid : config.getConfigurationSection("type.rewards").getKeys(false)) {
-						if(validRewardData(config, rewardid)) {
-							String rarity = config.getString("type.rewards." + rewardid + ".rarity");
-							if (cubeletType.getRarities().containsKey(rarity)) {
+		Map<String, List<Reward>> rewards = new HashMap<>();
+		int rewardsLoaded = 0;
 
-								String name = config.getString("type.rewards." + rewardid + ".name");
-								ItemStack rewardIcon = XItemStack.deserialize(config, "type.rewards." + rewardid + ".icon");
+		if (config.contains("type.rewards")) {
+			if (config.getConfigurationSection("type.rewards") != null) {
+				for (String rewardid : config.getConfigurationSection("type.rewards").getKeys(false)) {
+					if(validRewardData(config, rewardid)) {
+						String rarity = config.getString("type.rewards." + rewardid + ".rarity");
+						if (cubeletType.getRarities().containsKey(rarity)) {
 
-								List<Reward> rewardsRarity;
-								if (rewards.get(rarity) == null) {
-									rewardsRarity = new ArrayList<>();
-								} else {
-									rewardsRarity = rewards.get(rarity);
-								}
+							String name = config.getString("type.rewards." + rewardid + ".name");
+							ItemStack rewardIcon = XItemStack.deserialize(config, "type.rewards." + rewardid + ".icon");
 
-								if(config.contains("type.rewards." + rewardid + ".command")) {
-
-									List<String> commands = new ArrayList<>();
-									if (config.get("type.rewards." + rewardid + ".command") instanceof ArrayList)
-										commands.addAll(config.getStringList("type.rewards." + rewardid + ".command"));
-									else
-										commands.add(config.getString("type.rewards." + rewardid + ".command"));
-
-									rewardsRarity.add(new CommandReward(rewardid, name, cubeletType.getRarities().get(rarity), commands, rewardIcon));
-
-								} else if(config.contains("type.rewards." + rewardid + ".permission")) {
-
-									String permission = config.getString("type.rewards." + rewardid + ".permission");
-
-									rewardsRarity.add(new PermissionReward(rewardid, name, cubeletType.getRarities().get(rarity), permission, rewardIcon));
-
-								}
-
-								rewards.put(rarity, rewardsRarity);
-
-								rewardsLoaded++;
+							List<Reward> rewardsRarity;
+							if (rewards.get(rarity) == null) {
+								rewardsRarity = new ArrayList<>();
+							} else {
+								rewardsRarity = rewards.get(rarity);
 							}
+
+							if(config.contains("type.rewards." + rewardid + ".command")) {
+
+								List<String> commands = new ArrayList<>();
+								if (config.get("type.rewards." + rewardid + ".command") instanceof ArrayList)
+									commands.addAll(config.getStringList("type.rewards." + rewardid + ".command"));
+								else
+									commands.add(config.getString("type.rewards." + rewardid + ".command"));
+
+								rewardsRarity.add(new CommandReward(rewardid, name, cubeletType.getRarities().get(rarity), commands, rewardIcon));
+
+							} else if(config.contains("type.rewards." + rewardid + ".permission")) {
+
+								String permission = config.getString("type.rewards." + rewardid + ".permission");
+
+								rewardsRarity.add(new PermissionReward(rewardid, name, cubeletType.getRarities().get(rarity), permission, rewardIcon));
+
+							}
+
+							rewards.put(rarity, rewardsRarity);
+
+							rewardsLoaded++;
 						}
 					}
 				}
 			}
-			cubeletType.setRewards(rewards);
-			cubeletType.saveType();
-
-			Main.log.sendMessage(ColorUtil.translate("    &a'" + cubeletType.getId() + "' &7- " + (rewardsLoaded > 0 ? "&a" : "&c") + rewardsLoaded + " rewards"));
 		}
+		cubeletType.setRewards(rewards);
+		cubeletType.saveType();
 
-		Main.log.sendMessage(ColorUtil.translate(""));
+		if(log) Main.log.sendMessage(ColorUtil.translate("    &a'" + cubeletType.getId() + "' &7- " + (rewardsLoaded > 0 ? "&a" : "&c") + rewardsLoaded + " rewards"));
 	}
 
 	private boolean validRewardData(FileConfiguration config, String rewardID) {
