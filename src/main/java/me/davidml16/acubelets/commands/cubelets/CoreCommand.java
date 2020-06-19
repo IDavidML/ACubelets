@@ -23,7 +23,6 @@ public class CoreCommand extends Command {
     private final ExecuteReload executeReload = new ExecuteReload(main);
     private final ExecuteSetup executeSetup = new ExecuteSetup(main);
     private final ExecuteInfo executeInfo = new ExecuteInfo(main);
-    private final ExecuteTemplate executeTemplate = new ExecuteTemplate(main);
 
     public CoreCommand(String name) {
         super(name);
@@ -59,8 +58,6 @@ public class CoreCommand extends Command {
                 return executeReload.executeCommand(sender, label, args);
             case "info":
                 return executeInfo.executeCommand(sender, label, args);
-            case "template":
-                return executeTemplate.executeCommand(sender, label, args);
         }
 
         sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cInvalid argument, use /" + label + " help to see available commands"));
@@ -108,7 +105,6 @@ public class CoreCommand extends Command {
                 list.add("type");
                 list.add("setup");
                 list.add("reload");
-                list.add("template");
             }
         }
 
@@ -170,14 +166,10 @@ public class CoreCommand extends Command {
                         for (String type : main.getCubeletTypesHandler().getTypes().keySet()) {
                             list.add(type.toLowerCase());
                         }
+                    } else if(args[1].equalsIgnoreCase("template")) {
+                        list.addAll(main.getTemplates());
+                        list.add("*");
                     }
-                }
-            }
-        } else if (args[0].equalsIgnoreCase("template")) {
-            if (args.length == 2) {
-                if (main.playerHasPermission(p, "acubelets.admin")) {
-                    list.addAll(main.getTemplates());
-                    list.add("*");
                 }
             }
         }
