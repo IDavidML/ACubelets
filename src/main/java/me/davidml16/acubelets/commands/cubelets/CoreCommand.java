@@ -161,6 +161,7 @@ public class CoreCommand extends Command {
                 if(args.length == 2) {
                     list.add("create");
                     list.add("remove");
+                    list.add("template");
                 } else if(args.length == 3) {
                     if(args[1].equalsIgnoreCase("remove")) {
                         for (String type : main.getCubeletTypesHandler().getTypes().keySet()) {
