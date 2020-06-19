@@ -28,9 +28,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Main extends JavaPlugin {
 
@@ -81,6 +79,8 @@ public class Main extends JavaPlugin {
     private String duplicationPointsCommand;
 
     private CommandMap commandMap;
+
+    private List<String> templates = Arrays.asList("normal", "super", "uber", "old", "summer", "easter");
 
     @Override
     public void onEnable() {
@@ -291,6 +291,8 @@ public class Main extends JavaPlugin {
     public int getPlayerCount() { return playerCount; }
 
     public void setPlayerCount(int playerCount) { this.playerCount = playerCount; }
+
+    public List<String> getTemplates() { return templates; }
 
     public boolean playerHasPermission(Player p, String permission) {
         return p.hasPermission(permission) || p.isOp();

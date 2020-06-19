@@ -55,6 +55,8 @@ public class CubeletRarityHandler {
         Main.log.sendMessage(ColorUtil.translate(""));
         Main.log.sendMessage(ColorUtil.translate("  &eLoading rarities:"));
 
+        int loaded = 0;
+
         for(CubeletType cubeletType : main.getCubeletTypesHandler().getTypes().values()) {
             FileConfiguration config = main.getCubeletTypesHandler().getConfig(cubeletType.getId());
 
@@ -79,12 +81,16 @@ public class CubeletRarityHandler {
                             duplicatePointsRange = "50-450";
 
                         cubeletType.getRarities().put(id, new Rarity(id, name, chance, duplicatePointsRange));
+                        loaded++;
                     }
                 }
             }
 
             Main.log.sendMessage(ColorUtil.translate("    &a'" + cubeletType.getId() + "&a' &7- " + (cubeletType.getRarities().size() > 0 ? "&a" : "&c") + cubeletType.getRarities().size() + " rarities"));
         }
+
+        if(loaded == 0)
+            Main.log.sendMessage(ColorUtil.translate("    &cNo cubelet rarities has been loaded!"));
 
         Main.log.sendMessage(" ");
     }

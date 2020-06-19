@@ -234,7 +234,7 @@ public class CubeletTypesHandler {
         }
 
         if(types.size() == 0)
-            Main.log.sendMessage(ColorUtil.translate("    &cNo cubelet type has been loaded!"));
+            Main.log.sendMessage(ColorUtil.translate("    &cNo cubelet types has been loaded!"));
 
     }
 

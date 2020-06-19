@@ -1,0 +1,88 @@
+type:
+  name: '&e&lOld Cubelet'
+  animation: animation1
+  expiration: 2w
+  icon:
+    texture: base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7ImlkIjoiYmRkNmU1MzM2NDNkNDhmN2E5YWYwNjBkMzFkYmM3NmUiLCJ0eXBlIjoiU0tJTiIsInVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZjJjNjE3ODM1OTBiNmU2ODQ3MzAwNWIzMmVjMGEwOGJjM2I5NWQ2NDkwMzZiMzU4YWZlNzdhZDhhZjg4NDgwMCIsInByb2ZpbGVJZCI6IjgwMThhYjAwYjJhZTQ0Y2FhYzliZjYwZWY5MGY0NWU1IiwidGV4dHVyZUlkIjoiZjJjNjE3ODM1OTBiNmU2ODQ3MzAwNWIzMmVjMGEwOGJjM2I5NWQ2NDkwMzZiMzU4YWZlNzdhZDhhZjg4NDgwMCJ9fSwic2tpbiI6eyJpZCI6ImJkZDZlNTMzNjQzZDQ4ZjdhOWFmMDYwZDMxZGJjNzZlIiwidHlwZSI6IlNLSU4iLCJ1cmwiOiJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlL2YyYzYxNzgzNTkwYjZlNjg0NzMwMDViMzJlYzBhMDhiYzNiOTVkNjQ5MDM2YjM1OGFmZTc3YWQ4YWY4ODQ4MDAiLCJwcm9maWxlSWQiOiI4MDE4YWIwMGIyYWU0NGNhYWM5YmY2MGVmOTBmNDVlNSIsInRleHR1cmVJZCI6ImYyYzYxNzgzNTkwYjZlNjg0NzMwMDViMzJlYzBhMDhiYzNiOTVkNjQ5MDM2YjM1OGFmZTc3YWQ4YWY4ODQ4MDAifSwiY2FwZSI6bnVsbH0
+  description:
+  - '&7This is the old type of'
+  - '&7Cubelet. Initial scans indicate'
+  - '&7that the contents of this cubelet'
+  - '&7will be probably very basic.'
+  lore:
+    opening:
+      available:
+      - '&5Received: &a%received% ago'
+      - '&5Expires: &aIn %expires%'
+      - ''
+      - '%description%'
+      - ''
+      - '&6Click to open.'
+      expired:
+      - '&5Received: &a%received% ago'
+      - '&5Expires: &cExpired'
+      - ''
+      - '%description%'
+      - ''
+  rarities:
+    common:
+      name: '&bCommon'
+      chance: 55.4
+      duplicatePointsRange: 50-100
+    rare:
+      name: '&aRare'
+      chance: 23.4
+      duplicatePointsRange: 100-250
+    uncommon:
+      name: '&dUncommon'
+      chance: 17.4
+      duplicatePointsRange: 250-450
+    mythical:
+      name: '&4Mythical'
+      chance: 2.7
+      duplicatePointsRange: 450-650
+    legendary:
+      name: '&6Legendary'
+      chance: 1.1
+      duplicatePointsRange: 650-950
+  rewards:
+    r0:
+      name: Example uncommon
+      rarity: uncommon
+      command:
+      - tell %player% GOLDEN APPLE!!
+      icon:
+        material: GOLDEN_APPLE
+        damage: 1
+        enchanted: false
+    r1:
+      name: Example common
+      rarity: common
+      command:
+      - give %player% diamond_block 1
+      icon:
+        material: DIAMOND_BLOCK
+        enchanted: false
+    r2:
+      name: Example legendary
+      rarity: legendary
+      command:
+      - give %player% diamond 128
+      icon:
+        material: CAKE
+        enchanted: false
+    r3:
+      name: Example rare
+      rarity: rare
+      permission: essentials.kit.vip
+      icon:
+        material: DIAMOND_SWORD
+        enchanted: true
+    r4:
+      name: Example mythical
+      rarity: mythical
+      permission: vanity.chestplate.orange
+      icon:
+        material: LEATHER_CHESTPLATE
+        enchanted: false
+        color: 212, 87, 87
