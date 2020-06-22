@@ -3,6 +3,7 @@ package me.davidml16.acubelets.commands.cubelets.subcommands;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.api.CubeletsAPI;
 import me.davidml16.acubelets.utils.ColorUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -25,7 +26,9 @@ public class ExecuteGive {
         }
 
         if (args.length == 1 || args.length == 2) {
+            sender.sendMessage("");
             sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " give [player] [typeID] [amount]"));
+            sender.sendMessage("");
             return false;
         }
 
@@ -38,34 +41,61 @@ public class ExecuteGive {
             return false;
         }
 
-        try {
-            if(!main.getDatabaseHandler().hasName(player)) {
-                sender.sendMessage(ColorUtil.translate(
-                        main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
-                return false;
+        
+        if(player.equalsIgnoreCase("*") || player.equalsIgnoreCase("all")) {
+            if(args.length == 3) {
+                for(Player iterator : Bukkit.getOnlinePlayers()) {
+                    CubeletsAPI.giveCubelet(iterator.getName(), id, 1);
+                    sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
+                            " &aGived &e1x " + main.getCubeletTypesHandler().getTypeBydId(id).getName() + " &ato &e" + iterator.getName()));
+                }
+                return true;
+            } else if(args.length == 4) {
+                int amount = Integer.parseInt(args[3]);
+                if(amount > 0) {
+                    for(Player iterator : Bukkit.getOnlinePlayers()) {
+                        CubeletsAPI.giveCubelet(iterator.getName(), id, amount);
+                        sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
+                                " &aGived &e" + amount + "x " + main.getCubeletTypesHandler().getTypeBydId(id).getName() + " &ato &e" + iterator.getName()));
+                    }
+                    return true;
+                } else {
+                    sender.sendMessage(ColorUtil.translate(
+                            main.getLanguageHandler().getPrefix() + " &cAmount to give need to be more than 0!"));
+                    return false;
+                }
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } else {
+            try {
+                if(!main.getDatabaseHandler().hasName(player)) {
+                    sender.sendMessage(ColorUtil.translate(
+                            main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
+                    return false;
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+            if(args.length == 3) {
+                CubeletsAPI.giveCubelet(player, id, 1);
+                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
+                        " &aGived &e1x " + main.getCubeletTypesHandler().getTypeBydId(id).getName() + " &ato &e" + player));
+            } else if(args.length == 4) {
+                int amount = Integer.parseInt(args[3]);
+                if(amount > 0) {
+                    CubeletsAPI.giveCubelet(player, id, amount);
+                    sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
+                            " &aGived &e" + amount + "x " + main.getCubeletTypesHandler().getTypeBydId(id).getName() + " &ato &e" + player));
+                    return true;
+                } else {
+                    sender.sendMessage(ColorUtil.translate(
+                            main.getLanguageHandler().getPrefix() + " &cAmount to give need to be more than 0!"));
+                    return false;
+                }
+            }
         }
 
-        if(args.length == 3) {
-            CubeletsAPI.giveCubelet(player, id, 1);
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
-                    " &aGived &e1x " + main.getCubeletTypesHandler().getTypeBydId(id).getName() + " &ato &e" + player));
-        } else if(args.length == 4) {
-            int amount = Integer.parseInt(args[3]);
-            if(amount > 0) {
-                CubeletsAPI.giveCubelet(player, id, amount);
-                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
-                        " &aGived &e" + amount + "x " + main.getCubeletTypesHandler().getTypeBydId(id).getName() + " &ato &e" + player));
-                return true;
-            } else {
-                sender.sendMessage(ColorUtil.translate(
-                        main.getLanguageHandler().getPrefix() + " &cAmount to give need to be more than 0!"));
-                return false;
-            }
-        }
-        return false;
+        return true;
     }
 
 }

@@ -23,9 +23,10 @@ public class PluginHandler {
             if(main.getRewardsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
             if(main.getRaritiesGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
             if(main.getAnimationsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
+            if(main.getTypeListGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
         }
 
-        main.getPlayerDataHandler().saveAllPlayerData();
+        main.getPlayerDataHandler().saveAllPlayerDataAsync();
 
         for(Animation task : new ArrayList<>(main.getAnimationHandler().getTasks())) {
             task.stop();

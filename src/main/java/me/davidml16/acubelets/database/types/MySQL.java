@@ -259,7 +259,7 @@ public class MySQL implements Database {
         }
     }
 
-    public void saveProfile(Profile profile) {
+    public void saveProfileAsync(Profile profile) {
 
         String name = Bukkit.getPlayer(profile.getUuid()).getName();
 
@@ -293,6 +293,38 @@ public class MySQL implements Database {
                 }
             }
         });
+    }
+
+    public void saveProfileSync(Profile profile) {
+        String name = Bukkit.getPlayer(profile.getUuid()).getName();
+        PreparedStatement ps = null;
+        Connection connection = null;
+        try {
+            connection = hikari.getConnection();
+            ps = connection.prepareStatement("UPDATE ac_players SET `NAME` = ?, `LOOT_POINTS` = ?, `ORDER_BY` = ? WHERE `UUID` = ?");
+            ps.setString(1, name);
+            ps.setLong(2, profile.getLootPoints());
+            ps.setString(3, profile.getOrderBy());
+            ps.setString(4, profile.getUuid().toString());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if(ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            if(connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        }
     }
 
     public void updatePlayerName(Player p) {

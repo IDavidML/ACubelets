@@ -31,7 +31,9 @@ public interface Database {
 
     void setPlayerOrderSetting(UUID uuid, String orderBy) throws SQLException;
 
-    void saveProfile(Profile profile);
+    void saveProfileAsync(Profile profile);
+
+    void saveProfileSync(Profile profile);
 
     String getPlayerOrderSetting(UUID uuid) throws SQLException;
 

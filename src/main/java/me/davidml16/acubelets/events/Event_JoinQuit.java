@@ -23,6 +23,7 @@ public class Event_JoinQuit implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
+        main.getHologramHandler().loadHolograms(p);
         main.getPlayerDataHandler().loadPlayerData(p);
         main.setPlayerCount(main.getPlayerCount() + 1);
 
@@ -48,9 +49,10 @@ public class Event_JoinQuit implements Listener {
         main.getCraftingGUI().getOpened().remove(p.getUniqueId());
         main.getCraftingConfirmationGUI().getOpened().remove(p.getUniqueId());
         main.getRewardsPreviewGUI().getOpened().remove(p.getUniqueId());
+        main.getTypeListGUI().getOpened().remove(p.getUniqueId());
         main.getHologramHandler().removeHolograms(p);
 
-        main.getDatabaseHandler().saveProfile(main.getPlayerDataHandler().getData(p));
+        main.getDatabaseHandler().saveProfileAsync(main.getPlayerDataHandler().getData(p));
 
         main.setPlayerCount(main.getPlayerCount() - 1);
 

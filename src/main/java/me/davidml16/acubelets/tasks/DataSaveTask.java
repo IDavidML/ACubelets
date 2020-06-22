@@ -16,7 +16,7 @@ public class DataSaveTask {
 		@Override
 		public void run() {
 			if(main.getPlayerCount() > 0)
-				main.getPlayerDataHandler().saveAllPlayerData();
+				main.getPlayerDataHandler().saveAllPlayerDataAsync();
 		}
 	}
 	

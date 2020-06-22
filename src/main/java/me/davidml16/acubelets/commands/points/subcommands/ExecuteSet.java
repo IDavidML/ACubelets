@@ -25,7 +25,9 @@ public class ExecuteSet {
         }
 
         if (args.length == 1) {
+            sender.sendMessage("");
             sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " set [player] [amount]"));
+            sender.sendMessage("");
             return false;
         }
 

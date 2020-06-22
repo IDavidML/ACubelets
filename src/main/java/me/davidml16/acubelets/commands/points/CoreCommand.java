@@ -51,7 +51,9 @@ public class CoreCommand extends Command {
                 return executeInfo.executeCommand(sender, label, args);
         }
 
+        sender.sendMessage("");
         sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cInvalid argument, use /" + label + " help to see available commands"));
+        sender.sendMessage("");
         return false;
     }
 

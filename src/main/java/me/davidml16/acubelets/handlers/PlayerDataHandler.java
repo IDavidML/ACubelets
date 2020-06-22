@@ -67,7 +67,7 @@ public class PlayerDataHandler {
 
 		main.getDatabaseHandler().getCubelets(p.getUniqueId()).thenAccept(cubelets -> {
 			profile.setCubelets(cubelets);
-			Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramHandler().loadHolograms(p), 2L);
+			Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramHandler().reloadHolograms(p), 2L);
 		});
 
 		data.put(p.getUniqueId(), profile);
@@ -80,9 +80,15 @@ public class PlayerDataHandler {
 		}
 	}
 
-	public void saveAllPlayerData() {
+	public void saveAllPlayerDataAsync() {
 		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-			main.getDatabaseHandler().saveProfile(getData(p));
+			main.getDatabaseHandler().saveProfileAsync(getData(p));
+		}
+	}
+
+	public void saveAllPlayerDataSync() {
+		for (Player p : Bukkit.getServer().getOnlinePlayers()) {
+			main.getDatabaseHandler().saveProfileSync(getData(p));
 		}
 	}
 

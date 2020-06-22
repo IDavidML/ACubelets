@@ -4,6 +4,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationHandler;
 import me.davidml16.acubelets.database.DatabaseHandler;
 import me.davidml16.acubelets.database.types.Database;
@@ -21,6 +22,7 @@ import me.davidml16.acubelets.utils.FireworkUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -68,6 +70,7 @@ public class Main extends JavaPlugin {
     private Crafting_GUI craftingGUI;
     private CraftingConfirmation_GUI craftingConfirmationGUI;
     private RewardsPreview_GUI rewardsPreviewGUI;
+    private TypeList_GUI typeListGUI;
 
     private int playerCount;
 
@@ -151,6 +154,8 @@ public class Main extends JavaPlugin {
         hologramHandler = new HologramHandler(this);
         hologramHandler.loadHolograms();
 
+        playerDataHandler.loadAllPlayerData();
+
         hologramTask = new HologramTask(this);
         hologramTask.start();
 
@@ -183,6 +188,8 @@ public class Main extends JavaPlugin {
         settings.put("RewardsPreview", getConfig().getBoolean("RewardsPreview.Enabled"));
         rewardsPreviewGUI = new RewardsPreview_GUI(this);
         cubeletsGUI.setClickType(getConfig().getString("RewardsPreview.ClickType"));
+
+        typeListGUI = new TypeList_GUI(this);
 
         fireworkUtil = new FireworkUtil(this);
 
@@ -217,7 +224,17 @@ public class Main extends JavaPlugin {
             hologram.delete();
         }
 
-        main.getPlayerDataHandler().saveAllPlayerData();
+        main.getPlayerDataHandler().saveAllPlayerDataSync();
+
+        for(Animation task : new ArrayList<>(main.getAnimationHandler().getTasks())) {
+            task.stop();
+        }
+        main.getAnimationHandler().getTasks().clear();
+
+        for(Entity entity : main.getAnimationHandler().getEntities()) {
+            entity.remove();
+        }
+        main.getAnimationHandler().getEntities().clear();
 
         if(hologramTask != null) hologramTask.stop();
         if(dataSaveTask != null) dataSaveTask.stop();
@@ -281,6 +298,8 @@ public class Main extends JavaPlugin {
     public CraftingConfirmation_GUI getCraftingConfirmationGUI() { return craftingConfirmationGUI; }
 
     public RewardsPreview_GUI getRewardsPreviewGUI() { return rewardsPreviewGUI; }
+
+    public TypeList_GUI getTypeListGUI() { return typeListGUI; }
 
     public PluginHandler getPluginHandler() { return pluginHandler; }
 

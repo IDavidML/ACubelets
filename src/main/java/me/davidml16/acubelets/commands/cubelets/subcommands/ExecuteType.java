@@ -34,13 +34,20 @@ public class ExecuteType {
         }
 
         if(args.length == 1) {
+            sender.sendMessage("");
             sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type create [id] [name]"));
             sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type remove [id]"));
             sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type template [name]"));
+            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type list"));
+            sender.sendMessage("");
             return false;
         }
 
-        if(args[1].equalsIgnoreCase("create")) {
+        if(args[1].equalsIgnoreCase("list")) {
+            if(sender instanceof Player)
+                main.getTypeListGUI().open((Player) sender);
+            return true;
+        } else if(args[1].equalsIgnoreCase("create")) {
 
              if (args.length <= 3) {
                 sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type create [id] [name]"));

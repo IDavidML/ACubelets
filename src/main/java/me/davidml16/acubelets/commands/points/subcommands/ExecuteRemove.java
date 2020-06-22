@@ -28,7 +28,9 @@ public class ExecuteRemove {
         }
 
         if (args.length == 1) {
+            sender.sendMessage("");
             sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " remove [player] [amount]"));
+            sender.sendMessage("");
             return false;
         }
 

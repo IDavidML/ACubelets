@@ -60,7 +60,9 @@ public class CoreCommand extends Command {
                 return executeInfo.executeCommand(sender, label, args);
         }
 
+        sender.sendMessage("");
         sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cInvalid argument, use /" + label + " help to see available commands"));
+        sender.sendMessage("");
         return false;
     }
 
@@ -74,7 +76,6 @@ public class CoreCommand extends Command {
         sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " info [player]"));
         sender.sendMessage("");
         sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " machine [create/remove/edit]"));
-        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " template [name]"));
         sender.sendMessage("");
         sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " type"));
         sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " setup [typeID]"));
@@ -114,6 +115,7 @@ public class CoreCommand extends Command {
                     for (Player target : main.getServer().getOnlinePlayers()) {
                         list.add(target.getName());
                     }
+                    list.add("*");
                 }
             } else {
                 if (main.playerHasPermission(p, "acubelets.admin")) {
@@ -162,6 +164,7 @@ public class CoreCommand extends Command {
                     list.add("create");
                     list.add("remove");
                     list.add("template");
+                    list.add("list");
                 } else if(args.length == 3) {
                     if(args[1].equalsIgnoreCase("remove")) {
                         for (String type : main.getCubeletTypesHandler().getTypes().keySet()) {

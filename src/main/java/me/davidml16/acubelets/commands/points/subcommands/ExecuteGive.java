@@ -26,7 +26,9 @@ public class ExecuteGive {
         }
 
         if (args.length == 1) {
+            sender.sendMessage("");
             sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " give [player] [amount]"));
+            sender.sendMessage("");
             return false;
         }
 

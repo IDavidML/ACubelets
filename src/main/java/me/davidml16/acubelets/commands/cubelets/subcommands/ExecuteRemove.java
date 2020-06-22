@@ -28,7 +28,9 @@ public class ExecuteRemove {
         }
 
         if (args.length == 1 || args.length == 2) {
+            sender.sendMessage("");
             sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " remove [player] [typeID] [amount]"));
+            sender.sendMessage("");
             return false;
         }
 
@@ -100,7 +102,7 @@ public class ExecuteRemove {
                 return false;
             }
         }
-        return false;
+        return true;
     }
 
 }

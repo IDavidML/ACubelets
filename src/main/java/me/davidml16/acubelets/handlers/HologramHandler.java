@@ -261,7 +261,11 @@ public class HologramHandler {
 
     public List<String> getLines(Player p) {
         List<String> lines = new ArrayList<String>();
-        int available = main.getPlayerDataHandler().getData(p).getCubelets().size();
+
+        int available = 0;
+        if(main.getPlayerDataHandler().getPlayersData().containsKey(p.getUniqueId()))
+            available = main.getPlayerDataHandler().getData(p).getCubelets().size();
+
         if(available > 0) {
             for(String line : main.getLanguageHandler().getMessageList("Holograms.CubeletAvailable")) {
                 lines.add(ColorUtil.translate(line

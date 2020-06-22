@@ -24,7 +24,9 @@ public class ExecuteSetup {
         }
 
         if (args.length == 1) {
+            sender.sendMessage("");
             sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " setup [typeID]"));
+            sender.sendMessage("");
             return true;
         }
 
