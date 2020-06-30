@@ -147,8 +147,8 @@ public class Cubelets_GUI implements Listener {
                 }
 
                 ItemStack item = new ItemBuilder(type.getIcon()).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack();
-                item = NBTEditor.setItemTag(item, cubelet.getUuid().toString(), "cubeletUUID");
-                item = NBTEditor.setItemTag(item, type.getId(), "typeID");
+                item = NBTEditor.set(item, cubelet.getUuid().toString(), "cubeletUUID");
+                item = NBTEditor.set(item, type.getId(), "typeID");
 
                 gui.addItem(item);
             }

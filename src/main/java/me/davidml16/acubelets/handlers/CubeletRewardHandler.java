@@ -105,6 +105,8 @@ public class CubeletRewardHandler {
 		if(cubeletType.getRewards().containsKey(randomRarity.getId())) {
 			List<Reward> commandRewards = cubeletType.getRewards().get(randomRarity.getId());
 
+			if(commandRewards.size() <= 0) return processReward(p, cubeletType);
+
 			int randomElementIndex = ThreadLocalRandom.current().nextInt(commandRewards.size()) % commandRewards.size();
 			Reward randomReward = commandRewards.get(randomElementIndex);
 			return randomReward;

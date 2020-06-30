@@ -103,8 +103,8 @@ public class Crafting_GUI implements Listener {
             }
 
             ItemStack item = new ItemBuilder(cubeletType.getIcon()).setName(ColorUtil.translate(cubeletType.getName())).setLore(lore).toItemStack();
-            item = NBTEditor.setItemTag(item, craft.getCubeletType(), "cubeletType");
-            item = NBTEditor.setItemTag(item, Boolean.toString(main.getCubeletCraftingHandler().haveIngredients(p, craft)), "haveIngredients");
+            item = NBTEditor.set(item, craft.getCubeletType(), "cubeletType");
+            item = NBTEditor.set(item, Boolean.toString(main.getCubeletCraftingHandler().haveIngredients(p, craft)), "haveIngredients");
 
             if(craft.getIngrediens().size() > 0) gui.setItem(craft.getSlot(), item);
         }
