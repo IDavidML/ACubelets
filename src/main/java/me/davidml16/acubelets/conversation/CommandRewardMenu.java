@@ -9,6 +9,7 @@ import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -60,7 +61,7 @@ public class CommandRewardMenu implements ConversationAbandonedListener, CommonP
                      Player p = (Player) param1ConversationContext.getSessionData("player");
                      ItemStack itemHand = p.getInventory().getItemInHand();
 
-                    if(itemHand == null || itemHand.getType() == XMaterial.AIR.parseMaterial()) {
+                    if(itemHand == null || itemHand.getType() == Material.AIR) {
                         param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  AIR icon not allowed!\n ");
                         Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
                                 ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);

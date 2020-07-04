@@ -62,7 +62,8 @@ public class EditBox_GUI implements Listener {
                 "",
                 ColorUtil.translate(" &7New height: &6" + String.format("%.3f", box.getPermanentBlockHeight())),
                 "",
-                ColorUtil.translate("&eClick to reset height")
+                ColorUtil.translate("&eClick » &aReset height"),
+                ColorUtil.translate("&eShift-Click » &aSet default height to actual")
         ).toItemStack());
         gui.setItem(12, new ItemBuilder(downArrow).setName(ColorUtil.translate("&aDecrease height")).setLore(
                 "",
@@ -126,7 +127,8 @@ public class EditBox_GUI implements Listener {
                 "",
                 ColorUtil.translate(" &7New height: &6" + String.format("%.3f", box.getPermanentBlockHeight())),
                 "",
-                ColorUtil.translate("&eClick to reset height")
+                ColorUtil.translate("&eClick » &aReset height"),
+                ColorUtil.translate("&eShift-Click » &aSet default height to actual")
         ).toItemStack());
         gui.setItem(12, new ItemBuilder(downArrow).setName(ColorUtil.translate("&aDecrease height")).setLore(
                 "",
@@ -185,12 +187,18 @@ public class EditBox_GUI implements Listener {
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
                 reloadGUI(box);
             } else if(slot == 11) {
-                box.setBlockHeight(box.getPermanentBlockHeight());
-                Sounds.playSound(p, p.getLocation(), Sounds.MySound.CHICKEN_EGG_POP, 100, 3);
-                reloadGUI(box);
+                if(e.getClick() == ClickType.LEFT || e.getClick() == ClickType.RIGHT) {
+                    box.setBlockHeight(box.getPermanentBlockHeight());
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CHICKEN_EGG_POP, 100, 3);
+                    reloadGUI(box);
 
-                main.getHologramHandler().moveHologram(box);
-                Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramHandler().moveHologram(box), 5L);
+                    main.getHologramHandler().moveHologram(box);
+                    Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramHandler().moveHologram(box), 5L);
+                } else if(e.getClick() == ClickType.SHIFT_RIGHT || e.getClick() == ClickType.SHIFT_LEFT) {
+                    box.setPermanentBlockHeight(box.getBlockHeight());
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CHICKEN_EGG_POP, 100, 3);
+                    reloadGUI(box);
+                }
             } else if(slot == 12) {
                 box.setBlockHeight(box.getBlockHeight() - 0.015);
                 main.getHologramHandler().moveHologram(box);

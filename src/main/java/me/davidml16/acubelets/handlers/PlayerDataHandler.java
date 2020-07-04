@@ -2,6 +2,7 @@ package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.api.CubeletReceivedEvent;
+import me.davidml16.acubelets.database.types.Database;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Profile;
@@ -52,8 +53,9 @@ public class PlayerDataHandler {
 				profile.setLootPoints(0);
 			} else {
 				main.getDatabaseHandler().updatePlayerName(p);
-				profile.setOrderBy(main.getDatabaseHandler().getPlayerOrderSetting(p.getUniqueId()));
-				profile.setLootPoints(main.getDatabaseHandler().getPlayerLootPoints(p.getUniqueId()));
+
+				main.getDatabaseHandler().getPlayerOrderSetting(p.getUniqueId(), done -> profile.setOrderBy(done));
+				main.getDatabaseHandler().getPlayerLootPoints(p.getUniqueId(), done -> profile.setLootPoints(done));
 			}
 		} catch (SQLException throwables) {
 			throwables.printStackTrace();
@@ -109,8 +111,13 @@ public class PlayerDataHandler {
 			if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(Bukkit.getPlayer(uuid));
 			if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(Bukkit.getPlayer(uuid));
 		} else {
-			long actualBalance = main.getDatabaseHandler().getPlayerLootPoints(uuid);
-			main.getDatabaseHandler().setPlayerLootPoints(uuid, actualBalance + amount);
+			main.getDatabaseHandler().getPlayerLootPoints(uuid, done -> {
+				try {
+					main.getDatabaseHandler().setPlayerLootPoints(uuid, done + amount);
+				} catch (SQLException throwables) {
+					throwables.printStackTrace();
+				}
+			});
 		}
 
 	}
@@ -136,12 +143,24 @@ public class PlayerDataHandler {
 			if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(Bukkit.getPlayer(uuid));
 			if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(Bukkit.getPlayer(uuid));
 		} else {
-			long actualBalance = main.getDatabaseHandler().getPlayerLootPoints(uuid);
+			main.getDatabaseHandler().getPlayerLootPoints(uuid, done -> {
+				if((done - amount) < 0) {
+					try {
+						main.getDatabaseHandler().setPlayerLootPoints(uuid, 0);
+					} catch (SQLException throwables) {
+						throwables.printStackTrace();
+					}
+				}
+				else {
+					try {
+						main.getDatabaseHandler().setPlayerLootPoints(uuid, done - amount);
+					} catch (SQLException throwables) {
+						throwables.printStackTrace();
+					}
+				}
+			});
 
-			if((actualBalance - amount) < 0)
-				main.getDatabaseHandler().setPlayerLootPoints(uuid, 0);
-			else
-				main.getDatabaseHandler().setPlayerLootPoints(uuid, actualBalance - amount);
+
 		}
 	}
 

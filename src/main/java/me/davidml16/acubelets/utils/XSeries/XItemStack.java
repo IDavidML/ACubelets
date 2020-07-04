@@ -90,6 +90,8 @@ public class XItemStack {
             if (damage > 0) config.set(path + "." + "damage", damage);
         }
 
+        if (meta.isUnbreakable()) config.set(path + "." + "unbreakable", true);
+
         if (meta.getEnchants().size() > 0) config.set(path + "." + "enchanted", true);
         else config.set(path + "." + "enchanted", false);
 
@@ -186,6 +188,9 @@ public class XItemStack {
                 potion.addCustomEffect(effect, true);
             }
         }
+
+        // Unbreakable
+        if (XMaterial.supports(11)) meta.setUnbreakable(config.getBoolean(path + "." + "unbreakable"));
 
         // Enchantments
         if(config.getBoolean(path + "." + "enchanted") == true) {

@@ -165,11 +165,11 @@ public class TypeConfig_GUI implements Listener {
         gui.setItem(19, new ItemBuilder(type.getIcon()).setName(ColorUtil.translate("&aCubelet type icon"))
                 .setLore(
                         "",
-                        ColorUtil.translate(" &7You can change the icon "),
-                        ColorUtil.translate(" &7clicking a skull in "),
-                        ColorUtil.translate(" &7your inventory "),
+                        ColorUtil.translate(" &7You can change the "),
+                        ColorUtil.translate(" &7icon clicking this item "),
+                        ColorUtil.translate(" &7and opening icon setup "),
                         "",
-                        ColorUtil.translate("&eClick to set to default! ")
+                        ColorUtil.translate("&eClick change skull texture! ")
                 )
                 .toItemStack());
 

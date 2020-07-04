@@ -49,11 +49,11 @@ public class ExecuteInfo {
         if(Bukkit.getPlayer(player) == null) {
             try {
                 UUID uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
-                long points = main.getDatabaseHandler().getPlayerLootPoints(uuid);
-
-                sender.sendMessage("");
-                sender.sendMessage(ColorUtil.translate(" &6&l" + player + " &ahas &6" + points + " &aPoints."));
-                sender.sendMessage("");
+                main.getDatabaseHandler().getPlayerLootPoints(uuid, points -> {
+                    sender.sendMessage("");
+                    sender.sendMessage(ColorUtil.translate(" &6&l" + player + " &ahas &6" + points + " &aPoints."));
+                    sender.sendMessage("");
+                });
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }

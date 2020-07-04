@@ -11,6 +11,10 @@ import java.util.concurrent.CompletableFuture;
 
 public interface Database {
 
+    interface Callback<T> {
+        void done(T valor);
+    }
+
     void close();
 
     void open();
@@ -25,7 +29,7 @@ public interface Database {
 
     String getPlayerUUID(String name) throws SQLException;
 
-    long getPlayerLootPoints(UUID uuid) throws SQLException;
+    void getPlayerLootPoints(UUID uuid, Callback<Long> callback) throws SQLException;
 
     void setPlayerLootPoints(UUID uuid, long amount) throws SQLException;
 
@@ -35,7 +39,7 @@ public interface Database {
 
     void saveProfileSync(Profile profile);
 
-    String getPlayerOrderSetting(UUID uuid) throws SQLException;
+    void getPlayerOrderSetting(UUID uuid, Callback<String> callback) throws SQLException;
 
     void addCubelet(UUID uuid, String type, Long received, Long expire) throws SQLException;
 

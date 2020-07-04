@@ -8,7 +8,9 @@ import me.davidml16.acubelets.objects.Profile;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.TimeAPI.TimeAPI;
+import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -182,17 +184,24 @@ public class CubeletTypesHandler {
 
                     cubeletType.setAnimation(config.getString("type.animation").toLowerCase());
 
-                    String[] icon = ((String) config.get("type.icon.texture")).split(":");
-                    switch(icon[0].toLowerCase()) {
-                        case "base64":
-                            cubeletType.setIcon(SkullCreator.itemFromBase64(icon[1]));
-                            break;
-                        case "uuid":
-                            cubeletType.setIcon(SkullCreator.itemFromUuid(UUID.fromString(icon[1])));
-                            break;
-                        case "name":
-                            cubeletType.setIcon(SkullCreator.itemFromName(icon[1]));
-                            break;
+                    if (!(config.get("type.icon.texture") instanceof MemorySection)) {
+                        String[] icon = ((String) config.get("type.icon.texture")).split(":");
+                        switch (icon[0].toLowerCase()) {
+                            case "base64":
+                                cubeletType.setIcon(SkullCreator.itemFromBase64(icon[1]));
+                                break;
+                            case "uuid":
+                                cubeletType.setIcon(SkullCreator.itemFromUuid(UUID.fromString(icon[1])));
+                                break;
+                            case "name":
+                                cubeletType.setIcon(SkullCreator.itemFromName(icon[1]));
+                                break;
+                            case "url":
+                                cubeletType.setIcon(SkullCreator.itemFromUrl(icon[1]));
+                                break;
+                        }
+                    } else {
+                        cubeletType.setIcon(XItemStack.deserialize(config, "type.icon.texture"));
                     }
 
                     List<String> loreAvailable = new ArrayList<>();

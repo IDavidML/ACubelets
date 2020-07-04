@@ -179,50 +179,94 @@ public class MySQL implements Database {
         });
     }
 
-    public String getPlayerOrderSetting(UUID uuid) throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Connection connection = null;
-        try {
-            connection = hikari.getConnection();
-            ps = connection.prepareStatement("SELECT * FROM ac_players WHERE UUID = '" + uuid + "';");
-            rs = ps.executeQuery();
+    public void getPlayerOrderSetting(UUID uuid, Callback<String> callback) {
+        Bukkit.getScheduler().runTaskAsynchronously(main, (Runnable) () -> {
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            Connection connection = null;
+            try {
+                connection = hikari.getConnection();
+                ps = connection.prepareStatement("SELECT * FROM ac_players WHERE UUID = '" + uuid + "';");
+                rs = ps.executeQuery();
 
-            if (rs.next()) {
-                return rs.getString("ORDER_BY");
+                String order = "date";
+
+                if (rs.next()) {
+                    order =  rs.getString("ORDER_BY");
+                }
+
+                callback.done(order);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if(ps != null) {
+                    try {
+                        ps.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                if(rs != null) {
+                    try {
+                        rs.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                if(connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if(ps != null) ps.close();
-            if(rs != null) rs.close();
-            if(connection != null) connection.close();
-        }
-
-        return "";
+        });
     }
 
-    public long getPlayerLootPoints(UUID uuid) throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        Connection connection = null;
-        try {
-            connection = hikari.getConnection();
-            ps = connection.prepareStatement("SELECT * FROM ac_players WHERE UUID = '" + uuid + "';");
-            rs = ps.executeQuery();
+    public void getPlayerLootPoints(UUID uuid, Callback<Long> callback) {
+        Bukkit.getScheduler().runTaskAsynchronously(main, (Runnable) () -> {
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            Connection connection = null;
+            try {
+                connection = hikari.getConnection();
+                ps = connection.prepareStatement("SELECT * FROM ac_players WHERE UUID = '" + uuid + "';");
+                rs = ps.executeQuery();
 
-            if (rs.next()) {
-                return rs.getLong("LOOT_POINTS");
+                long amount = 0;
+
+                if (rs.next()) {
+                    amount = rs.getLong("LOOT_POINTS");
+                }
+
+                callback.done(amount);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if(ps != null) {
+                    try {
+                        ps.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                if(rs != null) {
+                    try {
+                        rs.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                if(connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if(ps != null) ps.close();
-            if(rs != null) rs.close();
-            if(connection != null) connection.close();
-        }
-
-        return 0;
+        });
     }
 
     public void setPlayerOrderSetting(UUID uuid, String orderBy) throws SQLException {

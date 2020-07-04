@@ -46,41 +46,60 @@ public class ExecuteRemove {
             throwables.printStackTrace();
         }
 
-        long actualBalance = 0;
         if(Bukkit.getPlayer(player) != null) {
             Profile profile = main.getPlayerDataHandler().getData(Bukkit.getPlayer(player));
-            actualBalance = profile.getLootPoints();
+            long actualBalance = profile.getLootPoints();
+
+            if(args.length == 2) {
+                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " remove [player] [amount]"));
+                return false;
+            } else if(args.length == 3) {
+                int amount = Integer.parseInt(args[2]);
+                if(amount > 0) {
+                    if(actualBalance >= amount) {
+                        PointsAPI.remove(player, amount);
+                        sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
+                                " &aRemoved &e" + amount + "x Points &afrom &e" + player));
+                        return true;
+                    } else {
+                        sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
+                                " &6" + player + " &cdoes not have &6" + amount + "x Points&c. Currently balance: &6" + actualBalance));
+                        return true;
+                    }
+                } else {
+                    sender.sendMessage(ColorUtil.translate(
+                            main.getLanguageHandler().getPrefix() + " &cAmount to give need to be more than 0!"));
+                    return false;
+                }
+            }
         } else {
             try {
                 UUID uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
-                actualBalance = main.getDatabaseHandler().getPlayerLootPoints(uuid);
+                main.getDatabaseHandler().getPlayerLootPoints(uuid, actualBalance -> {
+                    if(args.length == 2) {
+                        sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " remove [player] [amount]"));
+                    } else if(args.length == 3) {
+                        int amount = Integer.parseInt(args[2]);
+                        if(amount > 0) {
+                            if(actualBalance >= amount) {
+                                PointsAPI.remove(player, amount);
+                                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
+                                        " &aRemoved &e" + amount + "x Points &afrom &e" + player));
+                            } else {
+                                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
+                                        " &6" + player + " &cdoes not have &6" + amount + "x Points&c. Currently balance: &6" + actualBalance));
+                            }
+                        } else {
+                            sender.sendMessage(ColorUtil.translate(
+                                    main.getLanguageHandler().getPrefix() + " &cAmount to give need to be more than 0!"));
+                        }
+                    }
+                });
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
         }
 
-        if(args.length == 2) {
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " remove [player] [amount]"));
-            return false;
-        } else if(args.length == 3) {
-            int amount = Integer.parseInt(args[2]);
-            if(amount > 0) {
-                if(actualBalance >= amount) {
-                    PointsAPI.remove(player, amount);
-                    sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
-                            " &aRemoved &e" + amount + "x Points &afrom &e" + player));
-                    return true;
-                } else {
-                    sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
-                            " &6" + player + " &cdoes not have &6" + amount + "x Points&c. Currently balance: &6" + actualBalance));
-                    return true;
-                }
-            } else {
-                sender.sendMessage(ColorUtil.translate(
-                        main.getLanguageHandler().getPrefix() + " &cAmount to give need to be more than 0!"));
-                return false;
-            }
-        }
         return false;
     }
 
