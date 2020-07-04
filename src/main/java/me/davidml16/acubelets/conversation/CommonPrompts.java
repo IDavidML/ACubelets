@@ -192,6 +192,57 @@ public interface CommonPrompts  {
         }
     }
 
+    public static class MineSkinStringPrompt extends StringPrompt {
+        private Prompt parentPrompt;
+        private String text;
+        private String storeValue;
+        private boolean allowSpaces;
+        private Main main;
+
+        public MineSkinStringPrompt(Main main, Prompt param1Prompt, boolean param1Boolean, String param1String1, String param1String2) {
+            this.main = main;
+            this.parentPrompt = param1Prompt;
+            this.allowSpaces = param1Boolean;
+            this.text = param1String1;
+            this.storeValue = param1String2;
+        }
+
+        public MineSkinStringPrompt(Prompt param1Prompt, String param1String1, String param1String2) {
+            this(null, param1Prompt, true, param1String1, param1String2);
+        }
+
+        public String getPromptText(ConversationContext param1ConversationContext) {
+            return this.text;
+        }
+
+        public Prompt acceptInput(ConversationContext param1ConversationContext, String param1String) {
+            if (param1String.trim().equalsIgnoreCase("cancel")) {
+                return this.parentPrompt;
+            }
+            if (!this.allowSpaces && param1String.contains(" ")) {
+                param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  Spaces are not allowed!\n ");
+                Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+                        ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);
+                return this;
+            }
+
+            if (!param1String.contains("minesk.in")) {
+                param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  Invalid Mineskin direct link!\n ");
+                Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+                        ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);
+                return this;
+            }
+
+            param1ConversationContext.setSessionData(this.storeValue, param1String);
+            param1ConversationContext.getForWhom().sendRawMessage(
+                    ChatColor.GREEN + "  Succesfully setup skull texture with method " +
+                            ChatColor.YELLOW + param1ConversationContext.getSessionData("method"));
+            Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+                    ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.CLICK, 10, 2);
+            return this.parentPrompt;
+        }
+    }
+
     public static class NumericRangePrompt extends StringPrompt {
         private Prompt parentPrompt;
         private String text;

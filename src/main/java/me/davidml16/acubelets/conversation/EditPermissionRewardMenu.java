@@ -71,6 +71,7 @@ public class EditPermissionRewardMenu implements ConversationAbandonedListener, 
                         param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  AIR icon not allowed!\n ");
                         Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
                                 ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);
+                        return this;
                     }
 
                     param1ConversationContext.setSessionData("rewardIcon", itemHand);

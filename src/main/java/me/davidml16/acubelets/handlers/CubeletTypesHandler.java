@@ -196,9 +196,6 @@ public class CubeletTypesHandler {
                             case "name":
                                 cubeletType.setIcon(SkullCreator.itemFromName(icon[1]));
                                 break;
-                            case "url":
-                                cubeletType.setIcon(SkullCreator.itemFromUrl(icon[1]));
-                                break;
                         }
                     } else {
                         cubeletType.setIcon(XItemStack.deserialize(config, "type.icon.texture"));

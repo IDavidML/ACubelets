@@ -54,8 +54,8 @@ public class PlayerDataHandler {
 			} else {
 				main.getDatabaseHandler().updatePlayerName(p);
 
-				main.getDatabaseHandler().getPlayerOrderSetting(p.getUniqueId(), done -> profile.setOrderBy(done));
-				main.getDatabaseHandler().getPlayerLootPoints(p.getUniqueId(), done -> profile.setLootPoints(done));
+				main.getDatabaseHandler().getPlayerOrderSetting(p.getUniqueId(), profile::setOrderBy);
+				main.getDatabaseHandler().getPlayerLootPoints(p.getUniqueId(), profile::setLootPoints);
 			}
 		} catch (SQLException throwables) {
 			throwables.printStackTrace();
