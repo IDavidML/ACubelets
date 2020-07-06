@@ -69,14 +69,16 @@ public class Cubelets_GUI implements Listener {
         else if(profile.getOrderBy().equalsIgnoreCase("type"))
             cubelets.sort(new CubeletTypeComparator());
 
-        if(page > 0 && cubelets.size() < (page * 27) + 1) {
+        int pageSize = getPageSize(guiLayout);
+
+        if(page > 0 && cubelets.size() < (page * pageSize) + 1) {
             openPage(p, page - 1);
             return;
         }
 
-        if (cubelets.size() > 27) cubelets = cubelets.subList(page * 27, Math.min(((page * 27) + 27), cubelets.size()));
+        if (cubelets.size() > pageSize) cubelets = cubelets.subList(page * pageSize, Math.min(((page * pageSize) + pageSize), cubelets.size()));
 
-        int neededSize = getNeededSize(cubelets.size());
+        int neededSize = getNeededSize(guiLayout, cubelets.size());
 
         Inventory gui = Bukkit.createInventory(null, neededSize, guiLayout.getMessage("Title"));
 
@@ -86,7 +88,7 @@ public class Cubelets_GUI implements Listener {
                     .toItemStack());
         }
 
-        if (main.getPlayerDataHandler().getData(p.getUniqueId()).getCubelets().size() > (page + 1) * 27) {
+        if (main.getPlayerDataHandler().getData(p.getUniqueId()).getCubelets().size() > (page + 1) * pageSize) {
             gui.setItem((neededSize - 10) + guiLayout.getSlot("NextPage"), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NextPage.Material")).get().parseItem())
                     .setName(guiLayout.getMessage("Items.NextPage.Name"))
                     .toItemStack());
@@ -171,11 +173,56 @@ public class Cubelets_GUI implements Listener {
         opened.put(p.getUniqueId(), 0);
     }
 
-    public int getNeededSize(int cubelets) {
-        if(cubelets <= 9) return 18;
-        else if(cubelets <= 18) return 27;
-        else if(cubelets <= 27) return 36;
-        return 36;
+    private int getNeededSize(GUILayout guiLayout, int cubelets) {
+
+        int finalRows = 0;
+        int rows = guiLayout.getInteger("Size.Max-Cubelets-Rows");
+
+        if(rows < 1) rows = 1;
+        else if(rows > 5) rows = 5;
+
+        if(guiLayout.getBoolean("Size.Dynamic")) {
+
+            if(rows == 1) {
+                finalRows = 1;
+            } else if(rows == 2) {
+                if(cubelets <= 9) finalRows = 1;
+                else finalRows = 2;
+            } else if(rows == 3) {
+                if(cubelets >= 0 && cubelets <= 9) finalRows = 1;
+                else if(cubelets >= 9 && cubelets <= 18) finalRows = 2;
+                else finalRows = 3;
+            } else if(rows == 4) {
+                if(cubelets >= 0 && cubelets <= 9) finalRows = 1;
+                else if(cubelets >= 9 && cubelets <= 18) finalRows = 2;
+                else if(cubelets >= 18 && cubelets <= 27) finalRows = 3;
+                else finalRows = 4;
+            } else {
+                if(cubelets >= 0 && cubelets <= 9) finalRows = 1;
+                else if(cubelets >= 9 && cubelets <= 18) finalRows = 2;
+                else if(cubelets >= 18 && cubelets <= 27) finalRows = 3;
+                else if(cubelets >= 27 && cubelets <= 36) finalRows = 4;
+                else finalRows = 5;
+            }
+
+        } else {
+
+            finalRows = rows;
+
+        }
+
+        return (finalRows + 1) * 9;
+    }
+
+    private int getPageSize(GUILayout guiLayout) {
+
+        int rows = guiLayout.getInteger("Size.Max-Cubelets-Rows");
+
+        if(rows < 1) rows = 1;
+        else if(rows > 5) rows = 5;
+
+        return rows * 9;
+
     }
 
     @EventHandler

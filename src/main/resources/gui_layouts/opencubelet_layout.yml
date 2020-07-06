@@ -1,6 +1,29 @@
+#
+# This is the gui layout file.
+# You can change any messages that are in this file
+#
+# If you want to reset a message back to the default,
+# delete the entire line the message is on and restart the server.
+#
+# IMPORTANT: Slots numbers between 1-9, if not, the plugin will crash
+#
+
 Layout:
+
+  # GUI Title
   Title: 'Cubelets'
+
+  # GUI rows options
+  Size:
+    # Max rows of cubelets, (1 to 5) 1 row reserved to navigation buttons
+    Max-Cubelets-Rows: 3
+    # If gui size is resizable or fixed size
+    Dynamic: true
+
+  # GUI items
   Items:
+
+    # Close item
     Close:
       Name: '&9Close'
       Material: 'BOOK'
@@ -8,6 +31,8 @@ Layout:
       Lore:
         - '&7Click to close'
         - '&7this menu'
+
+    # Item when you dont have any cubelets
     NoCubelets:
       Name: '&4You have no Cubelets'
       Material: 'BARRIER'
@@ -16,6 +41,8 @@ Layout:
         - '&7You are also able to purchase them'
         - '&7on our store.'
         - '&6Click for store link.'
+
+    # Item to order cubelets by date or type
     Ordered:
       Slot: 7
       Type:
@@ -32,6 +59,8 @@ Layout:
           - '&7Change how items are ordered'
           - '&7in this menu.'
           - '&6Click to order by Type!'
+
+    # Item to open crafting GUI
     Crafting:
       Name: '&e&lCubelet Crafting'
       Material: 'CRAFTING_TABLE'
@@ -42,10 +71,14 @@ Layout:
         - '&7more awesome Cubelets containg'
         - '&7rarer items.'
         - '&6Click to open.'
+
+    # Next page item
     NextPage:
       Name: '&6Next page'
       Material: 'SUGAR_CANE'
       Slot: 9
+
+    # Previous page item
     PreviousPage:
       Name: '&6Previous page'
       Material: 'SUGAR_CANE'

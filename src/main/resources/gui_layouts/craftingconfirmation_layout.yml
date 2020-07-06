@@ -1,11 +1,29 @@
+#
+# This is the gui layout file.
+# You can change any messages that are in this file
+#
+# If you want to reset a message back to the default,
+# delete the entire line the message is on and restart the server.
+#
+
 Layout:
+
+  # GUI Title
   Title: 'Crafting a Cubelet'
+
+  # Ingredient messages
   Ingredients:
+
+    # Ingredient lore line
     Ingredient:
       Cubelet: '&7- &b%name% &7x%amount%'
       Money: '&7- &b%amount% Coins'
       Points: '&7- &b%amount% Loot Points'
+
+  # GUI items
   Items:
+
+    # Accept craft
     Craft:
       Name: '&a&lCRAFT'
       Material: 'LIME_STAINED_GLASS_PANE'
@@ -17,6 +35,8 @@ Layout:
         - '&8&oThis process cannot be undone.'
         - ''
         - '&6Click to craft!'
+
+    # Cancel craft
     Cancel:
       Name: '&c&lCANCEL'
       Material: 'RED_STAINED_GLASS_PANE'

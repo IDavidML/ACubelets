@@ -1,14 +1,36 @@
+#
+# This is the gui layout file.
+# You can change any messages that are in this file
+#
+# If you want to reset a message back to the default,
+# delete the entire line the message is on and restart the server.
+#
+# IMPORTANT: Slots numbers between 1-9, if not, the plugin will crash
+#
+
 Layout:
+
+  # GUI Title
   Title: 'Cubelet Crafting'
+
+  # No afford message
   NoAfford: '&cYou cannot afford to craft this Cubelet yet!'
+
+  # Ingredient messages
   Ingredients:
+
+    # Ingredient lore line
     Ingredient:
       Cubelet: '&7- &b%name% &7x%amount% %status%'
       Money: '&7- &b%amount% Coins %status%'
       Points: '&7- &b%amount% Loot Points %status%'
+
+    # Ingredient lore status
     Status:
       Available: '&a✓'
       NotAvailable: '&c✗'
+
+    # Crafteable cubelet lore
     Lore:
       - '&5Ingredients:'
       - '%ingredients%'
@@ -19,7 +41,11 @@ Layout:
       - '&8&o2 weeks.'
       - ''
       - '&6Click to craft.'
+
+  # GUI items
   Items:
+
+    # Item that shows your points balance
     Points:
       Name: '&e&lLoot Points'
       Material: 'POPPY'
@@ -30,6 +56,8 @@ Layout:
         - '&7duplicates inside of Cubelets, and'
         - '&7can be crafted into Cubelets inside'
         - '&7Cubelet Machines.'
+
+    # Back item
     Back:
       Name: '&9Back'
       Material: 'BOOK'

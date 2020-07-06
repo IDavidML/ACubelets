@@ -1,10 +1,35 @@
+#
+# This is the gui layout file.
+# You can change any messages that are in this file
+#
+# If you want to reset a message back to the default,
+# delete the entire line the message is on and restart the server.
+#
+# IMPORTANT: Slots numbers between 1-9, if not, the plugin will crash
+#
+
 Layout:
+
+  # GUI Title
   Title: 'Preview of %cubelet_type%'
+
+  # GUI rows options
+  Size:
+    # Max rows of cubelets, (1 to 5) 1 row reserved to navigation buttons
+    Max-Cubelets-Rows: 3
+    # If gui size is resizable or fixed size
+    Dynamic: true
+
+  # GUI items
   Items:
+
+    # Each reward item
     Reward:
       Name: '&e&l%reward_name%'
       Lore:
         - '&5Rarity: %reward_rarity%'
+
+    # Back item
     Back:
       Name: '&9Back'
       Material: 'BOOK'
@@ -12,10 +37,14 @@ Layout:
       Lore:
         - '&7Go back to the previous'
         - '&7menu.'
+
+    # Next page item
     NextPage:
       Name: '&6Next page'
       Material: 'SUGAR_CANE'
       Slot: 9
+
+    # Previous page item
     PreviousPage:
       Name: '&6Previous page'
       Material: 'SUGAR_CANE'

@@ -3,6 +3,7 @@ package me.davidml16.acubelets.handlers;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.GUILayout;
 import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.ConfigUpdater;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -42,8 +43,6 @@ public class LayoutHandler {
 		}
 		YamlConfiguration cfg = YamlConfiguration.loadConfiguration(file);
 
-		cfg.options().header("\nThis is the gui layout file.\nYou can change any messages that are in this file\n\nIf you want to reset a message back to the default,\ndelete the entire line the message is on and restart the server.\n\nIMPORTANT: Slots numbers between 1-9, if not, the plugin will crash\n\t");
-
 		Map<String, Object> msgDefaults = new LinkedHashMap<String, Object>();
 
 		InputStreamReader input = new InputStreamReader(main.getResource("gui_layouts/" + layout + "_layout.yml"));
@@ -74,6 +73,13 @@ public class LayoutHandler {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		try {
+			ConfigUpdater.update(main, "gui_layouts/" + layout + "_layout.yml", new File(main.getDataFolder() + "/gui_layouts/" + layout + "_layout.yml"), Collections.emptyList());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public void loadLayouts() {

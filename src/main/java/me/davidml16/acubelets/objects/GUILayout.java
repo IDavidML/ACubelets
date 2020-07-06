@@ -40,9 +40,13 @@ public class GUILayout {
         return Integer.parseInt(messages.get("Layout.Items." + path + ".Slot"));
     }
 
-    public String getMessage(String message) {
-        return ColorUtil.translate(messages.get("Layout." + message));
+    public String getMessage(String path) {
+        return ColorUtil.translate(messages.get("Layout." + path));
     }
+
+    public boolean getBoolean(String path) { return Boolean.parseBoolean(messages.get("Layout." + path)); }
+
+    public int getInteger(String path) { return Integer.parseInt(messages.get("Layout." + path)); }
 
     public List<String> getMessageList(String message) {
         List<String> lines = new ArrayList<>();
