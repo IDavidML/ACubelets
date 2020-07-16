@@ -30,6 +30,9 @@ public class CommandRewardMenu implements ConversationAbandonedListener, CommonP
         Conversation conversation = (new ConversationFactory(main)).withModality(true).withLocalEcho(false).withFirstPrompt(new RewardMenuOptions()).withTimeout(3600).thatExcludesNonPlayersWithMessage("").addConversationAbandonedListener(this).buildConversation(paramPlayer);
         conversation.getContext().setSessionData("player", paramPlayer);
         conversation.getContext().setSessionData("cubeletType", cubeletType);
+
+        main.getGuiHandler().addConversation(paramPlayer);
+
         return conversation;
     }
 
@@ -99,6 +102,7 @@ public class CommandRewardMenu implements ConversationAbandonedListener, CommonP
                                         ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
                                 main.getRewardsGUI().reloadGUI(cubeletType.getId());
                                 main.getRewardsGUI().open((Player) param1ConversationContext.getSessionData("player"), cubeletType.getId());
+                                main.getGuiHandler().removeConversation((Player) param1ConversationContext.getSessionData("player"));
                                 return Prompt.END_OF_CONVERSATION;
                             } else {
                                 return new CommonPrompts.ErrorPrompt(main, this, "\n" + ChatColor.RED + "  There is already a reward with that ID, please change it and try again\n  Write anything to continue\n ");

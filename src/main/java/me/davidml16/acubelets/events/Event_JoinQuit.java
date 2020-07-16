@@ -40,16 +40,7 @@ public class Event_JoinQuit implements Listener {
     public void onQuit(PlayerQuitEvent e) {
         Player p = e.getPlayer();
 
-        main.getCubeletsGUI().getOpened().remove(p.getUniqueId());
-        main.getTypeConfigGUI().getOpened().remove(p.getUniqueId());
-        main.getRewardsGUI().getOpened().remove(p.getUniqueId());
-        main.getRaritiesGUI().getOpened().remove(p.getUniqueId());
-        main.getAnimationsGUI().getOpened().remove(p.getUniqueId());
-        main.getEditBoxGUI().getOpened().remove(p.getUniqueId());
-        main.getCraftingGUI().getOpened().remove(p.getUniqueId());
-        main.getCraftingConfirmationGUI().getOpened().remove(p.getUniqueId());
-        main.getRewardsPreviewGUI().getOpened().remove(p.getUniqueId());
-        main.getTypeListGUI().getOpened().remove(p.getUniqueId());
+        main.getGuiHandler().removeOpened(p);
         main.getHologramHandler().removeHolograms(p);
 
         main.getDatabaseHandler().saveProfileAsync(main.getPlayerDataHandler().getData(p));

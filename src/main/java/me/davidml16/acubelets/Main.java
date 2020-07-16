@@ -56,6 +56,7 @@ public class Main extends JavaPlugin {
     private CubeletCraftingHandler cubeletCraftingHandler;
     private EconomyHandler economyHandler;
     private LayoutHandler layoutHandler;
+    private GUIHandler guiHandler;
 
     private FireworkUtil fireworkUtil;
 
@@ -191,6 +192,8 @@ public class Main extends JavaPlugin {
 
         typeListGUI = new TypeList_GUI(this);
 
+        guiHandler = new GUIHandler(this);
+
         fireworkUtil = new FireworkUtil(this);
 
         registerCommands();
@@ -280,6 +283,8 @@ public class Main extends JavaPlugin {
     public EconomyHandler getEconomyHandler() { return economyHandler; }
 
     public LayoutHandler getLayoutHandler() { return layoutHandler; }
+
+    public GUIHandler getGuiHandler() { return guiHandler; }
 
     public Cubelets_GUI getCubeletsGUI() { return cubeletsGUI; }
 

@@ -20,6 +20,9 @@ public class RarityMenu implements ConversationAbandonedListener, CommonPrompts 
         Conversation conversation = (new ConversationFactory(main)).withModality(true).withLocalEcho(false).withFirstPrompt(new RewardMenuOptions()).withTimeout(3600).thatExcludesNonPlayersWithMessage("").addConversationAbandonedListener(this).buildConversation(paramPlayer);
         conversation.getContext().setSessionData("player", paramPlayer);
         conversation.getContext().setSessionData("cubeletType", cubeletType);
+
+        main.getGuiHandler().addConversation(paramPlayer);
+
         return conversation;
     }
 
@@ -63,6 +66,7 @@ public class RarityMenu implements ConversationAbandonedListener, CommonPrompts 
                                     ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
                             main.getRaritiesGUI().reloadGUI(cubeletType.getId());
                             main.getRaritiesGUI().open((Player) param1ConversationContext.getSessionData("player"), cubeletType.getId());
+                            main.getGuiHandler().removeConversation((Player) param1ConversationContext.getSessionData("player"));
                             return Prompt.END_OF_CONVERSATION;
                         } else {
                             return new ErrorPrompt(main, this, "\n" + ChatColor.RED + "  There is already a rarity with that ID, please change it and try again\n  Write anything to continue\n ");

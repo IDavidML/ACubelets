@@ -47,6 +47,7 @@ Layout:
 
     # Item that shows your points balance
     Points:
+      Enabled: true
       Name: '&e&lLoot Points'
       Material: 'POPPY'
       Slot: 6

@@ -53,15 +53,17 @@ public class Crafting_GUI implements Listener {
                 .toItemStack();
         gui.setItem((inventorySize - 10) + guiLayout.getSlot("Back"), back);
 
-        List<String> lorePoints = new ArrayList<>();
-        for (String line : guiLayout.getMessageList("Items.Points.Lore")) {
-            lorePoints.add(line.replaceAll("%points_available%", ""+main.getPlayerDataHandler().getData(p).getLootPoints()));
+        if(guiLayout.getBoolean("Items.Points.Enabled")) {
+            List<String> lorePoints = new ArrayList<>();
+            for (String line : guiLayout.getMessageList("Items.Points.Lore")) {
+                lorePoints.add(line.replaceAll("%points_available%", "" + main.getPlayerDataHandler().getData(p).getLootPoints()));
+            }
+            ItemStack points = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Points.Material")).get().parseItem())
+                    .setName(guiLayout.getMessage("Items.Points.Name"))
+                    .setLore(lorePoints)
+                    .toItemStack();
+            gui.setItem((inventorySize - 10) + guiLayout.getSlot("Points"), points);
         }
-        ItemStack points = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Points.Material")).get().parseItem())
-                .setName(guiLayout.getMessage("Items.Points.Name"))
-                .setLore(lorePoints)
-                .toItemStack();
-        gui.setItem((inventorySize - 10) + guiLayout.getSlot("Points"), points);
 
         for(CraftParent craft : main.getCubeletCraftingHandler().getCrafts()) {
             CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(craft.getCubeletType());

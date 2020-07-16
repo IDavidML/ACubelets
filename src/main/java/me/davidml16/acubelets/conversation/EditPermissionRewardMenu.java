@@ -36,6 +36,8 @@ public class EditPermissionRewardMenu implements ConversationAbandonedListener, 
         conversation.getContext().setSessionData("rewardRarity", reward.getRarity().getId());
         conversation.getContext().setSessionData("rewardIcon", reward.getIcon());
 
+        main.getGuiHandler().addConversation(paramPlayer);
+
         return conversation;
     }
 
@@ -111,8 +113,10 @@ public class EditPermissionRewardMenu implements ConversationAbandonedListener, 
                                         ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
                                 main.getRewardsGUI().reloadGUI(cubeletType.getId());
                                 main.getRewardsGUI().open((Player) param1ConversationContext.getSessionData("player"), cubeletType.getId());
+                                main.getGuiHandler().removeConversation((Player) param1ConversationContext.getSessionData("player"));
                                 return Prompt.END_OF_CONVERSATION;
                             } else {
+                                main.getGuiHandler().removeConversation((Player) param1ConversationContext.getSessionData("player"));
                                 return Prompt.END_OF_CONVERSATION;
                             }
                         } else {

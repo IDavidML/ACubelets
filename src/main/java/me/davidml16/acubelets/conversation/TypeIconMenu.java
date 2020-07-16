@@ -33,6 +33,9 @@ public class TypeIconMenu implements ConversationAbandonedListener, CommonPrompt
         conversation.getContext().setSessionData("player", paramPlayer);
         conversation.getContext().setSessionData("type", type);
         conversation.getContext().setSessionData("texture", main.getCubeletTypesHandler().getConfig(type.getId()).get("type.icon.texture"));
+
+        main.getGuiHandler().addConversation(paramPlayer);
+
         return conversation;
     }
 
@@ -135,6 +138,7 @@ public class TypeIconMenu implements ConversationAbandonedListener, CommonPrompt
                             }
                         });
                     }
+                    main.getGuiHandler().removeConversation(player);
                     return Prompt.END_OF_CONVERSATION;
                 case "6":
                     return new CommonPrompts.ConfirmExitPrompt(main, this);

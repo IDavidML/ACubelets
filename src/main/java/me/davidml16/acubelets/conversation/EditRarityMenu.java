@@ -25,6 +25,9 @@ public class EditRarityMenu implements ConversationAbandonedListener, CommonProm
         conversation.getContext().setSessionData("rarityName", rarity.getName());
         conversation.getContext().setSessionData("rarityChance", rarity.getChance());
         conversation.getContext().setSessionData("rarityDuplicate", rarity.getDuplicatePointsRange());
+
+        main.getGuiHandler().addConversation(paramPlayer);
+
         return conversation;
     }
 
@@ -68,8 +71,10 @@ public class EditRarityMenu implements ConversationAbandonedListener, CommonProm
                                     ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
                             main.getRaritiesGUI().reloadGUI(cubeletType.getId());
                             main.getRaritiesGUI().open((Player) param1ConversationContext.getSessionData("player"), cubeletType.getId());
+                            main.getGuiHandler().removeConversation((Player) param1ConversationContext.getSessionData("player"));
                             return Prompt.END_OF_CONVERSATION;
                         } else {
+                            main.getGuiHandler().removeConversation((Player) param1ConversationContext.getSessionData("player"));
                             return Prompt.END_OF_CONVERSATION;
                         }
                     } else {

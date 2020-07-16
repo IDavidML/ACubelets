@@ -18,12 +18,7 @@ public class PluginHandler {
     public void reloadAll() {
 
         for(Player p : Bukkit.getServer().getOnlinePlayers()) {
-            if(main.getCubeletsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
-            if(main.getTypeConfigGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
-            if(main.getRewardsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
-            if(main.getRaritiesGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
-            if(main.getAnimationsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
-            if(main.getTypeListGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
+            main.getGuiHandler().closeIfOpened(p);
         }
 
         main.getPlayerDataHandler().saveAllPlayerDataAsync();

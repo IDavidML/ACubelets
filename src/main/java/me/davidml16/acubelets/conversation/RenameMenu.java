@@ -20,6 +20,9 @@ public class RenameMenu implements ConversationAbandonedListener, CommonPrompts 
         conversation.getContext().setSessionData("player", paramPlayer);
         conversation.getContext().setSessionData("type", type);
         conversation.getContext().setSessionData("typeName", type.getName());
+
+        main.getGuiHandler().addConversation(paramPlayer);
+
         return conversation;
     }
 
@@ -46,6 +49,7 @@ public class RenameMenu implements ConversationAbandonedListener, CommonPrompts 
                     Sounds.playSound(player, player.getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
                     main.getTypeConfigGUI().reloadGUI(type.getId());
                     main.getTypeConfigGUI().open(player, type.getId());
+                    main.getGuiHandler().removeConversation(player);
                     return Prompt.END_OF_CONVERSATION;
             }
             return null;

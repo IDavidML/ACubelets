@@ -358,6 +358,8 @@ public interface CommonPrompts  {
 
                 param1ConversationContext.getForWhom().sendRawMessage("\n" + ColorUtil.translate(main.getLanguageHandler().getPrefix()
                         + " &cYou leave type setup menu!"));
+
+                Main.get().getGuiHandler().removeConversation((Player) param1ConversationContext.getSessionData("player"));
                 return Prompt.END_OF_CONVERSATION;
             }
             if (param1String.equals("2") || param1String.equalsIgnoreCase("No")) {

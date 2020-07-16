@@ -41,6 +41,10 @@ public class CoreCommand extends Command {
             }
         }
 
+        if(sender instanceof Player) {
+            if(main.getGuiHandler().haveConversation((Player) sender)) return true;
+        }
+
         switch (args[0]) {
             case "help":
                 return sendCommandHelp(sender, label);
