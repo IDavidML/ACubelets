@@ -34,9 +34,7 @@ public class CraftParent {
         return slot;
     }
 
-    public void setSlot(int slot) {
-        this.slot = slot;
-    }
+    public void setSlot(int slot) { this.slot = slot; }
 
     public List<CraftIngredient> getIngrediens() {
         return ingrediens;

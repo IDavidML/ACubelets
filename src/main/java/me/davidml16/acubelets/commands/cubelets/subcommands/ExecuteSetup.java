@@ -31,12 +31,16 @@ public class ExecuteSetup {
         }
 
         String id = args[1].toLowerCase();
-        if (!main.getCubeletTypesHandler().getTypes().containsKey(id)) {
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cThis " + label + " type doesn't exists!"));
-            return true;
-        }
+        if(!id.equalsIgnoreCase("crafting")) {
+            if (!main.getCubeletTypesHandler().getTypes().containsKey(id)) {
+                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cThis " + label + " type doesn't exists!"));
+                return true;
+            }
 
-        main.getTypeConfigGUI().open((Player) sender, id);
+            main.getTypeConfigGUI().open((Player) sender, id);
+        } else
+            main.getEditCraftingGUI().open((Player) sender);
+
         return true;
     }
 

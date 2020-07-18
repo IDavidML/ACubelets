@@ -29,6 +29,8 @@ public class GUIHandler {
         if(main.getCraftingConfirmationGUI().getOpened().containsKey(player.getUniqueId())) return true;
         if(main.getEditBoxGUI().getOpened().containsKey(player.getUniqueId())) return true;
         if(main.getRewardsPreviewGUI().getOpened().containsKey(player.getUniqueId())) return true;
+        if(main.getEditCraftingGUI().getOpened().contains(player.getUniqueId())) return true;
+        if(main.getEditCraftingCraftsGUI().getOpened().containsKey(player.getUniqueId())) return true;
         
         return false;
     }
@@ -49,6 +51,8 @@ public class GUIHandler {
         main.getCraftingConfirmationGUI().getOpened().remove(player.getUniqueId());
         main.getRewardsPreviewGUI().getOpened().remove(player.getUniqueId());
         main.getTypeListGUI().getOpened().remove(player.getUniqueId());
+        main.getEditCraftingGUI().getOpened().remove(player.getUniqueId());
+        main.getEditCraftingCraftsGUI().getOpened().remove(player.getUniqueId());
     }
 
     public void addConversation(Player player) {

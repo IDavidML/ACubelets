@@ -96,7 +96,8 @@ public class XItemStack {
         else config.set(path + "." + "enchanted", false);
 
         if (meta instanceof SkullMeta) {
-            config.set(path + "." + "skull", ((SkullMeta) meta).getOwningPlayer().getUniqueId());
+            if(XMaterial.supports(12)) config.set(path + "." + "skull", ((SkullMeta) meta).getOwningPlayer());
+            else config.set(path + "." + "skull", ((SkullMeta) meta).getOwner());
         } else if (meta instanceof BannerMeta) {
             BannerMeta banner = (BannerMeta) meta;
             List<String> patterns = new ArrayList<>();
@@ -213,6 +214,7 @@ public class XItemStack {
     public static Color parseColor(String str) {
         if (Strings.isNullOrEmpty(str)) return Color.BLACK;
         String[] rgb = StringUtils.split(StringUtils.deleteWhitespace(str), ',');
-        return Color.fromRGB(NumberUtils.toInt(rgb[0], 0), NumberUtils.toInt(rgb[1], 0), NumberUtils.toInt(rgb[2], 0));
+        if (rgb.length < 3) return Color.WHITE;
+        return Color.fromRGB(NumberUtils.toInt(rgb[0], 0), NumberUtils.toInt(rgb[1], 0), NumberUtils.toInt(rgb[1], 0));
     }
 }

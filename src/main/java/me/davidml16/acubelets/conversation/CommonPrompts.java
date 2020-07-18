@@ -289,6 +289,60 @@ public interface CommonPrompts  {
             }
 
             param1ConversationContext.setSessionData(this.storeValue, f);
+            Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+                    ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.CLICK, 10, 2);
+            return this.parentPrompt;
+        }
+    }
+
+    public static class NumericIntegerRangePrompt extends StringPrompt {
+        private Prompt parentPrompt;
+        private String text;
+        private String storeValue;
+        private int minValue;
+        private int maxValue;
+        private boolean hasRange;
+        private Main main;
+
+        public NumericIntegerRangePrompt(Main main, Prompt param1Prompt, String param1String1, String param1String2, int param1Float1, int param1Float2) {
+            this.main = main;
+            this.parentPrompt = param1Prompt;
+            this.text = param1String1;
+            this.storeValue = param1String2;
+            this.minValue = param1Float1;
+            this.maxValue = param1Float2;
+            this.hasRange = true;
+        }
+
+        public NumericIntegerRangePrompt(Prompt param1Prompt, String param1String1, String param1String2) {
+            this.parentPrompt = param1Prompt;
+            this.text = param1String1;
+            this.storeValue = param1String2;
+            this.hasRange = false;
+        }
+
+        public String getPromptText(ConversationContext param1ConversationContext) { return this.text; }
+
+
+        public Prompt acceptInput(ConversationContext param1ConversationContext, String param1String) {
+            if (param1String.equalsIgnoreCase("cancel")) {
+                return this.parentPrompt;
+            }
+            if (!NumberUtils.isNumber(param1String)) {
+                param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  That's not a valid number!\n ");
+                return this;
+            }
+
+            int f = Integer.parseInt(param1String);
+
+            if (this.hasRange && (f < this.minValue || f > this.maxValue)) {
+                param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  The value must be between " + this.minValue + " and " + this.maxValue + "!\n ");
+                return this;
+            }
+
+            param1ConversationContext.setSessionData(this.storeValue, f);
+            Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+                    ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.CLICK, 10, 2);
             return this.parentPrompt;
         }
     }

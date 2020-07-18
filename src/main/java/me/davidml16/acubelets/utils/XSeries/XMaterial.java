@@ -1,3 +1,25 @@
+/*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2018 Hex_27
+ * Copyright (c) 2020 Crypto Morin
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+ * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+ * PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+ * FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ */
 package me.davidml16.acubelets.utils.XSeries;
 
 import com.google.common.base.Enums;
@@ -5,7 +27,6 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Maps;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.WordUtils;
@@ -23,9 +44,8 @@ import java.util.regex.Pattern;
  * <b>XMaterial</b> - Data Values/Pre-flattening<br>
  * 1.13 and above as priority.
  * <p>
- * This class is mainly designed to support ItemStacks.
- * If you want to use it on blocks you'll have to
- * use <a href="https://github.com/CryptoMorin/XSeries/blob/master/XBlock.java">XBlock</a>
+ * This class is mainly designed to support ItemStacks. If you want to use it on blocks, you'll have to use
+ * <a href="https://github.com/CryptoMorin/XSeries/blob/master/src/main/java/com/cryptomorin/xseries/XBlock.java">XBlock</a>
  * <p>
  * Pre-flattening: https://minecraft.gamepedia.com/Java_Edition_data_values/Pre-flattening
  * Materials: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
@@ -35,7 +55,7 @@ import java.util.regex.Pattern;
  * XMaterial v1: https://www.spigotmc.org/threads/329630/
  *
  * @author Crypto Morin
- * @version 5.0.1
+ * @version 5.1.0
  * @see Material
  * @see ItemStack
  */
@@ -444,6 +464,7 @@ public enum XMaterial {
     FURNACE_MINECART("POWERED_MINECART"),
     GHAST_SPAWN_EGG(56, "MONSTER_EGG"),
     GHAST_TEAR,
+    GILDED_BLACKSTONE("1.16"),
     GLASS,
     GLASS_BOTTLE,
     GLASS_PANE("THIN_GLASS"),
@@ -688,6 +709,7 @@ public enum XMaterial {
     MUSIC_DISC_FAR("RECORD_6"),
     MUSIC_DISC_MALL("RECORD_7"),
     MUSIC_DISC_MELLOHI("RECORD_8"),
+    MUSIC_DISC_PIGSTEP("1.16"),
     MUSIC_DISC_STAL("RECORD_9"),
     MUSIC_DISC_STRAD("RECORD_10"),
     MUSIC_DISC_WAIT("RECORD_11"),
@@ -771,6 +793,8 @@ public enum XMaterial {
     PETRIFIED_OAK_SLAB("WOOD_STEP"),
     PHANTOM_MEMBRANE("1.13"),
     PHANTOM_SPAWN_EGG("1.13", "MONSTER_EGG", ""),
+    PIGLIN_BANNER_PATTERN("1.16"),
+    PIGLIN_SPAWN_EGG(57, "MONSTER_EGG"),
     PIG_SPAWN_EGG(90, "MONSTER_EGG"),
     PILLAGER_SPAWN_EGG("1.14"),
     PINK_BANNER(9, "BANNER", "STANDING_BANNER"),
@@ -881,6 +905,7 @@ public enum XMaterial {
     PURPUR_STAIRS,
     QUARTZ,
     QUARTZ_BLOCK,
+    QUARTZ_BRICKS("1.16"),
     QUARTZ_PILLAR(2, "QUARTZ_BLOCK"),
     QUARTZ_SLAB(7, "STEP"),
     QUARTZ_STAIRS,
@@ -917,10 +942,7 @@ public enum XMaterial {
     RED_CARPET(14, "CARPET"),
     RED_CONCRETE(14, "CONCRETE"),
     RED_CONCRETE_POWDER(14, "CONCRETE_POWDER"),
-    /**
-     * Data value 0 or 1?
-     */
-    RED_DYE(0, "INK_SACK", "ROSE_RED"),
+    RED_DYE(1, "INK_SACK", "ROSE_RED"),
     RED_GLAZED_TERRACOTTA(14, "1.12", "HARD_CLAY", "STAINED_CLAY", "RED_TERRACOTTA"),
     RED_MUSHROOM,
     RED_MUSHROOM_BLOCK("RED_MUSHROOM", "HUGE_MUSHROOM_2"),
@@ -1039,6 +1061,7 @@ public enum XMaterial {
     STONE_STAIRS,
     STONE_SWORD,
     STRAY_SPAWN_EGG(6, "MONSTER_EGG"),
+    STRIDER_SPAWN_EGG("1.16"),
     STRING,
     STRIPPED_ACACIA_LOG("LOG_2"),
     STRIPPED_ACACIA_WOOD("LOG_2"),
@@ -1186,12 +1209,12 @@ public enum XMaterial {
     YELLOW_TERRACOTTA(4, "HARD_CLAY", "STAINED_CLAY"),
     YELLOW_WALL_BANNER(11, "WALL_BANNER"),
     YELLOW_WOOL(4, "WOOL"),
+    ZOGLIN_SPAWN_EGG("1.16"),
     ZOMBIE_HEAD(2, "SKULL", "SKULL_ITEM"),
     ZOMBIE_HORSE_SPAWN_EGG(29, "MONSTER_EGG"),
     ZOMBIE_SPAWN_EGG(54, "MONSTER_EGG"),
     ZOMBIE_VILLAGER_SPAWN_EGG(27, "MONSTER_EGG"),
     ZOMBIE_WALL_HEAD(2, "SKULL", "SKULL_ITEM"),
-    PIGLIN_SPAWN_EGG(57, "MONSTER_EGG"),
     ZOMBIFIED_PIGLIN_SPAWN_EGG(57, "MONSTER_EGG", "ZOMBIE_PIGMAN_SPAWN_EGG");
 
 
@@ -1202,6 +1225,14 @@ public enum XMaterial {
      * @since 2.0.0
      */
     public static final EnumSet<XMaterial> VALUES = EnumSet.allOf(XMaterial.class);
+
+    /**
+     * We don't want to use {@link Enums#getIfPresent(Class, String)} to avoid a few checks.
+     *
+     * @since 5.1.0
+     */
+    private static final Map<String, XMaterial> NAMES;
+
     /**
      * A set of material names that can be damaged.
      * <p>
@@ -1227,30 +1258,39 @@ public enum XMaterial {
      *
      * @since 3.0.0
      */
-    @SuppressWarnings("UnstableApiUsage")
-    private static final ImmutableMap<XMaterial, XMaterial> duplicated = Maps.immutableEnumMap(ImmutableMap.<XMaterial, XMaterial>builder()
-            .put(MELON, MELON_SLICE)
-            .put(CARROT, CARROTS)
-            .put(POTATO, POTATOES)
-            .put(BEETROOT, BEETROOTS)
-            .put(BROWN_MUSHROOM, BROWN_MUSHROOM_BLOCK)
-            .put(BRICK, BRICKS)
-            .put(NETHER_BRICK, NETHER_BRICKS)
+    private static final EnumMap<XMaterial, XMaterial> DUPLICATED = new EnumMap<XMaterial, XMaterial>(XMaterial.class) {{
+        put(MELON, MELON_SLICE);
+        put(CARROT, CARROTS);
+        put(POTATO, POTATOES);
+        put(BEETROOT, BEETROOTS);
+        put(BROWN_MUSHROOM, BROWN_MUSHROOM_BLOCK);
+        put(BRICK, BRICKS);
+        put(NETHER_BRICK, NETHER_BRICKS);
 
-            // Illegal Elements
-            // Since both 1.12 and 1.13 have <type>_DOOR XMaterial will use it
-            // for 1.12 to parse the material, but it needs <type>_DOOR_ITEM.
-            // We'll trick XMaterial into thinking this needs to be parsed
-            // using the old methods.
-            // These materials have their enum name added to the legacy list as well.
-            .put(DARK_OAK_DOOR, DARK_OAK_DOOR)
-            .put(ACACIA_DOOR, ACACIA_DOOR)
-            .put(BIRCH_DOOR, BIRCH_DOOR)
-            .put(JUNGLE_DOOR, JUNGLE_DOOR)
-            .put(SPRUCE_DOOR, SPRUCE_DOOR)
+        // Illegal Elements
+        // Since both 1.12 and 1.13 have <type>_DOOR XMaterial will use it
+        // for 1.12 to parse the material, but it needs <type>_DOOR_ITEM.
+        // We'll trick XMaterial into thinking this needs to be parsed
+        // using the old methods.
+        // These materials have their enum name added to the legacy list as well.
+        put(DARK_OAK_DOOR, DARK_OAK_DOOR);
+        put(ACACIA_DOOR, ACACIA_DOOR);
+        put(BIRCH_DOOR, BIRCH_DOOR);
+        put(JUNGLE_DOOR, JUNGLE_DOOR);
+        put(SPRUCE_DOOR, SPRUCE_DOOR);
+        put(CAULDRON, CAULDRON);
+    }};
 
-            .build()
-    );
+    /**
+     * Guava (Google Core Libraries for Java)'s cache for performance and timed caches.
+     * For strings that match a certain XMaterial. Mostly cached for configs.
+     *
+     * @since 1.0.0
+     */
+    private static final Cache<String, XMaterial> NAME_CACHE = CacheBuilder.newBuilder()
+            .softValues()
+            .expireAfterAccess(15, TimeUnit.MINUTES)
+            .build();
     /*
      * A set of all the legacy names without duplicates.
      * <p>
@@ -1265,17 +1305,6 @@ public enum XMaterial {
             .filter(m -> m.charAt(1) == '.')
             .collect(Collectors.collectingAndThen(Collectors.toSet(), ImmutableSet::copyOf));
     */
-
-    /**
-     * Guava (Google Core Libraries for Java)'s cache for performance and timed caches.
-     * For strings that match a certain XMaterial. Mostly cached for configs.
-     *
-     * @since 1.0.0
-     */
-    private static final Cache<String, XMaterial> NAME_CACHE = CacheBuilder.newBuilder()
-            .softValues()
-            .expireAfterAccess(15, TimeUnit.MINUTES)
-            .build();
     /**
      * Guava (Google Core Libraries for Java)'s cache for performance and timed caches.
      * For XMaterials that are already parsed once.
@@ -1285,9 +1314,7 @@ public enum XMaterial {
     private static final Cache<XMaterial, Optional<Material>> PARSED_CACHE = CacheBuilder.newBuilder()
             .softValues()
             .expireAfterAccess(10, TimeUnit.MINUTES)
-            .concurrencyLevel(Runtime.getRuntime().availableProcessors())
             .build();
-
     /**
      * Pre-compiled RegEx pattern.
      * Include both replacements to avoid recreating string multiple times with multiple RegEx checks.
@@ -1308,6 +1335,13 @@ public enum XMaterial {
      * @since 3.0.0
      */
     private static final boolean ISFLAT = supports(13);
+
+    static {
+        ImmutableMap.Builder<String, XMaterial> builder = ImmutableMap.builder();
+        for (XMaterial material : VALUES) builder.put(material.name(), material);
+        NAMES = builder.build();
+    }
+
     /**
      * The data value of this material https://minecraft.gamepedia.com/Java_Edition_data_values/Pre-flattening
      *
@@ -1360,13 +1394,24 @@ public enum XMaterial {
      * An invocation of this method yields exactly the same result as the expression:
      * <p>
      * <blockquote>
-     * {@link #getVersion()} == 1.8
+     * !{@link #supports(int)} 9
      * </blockquote>
      *
      * @since 2.0.0
      */
     public static boolean isOneEight() {
         return !supports(9);
+    }
+
+    /**
+     * Gets the {@link XMaterial} with this name without throwing an exception.
+     *
+     * @param name the name of the material.
+     * @return an optional that can be empty.
+     * @since 5.1.0
+     */
+    private static Optional<XMaterial> getIfPresent(@Nonnull String name) {
+        return Optional.ofNullable(NAMES.get(name));
     }
 
     /**
@@ -1515,6 +1560,7 @@ public enum XMaterial {
      * @see #matchXMaterial(ItemStack)
      * @since 3.0.0
      */
+    @SuppressWarnings("OptionalAssignedToNull")
     @Nonnull
     private static Optional<XMaterial> matchDefinedXMaterial(@Nonnull String name, byte data) {
         boolean duplicated = isDuplicated(name);
@@ -1522,11 +1568,12 @@ public enum XMaterial {
         // Do basic number and boolean checks before accessing more complex enum stuff.
         // Maybe we can simplify (ISFLAT || !duplicated) with the (!ISFLAT && duplicated) under it to save a few nanoseconds?
         // if (!Boolean.valueOf(Boolean.getBoolean(Boolean.TRUE.toString())).equals(Boolean.FALSE.booleanValue())) return null;
-        if (data <= 0 && !duplicated) {
+        Optional<XMaterial> xMaterial = null;
+        if (data <= 0 && (ISFLAT || !duplicated)) {
             // Apparently the transform method is more efficient than toJavaUtil()
             // toJavaUtil isn't even supported in older versions.
-            Optional<XMaterial> xMat = Enums.getIfPresent(XMaterial.class, name).transform(Optional::of).or(Optional.empty());
-            if (xMat.isPresent()) return xMat;
+            xMaterial = getIfPresent(name);
+            if (xMaterial.isPresent()) return xMaterial;
         }
 
         // XMaterial Paradox (Duplication Check)
@@ -1544,7 +1591,7 @@ public enum XMaterial {
             // A solution for XMaterial Paradox.
             // Manually parses the duplicated materials to find the exact material based on the server version.
             // If ends with "S" -> Plural Form Material
-            return Enums.getIfPresent(XMaterial.class, name).transform(Optional::of).or(Optional.empty());
+            return xMaterial == null ? getIfPresent(name) : xMaterial;
         }
         return Optional.ofNullable(xMat);
     }
@@ -1563,7 +1610,7 @@ public enum XMaterial {
      */
     private static boolean isDuplicated(@Nonnull String name) {
         // Don't use matchXMaterial() since this method is being called from matchXMaterial() itself and will cause a StackOverflowError.
-        for (Map.Entry<XMaterial, XMaterial> duplicated : duplicated.entrySet()) {
+        for (Map.Entry<XMaterial, XMaterial> duplicated : DUPLICATED.entrySet()) {
             XMaterial material = duplicated.getKey();
             if (material.name().equals(name) || material.anyMatchLegacy(name)) return true;
         }
@@ -1859,7 +1906,7 @@ public enum XMaterial {
      * @since 2.0.0
      */
     public boolean isDuplicated() {
-        return duplicated.containsKey(this);
+        return DUPLICATED.containsKey(this);
     }
 
     /**

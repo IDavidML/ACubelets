@@ -2,8 +2,11 @@ package me.davidml16.acubelets.objects;
 
 import me.davidml16.acubelets.enums.CraftType;
 
+import java.util.UUID;
+
 public class CraftIngredient {
 
+    private UUID uuid;
     private String parentType;
     private CraftType craftType;
     private String name;
@@ -14,15 +17,24 @@ public class CraftIngredient {
     }
 
     public CraftIngredient(String parentType, CraftType craftType, String name, int amount) {
+        this.uuid = UUID.randomUUID();
         this.parentType = parentType;
         this.craftType = craftType;
-        this.name = name;
         this.amount = amount;
+
+        if(craftType == CraftType.CUBELET)
+            this.name = name;
+        else if(craftType == CraftType.MONEY)
+            this.name = "MONEY";
+        else if(craftType == CraftType.POINTS)
+            this.name = "POINTS";
     }
 
-    public String getParentType() {
-        return parentType;
-    }
+    public UUID getUuid() { return uuid; }
+
+    public void setUuid(UUID uuid) { this.uuid = uuid; }
+
+    public String getParentType() { return parentType; }
 
     public void setParentType(String parentType) {
         this.parentType = parentType;

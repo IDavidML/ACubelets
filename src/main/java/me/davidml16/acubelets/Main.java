@@ -72,6 +72,9 @@ public class Main extends JavaPlugin {
     private CraftingConfirmation_GUI craftingConfirmationGUI;
     private RewardsPreview_GUI rewardsPreviewGUI;
     private TypeList_GUI typeListGUI;
+    private EditCrafting_GUI editCraftingGUI;
+    private EditCrafting_Crafts_GUI editCraftingCraftsGUI;
+    private EditCrafting_Ingredients_GUI editCraftingIngredientsGUI;
 
     private int playerCount;
 
@@ -149,6 +152,10 @@ public class Main extends JavaPlugin {
 
         cubeletCraftingHandler = new CubeletCraftingHandler(this);
         cubeletCraftingHandler.loadCrafting();
+
+        editCraftingGUI = new EditCrafting_GUI(this);
+        editCraftingCraftsGUI = new EditCrafting_Crafts_GUI(this);
+        editCraftingIngredientsGUI = new EditCrafting_Ingredients_GUI(this);
 
         playerDataHandler = new PlayerDataHandler(this);
 
@@ -305,6 +312,12 @@ public class Main extends JavaPlugin {
     public RewardsPreview_GUI getRewardsPreviewGUI() { return rewardsPreviewGUI; }
 
     public TypeList_GUI getTypeListGUI() { return typeListGUI; }
+
+    public EditCrafting_GUI getEditCraftingGUI() { return editCraftingGUI; }
+
+    public EditCrafting_Crafts_GUI getEditCraftingCraftsGUI() { return editCraftingCraftsGUI; }
+
+    public EditCrafting_Ingredients_GUI getEditCraftingIngredientsGUI() { return editCraftingIngredientsGUI; }
 
     public PluginHandler getPluginHandler() { return pluginHandler; }
 

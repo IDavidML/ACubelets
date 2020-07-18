@@ -149,6 +149,7 @@ public class CoreCommand extends Command {
         } else if (args[0].equalsIgnoreCase("setup")) {
             if(args.length == 2) {
                 if (main.playerHasPermission(p, "acubelets.admin")) {
+                    list.add("crafting");
                     for (File file : Objects.requireNonNull(new File(main.getDataFolder(), "types").listFiles())) {
                         list.add(file.getName().replace(".yml", ""));
                     }

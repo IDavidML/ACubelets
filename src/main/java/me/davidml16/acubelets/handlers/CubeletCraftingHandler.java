@@ -93,7 +93,7 @@ public class CubeletCraftingHandler {
                     if(!main.getCubeletTypesHandler().getTypes().containsKey(cubeletType)) continue;
 
                     int slot = config.getInt("cubelet-crafting.crafts." + cubeletType + ".slot");
-                    if(slot > (getInventorySize() - 10)) continue;
+                    if(slot > (getInventorySize() - 10) || slot < 0) continue;
 
                     List<CraftIngredient> ingredients = new ArrayList<>();
                     if(config.contains("cubelet-crafting.crafts." + cubeletType + ".ingredients")) {
@@ -135,11 +135,41 @@ public class CubeletCraftingHandler {
 
     }
 
+    public void saveCrafting() {
+        config.set("cubelet-crafting.settings.rows", this.inventorySize);
+        config.set("cubelet-crafting.crafts", new ArrayList<>());
+
+        for(CraftParent craftParent : crafts) {
+            config.set("cubelet-crafting.crafts." + craftParent.getCubeletType() + ".slot", craftParent.getSlot());
+            config.set("cubelet-crafting.crafts." + craftParent.getCubeletType() + ".ingredients", new ArrayList<>());
+
+            int i = 1;
+            for(CraftIngredient craftIngredient : craftParent.getIngrediens()) {
+                config.set("cubelet-crafting.crafts." + craftParent.getCubeletType() + ".ingredients." + i + ".type", craftIngredient.getCraftType().toString().toLowerCase());
+                if(craftIngredient.getCraftType() == CraftType.CUBELET)
+                    config.set("cubelet-crafting.crafts." + craftParent.getCubeletType() + ".ingredients." + i + ".name", craftIngredient.getName());
+                config.set("cubelet-crafting.crafts." + craftParent.getCubeletType() + ".ingredients." + i + ".amount", craftIngredient.getAmount());
+
+                i++;
+            }
+        }
+
+        saveConfig();
+    }
+
     public int getInventorySize() {
         int size = this.inventorySize;
         if(size >= 2 && size <= 6)
             return size * 9;
         return 4 * 9;
+    }
+
+    public int getInventoryRows() {
+        return this.inventorySize;
+    }
+
+    public void setInventorySize(int inventorySize) {
+        this.inventorySize = inventorySize;
     }
 
     public boolean haveIngredient(Player player, CraftIngredient ingredient) {
