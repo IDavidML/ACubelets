@@ -1,9 +1,8 @@
 package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.conversation.*;
+import me.davidml16.acubelets.conversation.crafting.*;
 import me.davidml16.acubelets.enums.CraftType;
-import me.davidml16.acubelets.interfaces.Reward;
 import me.davidml16.acubelets.objects.*;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.ItemBuilder;
@@ -11,7 +10,6 @@ import me.davidml16.acubelets.utils.NBTEditor;
 import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,7 +20,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.File;
 import java.util.*;
 
 public class EditCrafting_Ingredients_GUI implements Listener {
@@ -79,7 +76,12 @@ public class EditCrafting_Ingredients_GUI implements Listener {
         Inventory gui = Bukkit.createInventory(null, 36, "Crafting editor » Ingredients");
 
         ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
-        ItemStack newReward = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(ColorUtil.translate("&aCreate new ingredient")).toItemStack();
+        ItemStack newReward = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(ColorUtil.translate("&aCreate new ingredient")).setLore(
+                "",
+                ColorUtil.translate("&eLeft-Click » &aCubelet ingredient "),
+                ColorUtil.translate("&eMiddle-Click » &aLoot Points ingredient "),
+                ColorUtil.translate("&eRight-Click » &aMoney ingredient ")
+        ).toItemStack();
         ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(ColorUtil.translate("&aBack")).toItemStack();
 
         for (Integer i : borders) {
@@ -127,8 +129,8 @@ public class EditCrafting_Ingredients_GUI implements Listener {
                             ColorUtil.translate(" &7Type: &6" + craftIngredient.getCraftType().toString() + " "),
                             ColorUtil.translate(" &7Amount: &6" + craftIngredient.getAmount() + " "),
                             "",
-                            ColorUtil.translate("&eLeft-Click » &aRemove ingredient "),
-                            ColorUtil.translate("&eRight-Click » &aEdit ingredient "));
+                            ColorUtil.translate("&eLeft-Click » &aEdit ingredient "),
+                            ColorUtil.translate("&eRight-Click » &aRemove ingredient "));
                 }
 
 
@@ -192,7 +194,15 @@ public class EditCrafting_Ingredients_GUI implements Listener {
                 openPage(p, craftParent, opened.get(p.getUniqueId()).getPage() + 1);
             } else if (slot == 30) {
                 p.closeInventory();
-                new CraftParentMenu(main).getConversation(p).begin();
+
+                if (e.getClick() == ClickType.LEFT || e.getClick() == ClickType.SHIFT_LEFT) {
+                    new CraftIngredientCubeletMenu(main).getConversation(p, craftParent, CraftType.CUBELET).begin();
+                } else if(e.getClick() == ClickType.MIDDLE) {
+                    new CraftIngredientPointsMenu(main).getConversation(p, craftParent, CraftType.POINTS).begin();
+                } else if (e.getClick() == ClickType.RIGHT || e.getClick() == ClickType.SHIFT_RIGHT) {
+                    new CraftIngredientMoneyMenu(main).getConversation(p, craftParent, CraftType.MONEY).begin();
+                }
+
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 100, 3);
             } else if (slot == 32) {
                 main.getEditCraftingCraftsGUI().open(p);
@@ -207,14 +217,23 @@ public class EditCrafting_Ingredients_GUI implements Listener {
                 if (craftIngredient.isPresent()) {
                     if (e.getClick() == ClickType.LEFT || e.getClick() == ClickType.SHIFT_LEFT) {
 
-                        craftParent.getIngrediens().remove(craftIngredient.get());
-                        main.getCubeletCraftingHandler().saveCrafting();
-                        reloadGUI(craftParent);
-                        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
+                        p.closeInventory();
+
+                        CraftIngredient finalIngredient = craftIngredient.get();
+                        if(finalIngredient.getCraftType() == CraftType.CUBELET)
+                            new EditCraftIngredientCubeletMenu(main).getConversation(p, craftParent, finalIngredient).begin();
+                        else if(finalIngredient.getCraftType() == CraftType.POINTS)
+                            new EditCraftIngredientPointsMenu(main).getConversation(p, craftParent, finalIngredient).begin();
+                        else if(finalIngredient.getCraftType() == CraftType.MONEY)
+                            new EditCraftIngredientMoneyMenu(main).getConversation(p, craftParent, finalIngredient).begin();
+
+                        Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
 
                     } else if (e.getClick() == ClickType.RIGHT || e.getClick() == ClickType.SHIFT_RIGHT) {
 
-                        p.closeInventory();
+                        craftParent.getIngrediens().remove(craftIngredient.get());
+                        main.getCubeletCraftingHandler().saveCrafting();
+                        reloadGUI(craftParent);
                         Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
 
                     }

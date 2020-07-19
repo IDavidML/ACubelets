@@ -1,15 +1,7 @@
 package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.conversation.CommandRewardMenu;
-import me.davidml16.acubelets.conversation.EditCommandRewardMenu;
-import me.davidml16.acubelets.conversation.EditPermissionRewardMenu;
-import me.davidml16.acubelets.conversation.PermissionRewardMenu;
-import me.davidml16.acubelets.interfaces.Reward;
-import me.davidml16.acubelets.objects.CommandReward;
 import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.objects.Pair;
-import me.davidml16.acubelets.objects.PermissionReward;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.Sounds;
@@ -21,13 +13,11 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.File;
 import java.util.*;
 
 public class TypeList_GUI implements Listener {

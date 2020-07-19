@@ -25,10 +25,7 @@ import com.google.common.base.Enums;
 import com.google.common.base.Strings;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.NumberUtils;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.FireworkEffect;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.banner.Pattern;
@@ -66,6 +63,7 @@ import java.util.UUID;
  * @see ItemStack
  */
 public class XItemStack {
+
     /**
      * Writes an ItemStack object into a config.
      * The config file will not save after the object is written.
@@ -96,7 +94,7 @@ public class XItemStack {
         else config.set(path + "." + "enchanted", false);
 
         if (meta instanceof SkullMeta) {
-            if(XMaterial.supports(12)) config.set(path + "." + "skull", ((SkullMeta) meta).getOwningPlayer());
+            if(XMaterial.supports(12)) config.set(path + "." + "skull", ((SkullMeta) meta).getOwningPlayer().getUniqueId().toString());
             else config.set(path + "." + "skull", ((SkullMeta) meta).getOwner());
         } else if (meta instanceof BannerMeta) {
             BannerMeta banner = (BannerMeta) meta;

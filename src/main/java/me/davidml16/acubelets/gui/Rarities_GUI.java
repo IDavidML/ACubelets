@@ -1,10 +1,8 @@
 package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.conversation.CommandRewardMenu;
-import me.davidml16.acubelets.conversation.EditRarityMenu;
-import me.davidml16.acubelets.conversation.PermissionRewardMenu;
-import me.davidml16.acubelets.conversation.RarityMenu;
+import me.davidml16.acubelets.conversation.rarities.EditRarityMenu;
+import me.davidml16.acubelets.conversation.rarities.RarityMenu;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Pair;
 import me.davidml16.acubelets.objects.Rarity;

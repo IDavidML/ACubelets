@@ -390,11 +390,58 @@ public interface CommonPrompts  {
         }
     }
 
+    public static class IntegerPrompt extends StringPrompt {
+        private Prompt parentPrompt;
+        private String text;
+        private String storeValue;
+        private Main main;
+
+        public IntegerPrompt(Main main, Prompt param1Prompt, String param1String1, String param1String2) {
+            this.main = main;
+            this.parentPrompt = param1Prompt;
+            this.text = param1String1;
+            this.storeValue = param1String2;
+        }
+
+        public String getPromptText(ConversationContext param1ConversationContext) {
+            return this.text;
+        }
+
+        public Prompt acceptInput(ConversationContext param1ConversationContext, String param1String) {
+            if (param1String.trim().equalsIgnoreCase("cancel")) {
+                return this.parentPrompt;
+            }
+
+            if (param1String.contains(" ")) {
+                param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  Spaces are not allowed!\n ");
+                Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+                        ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);
+                return this;
+            }
+
+            int integer = 0;
+
+            try {
+                integer = Integer.parseInt(param1String);
+            } catch(NumberFormatException e) {
+                param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  Invalid number!\n ");
+                Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+                        ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);
+                return this;
+            }
+
+            param1ConversationContext.setSessionData(this.storeValue, integer);
+            Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+                    ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.CLICK, 10, 2);
+            return parentPrompt;
+        }
+    }
+
     public static class ConfirmExitPrompt extends StringPrompt {
         private Prompt parent;
         private Main main;
 
-        ConfirmExitPrompt(Main main, Prompt param1Prompt) {
+        public ConfirmExitPrompt(Main main, Prompt param1Prompt) {
             this.main = main;
             this.parent = param1Prompt;
         }
@@ -431,7 +478,7 @@ public interface CommonPrompts  {
         private String text;
         private Main main;
 
-        ErrorPrompt(Main main, Prompt param1Prompt, String param1String1) {
+        public ErrorPrompt(Main main, Prompt param1Prompt, String param1String1) {
             this.main = main;
             this.parent = param1Prompt;
             this.text = param1String1;

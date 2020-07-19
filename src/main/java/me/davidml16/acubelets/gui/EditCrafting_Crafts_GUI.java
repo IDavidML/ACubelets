@@ -1,8 +1,8 @@
 package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.conversation.*;
-import me.davidml16.acubelets.interfaces.Reward;
+import me.davidml16.acubelets.conversation.crafting.CraftParentMenu;
+import me.davidml16.acubelets.conversation.crafting.EditCraftParentMenu;
 import me.davidml16.acubelets.objects.*;
 import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.ItemBuilder;
@@ -20,7 +20,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.File;
 import java.util.*;
 
 public class EditCrafting_Crafts_GUI implements Listener {
@@ -181,7 +180,7 @@ public class EditCrafting_Crafts_GUI implements Listener {
 
                     p.closeInventory();
                     new EditCraftParentMenu(main).getConversation(p, craftParent).begin();
-                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
 
                 }
             }
