@@ -6,6 +6,7 @@ import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.interfaces.Reward;
+import me.davidml16.acubelets.objects.ColorAnimation;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.objects.CommandReward;
@@ -22,14 +23,16 @@ public class HologramHandler {
 
     private Main main;
 
-    private boolean red;
+    private ColorAnimation colorAnimation;
+    private String actualColor;
 
     private static final double LINE_HEIGHT = 0.34;
     private static final double LINE_HEIGHT_REWARD = 0.32;
 
     public HologramHandler(Main main) {
         this.main = main;
-        this.red = false;
+        this.colorAnimation = new ColorAnimation();
+        this.actualColor = "&c";
     }
 
     public void loadHolograms() {
@@ -57,15 +60,16 @@ public class HologramHandler {
     }
 
     public void reloadHolograms() {
-        this.red = !this.red;
+        this.actualColor = colorAnimation.nextColor();
         for(Player p : Bukkit.getOnlinePlayers()) {
             reloadHolograms(p);
         }
     }
 
     public String getColor() {
-        return red ? "&c" : "&f";
+        return this.actualColor;
     }
+    public ColorAnimation getColorAnimation() { return colorAnimation; }
 
     public void loadHolograms(Player p) {
         for(CubeletBox box : main.getCubeletBoxHandler().getBoxes().values()) {

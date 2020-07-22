@@ -160,6 +160,7 @@ public class Main extends JavaPlugin {
         playerDataHandler = new PlayerDataHandler(this);
 
         hologramHandler = new HologramHandler(this);
+        hologramHandler.getColorAnimation().setColors(getConfig().getStringList("Holograms.ColorAnimation"));
         hologramHandler.loadHolograms();
 
         playerDataHandler.loadAllPlayerData();

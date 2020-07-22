@@ -53,3 +53,13 @@ RewardsDuplication:
     Enabled: false
     PermissionCommand: 'lp user %player% permission set %permission% true'
     PointsCommand: 'points give %player% %points%'
+
+
+# Change hologram settings
+# Update interval default: 30 (1.5s)
+# Color animation default colors: &f and &c
+Holograms:
+    UpdateInterval: 30
+    ColorAnimation:
+        - '&f'
+        - '&c'
