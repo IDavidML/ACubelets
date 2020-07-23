@@ -163,6 +163,8 @@ public class Main extends JavaPlugin {
         hologramHandler.getColorAnimation().setColors(getConfig().getStringList("Holograms.ColorAnimation"));
         hologramHandler.loadHolograms();
 
+        settings.put("HDVisibleToAllPlayers", getConfig().getBoolean("Holograms.Duplication.VisibleToAllPlayers"));
+
         playerDataHandler.loadAllPlayerData();
 
         hologramTask = new HologramTask(this);
@@ -347,6 +349,10 @@ public class Main extends JavaPlugin {
     public boolean isPreviewEnabled() { return settings.get("RewardsPreview"); }
 
     public void setPreviewEnabled(boolean rewardsPreview) { settings.put("RewardsPreview", rewardsPreview); }
+
+    public boolean isDuplicationVisibleAllPlayers() { return settings.get("HDVisibleToAllPlayers"); }
+
+    public void setDuplicationVisibleAllPlayers(boolean visibility) { settings.put("HDVisibleToAllPlayers", visibility); }
 
     public String getNoCubeletsCommand() {
         return noCubeletsCommand;

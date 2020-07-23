@@ -195,6 +195,10 @@ public class HologramHandler {
 
                 List<String> lines = getLinesRewardDuplicated(reward, pointsToShow);
                 for (Player p : Bukkit.getOnlinePlayers()) {
+
+                    if(!main.isDuplicationVisibleAllPlayers())
+                        if(!box.getPlayerOpening().getUniqueId().equals(p.getUniqueId())) continue;
+
                     if (box.getHolograms().containsKey(p.getUniqueId())) {
                         Hologram hologram = box.getHolograms().get(p.getUniqueId());
                         hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + (box.getBlockHeight() + 0.1875), 0.5));

@@ -46,6 +46,8 @@ public class PluginHandler {
         main.setDuplicationPermissionCommand(main.getConfig().getString("RewardsDuplication.PermissionCommand"));
         main.setDuplicationPointsCommand(main.getConfig().getString("RewardsDuplication.PointsCommand"));
 
+        main.setDuplicationVisibleAllPlayers(main.getConfig().getBoolean("Holograms.Duplication.VisibleToAllPlayers"));
+
         main.getLanguageHandler().setLanguage(main.getConfig().getString("Language").toLowerCase());
         main.getHologramTask().stop();
         main.getHologramHandler().removeHolograms();
