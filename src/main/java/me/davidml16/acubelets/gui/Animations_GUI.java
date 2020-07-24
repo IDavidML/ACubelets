@@ -104,7 +104,12 @@ public class Animations_GUI implements Listener {
             gui.setItem(30, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&cSummer Animation")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
         }
 
-        gui.setItem(31, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorUtil.translate("&cComing soon")).toItemStack());
+        if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("halloween")) {
+            gui.setItem(31, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&aHalloween Animation")).toItemStack());
+        } else {
+            gui.setItem(31, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&cHalloween Animation")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
+        }
+
         gui.setItem(32, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorUtil.translate("&cComing soon")).toItemStack());
         gui.setItem(33, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorUtil.translate("&cComing soon")).toItemStack());
         gui.setItem(34, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorUtil.translate("&cComing soon")).toItemStack());
@@ -177,7 +182,12 @@ public class Animations_GUI implements Listener {
             gui.setItem(30, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&cSummer Animation")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
         }
 
-        gui.setItem(31, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorUtil.translate("&cComing soon")).toItemStack());
+        if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("halloween")) {
+            gui.setItem(31, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(ColorUtil.translate("&aHalloween Animation")).toItemStack());
+        } else {
+            gui.setItem(31, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(ColorUtil.translate("&cHalloween Animation")).setLore("", ColorUtil.translate("&eClick to enable!")).toItemStack());
+        }
+
         gui.setItem(32, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorUtil.translate("&cComing soon")).toItemStack());
         gui.setItem(33, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorUtil.translate("&cComing soon")).toItemStack());
         gui.setItem(34, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorUtil.translate("&cComing soon")).toItemStack());
@@ -207,7 +217,7 @@ public class Animations_GUI implements Listener {
         if (opened.containsKey(p.getUniqueId())) {
             e.setCancelled(true);
             int slot = e.getRawSlot();
-            if ((slot >= 11 && slot <= 14) || (slot >= 29 && slot <= 30)) {
+            if ((slot >= 11 && slot <= 14) || (slot >= 29 && slot <= 31)) {
                 chanceAnimationConfig(p, slot);
             } else if (slot == 49) {
                 String id = opened.get(p.getUniqueId());
@@ -244,6 +254,9 @@ public class Animations_GUI implements Listener {
                 break;
             case 30:
                 changeAnimation(config, p, "summer", cubeletType);
+                break;
+            case 31:
+                changeAnimation(config, p, "halloween", cubeletType);
                 break;
             default:
                 break;

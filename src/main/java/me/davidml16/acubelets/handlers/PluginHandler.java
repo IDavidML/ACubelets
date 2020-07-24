@@ -29,6 +29,7 @@ public class PluginHandler {
         main.getAnimationHandler().getTasks().clear();
 
         for(Entity entity : main.getAnimationHandler().getEntities()) {
+            if(entity == null || entity.isDead()) continue;
             entity.remove();
         }
         main.getAnimationHandler().getEntities().clear();

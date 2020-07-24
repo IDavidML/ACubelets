@@ -65,24 +65,24 @@ public class Animation4_Task implements Animation {
 		@Override
 		public void run() {
 
-			if(time == 50) {
+			if(time == 45) {
 				arch.runTaskTimer(main, 0L, 1L);
 				archSounds.runTaskTimer(main, 0L, 5L);
-			} else if(time == 100) {
+			} else if(time == 95) {
 				archSounds.cancel();
-			} else if(time == 105) {
+			} else if(time == 100) {
 				music.runTaskTimer(main, 0L, 5L);
 
 				armorStand = ASSpawner.spawn(main, cubeletBox, cubeletType, false);
 				armorStandLocation = armorStand.getLocation();
 				main.getAnimationHandler().getEntities().add(armorStand);
-			} else if(time > 105 && time < 145) {
+			} else if(time > 100 && time < 140) {
 				if (armorStand != null) {
-					if(time < 144)armorStandLocation.add(0, 0.025, 0);
+					if(time < 139)armorStandLocation.add(0, 0.025, 0);
 					armorStand.teleport(armorStandLocation);
 					armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.16, 0));
 				}
-			} else if(time == 150) {
+			} else if(time == 145) {
 				music.cancel();
 				pigman = (LivingEntity) cubeletBox.getLocation().getWorld().spawnEntity(getLocationRotation(), EntityType.PIG_ZOMBIE);
 
@@ -97,20 +97,20 @@ public class Animation4_Task implements Animation {
 
 				particles = new Animation4_3x3Particles(pigman);
 				particles.runTaskTimer(main, 0L, 1L);
-			} else if(time == 160) {
+			} else if(time == 155) {
 				NBTEditor.set( pigman, ( byte ) 1, "NoAI" );
 
 				pigmanLocation = pigman.getLocation();
 				pigmanLocation.setYaw(cubeletBox.getRotation().value);
 				pigmanLocation.setPitch(0);
 				pigman.teleport(pigmanLocation);
-			} else if(time == 200) {
+			} else if(time == 195) {
 				entityPackets = new Animation4_EntityPackets(pigman, armorStand, cubeletBox);
 				entityPackets.runTaskTimer(main, 0L, 5L);
-			} else if(time == 298) {
+			} else if(time == 293) {
 				colorRarity = ColorUtil.getRGBbyColor(ColorUtil.getColorByText(reward.getRarity().getName()));
 				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 1.50, 0.5), FireworkEffect.Type.BALL_LARGE, colors.get(0), colors.get(1));
-			} else if(time == 300) {
+			} else if(time == 295) {
 				pigman.remove();
 				music.cancel();
 				particles.cancel();
@@ -121,18 +121,18 @@ public class Animation4_Task implements Animation {
 				cubeletBox.setState(CubeletBoxState.REWARD);
 				armorStand.remove();
 				armorStand = null;
-			} else if(time == 340) {
+			} else if(time == 335) {
 				if(main.isDuplicationEnabled())
 					if(reward instanceof PermissionReward)
 						hologramAnimation = main.getCubeletRewardHandler().permissionReward(cubeletBox, reward);
-			} else if(time > 300 && time < 440) {
+			} else if(time > 295 && time < 435) {
 				UtilParticles.drawParticleLine(corner1, corner2, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 				UtilParticles.drawParticleLine(corner2, corner3, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 				UtilParticles.drawParticleLine(corner3, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 				UtilParticles.drawParticleLine(corner1, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 
 				UtilParticles.display(Particles.FLAME, 1f, 0f, 1f, cubeletBox.getLocation(), 2);
-			} else if(time == 440) {
+			} else if(time == 435) {
 				stop();
 				blocks.restore();
 
@@ -176,7 +176,7 @@ public class Animation4_Task implements Animation {
 		music = new Animation4_Music(box.getLocation());
 
 		blocks = new Animation4_Blocks(box.getLocation());
-		blocks.runTaskTimer(main, 0L, 7L);
+		blocks.runTaskTimer(main, 0L, 6L);
 
 		arch = new Animation4_Arch(box.getLocation());
 

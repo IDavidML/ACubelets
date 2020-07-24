@@ -6,6 +6,7 @@ import me.davidml16.acubelets.animations.normal.animation2.Animation2_Task;
 import me.davidml16.acubelets.animations.normal.animation3.Animation3_Task;
 import me.davidml16.acubelets.animations.normal.animation4.Animation4_Task;
 import me.davidml16.acubelets.animations.seasonal.easter.AnimationEaster_Task;
+import me.davidml16.acubelets.animations.seasonal.halloween.AnimationHalloween_Task;
 import me.davidml16.acubelets.animations.seasonal.summer.AnimationSummer_Task;
 import org.bukkit.entity.Entity;
 
@@ -35,6 +36,7 @@ public class AnimationHandler {
         this.animations.add("animation4");
         this.animations.add("summer");
         this.animations.add("easter");
+        this.animations.add("halloween");
     }
 
     public Animation getAnimation(String animation) {
@@ -53,6 +55,8 @@ public class AnimationHandler {
             return new AnimationSummer_Task(main);
         else if(animation.equalsIgnoreCase("easter"))
             return new AnimationEaster_Task(main);
+        else if(animation.equalsIgnoreCase("halloween"))
+            return new AnimationHalloween_Task(main);
 
         return null;
     }
