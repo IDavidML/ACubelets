@@ -33,12 +33,18 @@ public class AnimationHalloween_Pumpkin extends BukkitRunnable {
         this.spawnLoc = spawnLoc;
         this.playerUUID = playerUUID;
 
-        ArmorStand armorStand = spawnLoc.getWorld().spawn(spawnLoc.clone().add(0, -0.87, 0), ArmorStand.class);
+        Player target = Bukkit.getPlayer(playerUUID);
+        if(target != null) {
+            spawnLoc.setDirection(target.getLocation().subtract(spawnLoc).toVector());
+        }
+        spawnLoc.add(0, -0.87, 0);
+
+        ArmorStand armorStand = spawnLoc.getWorld().spawn(spawnLoc, ArmorStand.class);
 
         NBTEditor.set( armorStand, ( byte ) 1, "Silent" );
 
         armorStand.setVisible(false);
-        armorStand.setGravity(true);
+        armorStand.setGravity(false);
         if(XMaterial.isNewVersion())
             armorStand.setHelmet(XMaterial.CARVED_PUMPKIN.parseItem());
         else
@@ -52,15 +58,7 @@ public class AnimationHalloween_Pumpkin extends BukkitRunnable {
         UtilParticles.display(Particles.EXPLOSION_LARGE, spawnLoc.clone().add(0, 0.5, 0), 2);
         Sounds.playSound(spawnLoc, Sounds.MySound.EXPLODE, 0.5F, 1f);
 
-        armorStand.teleport(spawnLoc.add(0, -0.87, 0));
-
         main.getAnimationHandler().getEntities().add(armorStand);
-
-        Player target = Bukkit.getPlayer(playerUUID);
-        if(target != null) {
-            spawnLoc.setDirection(target.getLocation().subtract(armorStand.getLocation()).toVector());
-            armorStand.teleport(spawnLoc);
-        }
 
         this.armorStand = armorStand;
     }
