@@ -269,38 +269,66 @@ public class MySQL implements Database {
         });
     }
 
-    public void setPlayerOrderSetting(UUID uuid, String orderBy) throws SQLException {
-        PreparedStatement ps = null;
-        Connection connection = null;
-        try {
-            connection = hikari.getConnection();
-            ps = connection.prepareStatement("UPDATE ac_players SET `ORDER_BY` = ? WHERE `UUID` = ?");
-            ps.setString(1, orderBy);
-            ps.setString(2, uuid.toString());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if(ps != null) ps.close();
-            if(connection != null) connection.close();
-        }
+    public void setPlayerOrderSetting(UUID uuid, String orderBy) {
+        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+            PreparedStatement ps = null;
+            Connection connection = null;
+            try {
+                connection = hikari.getConnection();
+                ps = connection.prepareStatement("UPDATE ac_players SET `ORDER_BY` = ? WHERE `UUID` = ?");
+                ps.setString(1, orderBy);
+                ps.setString(2, uuid.toString());
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if(ps != null) {
+                    try {
+                        ps.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                if(connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
-    public void setPlayerLootPoints(UUID uuid, long amount) throws SQLException {
-        PreparedStatement ps = null;
-        Connection connection = null;
-        try {
-            connection = hikari.getConnection();
-            ps = connection.prepareStatement("UPDATE ac_players SET `LOOT_POINTS` = ? WHERE `UUID` = ?");
-            ps.setLong(1, amount);
-            ps.setString(2, uuid.toString());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if(ps != null) ps.close();
-            if(connection != null) connection.close();
-        }
+    public void setPlayerLootPoints(UUID uuid, long amount) {
+        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+            PreparedStatement ps = null;
+            Connection connection = null;
+            try {
+                connection = hikari.getConnection();
+                ps = connection.prepareStatement("UPDATE ac_players SET `LOOT_POINTS` = ? WHERE `UUID` = ?");
+                ps.setLong(1, amount);
+                ps.setString(2, uuid.toString());
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if(ps != null) {
+                    try {
+                        ps.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                if(connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     public void saveProfileAsync(Profile profile) {
@@ -496,6 +524,43 @@ public class MySQL implements Database {
     }
 
     @Override
+    public void addCubelets(UUID uuid, Collection<Cubelet> cubelets) {
+        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+
+            StringBuilder insertString = new StringBuilder();
+            for(Cubelet cubelet : cubelets) {
+                if(insertString.toString().equalsIgnoreCase("")) insertString.append("('").append(uuid.toString()).append("','").append(cubelet.getUuid()).append("','").append(cubelet.getType()).append("',").append(cubelet.getReceived()).append(",").append(cubelet.getExpire()).append(")");
+                else insertString.append(", ('").append(uuid.toString()).append("','").append(cubelet.getUuid()).append("','").append(cubelet.getType()).append("',").append(cubelet.getReceived()).append(",").append(cubelet.getExpire()).append(")");
+            }
+
+            PreparedStatement ps = null;
+            Connection connection = null;
+            try {
+                connection = hikari.getConnection();
+                ps = connection.prepareStatement("INSERT INTO ac_cubelets (UUID,cubeletUUID,type,received,expire) VALUES " + insertString.toString());
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (ps != null) {
+                    try {
+                        ps.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
     public void removeCubelet(UUID uuid, UUID cubeletUUID) {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
@@ -533,6 +598,43 @@ public class MySQL implements Database {
             try {
                 connection = hikari.getConnection();
                 ps = connection.prepareStatement("DELETE FROM ac_cubelets WHERE rowid IN (SELECT rowid FROM ac_cubelets WHERE UUID = '" + uuid + "' AND type = '" + type + "' LIMIT " + amount + ");");
+                ps.execute();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (ps != null) {
+                    try {
+                        ps.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void removeCubelets(UUID uuid, Collection<Cubelet> cubelets) {
+        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+
+            StringBuilder deleteString = new StringBuilder();
+            for(Cubelet cubelet : cubelets) {
+                if(deleteString.toString().equalsIgnoreCase("")) deleteString.append("'").append(cubelet.getUuid().toString()).append("'");
+                else deleteString.append(",'").append(cubelet.getUuid().toString()).append("'");
+            }
+
+            PreparedStatement ps = null;
+            Connection connection = null;
+            try {
+                connection = hikari.getConnection();
+                ps = connection.prepareStatement("DELETE FROM ac_cubelets WHERE UUID = '" + uuid + "' AND cubeletUUID IN (" + deleteString + ");");
                 ps.execute();
             } catch (SQLException e) {
                 e.printStackTrace();

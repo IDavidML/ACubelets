@@ -291,28 +291,28 @@ public class CubeletTypesHandler {
     public void giveCubelet(UUID uuid, String type, int amount) throws SQLException {
         if (main.getCubeletTypesHandler().getTypes().containsKey(type)) {
             CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(type);
+
+            Collection<Cubelet> cubelets = new ArrayList<>();
+
             if (amount > 0) {
-                for (int i = 1; i <= amount; i++) {
-                    try {
-                        Cubelet cubelet = new Cubelet(cubeletType);
-                        main.getDatabaseHandler().addCubelet(uuid, cubelet.getUuid(), cubelet.getType(), cubelet.getReceived(), cubelet.getExpire());
-                        if(Bukkit.getPlayer(uuid) != null) {
-                            Player target = Bukkit.getPlayer(uuid);
-                            main.getPlayerDataHandler().getData(Objects.requireNonNull(target)).getCubelets().add(cubelet);
-                        }
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                }
+
+                for (int i = 1; i <= amount; i++)
+                    cubelets.add(new Cubelet(cubeletType));
+
+                main.getDatabaseHandler().addCubelets(uuid, cubelets);
 
                 if(Bukkit.getPlayer(uuid) != null) {
                     Player target = Bukkit.getPlayer(uuid);
 
+                    main.getPlayerDataHandler().getData(Objects.requireNonNull(target)).getCubelets().addAll(cubelets);
+
                     if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(target);
                     if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(target);
+                    main.getHologramHandler().reloadHolograms(target);
 
                     Bukkit.getPluginManager().callEvent(new CubeletReceivedEvent(target, getTypeBydId(type), amount));
                 }
+
             }
         }
     }
@@ -332,24 +332,26 @@ public class CubeletTypesHandler {
         if (main.getCubeletTypesHandler().getTypes().containsKey(type)) {
             if (amount > 0) {
                 if(Bukkit.getPlayer(uuid) != null) {
+
                     Player target = Bukkit.getPlayer(uuid);
                     Profile profile = main.getPlayerDataHandler().getData(target);
 
-                    for (int i = 1; i <= amount; i++) {
-                        try {
-                            Optional<Cubelet> cb = profile.getCubelets().stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(type)).findFirst();
+                    Collection<Cubelet> cubelets = new ArrayList<>();
 
-                            if (cb.isPresent()) {
-                                main.getPlayerDataHandler().getData(Objects.requireNonNull(target)).getCubelets().remove(cb.get());
-                                main.getDatabaseHandler().removeCubelet(uuid, cb.get().getUuid());
-                            }
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
+                    for (int i = 1; i <= amount; i++) {
+                        Optional<Cubelet> cb = profile.getCubelets().stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(type)).findFirst();
+                        if(cb.isPresent()) {
+                            Cubelet cubelet = cb.get();
+                            cubelets.add(cubelet);
+                            profile.getCubelets().remove(cubelet);
                         }
                     }
 
                     if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(target);
                     if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(target);
+                    main.getHologramHandler().reloadHolograms(target);
+
+                    main.getDatabaseHandler().removeCubelets(uuid, cubelets);
 
                 } else {
                     main.getDatabaseHandler().removeCubelet(uuid, type, amount);
