@@ -2,7 +2,7 @@ package me.davidml16.acubelets.conversation;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.Bukkit;
@@ -82,7 +82,7 @@ public class TypeIconMenu implements ConversationAbandonedListener, CommonPrompt
                         }
 
                         main.getCubeletTypesHandler().saveConfig(cubeletType.getId());
-                        param1ConversationContext.getForWhom().sendRawMessage("\n" + ColorUtil.translate(main.getLanguageHandler().getPrefix()
+                        param1ConversationContext.getForWhom().sendRawMessage("\n" + Utils.translate(main.getLanguageHandler().getPrefix()
                                 + " &aSaved skull texture of cubelet type &e" + cubeletType.getId() + " &awithout errors!"));
 
                         Sounds.playSound(player, player.getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
@@ -113,7 +113,7 @@ public class TypeIconMenu implements ConversationAbandonedListener, CommonPrompt
                                     cubeletType.setIcon(SkullCreator.itemFromBase64(textureEncoded));
 
                                     main.getCubeletTypesHandler().saveConfig(cubeletType.getId());
-                                    param1ConversationContext.getForWhom().sendRawMessage("\n" + ColorUtil.translate(main.getLanguageHandler().getPrefix()
+                                    param1ConversationContext.getForWhom().sendRawMessage("\n" + Utils.translate(main.getLanguageHandler().getPrefix()
                                             + " &aSaved skull texture of cubelet type &e" + cubeletType.getId() + " &awithout errors!"));
 
                                     Sounds.playSound(player, player.getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);

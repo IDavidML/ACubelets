@@ -10,7 +10,7 @@ import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Pair;
 import me.davidml16.acubelets.objects.CommandReward;
 import me.davidml16.acubelets.objects.PermissionReward;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
@@ -65,13 +65,13 @@ public class Rewards_GUI implements Listener {
         Inventory gui = Bukkit.createInventory(null, 45, "%cubelet_type% | Rewards".replaceAll("%cubelet_type%", id));
 
         ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
-        ItemStack newReward = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(ColorUtil.translate("&aCreate new reward"))
+        ItemStack newReward = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(Utils.translate("&aCreate new reward"))
                 .setLore(
                     "",
-                    ColorUtil.translate("&eLeft-Click » &aCommand reward "),
-                    ColorUtil.translate("&eRight-Click » &aPermission reward "))
+                    Utils.translate("&eLeft-Click » &aCommand reward "),
+                    Utils.translate("&eRight-Click » &aPermission reward "))
                 .toItemStack();
-        ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(ColorUtil.translate("&aBack to config")).toItemStack();
+        ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(Utils.translate("&aBack to config")).toItemStack();
 
         for (Integer i : borders) {
             gui.setItem(i, edge);
@@ -121,13 +121,13 @@ public class Rewards_GUI implements Listener {
             gui.setItem(i, null);
 
         if (page > 0) {
-            gui.setItem(18, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(ColorUtil.translate("&aPrevious page")).toItemStack());
+            gui.setItem(18, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(Utils.translate("&aPrevious page")).toItemStack());
         } else {
             gui.setItem(18, new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
         }
 
         if (rewards.size() > (page + 1) * 21) {
-            gui.setItem(26, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(ColorUtil.translate("&aNext page")).toItemStack());
+            gui.setItem(26, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(Utils.translate("&aNext page")).toItemStack());
         } else {
             gui.setItem(26, new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
         }
@@ -138,37 +138,37 @@ public class Rewards_GUI implements Listener {
             for (Reward reward : rewards) {
                 if (reward instanceof CommandReward) {
                     gui.addItem(new ItemBuilder(reward.getIcon())
-                            .setName(ColorUtil.translate("&a" + reward.getId()))
+                            .setName(Utils.translate("&a" + reward.getId()))
                             .setLore(
                                     "",
-                                    ColorUtil.translate(" &7Name: &6" + reward.getName() + " "),
-                                    ColorUtil.translate(" &7Rarity: &6" + reward.getRarity().getId() + " "),
-                                    ColorUtil.translate(" &7Icon: &6" + reward.getIcon().getType().name() + " "),
-                                    ColorUtil.translate(" &7Commands: &6" + ((CommandReward) reward).getCommands().size() + " "),
+                                    Utils.translate(" &7Name: &6" + reward.getName() + " "),
+                                    Utils.translate(" &7Rarity: &6" + reward.getRarity().getId() + " "),
+                                    Utils.translate(" &7Icon: &6" + reward.getIcon().getType().name() + " "),
+                                    Utils.translate(" &7Commands: &6" + ((CommandReward) reward).getCommands().size() + " "),
                                     "",
-                                    ColorUtil.translate("&eLeft-Click » &aRemove reward "),
-                                    ColorUtil.translate("&eRight-Click » &aEdit reward ")
+                                    Utils.translate("&eLeft-Click » &aRemove reward "),
+                                    Utils.translate("&eRight-Click » &aEdit reward ")
                             ).toItemStack());
                 } else if(reward instanceof PermissionReward) {
                     gui.addItem(new ItemBuilder(reward.getIcon())
-                            .setName(ColorUtil.translate("&a" + reward.getId()))
+                            .setName(Utils.translate("&a" + reward.getId()))
                             .setLore(
                                     "",
-                                    ColorUtil.translate(" &7Name: &6" + reward.getName() + " "),
-                                    ColorUtil.translate(" &7Rarity: &6" + reward.getRarity().getId() + " "),
-                                    ColorUtil.translate(" &7Icon: &6" + reward.getIcon().getType().name() + " "),
-                                    ColorUtil.translate(" &7Permission: &6" + ((PermissionReward) reward).getPermission() + " "),
+                                    Utils.translate(" &7Name: &6" + reward.getName() + " "),
+                                    Utils.translate(" &7Rarity: &6" + reward.getRarity().getId() + " "),
+                                    Utils.translate(" &7Icon: &6" + reward.getIcon().getType().name() + " "),
+                                    Utils.translate(" &7Permission: &6" + ((PermissionReward) reward).getPermission() + " "),
                                     "",
-                                    ColorUtil.translate("&eLeft-Click » &aRemove reward "),
-                                    ColorUtil.translate("&eRight-Click » &aEdit reward ")
+                                    Utils.translate("&eLeft-Click » &aRemove reward "),
+                                    Utils.translate("&eRight-Click » &aEdit reward ")
                             ).toItemStack());
                 }
             }
         } else {
-            gui.setItem(22, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorUtil.translate("&cAny rewards created")).setLore(
+            gui.setItem(22, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(Utils.translate("&cAny rewards created")).setLore(
                     "",
-                    ColorUtil.translate(" &7You dont have any "),
-                    ColorUtil.translate(" &7reward created. "),
+                    Utils.translate(" &7You dont have any "),
+                    Utils.translate(" &7reward created. "),
                     ""
             ).toItemStack());
         }
@@ -233,7 +233,7 @@ public class Rewards_GUI implements Listener {
                     rewardsAll.put(reward.getRarity().getId(), commandRewards);
                     cubeletType.setRewards(rewardsAll);
 
-                    p.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
+                    p.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix()
                             + " &aYou removed reward &e" + rewardID + " &afrom rewards of cubelet type &e" + cubeletType.getId()));
                     reloadGUI(cubeletType.getId());
                     Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);

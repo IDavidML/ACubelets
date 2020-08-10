@@ -1,7 +1,7 @@
 package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -14,7 +14,7 @@ public class ExecuteSetup {
 
     public boolean executeCommand(CommandSender sender, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(ColorUtil.translate("&cThe commands only can be use by players!"));
+            sender.sendMessage(Utils.translate("&cThe commands only can be use by players!"));
             return true;
         }
 
@@ -25,7 +25,7 @@ public class ExecuteSetup {
 
         if (args.length == 1) {
             sender.sendMessage("");
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " setup [typeID]"));
+            sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " setup [typeID]"));
             sender.sendMessage("");
             return true;
         }
@@ -33,7 +33,7 @@ public class ExecuteSetup {
         String id = args[1].toLowerCase();
         if(!id.equalsIgnoreCase("crafting")) {
             if (!main.getCubeletTypesHandler().getTypes().containsKey(id)) {
-                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cThis " + label + " type doesn't exists!"));
+                sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis " + label + " type doesn't exists!"));
                 return true;
             }
 

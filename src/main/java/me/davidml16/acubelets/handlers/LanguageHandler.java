@@ -1,7 +1,8 @@
 package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.ConfigUpdater;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -44,17 +45,17 @@ public class LanguageHandler {
 	public FileConfiguration getConfig() { return config; }
 
 	public String getPrefix() {
-		return ColorUtil.translate(messages.get("Prefix"));
+		return Utils.translate(messages.get("Prefix"));
 	}
 
 	public String getMessage(String message) {
-		return ColorUtil.translate(messages.get(message).replaceAll("%prefix%", messages.get("Prefix")));
+		return Utils.translate(messages.get(message).replaceAll("%prefix%", messages.get("Prefix")));
 	}
 
 	public List<String> getMessageList(String message) {
 		List<String> lines = new ArrayList<>();
 		for(String line : messageList.get(message)) {
-			lines.add(ColorUtil.translate(line));
+			lines.add(Utils.translate(line));
 		}
 		return lines;
 	}
@@ -67,8 +68,8 @@ public class LanguageHandler {
 	}
 
 	public void pushMessages() {
-		Main.log.sendMessage(ColorUtil.translate(""));
-		Main.log.sendMessage(ColorUtil.translate("  &eLoading language:"));
+		Main.log.sendMessage(Utils.translate(""));
+		Main.log.sendMessage(Utils.translate("  &eLoading language:"));
 
 		file = new File("plugins/ACubelets/language/messages_" + language + ".yml");
 		config = YamlConfiguration.loadConfiguration(file);
@@ -82,7 +83,7 @@ public class LanguageHandler {
 			}
 		}
 
-		Main.log.sendMessage(ColorUtil.translate("    &a'" + language + "' loaded!"));
+		Main.log.sendMessage(Utils.translate("    &a'" + language + "' loaded!"));
 	}
 
 	public void loadLanguage(String lang) {
@@ -141,6 +142,12 @@ public class LanguageHandler {
 
 		try {
 			cfg.save(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			ConfigUpdater.update(main, "language/messages_" + lang + ".yml", new File(main.getDataFolder() + "/language/messages_" + lang + ".yml"), Collections.emptyList());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -3,7 +3,7 @@ package me.davidml16.acubelets.commands.cubelets.subcommands;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -29,7 +29,7 @@ public class ExecuteInfo {
 
         if (args.length == 1) {
             sender.sendMessage("");
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " info [player]"));
+            sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " info [player]"));
             sender.sendMessage("");
             return true;
         }
@@ -38,7 +38,7 @@ public class ExecuteInfo {
 
         try {
             if(!main.getDatabaseHandler().hasName(player)) {
-                sender.sendMessage(ColorUtil.translate(
+                sender.sendMessage(Utils.translate(
                         main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
                 return false;
             }
@@ -51,12 +51,12 @@ public class ExecuteInfo {
                 UUID uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
 
                 sender.sendMessage("");
-                sender.sendMessage(ColorUtil.translate(" &6&l" + player + " &ahas the following cubelets:"));
+                sender.sendMessage(Utils.translate(" &6&l" + player + " &ahas the following cubelets:"));
                 main.getDatabaseHandler().getCubelets(uuid).thenAccept(list -> {
                     for (CubeletType type : main.getCubeletTypesHandler().getTypes().values()) {
                         long amount = list.stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(type.getId())).count();
                         if (amount > 0)
-                            sender.sendMessage(ColorUtil.translate("  &7- " + type.getName() + " &7x" + amount));
+                            sender.sendMessage(Utils.translate("  &7- " + type.getName() + " &7x" + amount));
                     }
                     sender.sendMessage("");
                 });
@@ -67,14 +67,14 @@ public class ExecuteInfo {
         } else {
             Player target = Bukkit.getPlayer(player);
             sender.sendMessage("");
-            sender.sendMessage(ColorUtil.translate(" &6&l" + player + " &ahas the following cubelets:"));
+            sender.sendMessage(Utils.translate(" &6&l" + player + " &ahas the following cubelets:"));
 
             List<Cubelet> list = main.getPlayerDataHandler().getData(target).getCubelets();
 
             for (CubeletType type : main.getCubeletTypesHandler().getTypes().values()) {
                 long amount = list.stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(type.getId())).count();
                 if (amount > 0)
-                    sender.sendMessage(ColorUtil.translate("  &7- " + type.getName() + " &7x" + amount));
+                    sender.sendMessage(Utils.translate("  &7- " + type.getName() + " &7x" + amount));
             }
 
             sender.sendMessage("");

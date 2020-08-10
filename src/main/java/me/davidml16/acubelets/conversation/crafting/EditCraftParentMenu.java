@@ -3,19 +3,14 @@ package me.davidml16.acubelets.conversation.crafting;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.CommonPrompts;
 import me.davidml16.acubelets.objects.CraftParent;
-import me.davidml16.acubelets.objects.Cubelet;
-import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.objects.Rarity;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 public class EditCraftParentMenu implements ConversationAbandonedListener, CommonPrompts {
 
@@ -62,7 +57,7 @@ public class EditCraftParentMenu implements ConversationAbandonedListener, Commo
                         craftParent.setSlot(slot);
                         main.getCubeletCraftingHandler().saveCrafting();
 
-                        param1ConversationContext.getForWhom().sendRawMessage("\n" + ColorUtil.translate(main.getLanguageHandler().getPrefix()
+                        param1ConversationContext.getForWhom().sendRawMessage("\n" + Utils.translate(main.getLanguageHandler().getPrefix()
                                 + " &aYou edited craft for the cubelet &e" + craftParent.getCubeletType()));
 
                         Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),

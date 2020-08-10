@@ -16,7 +16,7 @@ import me.davidml16.acubelets.handlers.*;
 import me.davidml16.acubelets.handlers.PluginHandler;
 import me.davidml16.acubelets.tasks.DataSaveTask;
 import me.davidml16.acubelets.tasks.HologramTask;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ConfigUpdater;
 import me.davidml16.acubelets.utils.FireworkUtil;
 import org.bukkit.Bukkit;
@@ -211,14 +211,17 @@ public class Main extends JavaPlugin {
 
         if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
             new PlaceholderHook(this).register();
+            settings.put("placeholderapi", true);
+        } else {
+            settings.put("placeholderapi", false);
         }
 
         playerCount = getServer().getOnlinePlayers().size();
 
         PluginDescriptionFile pdf = getDescription();
-        log.sendMessage(ColorUtil.translate("  &eACubelets Enabled!"));
-        log.sendMessage(ColorUtil.translate("    &aVersion: &b" + pdf.getVersion()));
-        log.sendMessage(ColorUtil.translate("    &aAuthor: &b" + pdf.getAuthors().get(0)));
+        log.sendMessage(Utils.translate("  &eACubelets Enabled!"));
+        log.sendMessage(Utils.translate("    &aVersion: &b" + pdf.getVersion()));
+        log.sendMessage(Utils.translate("    &aAuthor: &b" + pdf.getAuthors().get(0)));
         log.sendMessage("");
     }
 
@@ -226,9 +229,9 @@ public class Main extends JavaPlugin {
     public void onDisable() {
         PluginDescriptionFile pdf = getDescription();
         log.sendMessage("");
-        log.sendMessage(ColorUtil.translate("  &eACubelets Disabled!"));
-        log.sendMessage(ColorUtil.translate("    &aVersion: &b" + pdf.getVersion()));
-        log.sendMessage(ColorUtil.translate("    &aAuthor: &b" + pdf.getAuthors().get(0)));
+        log.sendMessage(Utils.translate("  &eACubelets Disabled!"));
+        log.sendMessage(Utils.translate("    &aVersion: &b" + pdf.getVersion()));
+        log.sendMessage(Utils.translate("    &aAuthor: &b" + pdf.getAuthors().get(0)));
         log.sendMessage("");
 
         if(hologramHandler != null) hologramHandler.removeHolograms();
@@ -365,6 +368,8 @@ public class Main extends JavaPlugin {
     public CommandMap getCommandMap() {
         return commandMap;
     }
+
+    public boolean hasPlaceholderAPI() { return settings.get("placeholderapi"); }
 
     public String getDuplicationPermissionCommand() { return duplicationPermissionCommand; }
     public void setDuplicationPermissionCommand(String duplicationPermissionCommand) { this.duplicationPermissionCommand = duplicationPermissionCommand; }

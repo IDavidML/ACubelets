@@ -3,7 +3,7 @@ package me.davidml16.acubelets.commands.points.subcommands;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.api.PointsAPI;
 import me.davidml16.acubelets.objects.Profile;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -29,7 +29,7 @@ public class ExecuteRemove {
 
         if (args.length == 1) {
             sender.sendMessage("");
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " remove [player] [amount]"));
+            sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " remove [player] [amount]"));
             sender.sendMessage("");
             return false;
         }
@@ -38,7 +38,7 @@ public class ExecuteRemove {
 
         try {
             if(!main.getDatabaseHandler().hasName(player)) {
-                sender.sendMessage(ColorUtil.translate(
+                sender.sendMessage(Utils.translate(
                         main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
                 return false;
             }
@@ -51,23 +51,32 @@ public class ExecuteRemove {
             long actualBalance = profile.getLootPoints();
 
             if(args.length == 2) {
-                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " remove [player] [amount]"));
+                sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " remove [player] [amount]"));
                 return false;
             } else if(args.length == 3) {
                 int amount = Integer.parseInt(args[2]);
                 if(amount > 0) {
                     if(actualBalance >= amount) {
                         PointsAPI.remove(player, amount);
-                        sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
-                                " &aRemoved &e" + amount + "x Points &afrom &e" + player));
+
+                        String msg = main.getLanguageHandler().getMessage("Commands.Points.Remove.Removed");
+                        msg = msg.replaceAll("%amount%", Integer.toString(amount));
+                        msg = msg.replaceAll("%player%", player);
+                        sender.sendMessage(Utils.translate(msg));
+
                         return true;
                     } else {
-                        sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
-                                " &6" + player + " &cdoes not have &6" + amount + "x Points&c. Currently balance: &6" + actualBalance));
+
+                        String msg = main.getLanguageHandler().getMessage("Commands.Points.Remove.NoBalance");
+                        msg = msg.replaceAll("%amount%", Integer.toString(amount));
+                        msg = msg.replaceAll("%balance%", Long.toString(actualBalance));
+                        msg = msg.replaceAll("%player%", player);
+                        sender.sendMessage(Utils.translate(msg));
+
                         return true;
                     }
                 } else {
-                    sender.sendMessage(ColorUtil.translate(
+                    sender.sendMessage(Utils.translate(
                             main.getLanguageHandler().getPrefix() + " &cAmount to give need to be more than 0!"));
                     return false;
                 }
@@ -77,20 +86,29 @@ public class ExecuteRemove {
                 UUID uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
                 main.getDatabaseHandler().getPlayerLootPoints(uuid, actualBalance -> {
                     if(args.length == 2) {
-                        sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " remove [player] [amount]"));
+                        sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " remove [player] [amount]"));
                     } else if(args.length == 3) {
                         int amount = Integer.parseInt(args[2]);
                         if(amount > 0) {
                             if(actualBalance >= amount) {
                                 PointsAPI.remove(player, amount);
-                                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
-                                        " &aRemoved &e" + amount + "x Points &afrom &e" + player));
+
+                                String msg = main.getLanguageHandler().getMessage("Commands.Points.Remove.Removed");
+                                msg = msg.replaceAll("%amount%", Integer.toString(amount));
+                                msg = msg.replaceAll("%player%", player);
+                                sender.sendMessage(Utils.translate(msg));
+
                             } else {
-                                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
-                                        " &6" + player + " &cdoes not have &6" + amount + "x Points&c. Currently balance: &6" + actualBalance));
+
+                                String msg = main.getLanguageHandler().getMessage("Commands.Points.Remove.NoBalance");
+                                msg = msg.replaceAll("%amount%", Integer.toString(amount));
+                                msg = msg.replaceAll("%balance%", Long.toString(actualBalance));
+                                msg = msg.replaceAll("%player%", player);
+                                sender.sendMessage(Utils.translate(msg));
+
                             }
                         } else {
-                            sender.sendMessage(ColorUtil.translate(
+                            sender.sendMessage(Utils.translate(
                                     main.getLanguageHandler().getPrefix() + " &cAmount to give need to be more than 0!"));
                         }
                     }

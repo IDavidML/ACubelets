@@ -1,7 +1,7 @@
 package me.davidml16.acubelets.events;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,7 +30,7 @@ public class Event_JoinQuit implements Listener {
         if(p.getName().equalsIgnoreCase("DavidML16")) {
             Bukkit.getScheduler().runTaskLater(main, () -> {
                 PluginDescriptionFile pdf = main.getDescription();
-                p.sendMessage(ColorUtil.translate("&aServer using ACubelets. Version: &e" + pdf.getVersion()));
+                p.sendMessage(Utils.translate("&aServer using ACubelets. Version: &e" + pdf.getVersion()));
             }, 40L);
         }
 

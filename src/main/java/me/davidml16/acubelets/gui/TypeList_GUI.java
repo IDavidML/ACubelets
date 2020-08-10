@@ -2,7 +2,7 @@ package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.TimeAPI.TimeUtils;
@@ -49,7 +49,7 @@ public class TypeList_GUI implements Listener {
         Inventory gui = Bukkit.createInventory(null, 45, "Cubelet Types");
 
         ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
-        ItemStack close = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(ColorUtil.translate("&aClose")).toItemStack();
+        ItemStack close = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(Utils.translate("&aClose")).toItemStack();
 
         gui.setItem(40, close);
 
@@ -65,13 +65,13 @@ public class TypeList_GUI implements Listener {
             gui.setItem(i, null);
 
         if (page > 0) {
-            gui.setItem(18, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(ColorUtil.translate("&aPrevious page")).toItemStack());
+            gui.setItem(18, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(Utils.translate("&aPrevious page")).toItemStack());
         } else {
             gui.setItem(18, new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
         }
 
         if (types.size() > (page + 1) * 21) {
-            gui.setItem(26, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(ColorUtil.translate("&aNext page")).toItemStack());
+            gui.setItem(26, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(Utils.translate("&aNext page")).toItemStack());
         } else {
             gui.setItem(26, new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
         }
@@ -81,24 +81,24 @@ public class TypeList_GUI implements Listener {
         if(types.size() > 0) {
             for (CubeletType cubeletType : types) {
                 gui.addItem(new ItemBuilder(cubeletType.getIcon())
-                        .setName(ColorUtil.translate("&a" + cubeletType.getId()))
+                        .setName(Utils.translate("&a" + cubeletType.getId()))
                         .setLore(
                                 "",
-                                ColorUtil.translate(" &7Name: &6" + cubeletType.getName() + " "),
-                                ColorUtil.translate(" &7Rarities: &6" + cubeletType.getRarities().size() + " "),
-                                ColorUtil.translate(" &7Rewards: &6" + cubeletType.getAllRewards().size() + " "),
+                                Utils.translate(" &7Name: &6" + cubeletType.getName() + " "),
+                                Utils.translate(" &7Rarities: &6" + cubeletType.getRarities().size() + " "),
+                                Utils.translate(" &7Rewards: &6" + cubeletType.getAllRewards().size() + " "),
                                 "",
-                                ColorUtil.translate(" &7Animation: &6" + cubeletType.getAnimation() + " "),
-                                ColorUtil.translate(" &7Expiration: &6" + TimeUtils.millisToLongDHMS(cubeletType.getExpireTime()) + " "),
+                                Utils.translate(" &7Animation: &6" + cubeletType.getAnimation() + " "),
+                                Utils.translate(" &7Expiration: &6" + TimeUtils.millisToLongDHMS(cubeletType.getExpireTime()) + " "),
                                 "",
-                                ColorUtil.translate("&eClick to setup " + cubeletType.getId() + " type ")
+                                Utils.translate("&eClick to setup " + cubeletType.getId() + " type ")
                         ).toItemStack());
             }
         } else {
-            gui.setItem(22, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorUtil.translate("&cAny type created")).setLore(
+            gui.setItem(22, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(Utils.translate("&cAny type created")).setLore(
                     "",
-                    ColorUtil.translate(" &7You dont have any "),
-                    ColorUtil.translate(" &7type created. "),
+                    Utils.translate(" &7You dont have any "),
+                    Utils.translate(" &7type created. "),
                     ""
             ).toItemStack());
         }

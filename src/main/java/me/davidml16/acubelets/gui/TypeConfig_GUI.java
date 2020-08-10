@@ -7,7 +7,6 @@ import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.utils.*;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -60,80 +59,80 @@ public class TypeConfig_GUI implements Listener {
         CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
         List<String> lore = new ArrayList<>();
         for(String line : type.getLoreAvailable()) {
-            lore.add(ColorUtil.translate(line));
+            lore.add(Utils.translate(line));
         }
-        gui.setItem(10, new ItemBuilder(XMaterial.NAME_TAG.parseItem()).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
-        gui.setItem(19, new ItemBuilder(type.getIcon()).setName(ColorUtil.translate("&aCubelet type icon"))
+        gui.setItem(10, new ItemBuilder(XMaterial.NAME_TAG.parseItem()).setName(Utils.translate(type.getName())).setLore(lore).toItemStack());
+        gui.setItem(19, new ItemBuilder(type.getIcon()).setName(Utils.translate("&aCubelet type icon"))
                 .setLore(
                         "",
-                        ColorUtil.translate(" &7You can change the "),
-                        ColorUtil.translate(" &7icon clicking this item "),
-                        ColorUtil.translate(" &7and opening icon setup "),
+                        Utils.translate(" &7You can change the "),
+                        Utils.translate(" &7icon clicking this item "),
+                        Utils.translate(" &7and opening icon setup "),
                         "",
-                        ColorUtil.translate("&eClick change skull texture! ")
+                        Utils.translate("&eClick change skull texture! ")
                 )
                 .toItemStack());
 
-        gui.setItem(21, new ItemBuilder(XMaterial.ANVIL.parseItem()).setName(ColorUtil.translate("&aCubelet type name"))
+        gui.setItem(21, new ItemBuilder(XMaterial.ANVIL.parseItem()).setName(Utils.translate("&aCubelet type name"))
                 .setLore(
                         "",
-                        ColorUtil.translate(" &7Click on the anvil "),
-                        ColorUtil.translate(" &7to start rename menu "),
+                        Utils.translate(" &7Click on the anvil "),
+                        Utils.translate(" &7to start rename menu "),
                         "",
-                        ColorUtil.translate(" &7Choose 1 to rename cubelet type "),
-                        ColorUtil.translate(" &7Choose 2 to save and exit menu. "),
+                        Utils.translate(" &7Choose 1 to rename cubelet type "),
+                        Utils.translate(" &7Choose 2 to save and exit menu. "),
                         "",
-                        ColorUtil.translate("&eClick to rename cubelet! ")
+                        Utils.translate("&eClick to rename cubelet! ")
                 )
                 .toItemStack());
 
         gui.setItem(23, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem())
-                .setName(ColorUtil.translate("&aAnimations"))
+                .setName(Utils.translate("&aAnimations"))
                 .setLore(
                         "",
-                        ColorUtil.translate(" &7Open animations gui to "),
-                        ColorUtil.translate(" &7chance cubelet animation. "),
-                        ColorUtil.translate(" &7to begin rarity setup. "),
+                        Utils.translate(" &7Open animations gui to "),
+                        Utils.translate(" &7chance cubelet animation. "),
+                        Utils.translate(" &7to begin rarity setup. "),
                         "",
-                        ColorUtil.translate("&eClick to config animations! ")
+                        Utils.translate("&eClick to config animations! ")
                 ).toItemStack());
 
         gui.setItem(16, new ItemBuilder(XMaterial.ITEM_FRAME.parseItem())
-                .setName(ColorUtil.translate("&aRarities"))
+                .setName(Utils.translate("&aRarities"))
                 .setLore(
                         "",
-                        ColorUtil.translate(" &7Open rarities gui and "),
-                        ColorUtil.translate(" &7click on new rarity "),
-                        ColorUtil.translate(" &7to begin rarity setup. "),
+                        Utils.translate(" &7Open rarities gui and "),
+                        Utils.translate(" &7click on new rarity "),
+                        Utils.translate(" &7to begin rarity setup. "),
                         "",
-                        ColorUtil.translate(" &7Click the rarity item "),
-                        ColorUtil.translate(" &7in the GUI to remove it. "),
+                        Utils.translate(" &7Click the rarity item "),
+                        Utils.translate(" &7in the GUI to remove it. "),
                         "",
-                        ColorUtil.translate("&eClick to config rarities! ")
+                        Utils.translate("&eClick to config rarities! ")
                 ).toItemStack());
 
         gui.setItem(25, new ItemBuilder(XMaterial.GOLD_NUGGET.parseItem())
-                .setName(ColorUtil.translate("&aRewards"))
+                .setName(Utils.translate("&aRewards"))
                 .setLore(
                         "",
-                        ColorUtil.translate(" &7Open rewards gui and "),
-                        ColorUtil.translate(" &7click on new reward "),
-                        ColorUtil.translate(" &7to begin reward setup. "),
+                        Utils.translate(" &7Open rewards gui and "),
+                        Utils.translate(" &7click on new reward "),
+                        Utils.translate(" &7to begin reward setup. "),
                         "",
-                        ColorUtil.translate(" &7Click the rewards item "),
-                        ColorUtil.translate(" &7in the GUI to remove it. "),
+                        Utils.translate(" &7Click the rewards item "),
+                        Utils.translate(" &7in the GUI to remove it. "),
                         "",
-                        ColorUtil.translate("&eClick to config rewards! ")
+                        Utils.translate("&eClick to config rewards! ")
                 ).toItemStack());
         
         gui.setItem(40, new ItemBuilder(XMaterial.BARRIER.parseItem())
-                .setName(ColorUtil.translate("&cReload configuration "))
+                .setName(Utils.translate("&cReload configuration "))
                 .setLore(
                         "",
-                        ColorUtil.translate(" &7Reload configuration to "),
-                        ColorUtil.translate(" &7update last changes made. "),
+                        Utils.translate(" &7Reload configuration to "),
+                        Utils.translate(" &7update last changes made. "),
                         "",
-                        ColorUtil.translate("&eClick reload cubelets! ")
+                        Utils.translate("&eClick reload cubelets! ")
                 )
                 .toItemStack());
 
@@ -159,17 +158,17 @@ public class TypeConfig_GUI implements Listener {
         CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
         List<String> lore = new ArrayList<>();
         for(String line : type.getLoreAvailable()) {
-            lore.add(ColorUtil.translate(line));
+            lore.add(Utils.translate(line));
         }
-        gui.setItem(10, new ItemBuilder(XMaterial.NAME_TAG.parseItem()).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack());
-        gui.setItem(19, new ItemBuilder(type.getIcon()).setName(ColorUtil.translate("&aCubelet type icon"))
+        gui.setItem(10, new ItemBuilder(XMaterial.NAME_TAG.parseItem()).setName(Utils.translate(type.getName())).setLore(lore).toItemStack());
+        gui.setItem(19, new ItemBuilder(type.getIcon()).setName(Utils.translate("&aCubelet type icon"))
                 .setLore(
                         "",
-                        ColorUtil.translate(" &7You can change the "),
-                        ColorUtil.translate(" &7icon clicking this item "),
-                        ColorUtil.translate(" &7and opening icon setup "),
+                        Utils.translate(" &7You can change the "),
+                        Utils.translate(" &7icon clicking this item "),
+                        Utils.translate(" &7and opening icon setup "),
                         "",
-                        ColorUtil.translate("&eClick change skull texture! ")
+                        Utils.translate("&eClick change skull texture! ")
                 )
                 .toItemStack());
 

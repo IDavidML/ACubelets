@@ -6,7 +6,7 @@ import me.davidml16.acubelets.conversation.rarities.RarityMenu;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Pair;
 import me.davidml16.acubelets.objects.Rarity;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
@@ -61,8 +61,8 @@ public class Rarities_GUI implements Listener {
         Inventory gui = Bukkit.createInventory(null, 45, "%cubelet_type% | Rarities".replaceAll("%cubelet_type%", id));
 
         ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
-        ItemStack newRarity = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(ColorUtil.translate("&aCreate new rarity")).toItemStack();
-        ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(ColorUtil.translate("&aBack to config")).toItemStack();
+        ItemStack newRarity = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(Utils.translate("&aCreate new rarity")).toItemStack();
+        ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(Utils.translate("&aBack to config")).toItemStack();
 
         for (Integer i : borders) {
             gui.setItem(i, edge);
@@ -113,13 +113,13 @@ public class Rarities_GUI implements Listener {
             gui.setItem(i, null);
 
         if (page > 0) {
-            gui.setItem(18, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(ColorUtil.translate("&aPrevious page")).toItemStack());
+            gui.setItem(18, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(Utils.translate("&aPrevious page")).toItemStack());
         } else {
             gui.setItem(18, new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
         }
 
         if (rarities.size() > (page + 1) * 21) {
-            gui.setItem(26, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(ColorUtil.translate("&aNext page")).toItemStack());
+            gui.setItem(26, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(Utils.translate("&aNext page")).toItemStack());
         } else {
             gui.setItem(26, new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
         }
@@ -129,21 +129,21 @@ public class Rarities_GUI implements Listener {
         if(rarities.size() > 0) {
             for (Rarity rarity : rarities) {
                 gui.addItem(new ItemBuilder(XMaterial.ITEM_FRAME.parseItem())
-                        .setName(ColorUtil.translate("&a" + rarity.getId()))
+                        .setName(Utils.translate("&a" + rarity.getId()))
                         .setLore(
                                 "",
-                                ColorUtil.translate(" &7Name: &6" + rarity.getName() + " "),
-                                ColorUtil.translate(" &7Chance: &6" + rarity.getChance() + "% "),
-                                ColorUtil.translate(" &7Duplicate Points: &6" + rarity.getDuplicatePointsRange() + " "),
+                                Utils.translate(" &7Name: &6" + rarity.getName() + " "),
+                                Utils.translate(" &7Chance: &6" + rarity.getChance() + "% "),
+                                Utils.translate(" &7Duplicate Points: &6" + rarity.getDuplicatePointsRange() + " "),
                                 "",
-                                ColorUtil.translate("&eLeft-Click » &aRemove rarity "),
-                                ColorUtil.translate("&eRight-Click » &aEdit rarity ")).toItemStack());
+                                Utils.translate("&eLeft-Click » &aRemove rarity "),
+                                Utils.translate("&eRight-Click » &aEdit rarity ")).toItemStack());
             }
         } else {
-            gui.setItem(22, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorUtil.translate("&cAny rarity created")).setLore(
+            gui.setItem(22, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(Utils.translate("&cAny rarity created")).setLore(
                     "",
-                    ColorUtil.translate(" &7You dont have any "),
-                    ColorUtil.translate(" &7rarity created. "),
+                    Utils.translate(" &7You dont have any "),
+                    Utils.translate(" &7rarity created. "),
                     ""
             ).toItemStack());
         }
@@ -200,7 +200,7 @@ public class Rarities_GUI implements Listener {
                 if(e.getClick() == ClickType.LEFT || e.getClick() == ClickType.SHIFT_LEFT) {
 
                     cubeletType.getRarities().remove(rarityID);
-                    p.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
+                    p.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix()
                             + " &aYou removed rarity &e" + rarityID + " &afrom rarities of cubelet type &e" + cubeletType.getId()));
                     reloadGUI(cubeletType.getId());
                     Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);

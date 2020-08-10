@@ -3,13 +3,11 @@ package me.davidml16.acubelets.conversation.rewards;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.CommonPrompts;
 import me.davidml16.acubelets.interfaces.Reward;
-import me.davidml16.acubelets.objects.CommandReward;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.PermissionReward;
 import me.davidml16.acubelets.objects.Rarity;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.Sounds;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.conversations.*;
@@ -17,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -97,7 +94,7 @@ public class PermissionRewardMenu implements ConversationAbandonedListener, Comm
                                 cubeletType.addReward(rewardRarity, permissionReward);
                                 cubeletType.saveType();
 
-                                param1ConversationContext.getForWhom().sendRawMessage("\n" + ColorUtil.translate(main.getLanguageHandler().getPrefix()
+                                param1ConversationContext.getForWhom().sendRawMessage("\n" + Utils.translate(main.getLanguageHandler().getPrefix()
                                         + " &aYou added reward &e" + permissionReward.getId() + " &ato rewards of cubelet type &e" + cubeletType.getId()));
 
                                 Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),

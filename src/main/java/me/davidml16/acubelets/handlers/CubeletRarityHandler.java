@@ -3,7 +3,7 @@ package me.davidml16.acubelets.handlers;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Rarity;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
@@ -52,8 +52,8 @@ public class CubeletRarityHandler {
     }
 
     public void loadRarities() {
-        Main.log.sendMessage(ColorUtil.translate(""));
-        Main.log.sendMessage(ColorUtil.translate("  &eLoading rarities:"));
+        Main.log.sendMessage(Utils.translate(""));
+        Main.log.sendMessage(Utils.translate("  &eLoading rarities:"));
 
         int loaded = 0;
 
@@ -86,11 +86,11 @@ public class CubeletRarityHandler {
                 }
             }
 
-            Main.log.sendMessage(ColorUtil.translate("    &a'" + cubeletType.getId() + "&a' &7- " + (cubeletType.getRarities().size() > 0 ? "&a" : "&c") + cubeletType.getRarities().size() + " rarities"));
+            Main.log.sendMessage(Utils.translate("    &a'" + cubeletType.getId() + "&a' &7- " + (cubeletType.getRarities().size() > 0 ? "&a" : "&c") + cubeletType.getRarities().size() + " rarities"));
         }
 
         if(loaded == 0)
-            Main.log.sendMessage(ColorUtil.translate("    &cNo cubelet rarities has been loaded!"));
+            Main.log.sendMessage(Utils.translate("    &cNo cubelet rarities has been loaded!"));
 
         Main.log.sendMessage(" ");
     }

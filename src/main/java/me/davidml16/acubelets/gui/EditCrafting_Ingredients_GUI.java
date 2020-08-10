@@ -4,7 +4,7 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.crafting.*;
 import me.davidml16.acubelets.enums.CraftType;
 import me.davidml16.acubelets.objects.*;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.NBTEditor;
 import me.davidml16.acubelets.utils.Sounds;
@@ -76,13 +76,13 @@ public class EditCrafting_Ingredients_GUI implements Listener {
         Inventory gui = Bukkit.createInventory(null, 36, "Crafting editor » Ingredients");
 
         ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
-        ItemStack newReward = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(ColorUtil.translate("&aCreate new ingredient")).setLore(
+        ItemStack newReward = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(Utils.translate("&aCreate new ingredient")).setLore(
                 "",
-                ColorUtil.translate("&eLeft-Click » &aCubelet ingredient "),
-                ColorUtil.translate("&eMiddle-Click » &aLoot Points ingredient "),
-                ColorUtil.translate("&eRight-Click » &aMoney ingredient ")
+                Utils.translate("&eLeft-Click » &aCubelet ingredient "),
+                Utils.translate("&eMiddle-Click » &aLoot Points ingredient "),
+                Utils.translate("&eRight-Click » &aMoney ingredient ")
         ).toItemStack();
-        ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(ColorUtil.translate("&aBack")).toItemStack();
+        ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(Utils.translate("&aBack")).toItemStack();
 
         for (Integer i : borders) {
             gui.setItem(i, edge);
@@ -97,13 +97,13 @@ public class EditCrafting_Ingredients_GUI implements Listener {
             gui.setItem(i, null);
 
         if (page > 0) {
-            gui.setItem(27, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(ColorUtil.translate("&aPrevious page")).toItemStack());
+            gui.setItem(27, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(Utils.translate("&aPrevious page")).toItemStack());
         } else {
             gui.setItem(27, new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
         }
 
         if (ingredients.size() > (page + 1) * 14) {
-            gui.setItem(35, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(ColorUtil.translate("&aNext page")).toItemStack());
+            gui.setItem(35, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(Utils.translate("&aNext page")).toItemStack());
         } else {
             gui.setItem(35, new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
         }
@@ -116,36 +116,36 @@ public class EditCrafting_Ingredients_GUI implements Listener {
                 List<String> lore;
                 if(craftIngredient.getCraftType() == CraftType.CUBELET) {
                     lore = Arrays.asList("",
-                            ColorUtil.translate(" &7Parent: &6" + craftIngredient.getParentType() + " "),
-                            ColorUtil.translate(" &7Type: &6" + craftIngredient.getCraftType().toString() + " "),
-                            ColorUtil.translate(" &7Name: &6" + craftIngredient.getName() + " "),
-                            ColorUtil.translate(" &7Amount: &6" + craftIngredient.getAmount() + " "),
+                            Utils.translate(" &7Parent: &6" + craftIngredient.getParentType() + " "),
+                            Utils.translate(" &7Type: &6" + craftIngredient.getCraftType().toString() + " "),
+                            Utils.translate(" &7Name: &6" + craftIngredient.getName() + " "),
+                            Utils.translate(" &7Amount: &6" + craftIngredient.getAmount() + " "),
                             "",
-                            ColorUtil.translate("&eLeft-Click » &aRemove ingredient "),
-                            ColorUtil.translate("&eRight-Click » &aEdit ingredient "));
+                            Utils.translate("&eLeft-Click » &aRemove ingredient "),
+                            Utils.translate("&eRight-Click » &aEdit ingredient "));
                 } else {
                     lore = Arrays.asList("",
-                            ColorUtil.translate(" &7Parent: &6" + craftIngredient.getParentType() + " "),
-                            ColorUtil.translate(" &7Type: &6" + craftIngredient.getCraftType().toString() + " "),
-                            ColorUtil.translate(" &7Amount: &6" + craftIngredient.getAmount() + " "),
+                            Utils.translate(" &7Parent: &6" + craftIngredient.getParentType() + " "),
+                            Utils.translate(" &7Type: &6" + craftIngredient.getCraftType().toString() + " "),
+                            Utils.translate(" &7Amount: &6" + craftIngredient.getAmount() + " "),
                             "",
-                            ColorUtil.translate("&eLeft-Click » &aEdit ingredient "),
-                            ColorUtil.translate("&eRight-Click » &aRemove ingredient "));
+                            Utils.translate("&eLeft-Click » &aEdit ingredient "),
+                            Utils.translate("&eRight-Click » &aRemove ingredient "));
                 }
 
 
                 ItemStack ingredient = new ItemBuilder(getIconByIngredient(craftIngredient))
-                        .setName(ColorUtil.translate("&a" + craftIngredient.getName() + " x" + craftIngredient.getAmount()))
+                        .setName(Utils.translate("&a" + craftIngredient.getName() + " x" + craftIngredient.getAmount()))
                         .setLore(lore)
                         .toItemStack();
                 ingredient = NBTEditor.set(ingredient, craftIngredient.getUuid().toString(), "ingredientUUID");
                 gui.addItem(ingredient);
             }
         } else {
-            ItemStack noCreated = new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorUtil.translate("&cAny ingredients created")).setLore(
+            ItemStack noCreated = new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(Utils.translate("&cAny ingredients created")).setLore(
                     "",
-                    ColorUtil.translate(" &7You dont have any "),
-                    ColorUtil.translate(" &7ingredients created. "),
+                    Utils.translate(" &7You dont have any "),
+                    Utils.translate(" &7ingredients created. "),
                     ""
             ).toItemStack();
 

@@ -19,7 +19,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.sql.SQLException;
 import java.util.*;
 
 public class Crafting_GUI implements Listener {
@@ -46,6 +45,22 @@ public class Crafting_GUI implements Listener {
         GUILayout guiLayout = main.getLayoutHandler().getLayout("crafting");
 
         Inventory gui = Bukkit.createInventory(null, inventorySize, guiLayout.getMessage("Title"));
+
+        if(guiLayout.getBoolean("Items.PlayerInfo.Enabled")) {
+
+            ItemStack info = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.PlayerInfo.Material")).get().parseItem()).toItemStack();
+
+            if(XMaterial.PLAYER_HEAD.parseItem().equals(info)) {
+                info = SkullCreator.itemFromUuid(p.getUniqueId());
+            }
+
+            ItemStack finalItem = new ItemBuilder(info)
+                    .setName(guiLayout.getMessage("Items.PlayerInfo.Name").replaceAll("%player%", p.getName()))
+                    .setLore(guiLayout.getMessageListPlaceholders(p, "Items.PlayerInfo.Lore"))
+                    .toItemStack();
+
+            gui.setItem((inventorySize - 10) + guiLayout.getSlot("PlayerInfo"), finalItem);
+        }
 
         ItemStack back = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Back.Material")).get().parseItem())
                 .setName(guiLayout.getMessage("Items.Back.Name"))
@@ -80,31 +95,31 @@ public class Crafting_GUI implements Listener {
                             status = guiLayout.getMessage("Ingredients.Status.NotAvailable");
 
                         if(ingredient.getCraftType() == CraftType.CUBELET)
-                            lore.add(ColorUtil.translate(guiLayout.getMessage("Ingredients.Ingredient.Cubelet")
-                                    .replaceAll("%name%", ColorUtil.removeColors(main.getCubeletTypesHandler().getTypeBydId(ingredient.getName()).getName()))
+                            lore.add(Utils.translate(guiLayout.getMessage("Ingredients.Ingredient.Cubelet")
+                                    .replaceAll("%name%", Utils.removeColors(main.getCubeletTypesHandler().getTypeBydId(ingredient.getName()).getName()))
                                     .replaceAll("%amount%", ""+ingredient.getAmount())
                                     .replaceAll("%status%", status)
                             ));
                         else if(ingredient.getCraftType() == CraftType.MONEY)
-                            lore.add(ColorUtil.translate(guiLayout.getMessage("Ingredients.Ingredient.Money")
+                            lore.add(Utils.translate(guiLayout.getMessage("Ingredients.Ingredient.Money")
                                     .replaceAll("%amount%", ""+ingredient.getAmount())
                                     .replaceAll("%status%", status)
                             ));
                         else if(ingredient.getCraftType() == CraftType.POINTS)
-                            lore.add(ColorUtil.translate(guiLayout.getMessage("Ingredients.Ingredient.Points")
+                            lore.add(Utils.translate(guiLayout.getMessage("Ingredients.Ingredient.Points")
                                     .replaceAll("%amount%", ""+ingredient.getAmount())
                                     .replaceAll("%status%", status)
                             ));
                     }
                 } else if(line.contains("%description%")) {
                     for(String desc_line : cubeletType.getDescription())
-                        lore.add(ColorUtil.translate(desc_line));
+                        lore.add(Utils.translate(desc_line));
                 } else {
-                    lore.add(ColorUtil.translate(line));
+                    lore.add(Utils.translate(line));
                 }
             }
 
-            ItemStack item = new ItemBuilder(cubeletType.getIcon()).setName(ColorUtil.translate(cubeletType.getName())).setLore(lore).toItemStack();
+            ItemStack item = new ItemBuilder(cubeletType.getIcon()).setName(Utils.translate(cubeletType.getName())).setLore(lore).toItemStack();
             item = NBTEditor.set(item, craft.getCubeletType(), "cubeletType");
             item = NBTEditor.set(item, Boolean.toString(main.getCubeletCraftingHandler().haveIngredients(p, craft)), "haveIngredients");
 

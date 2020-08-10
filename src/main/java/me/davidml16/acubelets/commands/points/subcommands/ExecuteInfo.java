@@ -1,15 +1,12 @@
 package me.davidml16.acubelets.commands.points.subcommands;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.objects.Cubelet;
-import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.UUID;
 
 public class ExecuteInfo {
@@ -29,7 +26,7 @@ public class ExecuteInfo {
 
         if (args.length == 1) {
             sender.sendMessage("");
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " info [player]"));
+            sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " info [player]"));
             sender.sendMessage("");
             return true;
         }
@@ -38,7 +35,7 @@ public class ExecuteInfo {
 
         try {
             if(!main.getDatabaseHandler().hasName(player)) {
-                sender.sendMessage(ColorUtil.translate(
+                sender.sendMessage(Utils.translate(
                         main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
                 return false;
             }
@@ -51,7 +48,7 @@ public class ExecuteInfo {
                 UUID uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
                 main.getDatabaseHandler().getPlayerLootPoints(uuid, points -> {
                     sender.sendMessage("");
-                    sender.sendMessage(ColorUtil.translate(" &6&l" + player + " &ahas &6" + points + " &aPoints."));
+                    sender.sendMessage(Utils.translate(" &6&l" + player + " &ahas &6" + points + " &aPoints."));
                     sender.sendMessage("");
                 });
             } catch (SQLException throwables) {
@@ -62,7 +59,7 @@ public class ExecuteInfo {
             long points = main.getPlayerDataHandler().getData(target).getLootPoints();
 
             sender.sendMessage("");
-            sender.sendMessage(ColorUtil.translate(" &6&l" + player + " &ahas &6" + points + " &aPoints."));
+            sender.sendMessage(Utils.translate(" &6&l" + player + " &ahas &6" + points + " &aPoints."));
             sender.sendMessage("");
         }
 

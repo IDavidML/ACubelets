@@ -4,7 +4,7 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.crafting.CraftParentMenu;
 import me.davidml16.acubelets.conversation.crafting.EditCraftParentMenu;
 import me.davidml16.acubelets.objects.*;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
@@ -58,8 +58,8 @@ public class EditCrafting_Crafts_GUI implements Listener {
         Inventory gui = Bukkit.createInventory(null, 36, "Crafting editor » Crafts");
 
         ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
-        ItemStack newReward = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(ColorUtil.translate("&aCreate new craft")).toItemStack();
-        ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(ColorUtil.translate("&aBack")).toItemStack();
+        ItemStack newReward = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(Utils.translate("&aCreate new craft")).toItemStack();
+        ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(Utils.translate("&aBack")).toItemStack();
 
         for (Integer i : borders) {
             gui.setItem(i, edge);
@@ -74,13 +74,13 @@ public class EditCrafting_Crafts_GUI implements Listener {
             gui.setItem(i, null);
 
         if (page > 0) {
-            gui.setItem(27, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(ColorUtil.translate("&aPrevious page")).toItemStack());
+            gui.setItem(27, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(Utils.translate("&aPrevious page")).toItemStack());
         } else {
             gui.setItem(27, new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
         }
 
         if (craftParents.size() > (page + 1) * 14) {
-            gui.setItem(35, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(ColorUtil.translate("&aNext page")).toItemStack());
+            gui.setItem(35, new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).setName(Utils.translate("&aNext page")).toItemStack());
         } else {
             gui.setItem(35, new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack());
         }
@@ -90,23 +90,23 @@ public class EditCrafting_Crafts_GUI implements Listener {
         if(craftParents.size() > 0) {
             for (CraftParent craftParent : craftParents) {
                 gui.addItem(new ItemBuilder(main.getCubeletTypesHandler().getTypeBydId(craftParent.getCubeletType()).getIcon())
-                        .setName(ColorUtil.translate("&a" + craftParent.getCubeletType()))
+                        .setName(Utils.translate("&a" + craftParent.getCubeletType()))
                         .setLore(
                                 "",
-                                ColorUtil.translate(" &7Cubelet: &6" + craftParent.getCubeletType() + " "),
-                                ColorUtil.translate(" &7Slot: &6" + craftParent.getSlot() + " "),
-                                ColorUtil.translate(" &7Ingredients: " + (craftParent.getIngrediens().size() > 0 ? "&6" : "&c") + craftParent.getIngrediens().size()),
+                                Utils.translate(" &7Cubelet: &6" + craftParent.getCubeletType() + " "),
+                                Utils.translate(" &7Slot: &6" + craftParent.getSlot() + " "),
+                                Utils.translate(" &7Ingredients: " + (craftParent.getIngrediens().size() > 0 ? "&6" : "&c") + craftParent.getIngrediens().size()),
                                 "",
-                                ColorUtil.translate("&eLeft-Click » &aEdit ingredients "),
-                                ColorUtil.translate("&eMiddle-Click » &aRemove craft "),
-                                ColorUtil.translate("&eRight-Click » &aEdit craft ")
+                                Utils.translate("&eLeft-Click » &aEdit ingredients "),
+                                Utils.translate("&eMiddle-Click » &aRemove craft "),
+                                Utils.translate("&eRight-Click » &aEdit craft ")
                         ).toItemStack());
             }
         } else {
-            ItemStack noCreated = new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(ColorUtil.translate("&cAny craft created")).setLore(
+            ItemStack noCreated = new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(Utils.translate("&cAny craft created")).setLore(
                     "",
-                    ColorUtil.translate(" &7You dont have any "),
-                    ColorUtil.translate(" &7craft created. "),
+                    Utils.translate(" &7You dont have any "),
+                    Utils.translate(" &7craft created. "),
                     ""
             ).toItemStack();
 

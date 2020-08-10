@@ -1,10 +1,8 @@
 package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.enums.Rotation;
-import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.GUILayout;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.Sounds;
@@ -46,52 +44,52 @@ public class EditCrafting_GUI implements Listener {
         ItemStack remove = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGVkNjc5OTE0OTc4OGI5ZTkwMTY4MTFkM2EzZDBlZDFmNTUyNTMwZDY3Zjk4Njk0NTAzMmQ2ZTQzOWZhODk5ZCJ9fX0=");
 
         if(main.getCubeletCraftingHandler().getInventoryRows() < 6) {
-            gui.setItem(11, new ItemBuilder(upArrow).setName(ColorUtil.translate("&aAdd one row")).setLore(
+            gui.setItem(11, new ItemBuilder(upArrow).setName(Utils.translate("&aAdd one row")).setLore(
                     "",
-                    ColorUtil.translate(" &7Actual rows: &6" + main.getCubeletCraftingHandler().getInventoryRows()),
-                    ColorUtil.translate(" &7New rows: &6" + (main.getCubeletCraftingHandler().getInventoryRows() + 1)),
+                    Utils.translate(" &7Actual rows: &6" + main.getCubeletCraftingHandler().getInventoryRows()),
+                    Utils.translate(" &7New rows: &6" + (main.getCubeletCraftingHandler().getInventoryRows() + 1)),
                     "",
-                    ColorUtil.translate("&eClick to add one row")
+                    Utils.translate("&eClick to add one row")
             ).toItemStack());
         } else {
-            gui.setItem(11, new ItemBuilder(upArrow).setName(ColorUtil.translate("&aAdd one row")).setLore(
+            gui.setItem(11, new ItemBuilder(upArrow).setName(Utils.translate("&aAdd one row")).setLore(
                     "",
-                    ColorUtil.translate(" &7Actual rows: &6" + main.getCubeletCraftingHandler().getInventoryRows()),
+                    Utils.translate(" &7Actual rows: &6" + main.getCubeletCraftingHandler().getInventoryRows()),
                     "",
-                    ColorUtil.translate("&cReached maximum number of rows")
+                    Utils.translate("&cReached maximum number of rows")
             ).toItemStack());
         }
 
-        gui.setItem(12, new ItemBuilder(XMaterial.ANVIL.parseMaterial()).setName(ColorUtil.translate("&aReset rows to default")).setLore(
+        gui.setItem(12, new ItemBuilder(XMaterial.ANVIL.parseMaterial()).setName(Utils.translate("&aReset rows to default")).setLore(
                 "",
-                ColorUtil.translate(" &7New rows: &64"),
+                Utils.translate(" &7New rows: &64"),
                 "",
-                ColorUtil.translate("&eClick to reset rows to default")
+                Utils.translate("&eClick to reset rows to default")
         ).toItemStack());
 
         if(main.getCubeletCraftingHandler().getInventoryRows() > 2) {
-            gui.setItem(13, new ItemBuilder(downArrow).setName(ColorUtil.translate("&aRemove one row")).setLore(
+            gui.setItem(13, new ItemBuilder(downArrow).setName(Utils.translate("&aRemove one row")).setLore(
                     "",
-                    ColorUtil.translate(" &7Actual rows: &6" + main.getCubeletCraftingHandler().getInventoryRows()),
-                    ColorUtil.translate(" &7New rows: &6" + (main.getCubeletCraftingHandler().getInventoryRows() - 1)),
+                    Utils.translate(" &7Actual rows: &6" + main.getCubeletCraftingHandler().getInventoryRows()),
+                    Utils.translate(" &7New rows: &6" + (main.getCubeletCraftingHandler().getInventoryRows() - 1)),
                     "",
-                    ColorUtil.translate("&eClick to remove one row")
+                    Utils.translate("&eClick to remove one row")
             ).toItemStack());
         } else {
-            gui.setItem(13, new ItemBuilder(downArrow).setName(ColorUtil.translate("&aRemove one row")).setLore(
+            gui.setItem(13, new ItemBuilder(downArrow).setName(Utils.translate("&aRemove one row")).setLore(
                     "",
-                    ColorUtil.translate(" &7Actual rows: &6" + main.getCubeletCraftingHandler().getInventoryRows()),
+                    Utils.translate(" &7Actual rows: &6" + main.getCubeletCraftingHandler().getInventoryRows()),
                     "",
-                    ColorUtil.translate("&cReached minimum number of rows")
+                    Utils.translate("&cReached minimum number of rows")
             ).toItemStack());
         }
 
         int available = main.getCubeletCraftingHandler().getCrafts().size();
-        gui.setItem(15, new ItemBuilder(XMaterial.CRAFTING_TABLE.parseItem()).setName(ColorUtil.translate("&aConfigure crafts")).setLore(
+        gui.setItem(15, new ItemBuilder(XMaterial.CRAFTING_TABLE.parseItem()).setName(Utils.translate("&aConfigure crafts")).setLore(
                 "",
-                ColorUtil.translate(" &7Crafts created: " + (available > 0 ? "&6" : "&c") + available),
+                Utils.translate(" &7Crafts created: " + (available > 0 ? "&6" : "&c") + available),
                 "",
-                ColorUtil.translate("&eClick to setup crafts")
+                Utils.translate("&eClick to setup crafts")
         ).toItemStack());
 
         for (int i = 0; i < 36; i++) {
@@ -123,52 +121,52 @@ public class EditCrafting_GUI implements Listener {
         ItemStack remove = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGVkNjc5OTE0OTc4OGI5ZTkwMTY4MTFkM2EzZDBlZDFmNTUyNTMwZDY3Zjk4Njk0NTAzMmQ2ZTQzOWZhODk5ZCJ9fX0=");
 
         if(main.getCubeletCraftingHandler().getInventoryRows() < 6) {
-            gui.setItem(11, new ItemBuilder(upArrow).setName(ColorUtil.translate("&aAdd one row")).setLore(
+            gui.setItem(11, new ItemBuilder(upArrow).setName(Utils.translate("&aAdd one row")).setLore(
                     "",
-                    ColorUtil.translate(" &7Actual rows: &6" + main.getCubeletCraftingHandler().getInventoryRows()),
-                    ColorUtil.translate(" &7New rows: &6" + (main.getCubeletCraftingHandler().getInventoryRows() + 1)),
+                    Utils.translate(" &7Actual rows: &6" + main.getCubeletCraftingHandler().getInventoryRows()),
+                    Utils.translate(" &7New rows: &6" + (main.getCubeletCraftingHandler().getInventoryRows() + 1)),
                     "",
-                    ColorUtil.translate("&eClick to add one row")
+                    Utils.translate("&eClick to add one row")
             ).toItemStack());
         } else {
-            gui.setItem(11, new ItemBuilder(upArrow).setName(ColorUtil.translate("&aAdd one row")).setLore(
+            gui.setItem(11, new ItemBuilder(upArrow).setName(Utils.translate("&aAdd one row")).setLore(
                     "",
-                    ColorUtil.translate(" &7Actual rows: &6" + main.getCubeletCraftingHandler().getInventoryRows()),
+                    Utils.translate(" &7Actual rows: &6" + main.getCubeletCraftingHandler().getInventoryRows()),
                     "",
-                    ColorUtil.translate("&cReached maximum number of rows")
+                    Utils.translate("&cReached maximum number of rows")
             ).toItemStack());
         }
 
-        gui.setItem(12, new ItemBuilder(XMaterial.ANVIL.parseMaterial()).setName(ColorUtil.translate("&aReset rows to default")).setLore(
+        gui.setItem(12, new ItemBuilder(XMaterial.ANVIL.parseMaterial()).setName(Utils.translate("&aReset rows to default")).setLore(
                 "",
-                ColorUtil.translate(" &7New rows: &64"),
+                Utils.translate(" &7New rows: &64"),
                 "",
-                ColorUtil.translate("&eClick to reset rows to default")
+                Utils.translate("&eClick to reset rows to default")
         ).toItemStack());
 
         if(main.getCubeletCraftingHandler().getInventoryRows() > 2) {
-            gui.setItem(13, new ItemBuilder(downArrow).setName(ColorUtil.translate("&aRemove one row")).setLore(
+            gui.setItem(13, new ItemBuilder(downArrow).setName(Utils.translate("&aRemove one row")).setLore(
                     "",
-                    ColorUtil.translate(" &7Actual rows: &6" + main.getCubeletCraftingHandler().getInventoryRows()),
-                    ColorUtil.translate(" &7New rows: &6" + (main.getCubeletCraftingHandler().getInventoryRows() - 1)),
+                    Utils.translate(" &7Actual rows: &6" + main.getCubeletCraftingHandler().getInventoryRows()),
+                    Utils.translate(" &7New rows: &6" + (main.getCubeletCraftingHandler().getInventoryRows() - 1)),
                     "",
-                    ColorUtil.translate("&eClick to remove one row")
+                    Utils.translate("&eClick to remove one row")
             ).toItemStack());
         } else {
-            gui.setItem(13, new ItemBuilder(downArrow).setName(ColorUtil.translate("&aRemove one row")).setLore(
+            gui.setItem(13, new ItemBuilder(downArrow).setName(Utils.translate("&aRemove one row")).setLore(
                     "",
-                    ColorUtil.translate(" &7Actual rows: &6" + main.getCubeletCraftingHandler().getInventoryRows()),
+                    Utils.translate(" &7Actual rows: &6" + main.getCubeletCraftingHandler().getInventoryRows()),
                     "",
-                    ColorUtil.translate("&cReached minimum number of rows")
+                    Utils.translate("&cReached minimum number of rows")
             ).toItemStack());
         }
 
         int available = main.getCubeletCraftingHandler().getCrafts().size();
-        gui.setItem(15, new ItemBuilder(XMaterial.CRAFTING_TABLE.parseItem()).setName(ColorUtil.translate("&aConfigure crafts")).setLore(
+        gui.setItem(15, new ItemBuilder(XMaterial.CRAFTING_TABLE.parseItem()).setName(Utils.translate("&aConfigure crafts")).setLore(
                 "",
-                ColorUtil.translate(" &7Crafts created: " + (available > 0 ? "&6" : "&c") + available),
+                Utils.translate(" &7Crafts created: " + (available > 0 ? "&6" : "&c") + available),
                 "",
-                ColorUtil.translate("&eClick to setup crafts")
+                Utils.translate("&eClick to setup crafts")
         ).toItemStack());
 
         for (int i = 0; i < 36; i++) {

@@ -48,7 +48,7 @@ public class Animation4_Task implements Animation {
 	private Animation4_3x3Particles particles;
 
 	private List<Color> colors;
-	private ColorUtil.ColorSet<Integer, Integer, Integer> colorRarity;
+	private Utils.ColorSet<Integer, Integer, Integer> colorRarity;
 
 	private Location armorStandLocation, pigmanLocation;
 
@@ -108,7 +108,7 @@ public class Animation4_Task implements Animation {
 				entityPackets = new Animation4_EntityPackets(pigman, armorStand, cubeletBox);
 				entityPackets.runTaskTimer(main, 0L, 5L);
 			} else if(time == 293) {
-				colorRarity = ColorUtil.getRGBbyColor(ColorUtil.getColorByText(reward.getRarity().getName()));
+				colorRarity = Utils.getRGBbyColor(Utils.getColorByText(reward.getRarity().getName()));
 				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 1.50, 0.5), FireworkEffect.Type.BALL_LARGE, colors.get(0), colors.get(1));
 			} else if(time == 295) {
 				pigman.remove();

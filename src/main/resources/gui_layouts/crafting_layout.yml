@@ -58,6 +58,16 @@ Layout:
         - '&7can be crafted into Cubelets inside'
         - '&7Cubelet Machines.'
 
+    # Item that shows player information
+    PlayerInfo:
+      Enabled: true
+      Name: '&e&l%player%'
+      Material: 'PLAYER_HEAD'
+      Slot: 4
+      Lore:
+        - '&5Cubelets: &a%acubelets_available%'
+        - '&5Loot Points: &a%acubelets_points%'
+
     # Back item
     Back:
       Name: '&9Back'

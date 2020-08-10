@@ -9,8 +9,7 @@ import me.davidml16.acubelets.interfaces.Reward;
 import me.davidml16.acubelets.objects.ColorAnimation;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.enums.CubeletBoxState;
-import me.davidml16.acubelets.objects.CommandReward;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.RepeatingTask;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -41,6 +40,13 @@ public class HologramHandler {
         }
     }
 
+
+    public void loadHolograms(Player p) {
+        for(CubeletBox box : main.getCubeletBoxHandler().getBoxes().values()) {
+            loadHolograms(p, box);
+        }
+    }
+
     public void loadHolograms(CubeletBox box) {
         for(Player p : Bukkit.getOnlinePlayers()) {
             loadHolograms(p, box);
@@ -50,12 +56,6 @@ public class HologramHandler {
     public void removeHolograms() {
         for (Hologram hologram : HologramsAPI.getHolograms(main)) {
             hologram.delete();
-        }
-    }
-
-    public void removeHolograms(CubeletBox box) {
-        for(Player p : Bukkit.getOnlinePlayers()) {
-            removeHolograms(p, box);
         }
     }
 
@@ -70,40 +70,6 @@ public class HologramHandler {
         return this.actualColor;
     }
     public ColorAnimation getColorAnimation() { return colorAnimation; }
-
-    public void loadHolograms(Player p) {
-        for(CubeletBox box : main.getCubeletBoxHandler().getBoxes().values()) {
-            Hologram hologram = HologramsAPI.createHologram(main, box.getLocation().clone().add(0.5, 1.025 + (box.getBlockHeight() + 0.1875), 0.5));
-            VisibilityManager visibilityManager = hologram.getVisibilityManager();
-
-            visibilityManager.showTo(p);
-            visibilityManager.setVisibleByDefault(false);
-
-            if(box.getState() == CubeletBoxState.EMPTY) {
-                List<String> lines = getLines(p);
-                int max = Math.max(main.getLanguageHandler().getMessageList("Holograms.CubeletAvailable").size(), main.getLanguageHandler().getMessageList("Holograms.NoCubeletAvailable").size());
-
-                for (String line : lines) {
-                    hologram.appendTextLine(line);
-                }
-
-                hologram.teleport(box.getLocation().clone().add(0.5, (max * LINE_HEIGHT) + (box.getBlockHeight() + 0.1875), 0.5));
-            } else if(box.getState() == CubeletBoxState.REWARD) {
-                List<String> lines = getLinesReward(p, box.getPlayerOpening(), box.getLastReward());
-
-                hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + (box.getBlockHeight() + 0.1875), 0.5));
-
-                for (String line : lines) {
-                    if(!line.contains("%reward_icon%"))
-                        hologram.appendTextLine(line);
-                    else
-                        hologram.appendItemLine(box.getLastReward().getIcon());
-                }
-            }
-
-            box.getHolograms().put(p.getUniqueId(), hologram);
-        }
-    }
 
     public void loadHolograms(Player p, CubeletBox box) {
         Hologram hologram = HologramsAPI.createHologram(main, box.getLocation().clone().add(0.5, 1.025 + (box.getBlockHeight() + 0.1875), 0.5));
@@ -260,13 +226,6 @@ public class HologramHandler {
         }
     }
 
-    public void removeHolograms(Player p, CubeletBox box) {
-        if(box.getHolograms().containsKey(p.getUniqueId())) {
-            box.getHolograms().get(p.getUniqueId()).delete();
-            box.getHolograms().remove(p.getUniqueId());
-        }
-    }
-
     public List<String> getLines(Player p) {
         List<String> lines = new ArrayList<String>();
 
@@ -276,14 +235,14 @@ public class HologramHandler {
 
         if(available > 0) {
             for(String line : main.getLanguageHandler().getMessageList("Holograms.CubeletAvailable")) {
-                lines.add(ColorUtil.translate(line
+                lines.add(Utils.translate(line
                         .replaceAll("%blink%", getColor())
                         .replaceAll("%cubelets_available%", String.valueOf(available))
                 ));
             }
         } else {
             for(String line : main.getLanguageHandler().getMessageList("Holograms.NoCubeletAvailable")) {
-                lines.add(ColorUtil.translate(line
+                lines.add(Utils.translate(line
                         .replaceAll("%blink%", getColor())
                         .replaceAll("%cubelets_available%", String.valueOf(available))
                 ));
@@ -297,7 +256,7 @@ public class HologramHandler {
 
         if (p.getUniqueId().toString().equalsIgnoreCase(opening.getUniqueId().toString())) {
             for(String line : main.getLanguageHandler().getMessageList("Holograms.Reward.New.Me")) {
-                lines.add(ColorUtil.translate(line
+                lines.add(Utils.translate(line
                         .replaceAll("%player%", opening.getName())
                         .replaceAll("%reward_name%", reward.getName())
                         .replaceAll("%reward_rarity%", reward.getRarity().getName())
@@ -305,7 +264,7 @@ public class HologramHandler {
             }
         } else {
             for(String line : main.getLanguageHandler().getMessageList("Holograms.Reward.New.Other")) {
-                lines.add(ColorUtil.translate(line
+                lines.add(Utils.translate(line
                         .replaceAll("%player%", opening.getName())
                         .replaceAll("%reward_name%", reward.getName())
                         .replaceAll("%reward_rarity%", reward.getRarity().getName())
@@ -320,7 +279,7 @@ public class HologramHandler {
         List<String> lines = new ArrayList<String>();
 
         for(String line : main.getLanguageHandler().getMessageList("Holograms.Reward.Duplicate")) {
-            lines.add(ColorUtil.translate(line
+            lines.add(Utils.translate(line
                     .replaceAll("%points%", ""+duplicatePoints)
                     .replaceAll("%reward_name%", reward.getName())
                     .replaceAll("%reward_rarity%", reward.getRarity().getName())

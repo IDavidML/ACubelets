@@ -2,7 +2,6 @@ package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.GUILayout;
-import me.davidml16.acubelets.utils.ColorUtil;
 import me.davidml16.acubelets.utils.ConfigUpdater;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;

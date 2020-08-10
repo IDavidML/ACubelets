@@ -3,7 +3,7 @@ package me.davidml16.acubelets.database.types;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.Profile;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -44,9 +44,9 @@ public class SQLite implements Database {
             try {
                 Class.forName("org.sqlite.JDBC");
                 connection = DriverManager.getConnection(URL);
-                Main.log.sendMessage(ColorUtil.translate("    &aSQLite has been enabled!"));
+                Main.log.sendMessage(Utils.translate("    &aSQLite has been enabled!"));
             } catch (SQLException | ClassNotFoundException e) {
-                Main.log.sendMessage(ColorUtil.translate("    &cSQLite has an error on the conection! Plugin disabled : Database needed"));
+                Main.log.sendMessage(Utils.translate("    &cSQLite has an error on the conection! Plugin disabled : Database needed"));
                 Bukkit.getPluginManager().disablePlugin(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("ACubelets")));
             }
         }

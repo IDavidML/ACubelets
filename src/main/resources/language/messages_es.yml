@@ -26,6 +26,17 @@ Commands:
   Balance:
     Cubelets: '&aActualmente tienes &6%cubelets_available% &acubelets para abrir!'
     Points: '&aActualmente tienes &6%points_available% &apuntos de Loot!'
+  Cubelets:
+    Give: '%prefix% &aEnviados &e%amount%x %cubelet% &aa &e%player%'
+    Remove:
+      Removed: '%prefix% &aQuitados &e%amount%x %cubelet% &ade &e%player%'
+      NoBalance: '%prefix% &6%player% &cno tiene &6%amount%x %cubelet%&c. Balance actual: &6%balance%'
+  Points:
+    Give: '%prefix% &aEnviados &e%amount%x Puntos &aa &e%player%'
+    Set: '%prefix% &aCambiados &e%amount%x Puntos &aa &e%player%'
+    Remove:
+      Removed: '%prefix% &aQuitados &e%amount%x Puntos &ade &e%player%'
+      NoBalance: '%prefix% &6%player% &cno tiene &6%amount%x Puntos&c. Balance actual: &6%balance%'
 
 Cubelet:
   BoxInUse:

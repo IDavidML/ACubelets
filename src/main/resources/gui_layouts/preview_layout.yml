@@ -43,9 +43,11 @@ Layout:
       Name: '&6Next page'
       Material: 'SUGAR_CANE'
       Slot: 9
+      ShowPageNumber: false
 
     # Previous page item
     PreviousPage:
       Name: '&6Previous page'
       Material: 'SUGAR_CANE'
       Slot: 1
+      ShowPageNumber: false

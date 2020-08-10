@@ -4,8 +4,7 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.enums.Rotation;
 import me.davidml16.acubelets.objects.CubeletBox;
-import me.davidml16.acubelets.utils.ColorUtil;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -14,7 +13,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 public class CubeletBoxHandler {
 
@@ -146,8 +144,8 @@ public class CubeletBoxHandler {
 
         saveConfig();
 
-        Main.log.sendMessage(ColorUtil.translate(""));
-        Main.log.sendMessage(ColorUtil.translate("  &eLoading boxes:"));
+        Main.log.sendMessage(Utils.translate(""));
+        Main.log.sendMessage(Utils.translate("  &eLoading boxes:"));
 
         if(config.contains("locations")) {
             if(config.getConfigurationSection("locations") != null) {
@@ -190,9 +188,9 @@ public class CubeletBoxHandler {
         }
 
         if(boxes.size() == 0)
-            Main.log.sendMessage(ColorUtil.translate("    &cNo cubelet boxes has been loaded!"));
+            Main.log.sendMessage(Utils.translate("    &cNo cubelet boxes has been loaded!"));
         else
-            Main.log.sendMessage(ColorUtil.translate("    &b" + boxes.size() + " &aCubelet Boxes loaded!"));
+            Main.log.sendMessage(Utils.translate("    &b" + boxes.size() + " &aCubelet Boxes loaded!"));
 
     }
 

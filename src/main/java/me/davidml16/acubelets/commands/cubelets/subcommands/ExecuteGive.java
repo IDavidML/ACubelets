@@ -2,7 +2,7 @@ package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.api.CubeletsAPI;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -27,7 +27,7 @@ public class ExecuteGive {
 
         if (args.length == 1 || args.length == 2) {
             sender.sendMessage("");
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " give [player] [typeID] [amount]"));
+            sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " give [player] [typeID] [amount]"));
             sender.sendMessage("");
             return false;
         }
@@ -36,31 +36,40 @@ public class ExecuteGive {
 
         String id = args[2];
         if (!main.getCubeletTypesHandler().getTypes().containsKey(id)) {
-            sender.sendMessage(ColorUtil.translate(
+            sender.sendMessage(Utils.translate(
                     main.getLanguageHandler().getPrefix() + " &cThis " + label + " type doesn't exists!"));
             return false;
         }
 
-        
+        int amount = 1;
+
         if(player.equalsIgnoreCase("*") || player.equalsIgnoreCase("all")) {
             if(args.length == 3) {
                 for(Player iterator : Bukkit.getOnlinePlayers()) {
                     CubeletsAPI.giveCubelet(iterator.getName(), id, 1);
-                    sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
-                            " &aGived &e1x " + main.getCubeletTypesHandler().getTypeBydId(id).getName() + " &ato &e" + iterator.getName()));
+
+                    String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Give");
+                    msg = msg.replaceAll("%amount%", Integer.toString(amount));
+                    msg = msg.replaceAll("%cubelet%",  main.getCubeletTypesHandler().getTypeBydId(id).getName());
+                    msg = msg.replaceAll("%player%", iterator.getName());
+                    sender.sendMessage(Utils.translate(msg));
                 }
                 return true;
             } else if(args.length == 4) {
-                int amount = Integer.parseInt(args[3]);
+                amount = Integer.parseInt(args[3]);
                 if(amount > 0) {
                     for(Player iterator : Bukkit.getOnlinePlayers()) {
                         CubeletsAPI.giveCubelet(iterator.getName(), id, amount);
-                        sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
-                                " &aGived &e" + amount + "x " + main.getCubeletTypesHandler().getTypeBydId(id).getName() + " &ato &e" + iterator.getName()));
+
+                        String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Give");
+                        msg = msg.replaceAll("%amount%", Integer.toString(amount));
+                        msg = msg.replaceAll("%cubelet%",  main.getCubeletTypesHandler().getTypeBydId(id).getName());
+                        msg = msg.replaceAll("%player%", iterator.getName());
+                        sender.sendMessage(Utils.translate(msg));
                     }
                     return true;
                 } else {
-                    sender.sendMessage(ColorUtil.translate(
+                    sender.sendMessage(Utils.translate(
                             main.getLanguageHandler().getPrefix() + " &cAmount to give need to be more than 0!"));
                     return false;
                 }
@@ -68,7 +77,7 @@ public class ExecuteGive {
         } else {
             try {
                 if(!main.getDatabaseHandler().hasName(player)) {
-                    sender.sendMessage(ColorUtil.translate(
+                    sender.sendMessage(Utils.translate(
                             main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
                     return false;
                 }
@@ -78,17 +87,27 @@ public class ExecuteGive {
 
             if(args.length == 3) {
                 CubeletsAPI.giveCubelet(player, id, 1);
-                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
-                        " &aGived &e1x " + main.getCubeletTypesHandler().getTypeBydId(id).getName() + " &ato &e" + player));
+
+                String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Give");
+                msg = msg.replaceAll("%amount%", Integer.toString(amount));
+                msg = msg.replaceAll("%cubelet%",  main.getCubeletTypesHandler().getTypeBydId(id).getName());
+                msg = msg.replaceAll("%player%", player);
+                sender.sendMessage(Utils.translate(msg));
+
             } else if(args.length == 4) {
-                int amount = Integer.parseInt(args[3]);
+                amount = Integer.parseInt(args[3]);
                 if(amount > 0) {
                     CubeletsAPI.giveCubelet(player, id, amount);
-                    sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
-                            " &aGived &e" + amount + "x " + main.getCubeletTypesHandler().getTypeBydId(id).getName() + " &ato &e" + player));
+
+                    String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Give");
+                    msg = msg.replaceAll("%amount%", Integer.toString(amount));
+                    msg = msg.replaceAll("%cubelet%",  main.getCubeletTypesHandler().getTypeBydId(id).getName());
+                    msg = msg.replaceAll("%player%", player);
+                    sender.sendMessage(Utils.translate(msg));
+
                     return true;
                 } else {
-                    sender.sendMessage(ColorUtil.translate(
+                    sender.sendMessage(Utils.translate(
                             main.getLanguageHandler().getPrefix() + " &cAmount to give need to be more than 0!"));
                     return false;
                 }

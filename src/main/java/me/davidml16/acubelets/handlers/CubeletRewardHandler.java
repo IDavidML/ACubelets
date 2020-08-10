@@ -3,7 +3,7 @@ package me.davidml16.acubelets.handlers;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.interfaces.Reward;
 import me.davidml16.acubelets.objects.*;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.RepeatingTask;
 import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import org.bukkit.Bukkit;
@@ -22,7 +22,7 @@ public class CubeletRewardHandler {
 	}
 
 	public void loadRewards() {
-		Main.log.sendMessage(ColorUtil.translate("  &eLoading rewards:"));
+		Main.log.sendMessage(Utils.translate("  &eLoading rewards:"));
 
 		int loaded = 0;
 		for(CubeletType cubeletType : main.getCubeletTypesHandler().getTypes().values()) {
@@ -30,9 +30,9 @@ public class CubeletRewardHandler {
 		}
 
 		if(loaded == 0)
-			Main.log.sendMessage(ColorUtil.translate("    &cNo cubelet rewards has been loaded!"));
+			Main.log.sendMessage(Utils.translate("    &cNo cubelet rewards has been loaded!"));
 
-		Main.log.sendMessage(ColorUtil.translate(""));
+		Main.log.sendMessage(Utils.translate(""));
 	}
 
 	public int loadReward(CubeletType cubeletType, boolean log) {
@@ -87,7 +87,7 @@ public class CubeletRewardHandler {
 		cubeletType.setRewards(rewards);
 		cubeletType.saveType();
 
-		if(log) Main.log.sendMessage(ColorUtil.translate("    &a'" + cubeletType.getId() + "' &7- " + (rewardsLoaded > 0 ? "&a" : "&c") + rewardsLoaded + " rewards"));
+		if(log) Main.log.sendMessage(Utils.translate("    &a'" + cubeletType.getId() + "' &7- " + (rewardsLoaded > 0 ? "&a" : "&c") + rewardsLoaded + " rewards"));
 
 		return rewardsLoaded;
 	}
@@ -111,7 +111,7 @@ public class CubeletRewardHandler {
 			Reward randomReward = commandRewards.get(randomElementIndex);
 			return randomReward;
 		} else {
-			p.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() +
+			p.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() +
 					" &cThere has been a problem with your reward, please notify the server staff."));
 		}
 		return null;

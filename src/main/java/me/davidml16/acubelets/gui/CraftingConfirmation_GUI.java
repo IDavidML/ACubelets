@@ -5,7 +5,7 @@ import me.davidml16.acubelets.enums.CraftType;
 import me.davidml16.acubelets.objects.CraftIngredient;
 import me.davidml16.acubelets.objects.CraftParent;
 import me.davidml16.acubelets.objects.GUILayout;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
@@ -51,31 +51,31 @@ public class CraftingConfirmation_GUI implements Listener {
             if(line.contains("%ingredients%")) {
                 for(CraftIngredient ingredient : craftParent.getIngrediens()) {
                     if(ingredient.getCraftType() == CraftType.CUBELET)
-                        lore.add(ColorUtil.translate(guiLayout.getMessage("Ingredients.Ingredient.Cubelet")
-                                .replaceAll("%name%", ColorUtil.removeColors(main.getCubeletTypesHandler().getTypeBydId(ingredient.getName()).getName()))
+                        lore.add(Utils.translate(guiLayout.getMessage("Ingredients.Ingredient.Cubelet")
+                                .replaceAll("%name%", Utils.removeColors(main.getCubeletTypesHandler().getTypeBydId(ingredient.getName()).getName()))
                                 .replaceAll("%amount%", ""+ingredient.getAmount())
                         ));
                     else if(ingredient.getCraftType() == CraftType.MONEY)
-                        lore.add(ColorUtil.translate(guiLayout.getMessage("Ingredients.Ingredient.Money")
+                        lore.add(Utils.translate(guiLayout.getMessage("Ingredients.Ingredient.Money")
                                 .replaceAll("%amount%", ""+ingredient.getAmount())
                         ));
                     else if(ingredient.getCraftType() == CraftType.POINTS)
-                        lore.add(ColorUtil.translate(guiLayout.getMessage("Ingredients.Ingredient.Points")
+                        lore.add(Utils.translate(guiLayout.getMessage("Ingredients.Ingredient.Points")
                                 .replaceAll("%amount%", ""+ingredient.getAmount())
                         ));
                 }
             } else {
-                lore.add(ColorUtil.translate(line));
+                lore.add(Utils.translate(line));
             }
         }
 
         ItemStack craft = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Craft.Material")).get().parseItem())
-                .setName(ColorUtil.translate(guiLayout.getMessage("Items.Craft.Name")))
+                .setName(Utils.translate(guiLayout.getMessage("Items.Craft.Name")))
                 .setLore(lore)
                 .toItemStack();
 
         ItemStack cancel = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Cancel.Material")).get().parseItem())
-                .setName(ColorUtil.translate(guiLayout.getMessage("Items.Cancel.Name")))
+                .setName(Utils.translate(guiLayout.getMessage("Items.Cancel.Name")))
                 .setLore(guiLayout.getMessageList("Items.Cancel.Lore"))
                 .toItemStack();
 

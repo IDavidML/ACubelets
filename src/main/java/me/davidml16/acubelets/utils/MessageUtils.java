@@ -4,7 +4,6 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.interfaces.Reward;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.objects.CommandReward;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -194,13 +193,13 @@ public class MessageUtils {
         for (String line : Main.get().getLanguageHandler().getMessageList("Cubelet.Reward.New")) {
             if (line.contains("%center%")) {
                 line = line.replaceAll("%center%", "");
-                target.sendMessage(MessageUtils.centeredMessage(ColorUtil.translate(line
+                target.sendMessage(MessageUtils.centeredMessage(Utils.translate(line
                         .replaceAll("%cubelet_type%", cubeletType.getName())
                         .replaceAll("%reward_name%", reward.getName())
                         .replaceAll("%reward_rarity%", reward.getRarity().getName())
                 )));
             } else {
-                target.sendMessage(ColorUtil.translate(line
+                target.sendMessage(Utils.translate(line
                         .replaceAll("%cubelet_type%", cubeletType.getName())
                         .replaceAll("%reward_name%", reward.getName())
                         .replaceAll("%reward_rarity%", reward.getRarity().getName())
@@ -219,14 +218,14 @@ public class MessageUtils {
         for (String line : Main.get().getLanguageHandler().getMessageList("Cubelet.Reward.Duplicate")) {
             if (line.contains("%center%")) {
                 line = line.replaceAll("%center%", "");
-                target.sendMessage(MessageUtils.centeredMessage(ColorUtil.translate(line
+                target.sendMessage(MessageUtils.centeredMessage(Utils.translate(line
                         .replaceAll("%cubelet_type%", cubeletType.getName())
                         .replaceAll("%reward_name%", reward.getName())
                         .replaceAll("%reward_rarity%", reward.getRarity().getName())
                         .replaceAll("%points%", ""+duplicatePoints)
                 )));
             } else {
-                target.sendMessage(ColorUtil.translate(line
+                target.sendMessage(Utils.translate(line
                         .replaceAll("%cubelet_type%", cubeletType.getName())
                         .replaceAll("%reward_name%", reward.getName())
                         .replaceAll("%reward_rarity%", reward.getRarity().getName())
@@ -244,9 +243,9 @@ public class MessageUtils {
                 for (String line : Main.get().getLanguageHandler().getMessageList("Cubelet.NoCubelets")) {
                     if (line.contains("%center%")) {
                         line = line.replaceAll("%center%", "");
-                        player.sendMessage(MessageUtils.centeredMessage(ColorUtil.translate(line)));
+                        player.sendMessage(MessageUtils.centeredMessage(Utils.translate(line)));
                     } else {
-                        player.sendMessage(ColorUtil.translate(line));
+                        player.sendMessage(Utils.translate(line));
                     }
                 }
             }

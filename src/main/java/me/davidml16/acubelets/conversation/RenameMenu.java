@@ -2,7 +2,7 @@ package me.davidml16.acubelets.conversation;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.*;
@@ -44,7 +44,7 @@ public class RenameMenu implements ConversationAbandonedListener, CommonPrompts 
                     type.setName(name);
                     main.getCubeletTypesHandler().getConfig(type.getId()).set("type.name", name);
                     main.getCubeletTypesHandler().saveConfig(type.getId());
-                    param1ConversationContext.getForWhom().sendRawMessage("\n" + ColorUtil.translate(main.getLanguageHandler().getPrefix()
+                    param1ConversationContext.getForWhom().sendRawMessage("\n" + Utils.translate(main.getLanguageHandler().getPrefix()
                             + " &aSaved data of cubelet type &e" + type.getId() + " &awithout errors!"));
                     Sounds.playSound(player, player.getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
                     main.getTypeConfigGUI().reloadGUI(type.getId());

@@ -4,7 +4,7 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.database.types.Database;
 import me.davidml16.acubelets.database.types.MySQL;
 import me.davidml16.acubelets.database.types.SQLite;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 
 public class DatabaseHandler {
 
@@ -22,8 +22,8 @@ public class DatabaseHandler {
 	}
 
 	public void openConnection() {
-		Main.log.sendMessage(ColorUtil.translate("  "));
-		Main.log.sendMessage(ColorUtil.translate("  &eLoading database:"));
+		Main.log.sendMessage(Utils.translate("  "));
+		Main.log.sendMessage(Utils.translate("  &eLoading database:"));
 		database.open();
 	}
 

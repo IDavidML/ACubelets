@@ -1,11 +1,10 @@
 package me.davidml16.acubelets.conversation;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.Sounds;
 import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.Prompt;
 import org.bukkit.conversations.StringPrompt;
@@ -457,7 +456,7 @@ public interface CommonPrompts  {
         public Prompt acceptInput(ConversationContext param1ConversationContext, String param1String) {
             if (param1String.equals("1") || param1String.equalsIgnoreCase("Yes")) {
 
-                param1ConversationContext.getForWhom().sendRawMessage("\n" + ColorUtil.translate(main.getLanguageHandler().getPrefix()
+                param1ConversationContext.getForWhom().sendRawMessage("\n" + Utils.translate(main.getLanguageHandler().getPrefix()
                         + " &cYou leave type setup menu!"));
 
                 Main.get().getGuiHandler().removeConversation((Player) param1ConversationContext.getSessionData("player"));

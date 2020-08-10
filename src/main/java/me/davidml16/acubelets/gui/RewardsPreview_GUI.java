@@ -3,7 +3,7 @@ package me.davidml16.acubelets.gui;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.interfaces.Reward;
 import me.davidml16.acubelets.objects.*;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
@@ -52,16 +52,18 @@ public class RewardsPreview_GUI implements Listener {
 
         int neededSize = getNeededSize(guiLayout, rewards.size());
 
-        Inventory gui = Bukkit.createInventory(null, neededSize, guiLayout.getMessage("Title").replaceAll("%cubelet_type%", ColorUtil.removeColors(cubeletType.getName())));
+        Inventory gui = Bukkit.createInventory(null, neededSize, guiLayout.getMessage("Title").replaceAll("%cubelet_type%", Utils.removeColors(cubeletType.getName())));
 
         if (page > 0) {
-            gui.setItem((neededSize - 10) + guiLayout.getSlot("PreviousPage"), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.PreviousPage.Material")).get().parseItem())
+            int amount = guiLayout.getBoolean("Items.PreviousPage.ShowPageNumber") ? page : 1;
+            gui.setItem((neededSize - 10) + guiLayout.getSlot("PreviousPage"), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.PreviousPage.Material")).get().parseMaterial(), amount)
                     .setName(guiLayout.getMessage("Items.PreviousPage.Name"))
                     .toItemStack());
         }
 
         if (cubeletType.getAllRewards().size() > (page + 1) * pageSize) {
-            gui.setItem((neededSize - 10) + guiLayout.getSlot("NextPage"), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NextPage.Material")).get().parseItem())
+            int amount = guiLayout.getBoolean("Items.PreviousPage.ShowPageNumber") ? (page + 2) : 1;
+            gui.setItem((neededSize - 10) + guiLayout.getSlot("NextPage"), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NextPage.Material")).get().parseMaterial(), amount)
                     .setName(guiLayout.getMessage("Items.NextPage.Name"))
                     .toItemStack());
         }
@@ -80,11 +82,11 @@ public class RewardsPreview_GUI implements Listener {
 
                 List<String> lore = new ArrayList<>();
                 for (String line : guiLayout.getMessageList("Items.Reward.Lore")) {
-                    lore.add(ColorUtil.translate(line.replaceAll("%reward_rarity%", reward.getRarity().getName())));
+                    lore.add(Utils.translate(line.replaceAll("%reward_rarity%", reward.getRarity().getName())));
                 }
 
                 gui.addItem(new ItemBuilder(reward.getIcon())
-                    .setName(ColorUtil.translate(guiLayout.getMessage("Items.Reward.Name").replaceAll("%reward_name%", reward.getName())))
+                    .setName(Utils.translate(guiLayout.getMessage("Items.Reward.Name").replaceAll("%reward_name%", reward.getName())))
                     .setLore(lore)
                     .hideAttributes()
                     .toItemStack());

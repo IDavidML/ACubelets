@@ -5,7 +5,7 @@ import me.davidml16.acubelets.api.CubeletReceivedEvent;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Profile;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.TimeAPI.TimeAPI;
 import me.davidml16.acubelets.utils.XSeries.XItemStack;
@@ -107,8 +107,8 @@ public class CubeletTypesHandler {
             directory.mkdir();
         }
 
-        Main.log.sendMessage(ColorUtil.translate(""));
-        Main.log.sendMessage(ColorUtil.translate("  &eLoading types:"));
+        Main.log.sendMessage(Utils.translate(""));
+        Main.log.sendMessage(Utils.translate("  &eLoading types:"));
         File[] allFiles = new File(main.getDataFolder(), "types").listFiles();
         for (File file : allFiles) {
             String id = file.getName().toLowerCase().replace(".yml", "");
@@ -232,17 +232,17 @@ public class CubeletTypesHandler {
                         convertedTime = new TimeAPI(config.getString("type.expiration")).getMilliseconds();
                     cubeletType.setExpireTime(convertedTime);
 
-                    Main.log.sendMessage(ColorUtil.translate("    &a'" + id + "' &7- &aCubelet type loaded!"));
+                    Main.log.sendMessage(Utils.translate("    &a'" + id + "' &7- &aCubelet type loaded!"));
                 } else {
-                    Main.log.sendMessage(ColorUtil.translate("    &c'" + id + "' not loaded because cubelet type data is not correct!"));
+                    Main.log.sendMessage(Utils.translate("    &c'" + id + "' not loaded because cubelet type data is not correct!"));
                 }
             } else {
-                Main.log.sendMessage(ColorUtil.translate("    &c'" + id + "' not loaded because cubelet type id starts with a number!"));
+                Main.log.sendMessage(Utils.translate("    &c'" + id + "' not loaded because cubelet type id starts with a number!"));
             }
         }
 
         if(types.size() == 0)
-            Main.log.sendMessage(ColorUtil.translate("    &cNo cubelet types has been loaded!"));
+            Main.log.sendMessage(Utils.translate("    &cNo cubelet types has been loaded!"));
 
     }
 

@@ -43,7 +43,7 @@ public class AnimationHalloween_Task implements Animation {
 	private Set<Entity> ghosts = new HashSet<>();
 
 	private List<Color> colors;
-	private ColorUtil.ColorSet<Integer, Integer, Integer> colorRarity;
+	private Utils.ColorSet<Integer, Integer, Integer> colorRarity;
 
 	private Location boxLocation, armorStandLocation;
 
@@ -116,7 +116,7 @@ public class AnimationHalloween_Task implements Animation {
 			if(time == 165) removeRandomGhost();
 
 			if(time == 173) {
-				colorRarity = ColorUtil.getRGBbyColor(ColorUtil.getColorByText(reward.getRarity().getName()));
+				colorRarity = Utils.getRGBbyColor(Utils.getColorByText(reward.getRarity().getName()));
 				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 1.50, 0.5), FireworkEffect.Type.BALL_LARGE, colors.get(0), colors.get(1));
 
 				for(Entity entity : ghosts) {

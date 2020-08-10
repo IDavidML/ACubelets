@@ -2,15 +2,13 @@ package me.davidml16.acubelets.commands.points;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.commands.points.subcommands.*;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class CoreCommand extends Command {
 
@@ -52,7 +50,7 @@ public class CoreCommand extends Command {
         }
 
         sender.sendMessage("");
-        sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cInvalid argument, use /" + label + " help to see available commands"));
+        sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cInvalid argument, use /" + label + " help to see available commands"));
         sender.sendMessage("");
         return false;
     }
@@ -63,10 +61,10 @@ public class CoreCommand extends Command {
         }
 
         sender.sendMessage("");
-        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " give [player] [amount]"));
-        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " remove [player] [amount]"));
-        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " set [player] [amount]"));
-        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " info [player]"));
+        sender.sendMessage(Utils.translate("&7 - &a/" + label + " give [player] [amount]"));
+        sender.sendMessage(Utils.translate("&7 - &a/" + label + " remove [player] [amount]"));
+        sender.sendMessage(Utils.translate("&7 - &a/" + label + " set [player] [amount]"));
+        sender.sendMessage(Utils.translate("&7 - &a/" + label + " info [player]"));
         sender.sendMessage("");
         return true;
     }

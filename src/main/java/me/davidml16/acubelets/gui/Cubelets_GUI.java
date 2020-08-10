@@ -83,13 +83,15 @@ public class Cubelets_GUI implements Listener {
         Inventory gui = Bukkit.createInventory(null, neededSize, guiLayout.getMessage("Title"));
 
         if (page > 0) {
-            gui.setItem(((neededSize - 10) + guiLayout.getSlot("PreviousPage")), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.PreviousPage.Material")).get().parseItem())
+            int amount = guiLayout.getBoolean("Items.PreviousPage.ShowPageNumber") ? page : 1;
+            gui.setItem(((neededSize - 10) + guiLayout.getSlot("PreviousPage")), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.PreviousPage.Material")).get().parseMaterial(), amount)
                     .setName(guiLayout.getMessage("Items.PreviousPage.Name"))
                     .toItemStack());
         }
 
         if (main.getPlayerDataHandler().getData(p.getUniqueId()).getCubelets().size() > (page + 1) * pageSize) {
-            gui.setItem((neededSize - 10) + guiLayout.getSlot("NextPage"), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NextPage.Material")).get().parseItem())
+            int amount = guiLayout.getBoolean("Items.PreviousPage.ShowPageNumber") ? (page + 2) : 1;
+            gui.setItem((neededSize - 10) + guiLayout.getSlot("NextPage"), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NextPage.Material")).get().parseMaterial(), amount)
                     .setName(guiLayout.getMessage("Items.NextPage.Name"))
                     .toItemStack());
         }
@@ -137,18 +139,18 @@ public class Cubelets_GUI implements Listener {
 
                 if (cubelet.getExpire() > System.currentTimeMillis()) {
                     for (String line : type.getLoreAvailable()) {
-                        lore.add(ColorUtil.translate(line
+                        lore.add(Utils.translate(line
                                 .replaceAll("%received%", TimeUtils.millisToLongDHMS(System.currentTimeMillis() - cubelet.getReceived())))
                                 .replaceAll("%expires%", TimeUtils.millisToLongDHMS(cubelet.getExpire() - System.currentTimeMillis())));
                     }
                 } else {
                     for (String line : type.getLoreExpired()) {
-                        lore.add(ColorUtil.translate(line
+                        lore.add(Utils.translate(line
                                 .replaceAll("%received%", TimeUtils.millisToLongDHMS(System.currentTimeMillis() - cubelet.getReceived()))));
                     }
                 }
 
-                ItemStack item = new ItemBuilder(type.getIcon()).setName(ColorUtil.translate(type.getName())).setLore(lore).toItemStack();
+                ItemStack item = new ItemBuilder(type.getIcon()).setName(Utils.translate(type.getName())).setLore(lore).toItemStack();
                 item = NBTEditor.set(item, cubelet.getUuid().toString(), "cubeletUUID");
                 item = NBTEditor.set(item, type.getId(), "typeID");
 

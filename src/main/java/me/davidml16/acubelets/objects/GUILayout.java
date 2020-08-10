@@ -1,6 +1,9 @@
 package me.davidml16.acubelets.objects;
 
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.clip.placeholderapi.PlaceholderAPI;
+import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.utils.Utils;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +44,7 @@ public class GUILayout {
     }
 
     public String getMessage(String path) {
-        return ColorUtil.translate(messages.get("Layout." + path));
+        return Utils.translate(messages.get("Layout." + path));
     }
 
     public boolean getBoolean(String path) { return Boolean.parseBoolean(messages.get("Layout." + path)); }
@@ -51,7 +54,18 @@ public class GUILayout {
     public List<String> getMessageList(String message) {
         List<String> lines = new ArrayList<>();
         for(String line : messageList.get("Layout." + message)) {
-            lines.add(ColorUtil.translate(line));
+            lines.add(Utils.translate(line));
+        }
+        return lines;
+    }
+
+    public List<String> getMessageListPlaceholders(Player player, String message) {
+        List<String> lines = new ArrayList<>();
+        for(String line : messageList.get("Layout." + message)) {
+            if(!Main.get().hasPlaceholderAPI())
+                lines.add(Utils.translate(line));
+            else
+                lines.add(Utils.translate(PlaceholderAPI.setPlaceholders(player, line)));
         }
         return lines;
     }

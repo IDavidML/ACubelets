@@ -4,7 +4,7 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.CommonPrompts;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Rarity;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.*;
@@ -65,7 +65,7 @@ public class EditRarityMenu implements ConversationAbandonedListener, CommonProm
                             rarity.setDuplicatePointsRange(rarityDuplicate);
                             cubeletType.saveType();
 
-                            param1ConversationContext.getForWhom().sendRawMessage("\n" + ColorUtil.translate(main.getLanguageHandler().getPrefix()
+                            param1ConversationContext.getForWhom().sendRawMessage("\n" + Utils.translate(main.getLanguageHandler().getPrefix()
                                     + " &aYou edited rarity &e" + rarity.getId() + " &afrom rarities of cubelet type &e" + cubeletType.getId()));
 
                             Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),

@@ -3,16 +3,13 @@ package me.davidml16.acubelets.gui;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.enums.Rotation;
 import me.davidml16.acubelets.objects.CubeletBox;
-import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.GUILayout;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,7 +19,6 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Objects;
 import java.util.UUID;
@@ -51,39 +47,39 @@ public class EditBox_GUI implements Listener {
         ItemStack downArrow = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzkxMmQ0NWIxYzc4Y2MyMjQ1MjcyM2VlNjZiYTJkMTU3NzdjYzI4ODU2OGQ2YzFiNjJhNTQ1YjI5YzcxODcifX19");
         ItemStack remove = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGVkNjc5OTE0OTc4OGI5ZTkwMTY4MTFkM2EzZDBlZDFmNTUyNTMwZDY3Zjk4Njk0NTAzMmQ2ZTQzOWZhODk5ZCJ9fX0=");
 
-        gui.setItem(10, new ItemBuilder(upArrow).setName(ColorUtil.translate("&aIncrease height")).setLore(
+        gui.setItem(10, new ItemBuilder(upArrow).setName(Utils.translate("&aIncrease height")).setLore(
                 "",
-                ColorUtil.translate(" &7Actual height: &6" + String.format("%.3f", box.getBlockHeight())),
-                ColorUtil.translate(" &7New height: &6" + String.format("%.3f", (box.getBlockHeight() + 0.015))),
+                Utils.translate(" &7Actual height: &6" + String.format("%.3f", box.getBlockHeight())),
+                Utils.translate(" &7New height: &6" + String.format("%.3f", (box.getBlockHeight() + 0.015))),
                 "",
-                ColorUtil.translate("&eClick to increase height")
+                Utils.translate("&eClick to increase height")
         ).toItemStack());
-        gui.setItem(11, new ItemBuilder(XMaterial.ANVIL.parseMaterial()).setName(ColorUtil.translate("&aReset height to default")).setLore(
+        gui.setItem(11, new ItemBuilder(XMaterial.ANVIL.parseMaterial()).setName(Utils.translate("&aReset height to default")).setLore(
                 "",
-                ColorUtil.translate(" &7New height: &6" + String.format("%.3f", box.getPermanentBlockHeight())),
+                Utils.translate(" &7New height: &6" + String.format("%.3f", box.getPermanentBlockHeight())),
                 "",
-                ColorUtil.translate("&eClick » &aReset height"),
-                ColorUtil.translate("&eShift-Click » &aSet default height to actual")
+                Utils.translate("&eClick » &aReset height"),
+                Utils.translate("&eShift-Click » &aSet default height to actual")
         ).toItemStack());
-        gui.setItem(12, new ItemBuilder(downArrow).setName(ColorUtil.translate("&aDecrease height")).setLore(
+        gui.setItem(12, new ItemBuilder(downArrow).setName(Utils.translate("&aDecrease height")).setLore(
                 "",
-                ColorUtil.translate(" &7Actual height: &6" + String.format("%.3f", box.getBlockHeight())),
-                ColorUtil.translate(" &7New height: &6" + String.format("%.3f", (box.getBlockHeight() - 0.015))),
+                Utils.translate(" &7Actual height: &6" + String.format("%.3f", box.getBlockHeight())),
+                Utils.translate(" &7New height: &6" + String.format("%.3f", (box.getBlockHeight() - 0.015))),
                 "",
-                ColorUtil.translate("&eClick to decrease height")
+                Utils.translate("&eClick to decrease height")
         ).toItemStack());
-        gui.setItem(14, new ItemBuilder(XMaterial.COMPASS.parseItem()).setName(ColorUtil.translate("&aChange direction")).setLore(
+        gui.setItem(14, new ItemBuilder(XMaterial.COMPASS.parseItem()).setName(Utils.translate("&aChange direction")).setLore(
                 "",
-                ColorUtil.translate(" " + (box.getRotation() == Rotation.NORTH ? "&eNorth" : "&7North")),
-                ColorUtil.translate(" " + (box.getRotation() == Rotation.SOUTH ? "&eSouth" : "&7South")),
-                ColorUtil.translate(" " + (box.getRotation() == Rotation.EAST ? "&eEast" : "&7East")),
-                ColorUtil.translate(" " + (box.getRotation() == Rotation.WEST ? "&eWest" : "&7West")),
+                Utils.translate(" " + (box.getRotation() == Rotation.NORTH ? "&eNorth" : "&7North")),
+                Utils.translate(" " + (box.getRotation() == Rotation.SOUTH ? "&eSouth" : "&7South")),
+                Utils.translate(" " + (box.getRotation() == Rotation.EAST ? "&eEast" : "&7East")),
+                Utils.translate(" " + (box.getRotation() == Rotation.WEST ? "&eWest" : "&7West")),
                 "",
-                ColorUtil.translate("&eClick to change direction")
+                Utils.translate("&eClick to change direction")
         ).toItemStack());
-        gui.setItem(16, new ItemBuilder(remove).setName(ColorUtil.translate("&cRemove cubelet machine")).setLore(
+        gui.setItem(16, new ItemBuilder(remove).setName(Utils.translate("&cRemove cubelet machine")).setLore(
                 "",
-                ColorUtil.translate("&eClick to remove this machine")
+                Utils.translate("&eClick to remove this machine")
         ).toItemStack());
 
         for (int i = 0; i < 36; i++) {
@@ -116,39 +112,39 @@ public class EditBox_GUI implements Listener {
         ItemStack downArrow = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzkxMmQ0NWIxYzc4Y2MyMjQ1MjcyM2VlNjZiYTJkMTU3NzdjYzI4ODU2OGQ2YzFiNjJhNTQ1YjI5YzcxODcifX19");
         ItemStack remove = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGVkNjc5OTE0OTc4OGI5ZTkwMTY4MTFkM2EzZDBlZDFmNTUyNTMwZDY3Zjk4Njk0NTAzMmQ2ZTQzOWZhODk5ZCJ9fX0=");
 
-        gui.setItem(10, new ItemBuilder(upArrow).setName(ColorUtil.translate("&aIncrease height")).setLore(
+        gui.setItem(10, new ItemBuilder(upArrow).setName(Utils.translate("&aIncrease height")).setLore(
                 "",
-                ColorUtil.translate(" &7Actual height: &6" + String.format("%.3f", box.getBlockHeight())),
-                ColorUtil.translate(" &7New height: &6" + String.format("%.3f", (box.getBlockHeight() + 0.015))),
+                Utils.translate(" &7Actual height: &6" + String.format("%.3f", box.getBlockHeight())),
+                Utils.translate(" &7New height: &6" + String.format("%.3f", (box.getBlockHeight() + 0.015))),
                 "",
-                ColorUtil.translate("&eClick to increase height")
+                Utils.translate("&eClick to increase height")
         ).toItemStack());
-        gui.setItem(11, new ItemBuilder(XMaterial.ANVIL.parseMaterial()).setName(ColorUtil.translate("&aReset height to default")).setLore(
+        gui.setItem(11, new ItemBuilder(XMaterial.ANVIL.parseMaterial()).setName(Utils.translate("&aReset height to default")).setLore(
                 "",
-                ColorUtil.translate(" &7New height: &6" + String.format("%.3f", box.getPermanentBlockHeight())),
+                Utils.translate(" &7New height: &6" + String.format("%.3f", box.getPermanentBlockHeight())),
                 "",
-                ColorUtil.translate("&eClick » &aReset height"),
-                ColorUtil.translate("&eShift-Click » &aSet default height to actual")
+                Utils.translate("&eClick » &aReset height"),
+                Utils.translate("&eShift-Click » &aSet default height to actual")
         ).toItemStack());
-        gui.setItem(12, new ItemBuilder(downArrow).setName(ColorUtil.translate("&aDecrease height")).setLore(
+        gui.setItem(12, new ItemBuilder(downArrow).setName(Utils.translate("&aDecrease height")).setLore(
                 "",
-                ColorUtil.translate(" &7Actual height: &6" + String.format("%.3f", box.getBlockHeight())),
-                ColorUtil.translate(" &7New height: &6" + String.format("%.3f", (box.getBlockHeight() - 0.015))),
+                Utils.translate(" &7Actual height: &6" + String.format("%.3f", box.getBlockHeight())),
+                Utils.translate(" &7New height: &6" + String.format("%.3f", (box.getBlockHeight() - 0.015))),
                 "",
-                ColorUtil.translate("&eClick to decrease height")
+                Utils.translate("&eClick to decrease height")
         ).toItemStack());
-        gui.setItem(14, new ItemBuilder(XMaterial.COMPASS.parseItem()).setName(ColorUtil.translate("&aChange direction")).setLore(
+        gui.setItem(14, new ItemBuilder(XMaterial.COMPASS.parseItem()).setName(Utils.translate("&aChange direction")).setLore(
                 "",
-                ColorUtil.translate(" " + (box.getRotation() == Rotation.NORTH ? "&eNorth" : "&7North")),
-                ColorUtil.translate(" " + (box.getRotation() == Rotation.SOUTH ? "&eSouth" : "&7South")),
-                ColorUtil.translate(" " + (box.getRotation() == Rotation.EAST ? "&eEast" : "&7East")),
-                ColorUtil.translate(" " + (box.getRotation() == Rotation.WEST ? "&eWest" : "&7West")),
+                Utils.translate(" " + (box.getRotation() == Rotation.NORTH ? "&eNorth" : "&7North")),
+                Utils.translate(" " + (box.getRotation() == Rotation.SOUTH ? "&eSouth" : "&7South")),
+                Utils.translate(" " + (box.getRotation() == Rotation.EAST ? "&eEast" : "&7East")),
+                Utils.translate(" " + (box.getRotation() == Rotation.WEST ? "&eWest" : "&7West")),
                 "",
-                ColorUtil.translate("&eClick to change direction")
+                Utils.translate("&eClick to change direction")
         ).toItemStack());
-        gui.setItem(16, new ItemBuilder(remove).setName(ColorUtil.translate("&cRemove cubelet machine")).setLore(
+        gui.setItem(16, new ItemBuilder(remove).setName(Utils.translate("&cRemove cubelet machine")).setLore(
                 "",
-                ColorUtil.translate("&eClick to remove this machine")
+                Utils.translate("&eClick to remove this machine")
         ).toItemStack());
 
         for (int i = 0; i < 36; i++) {
@@ -224,7 +220,7 @@ public class EditBox_GUI implements Listener {
 
                     Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
 
-                    p.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
+                    p.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix()
                             + " &aSuccesfully removed cubelet machine of" +
                             " &aX: &e" + box.getLocation().getBlockX() +
                             ", &aY: &e" + box.getLocation().getBlockY() +
@@ -236,7 +232,7 @@ public class EditBox_GUI implements Listener {
                         }
                     }
                 } else {
-                    p.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cThis cubelet machine location no exists!"));
+                    p.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis cubelet machine location no exists!"));
                 }
             } else if (slot == 31) {
                 p.closeInventory();

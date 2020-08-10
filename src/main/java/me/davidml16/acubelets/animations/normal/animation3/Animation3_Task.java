@@ -8,9 +8,8 @@ import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.interfaces.Reward;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.objects.CommandReward;
 import me.davidml16.acubelets.objects.PermissionReward;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.MessageUtils;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.RepeatingTask;
@@ -40,7 +39,7 @@ public class Animation3_Task implements Animation {
 	private Animation3_Music music;
 	private List<Color> colors;
 
-	private ColorUtil.ColorSet<Integer, Integer, Integer> colorRarity;
+	private Utils.ColorSet<Integer, Integer, Integer> colorRarity;
 
 	private Location corner1, corner2, corner3, corner4;
 
@@ -95,7 +94,7 @@ public class Animation3_Task implements Animation {
 				UtilParticles.display(Particles.SMOKE_LARGE, 0.15F, 0, 0.15F, armorStandLocation.clone().add(0, 0.75, 0), 4);
 			} else if(time == 150) {
 				cubeletBox.setLastReward(reward);
-				colorRarity = ColorUtil.getRGBbyColor(ColorUtil.getColorByText(reward.getRarity().getName()));
+				colorRarity = Utils.getRGBbyColor(Utils.getColorByText(reward.getRarity().getName()));
 				main.getHologramHandler().rewardHologram(cubeletBox, reward);
 				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 2, 0.5), FireworkEffect.Type.STAR, colors.get(0), colors.get(1));
 				Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.EXPLODE, 0.5f, 0);

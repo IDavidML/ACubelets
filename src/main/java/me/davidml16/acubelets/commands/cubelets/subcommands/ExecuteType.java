@@ -1,7 +1,7 @@
 package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.MemorySection;
@@ -35,10 +35,10 @@ public class ExecuteType {
 
         if(args.length == 1) {
             sender.sendMessage("");
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type create [id] [name]"));
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type remove [id]"));
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type template [name]"));
-            sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type list"));
+            sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type create [id] [name]"));
+            sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type remove [id]"));
+            sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type template [name]"));
+            sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type list"));
             sender.sendMessage("");
             return false;
         }
@@ -50,7 +50,7 @@ public class ExecuteType {
         } else if(args[1].equalsIgnoreCase("create")) {
 
              if (args.length <= 3) {
-                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type create [id] [name]"));
+                sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type create [id] [name]"));
                 return false;
             }
 
@@ -62,7 +62,7 @@ public class ExecuteType {
             }
 
             if (main.getCubeletTypesHandler().typeExist(id)) {
-                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cThis " + label + " type already exists!"));
+                sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis " + label + " type already exists!"));
                 return true;
             }
 
@@ -90,25 +90,25 @@ public class ExecuteType {
 
                     main.getPluginHandler().reloadAll();
 
-                    sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix()
+                    sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix()
                             + " &aSuccesfully created " + label + " type &e" + id + " &awith the name &e" + name));
                     return true;
                 }
             } else {
-                sender.sendMessage(ColorUtil.translate(
+                sender.sendMessage(Utils.translate(
                         main.getLanguageHandler().getPrefix() + " &cThe " + label + " type cannot start with a number, use for example 'normal'."));
                 return false;
             }
         } else if(args[1].equalsIgnoreCase("remove")) {
             if (args.length < 3) {
-                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type remove [id]"));
+                sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " type remove [id]"));
                 return false;
             }
 
             String id = args[2].toLowerCase();
 
             if (!main.getCubeletTypesHandler().typeExist(id)) {
-                sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cThis " + label + " type no exists!"));
+                sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis " + label + " type no exists!"));
                 return true;
             }
 
@@ -137,20 +137,20 @@ public class ExecuteType {
                         if(main.getAnimationsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
                     }
 
-                    sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &aSuccesfully removed " + label + " type &e" + id + "&a!"));
+                    sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &aSuccesfully removed " + label + " type &e" + id + "&a!"));
                     return true;
                 }
             } else {
-                sender.sendMessage(ColorUtil.translate(
+                sender.sendMessage(Utils.translate(
                         main.getLanguageHandler().getPrefix() + " &cThe " + label + " type cannot start with a number, use for example 'normal'."));
                 return false;
             }
         } else if(args[1].equalsIgnoreCase("template")) {
             if (args.length < 3) {
                 sender.sendMessage("");
-                sender.sendMessage(ColorUtil.translate(" &cUsage: /" + label + " type template [name]"));
+                sender.sendMessage(Utils.translate(" &cUsage: /" + label + " type template [name]"));
                 sender.sendMessage("");
-                sender.sendMessage(ColorUtil.translate(" &aAvailable templates: &e" + templates));
+                sender.sendMessage(Utils.translate(" &aAvailable templates: &e" + templates));
                 sender.sendMessage("");
                 return false;
             }
@@ -161,9 +161,9 @@ public class ExecuteType {
 
                 if (!templates.contains(template.toLowerCase())) {
                     sender.sendMessage("");
-                    sender.sendMessage(ColorUtil.translate(" &cThis template not exists"));
+                    sender.sendMessage(Utils.translate(" &cThis template not exists"));
                     sender.sendMessage("");
-                    sender.sendMessage(ColorUtil.translate(" &aAvailable templates: &e" + templates));
+                    sender.sendMessage(Utils.translate(" &aAvailable templates: &e" + templates));
                     sender.sendMessage("");
                     return false;
                 }
@@ -171,7 +171,7 @@ public class ExecuteType {
                 sender.sendMessage("");
                 donwloadTemplate(sender, template);
                 sender.sendMessage("");
-                sender.sendMessage(ColorUtil.translate(" &aPlease use /" + label + " reload, to load it"));
+                sender.sendMessage(Utils.translate(" &aPlease use /" + label + " reload, to load it"));
                 sender.sendMessage("");
 
 
@@ -180,7 +180,7 @@ public class ExecuteType {
                 sender.sendMessage("");
                 for(String temp : templates) donwloadTemplate(sender, temp);
                 sender.sendMessage("");
-                sender.sendMessage(ColorUtil.translate(" &aPlease use /" + label + " reload, to load it"));
+                sender.sendMessage(Utils.translate(" &aPlease use /" + label + " reload, to load it"));
                 sender.sendMessage("");
 
             }
@@ -236,7 +236,7 @@ public class ExecuteType {
             e.printStackTrace();
         }
 
-        sender.sendMessage(ColorUtil.translate(" &aTemplate '&6" + template + "&a' has been downloaded successfully"));
+        sender.sendMessage(Utils.translate(" &aTemplate '&6" + template + "&a' has been downloaded successfully"));
 
     }
 

@@ -4,9 +4,8 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.enums.CraftType;
 import me.davidml16.acubelets.objects.CraftIngredient;
 import me.davidml16.acubelets.objects.CraftParent;
-import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Profile;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -85,7 +84,7 @@ public class CubeletCraftingHandler {
 
         inventorySize = config.getInt("cubelet-crafting.settings.rows");
 
-        Main.log.sendMessage(ColorUtil.translate("  &eLoading crafts:"));
+        Main.log.sendMessage(Utils.translate("  &eLoading crafts:"));
 
         if(config.contains("cubelet-crafting.crafts")) {
             if (config.getConfigurationSection("cubelet-crafting.crafts") != null) {
@@ -128,10 +127,10 @@ public class CubeletCraftingHandler {
         }
 
         if(crafts.size() == 0)
-            Main.log.sendMessage(ColorUtil.translate("    &cNo Cubelet crafts has been loaded!"));
+            Main.log.sendMessage(Utils.translate("    &cNo Cubelet crafts has been loaded!"));
         else
-            Main.log.sendMessage(ColorUtil.translate("    &b" + crafts.size() + " &aCubelet crafts loaded!"));
-        Main.log.sendMessage(ColorUtil.translate(""));
+            Main.log.sendMessage(Utils.translate("    &b" + crafts.size() + " &aCubelet crafts loaded!"));
+        Main.log.sendMessage(Utils.translate(""));
 
     }
 

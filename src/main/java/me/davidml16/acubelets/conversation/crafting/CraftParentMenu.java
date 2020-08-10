@@ -3,7 +3,7 @@ package me.davidml16.acubelets.conversation.crafting;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.CommonPrompts;
 import me.davidml16.acubelets.objects.CraftParent;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.ChatColor;
 import org.bukkit.conversations.*;
@@ -51,7 +51,7 @@ public class CraftParentMenu implements ConversationAbandonedListener, CommonPro
                         main.getCubeletCraftingHandler().getCrafts().add(craftParent);
                         main.getCubeletCraftingHandler().saveCrafting();
 
-                        param1ConversationContext.getForWhom().sendRawMessage("\n" + ColorUtil.translate(main.getLanguageHandler().getPrefix()
+                        param1ConversationContext.getForWhom().sendRawMessage("\n" + Utils.translate(main.getLanguageHandler().getPrefix()
                                 + " &aYou added craft for the cubelet &e" + craftParent.getCubeletType()));
 
                         Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),

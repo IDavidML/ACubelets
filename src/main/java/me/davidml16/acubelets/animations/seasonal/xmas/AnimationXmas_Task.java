@@ -12,24 +12,14 @@ import me.davidml16.acubelets.objects.PermissionReward;
 import me.davidml16.acubelets.utils.*;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
-import me.davidml16.acubelets.utils.XSeries.XParticle;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Bat;
-import org.bukkit.entity.Entity;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.Vector;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class AnimationXmas_Task implements Animation {
@@ -52,7 +42,7 @@ public class AnimationXmas_Task implements Animation {
 	private AnimationXmas_Bell bell;
 
 	private List<Color> colors;
-	private ColorUtil.ColorSet<Integer, Integer, Integer> colorRarity;
+	private Utils.ColorSet<Integer, Integer, Integer> colorRarity;
 
 	private Location boxLocation;
 
@@ -93,7 +83,7 @@ public class AnimationXmas_Task implements Animation {
 			}
 
 			if(time == 153) {
-				colorRarity = ColorUtil.getRGBbyColor(ColorUtil.getColorByText(reward.getRarity().getName()));
+				colorRarity = Utils.getRGBbyColor(Utils.getColorByText(reward.getRarity().getName()));
 				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 1.50, 0.5), FireworkEffect.Type.STAR, colors.get(0), colors.get(1));
 			}
 

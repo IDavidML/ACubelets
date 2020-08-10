@@ -6,7 +6,7 @@ import com.zaxxer.hikari.pool.HikariPool;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.Profile;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -64,9 +64,9 @@ public class MySQL implements Database {
 
             hikari.getConnection();
 
-            Main.log.sendMessage(ColorUtil.translate("    &aMySQL has been enabled!"));
+            Main.log.sendMessage(Utils.translate("    &aMySQL has been enabled!"));
         } catch (HikariPool.PoolInitializationException | SQLException e) {
-            Main.log.sendMessage(ColorUtil.translate("    &cMySQL has an error on the conection! Now trying with SQLite..."));
+            Main.log.sendMessage(Utils.translate("    &cMySQL has an error on the conection! Now trying with SQLite..."));
             main.getDatabase().changeToSQLite();
         }
     }

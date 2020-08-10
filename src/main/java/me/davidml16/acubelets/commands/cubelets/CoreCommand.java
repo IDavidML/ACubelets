@@ -2,7 +2,7 @@ package me.davidml16.acubelets.commands.cubelets;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.commands.cubelets.subcommands.*;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -65,7 +65,7 @@ public class CoreCommand extends Command {
         }
 
         sender.sendMessage("");
-        sender.sendMessage(ColorUtil.translate(main.getLanguageHandler().getPrefix() + " &cInvalid argument, use /" + label + " help to see available commands"));
+        sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cInvalid argument, use /" + label + " help to see available commands"));
         sender.sendMessage("");
         return false;
     }
@@ -76,15 +76,15 @@ public class CoreCommand extends Command {
         }
 
         sender.sendMessage("");
-        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " [give/remove] [player] [typeID] [amount]"));
-        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " info [player]"));
+        sender.sendMessage(Utils.translate("&7 - &a/" + label + " [give/remove] [player] [typeID] [amount]"));
+        sender.sendMessage(Utils.translate("&7 - &a/" + label + " info [player]"));
         sender.sendMessage("");
-        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " machine [create/remove/edit]"));
+        sender.sendMessage(Utils.translate("&7 - &a/" + label + " machine [create/remove/edit]"));
         sender.sendMessage("");
-        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " type"));
-        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " setup [typeID]"));
+        sender.sendMessage(Utils.translate("&7 - &a/" + label + " type"));
+        sender.sendMessage(Utils.translate("&7 - &a/" + label + " setup [typeID]"));
         sender.sendMessage("");
-        sender.sendMessage(ColorUtil.translate("&7 - &a/" + label + " reload"));
+        sender.sendMessage(Utils.translate("&7 - &a/" + label + " reload"));
         sender.sendMessage("");
         return true;
     }

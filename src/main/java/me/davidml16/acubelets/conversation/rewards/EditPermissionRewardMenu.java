@@ -6,9 +6,8 @@ import me.davidml16.acubelets.interfaces.Reward;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.PermissionReward;
 import me.davidml16.acubelets.objects.Rarity;
-import me.davidml16.acubelets.utils.ColorUtil;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.Sounds;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.conversations.*;
@@ -107,7 +106,7 @@ public class EditPermissionRewardMenu implements ConversationAbandonedListener, 
 
                                 main.getCubeletRewardHandler().loadReward(cubeletType, false);
 
-                                param1ConversationContext.getForWhom().sendRawMessage("\n" + ColorUtil.translate(main.getLanguageHandler().getPrefix()
+                                param1ConversationContext.getForWhom().sendRawMessage("\n" + Utils.translate(main.getLanguageHandler().getPrefix()
                                         + " &aYou edited reward &e" + permissionReward.getId() + " &afrom rewards of cubelet type &e" + cubeletType.getId()));
 
                                 Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
