@@ -49,6 +49,8 @@ public class PluginHandler {
 
         main.setDuplicationVisibleAllPlayers(main.getConfig().getBoolean("Holograms.Duplication.VisibleToAllPlayers"));
 
+        main.setNoGuiMode(main.getConfig().getBoolean("NoGuiMode"));
+
         main.getLanguageHandler().loadLanguage("en");
         main.getLanguageHandler().loadLanguage("es");
         main.getLanguageHandler().setLanguage(main.getConfig().getString("Language").toLowerCase());

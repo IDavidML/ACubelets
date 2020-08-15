@@ -133,6 +133,7 @@ public class Main extends JavaPlugin {
 
         cubeletBoxHandler = new CubeletBoxHandler(this);
         cubeletBoxHandler.loadBoxes();
+        settings.put("NoGuiMode", getConfig().getBoolean("NoGuiMode"));
 
         cubeletTypesHandler = new CubeletTypesHandler(this);
         cubeletTypesHandler.loadTypes();
@@ -343,19 +344,23 @@ public class Main extends JavaPlugin {
 
     public boolean isCubeletsCommandEnabled() { return settings.get("CubeletsCommand"); }
 
-    public void setCubeletsCommandEnabled(boolean cubeletsCommandEnabled) { settings.put("CubeletsCommand", cubeletsCommandEnabled); }
+    public void setCubeletsCommandEnabled(boolean value) { settings.put("CubeletsCommand", value); }
 
     public boolean isCraftingEnabled() { return settings.get("Crafting"); }
 
-    public void setCraftingEnabled(boolean craftingEnabled) { settings.put("Crafting", craftingEnabled); }
+    public void setCraftingEnabled(boolean value) { settings.put("Crafting", value); }
 
     public boolean isPreviewEnabled() { return settings.get("RewardsPreview"); }
 
-    public void setPreviewEnabled(boolean rewardsPreview) { settings.put("RewardsPreview", rewardsPreview); }
+    public void setPreviewEnabled(boolean value) { settings.put("RewardsPreview", value); }
 
     public boolean isDuplicationVisibleAllPlayers() { return settings.get("HDVisibleToAllPlayers"); }
 
-    public void setDuplicationVisibleAllPlayers(boolean visibility) { settings.put("HDVisibleToAllPlayers", visibility); }
+    public void setDuplicationVisibleAllPlayers(boolean value) { settings.put("HDVisibleToAllPlayers", value); }
+
+    public boolean isNoGuiMode() { return settings.get("NoGuiMode"); }
+
+    public void setNoGuiMode(boolean value) { settings.put("NoGuiMode", value); }
 
     public String getNoCubeletsCommand() {
         return noCubeletsCommand;

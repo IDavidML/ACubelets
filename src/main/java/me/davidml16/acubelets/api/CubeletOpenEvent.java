@@ -1,5 +1,6 @@
 package me.davidml16.acubelets.api;
 
+import me.davidml16.acubelets.objects.CubeletOpener;
 import me.davidml16.acubelets.objects.CubeletType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -8,11 +9,11 @@ import org.bukkit.event.HandlerList;
 public class CubeletOpenEvent extends Event {
 
     public static final HandlerList handlers = new HandlerList();
-    private Player p;
+    private CubeletOpener player;
     private CubeletType cubeletType;
 
-    public CubeletOpenEvent(Player p, CubeletType cubeletType) {
-        this.p = p;
+    public CubeletOpenEvent(CubeletOpener player, CubeletType cubeletType) {
+        this.player = player;
         this.cubeletType = cubeletType;
     }
 
@@ -20,8 +21,8 @@ public class CubeletOpenEvent extends Event {
         return handlers;
     }
 
-    public Player getPlayer() {
-        return this.p;
+    public CubeletOpener getPlayer() {
+        return this.player;
     }
 
     public CubeletType getCubeletType() {

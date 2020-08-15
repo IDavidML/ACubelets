@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 public class CubeletRewardHandler {
 
@@ -98,21 +99,18 @@ public class CubeletRewardHandler {
 				&& config.contains("type.rewards." + rewardID + ".icon");
 	}
 
-	public Reward processReward(Player p, CubeletType cubeletType) {
+	public Reward processReward(CubeletType cubeletType) {
 		List<Rarity> rarities = getAvailableRarities(cubeletType);
 
 		Rarity randomRarity = chooseOnWeight(rarities);
 		if(cubeletType.getRewards().containsKey(randomRarity.getId())) {
 			List<Reward> commandRewards = cubeletType.getRewards().get(randomRarity.getId());
 
-			if(commandRewards.size() <= 0) return processReward(p, cubeletType);
+			if(commandRewards.size() <= 0) return processReward(cubeletType);
 
 			int randomElementIndex = ThreadLocalRandom.current().nextInt(commandRewards.size()) % commandRewards.size();
-			Reward randomReward = commandRewards.get(randomElementIndex);
-			return randomReward;
-		} else {
-			p.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() +
-					" &cThere has been a problem with your reward, please notify the server staff."));
+
+			return commandRewards.get(randomElementIndex);
 		}
 		return null;
 	}
@@ -156,9 +154,12 @@ public class CubeletRewardHandler {
 
 	public boolean isDuplicated(CubeletBox cubeletBox, Reward reward) {
 		if(reward instanceof PermissionReward) {
-			if(cubeletBox.getPlayerOpening().hasPermission(((PermissionReward) reward).getPermission())) {
-				return true;
-			}
+			Player player = Bukkit.getPlayer(cubeletBox.getPlayerOpening().getUuid());
+
+			if(player == null) return false;
+
+			if(player.hasPermission(((PermissionReward) reward).getPermission())) return true;
+
 			return false;
 		}
 		return false;

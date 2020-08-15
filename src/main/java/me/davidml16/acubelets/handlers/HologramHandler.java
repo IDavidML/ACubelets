@@ -9,6 +9,7 @@ import me.davidml16.acubelets.interfaces.Reward;
 import me.davidml16.acubelets.objects.ColorAnimation;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.enums.CubeletBoxState;
+import me.davidml16.acubelets.objects.CubeletOpener;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.RepeatingTask;
 import org.bukkit.Bukkit;
@@ -163,7 +164,7 @@ public class HologramHandler {
                 for (Player p : Bukkit.getOnlinePlayers()) {
 
                     if(!main.isDuplicationVisibleAllPlayers())
-                        if(!box.getPlayerOpening().getUniqueId().equals(p.getUniqueId())) continue;
+                        if(!box.getPlayerOpening().getUuid().equals(p.getUniqueId())) continue;
 
                     if (box.getHolograms().containsKey(p.getUniqueId())) {
                         Hologram hologram = box.getHolograms().get(p.getUniqueId());
@@ -251,10 +252,10 @@ public class HologramHandler {
         return lines;
     }
 
-    public List<String> getLinesReward(Player p, Player opening, Reward reward) {
+    public List<String> getLinesReward(Player p, CubeletOpener opening, Reward reward) {
         List<String> lines = new ArrayList<String>();
 
-        if (p.getUniqueId().toString().equalsIgnoreCase(opening.getUniqueId().toString())) {
+        if (p.getUniqueId().equals(opening.getUuid())) {
             for(String line : main.getLanguageHandler().getMessageList("Holograms.Reward.New.Me")) {
                 lines.add(Utils.translate(line
                         .replaceAll("%player%", opening.getName())

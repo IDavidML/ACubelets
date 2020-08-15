@@ -177,7 +177,7 @@ public class MessageUtils {
     }
 
     public static void sendLootMessage(CubeletBox cubeletBox, CubeletType cubeletType, Reward reward) {
-        Player target = Bukkit.getPlayer(cubeletBox.getPlayerOpening().getUniqueId());
+        Player target = Bukkit.getPlayer(cubeletBox.getPlayerOpening().getUuid());
         if (target != null) {
             if(!Main.get().isDuplicationEnabled()) {
                 newLootMessage(target, cubeletType, reward);

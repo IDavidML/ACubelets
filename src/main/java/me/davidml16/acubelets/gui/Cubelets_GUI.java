@@ -278,7 +278,7 @@ public class Cubelets_GUI implements Listener {
                                     profile.getCubelets().removeIf(cblt -> cblt.getUuid().toString().equals(cubeletUUID));
 
                                     main.getDatabaseHandler().removeCubelet(p.getUniqueId(), UUID.fromString(Objects.requireNonNull(cubeletUUID)));
-                                    profile.getCubelets().remove(cubelet);
+
                                     main.getHologramHandler().reloadHolograms(p);
 
                                     p.closeInventory();

@@ -59,19 +59,19 @@ public class AnimationHalloween_Task implements Animation {
 		public void run() {
 
 			if(time == 35) {
-				AnimationHalloween_Pumpkin pumpkin = new AnimationHalloween_Pumpkin(main, boxLocation.clone().add(2, 0, 2), cubeletBox.getPlayerOpening().getUniqueId());
+				AnimationHalloween_Pumpkin pumpkin = new AnimationHalloween_Pumpkin(main, boxLocation.clone().add(2, 0, 2), cubeletBox.getPlayerOpening().getUuid());
 				pumpkin.runTaskTimer(main, 0L, 1L);
 				pumpkins.add(pumpkin);
 			} else if(time == 45) {
-				AnimationHalloween_Pumpkin pumpkin = new AnimationHalloween_Pumpkin(main, boxLocation.clone().add(-2, 0, 2), cubeletBox.getPlayerOpening().getUniqueId());
+				AnimationHalloween_Pumpkin pumpkin = new AnimationHalloween_Pumpkin(main, boxLocation.clone().add(-2, 0, 2), cubeletBox.getPlayerOpening().getUuid());
 				pumpkin.runTaskTimer(main, 0L, 1L);
 				pumpkins.add(pumpkin);
 			} else if(time == 55) {
-				AnimationHalloween_Pumpkin pumpkin = new AnimationHalloween_Pumpkin(main, boxLocation.clone().add(-2, 0, -2), cubeletBox.getPlayerOpening().getUniqueId());
+				AnimationHalloween_Pumpkin pumpkin = new AnimationHalloween_Pumpkin(main, boxLocation.clone().add(-2, 0, -2), cubeletBox.getPlayerOpening().getUuid());
 				pumpkin.runTaskTimer(main, 0L, 1L);
 				pumpkins.add(pumpkin);
 			} else if(time == 65) {
-				AnimationHalloween_Pumpkin pumpkin = new AnimationHalloween_Pumpkin(main, boxLocation.clone().add(2, 0, -2), cubeletBox.getPlayerOpening().getUniqueId());
+				AnimationHalloween_Pumpkin pumpkin = new AnimationHalloween_Pumpkin(main, boxLocation.clone().add(2, 0, -2), cubeletBox.getPlayerOpening().getUuid());
 				pumpkin.runTaskTimer(main, 0L, 1L);
 				pumpkins.add(pumpkin);
 			} else if(time == 75) {
@@ -182,7 +182,7 @@ public class AnimationHalloween_Task implements Animation {
 		main.getAnimationHandler().getEntities().add(armorStand);
 
 		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
-			reward = main.getCubeletRewardHandler().processReward(cubeletBox.getPlayerOpening(), cubeletType);
+			reward = main.getCubeletRewardHandler().processReward(cubeletType);
 		});
 	}
 	

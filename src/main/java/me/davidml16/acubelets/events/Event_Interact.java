@@ -1,8 +1,12 @@
 package me.davidml16.acubelets.events;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.interfaces.CubeletDateComparator;
+import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.enums.CubeletBoxState;
+import me.davidml16.acubelets.objects.CubeletType;
+import me.davidml16.acubelets.objects.Profile;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
@@ -13,6 +17,12 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 
 public class Event_Interact implements Listener {
 
@@ -35,15 +45,56 @@ public class Event_Interact implements Listener {
                 }
 
                 CubeletBox box = main.getCubeletBoxHandler().getBoxByLocation(e.getClickedBlock().getLocation());
+
                 if(box.getState() == CubeletBoxState.EMPTY) {
                     main.getPlayerDataHandler().getData(p).setBoxOpened(box);
-                    main.getCubeletsGUI().open(p);
+
+                    if(!main.isNoGuiMode()) {
+
+                        main.getCubeletsGUI().open(p);
+
+                    } else {
+
+                        Profile profile = main.getPlayerDataHandler().getData(p.getUniqueId());
+                        List<Cubelet> cubelets = profile.getCubelets();
+                        cubelets.sort(new CubeletDateComparator());
+
+                        Optional<Cubelet> optionalCubelet = cubelets.stream().findFirst();
+
+                        if (optionalCubelet.isPresent()) {
+
+                            Cubelet cubelet = optionalCubelet.get();
+
+                            if (cubelet.getExpire() > System.currentTimeMillis()) {
+
+                                CubeletType type = main.getCubeletTypesHandler().getTypeBydId(cubelet.getType());
+
+                                if (type.getAllRewards().size() > 0) {
+
+                                    main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), type);
+
+                                    try {
+                                        main.getDatabaseHandler().removeCubelet(p.getUniqueId(), cubelet.getUuid());
+                                    } catch (SQLException throwables) {
+                                        throwables.printStackTrace();
+                                    }
+
+                                    profile.getCubelets().remove(cubelet);
+                                    main.getHologramHandler().reloadHolograms(p);
+
+                                }
+
+                            }
+
+                        }
+
+                    }
+
                 } else {
-                    if(box.getPlayerOpening().getUniqueId() == p.getUniqueId()) {
+                    if(box.getPlayerOpening().getUuid() == p.getUniqueId()) {
                         p.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));
                     } else {
-                        p.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Other")
-                                .replaceAll("%player%", box.getPlayerOpening().getName()));
+                        p.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Other").replaceAll("%player%", box.getPlayerOpening().getName()));
                     }
                 }
 

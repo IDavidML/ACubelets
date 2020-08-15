@@ -118,7 +118,7 @@ public class Animation2_Task implements Animation {
 		main.getAnimationHandler().getEntities().add(armorStand);
 
 		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
-			reward = main.getCubeletRewardHandler().processReward(cubeletBox.getPlayerOpening(), cubeletType);
+			reward = main.getCubeletRewardHandler().processReward(cubeletType);
 		});
 	}
 	

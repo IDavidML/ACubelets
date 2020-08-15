@@ -52,13 +52,13 @@ public class CubeletBoxHandler {
 
         int i = 1;
         for(CubeletBox bx : boxes.values()) {
-            config.set("locations." + String.valueOf(i) + ".world", bx.getLocation().getWorld().getName());
-            config.set("locations." + String.valueOf(i) + ".x", bx.getLocation().getBlockX());
-            config.set("locations." + String.valueOf(i) + ".y", bx.getLocation().getBlockY());
-            config.set("locations." + String.valueOf(i) + ".z", bx.getLocation().getBlockZ());
-            config.set("locations." + String.valueOf(i) + ".rotation", bx.getRotation().toString());
-            config.set("locations." + String.valueOf(i) + ".blockHeight", bx.getBlockHeight());
-            config.set("locations." + String.valueOf(i) + ".permanentBlockHeight", bx.getPermanentBlockHeight());
+            config.set("locations." + i + ".world", bx.getLocation().getWorld().getName());
+            config.set("locations." + i + ".x", bx.getLocation().getBlockX());
+            config.set("locations." + i + ".y", bx.getLocation().getBlockY());
+            config.set("locations." + i + ".z", bx.getLocation().getBlockZ());
+            config.set("locations." + i + ".rotation", bx.getRotation().toString());
+            config.set("locations." + i + ".blockHeight", bx.getBlockHeight());
+            config.set("locations." + i + ".permanentBlockHeight", bx.getPermanentBlockHeight());
             i++;
         }
 
@@ -80,13 +80,13 @@ public class CubeletBoxHandler {
 
             int i = 1;
             for(CubeletBox bx : boxes.values()) {
-                config.set("locations." + String.valueOf(i) + ".world", bx.getLocation().getWorld().getName());
-                config.set("locations." + String.valueOf(i) + ".x", bx.getLocation().getBlockX());
-                config.set("locations." + String.valueOf(i) + ".y", bx.getLocation().getBlockY());
-                config.set("locations." + String.valueOf(i) + ".z", bx.getLocation().getBlockZ());
-                config.set("locations." + String.valueOf(i) + ".rotation", bx.getRotation().toString());
-                config.set("locations." + String.valueOf(i) + ".blockHeight", bx.getBlockHeight());
-                config.set("locations." + String.valueOf(i) + ".permanentBlockHeight", bx.getPermanentBlockHeight());
+                config.set("locations." + i + ".world", bx.getLocation().getWorld().getName());
+                config.set("locations." + i + ".x", bx.getLocation().getBlockX());
+                config.set("locations." + i + ".y", bx.getLocation().getBlockY());
+                config.set("locations." + i + ".z", bx.getLocation().getBlockZ());
+                config.set("locations." + i + ".rotation", bx.getRotation().toString());
+                config.set("locations." + i + ".blockHeight", bx.getBlockHeight());
+                config.set("locations." + i + ".permanentBlockHeight", bx.getPermanentBlockHeight());
                 i++;
             }
 
@@ -99,13 +99,13 @@ public class CubeletBoxHandler {
 
         int i = 1;
         for(CubeletBox bx : boxes.values()) {
-            config.set("locations." + String.valueOf(i) + ".world", bx.getLocation().getWorld().getName());
-            config.set("locations." + String.valueOf(i) + ".x", bx.getLocation().getBlockX());
-            config.set("locations." + String.valueOf(i) + ".y", bx.getLocation().getBlockY());
-            config.set("locations." + String.valueOf(i) + ".z", bx.getLocation().getBlockZ());
-            config.set("locations." + String.valueOf(i) + ".rotation", bx.getRotation().toString());
-            config.set("locations." + String.valueOf(i) + ".blockHeight", bx.getBlockHeight());
-            config.set("locations." + String.valueOf(i) + ".permanentBlockHeight", bx.getPermanentBlockHeight());
+            config.set("locations." + i + ".world", bx.getLocation().getWorld().getName());
+            config.set("locations." + i + ".x", bx.getLocation().getBlockX());
+            config.set("locations." + i + ".y", bx.getLocation().getBlockY());
+            config.set("locations." + i + ".z", bx.getLocation().getBlockZ());
+            config.set("locations." + i + ".rotation", bx.getRotation().toString());
+            config.set("locations." + i + ".blockHeight", bx.getBlockHeight());
+            config.set("locations." + i + ".permanentBlockHeight", bx.getPermanentBlockHeight());
             i++;
         }
 
@@ -150,22 +150,22 @@ public class CubeletBoxHandler {
         if(config.contains("locations")) {
             if(config.getConfigurationSection("locations") != null) {
                 for (int i = 1; i <= config.getConfigurationSection("locations").getKeys(false).size(); i++) {
-                    String world = config.getString("locations." + String.valueOf(i) + ".world");
-                    int x = config.getInt("locations." + String.valueOf(i) + ".x");
-                    int y = config.getInt("locations." + String.valueOf(i) + ".y");
-                    int z = config.getInt("locations." + String.valueOf(i) + ".z");
+                    String world = config.getString("locations." + i + ".world");
+                    int x = config.getInt("locations." + i + ".x");
+                    int y = config.getInt("locations." + i + ".y");
+                    int z = config.getInt("locations." + i + ".z");
 
                     Rotation rotation = Rotation.SOUTH;
-                    if(config.contains("locations." + String.valueOf(i) + ".rotation"))
-                        rotation = Rotation.valueOf(config.getString("locations." + String.valueOf(i) + ".rotation"));
+                    if(config.contains("locations." + i + ".rotation"))
+                        rotation = Rotation.valueOf(config.getString("locations." + i + ".rotation"));
 
                     double blockHeight = 0.875;
-                    if(config.contains("locations." + String.valueOf(i) + ".blockHeight"))
-                        blockHeight = config.getDouble("locations." + String.valueOf(i) + ".blockHeight");
+                    if(config.contains("locations." + i + ".blockHeight"))
+                        blockHeight = config.getDouble("locations." + i + ".blockHeight");
 
                     double permanentBlockHeight = blockHeight;
-                    if(config.contains("locations." + String.valueOf(i) + ".permanentBlockHeight"))
-                        permanentBlockHeight = config.getDouble("locations." + String.valueOf(i) + ".permanentBlockHeight");
+                    if(config.contains("locations." + i + ".permanentBlockHeight"))
+                        permanentBlockHeight = config.getDouble("locations." + i + ".permanentBlockHeight");
 
                     Location loc = new Location(Bukkit.getWorld(world), x, y, z);
                     boxes.put(loc, new CubeletBox(loc, blockHeight, permanentBlockHeight, rotation));
@@ -175,13 +175,13 @@ public class CubeletBoxHandler {
             config.set("locations", new ArrayList<>());
             int i = 1;
             for(CubeletBox bx : boxes.values()) {
-                config.set("locations." + String.valueOf(i) + ".world", bx.getLocation().getWorld().getName());
-                config.set("locations." + String.valueOf(i) + ".x", bx.getLocation().getBlockX());
-                config.set("locations." + String.valueOf(i) + ".y", bx.getLocation().getBlockY());
-                config.set("locations." + String.valueOf(i) + ".z", bx.getLocation().getBlockZ());
-                config.set("locations." + String.valueOf(i) + ".rotation", bx.getRotation().toString());
-                config.set("locations." + String.valueOf(i) + ".blockHeight", bx.getBlockHeight());
-                config.set("locations." + String.valueOf(i) + ".permanentBlockHeight", bx.getPermanentBlockHeight());
+                config.set("locations." + i + ".world", bx.getLocation().getWorld().getName());
+                config.set("locations." + i + ".x", bx.getLocation().getBlockX());
+                config.set("locations." + i + ".y", bx.getLocation().getBlockY());
+                config.set("locations." + i + ".z", bx.getLocation().getBlockZ());
+                config.set("locations." + i + ".rotation", bx.getRotation().toString());
+                config.set("locations." + i + ".blockHeight", bx.getBlockHeight());
+                config.set("locations." + i + ".permanentBlockHeight", bx.getPermanentBlockHeight());
                 i++;
             }
             saveConfig();

@@ -39,6 +39,10 @@ NoCubelets:
 Crafting: true
 
 
+# Enable/disable if you want to disable the gui and open the most recent cubelet just by right clicking on the cubelet machine.
+NoGuiMode: false
+
+
 # Enable/disable cubelet rewards preview
 # Available click types: LEFT, RIGHT, MIDDLE, SHIFT_LEFT or SHIFT_RIGHT
 RewardsPreview:

@@ -6,6 +6,7 @@ import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.enums.CubeletBoxState;
+import me.davidml16.acubelets.objects.CubeletOpener;
 import me.davidml16.acubelets.objects.CubeletType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -19,7 +20,10 @@ public class CubeletOpenHandler {
 
     public void openAnimation(Player p, CubeletBox box, CubeletType type) {
         if(box.getState() == CubeletBoxState.EMPTY) {
-            box.setPlayerOpening(p);
+
+            CubeletOpener cubeletOpener = new CubeletOpener(p.getUniqueId(), p.getName());
+
+            box.setPlayerOpening(cubeletOpener);
 
             for (Hologram hologram : box.getHolograms().values()) {
                 hologram.clearLines();
@@ -27,10 +31,10 @@ public class CubeletOpenHandler {
 
             Animation animation = main.getAnimationHandler().getAnimation(type.getAnimation());
             animation.start(box, type);
-            Bukkit.getPluginManager().callEvent(new CubeletOpenEvent(p, type));
+            Bukkit.getPluginManager().callEvent(new CubeletOpenEvent(cubeletOpener, type));
 
         } else {
-            if(box.getPlayerOpening().getUniqueId() == p.getUniqueId()) {
+            if(box.getPlayerOpening().getUuid() == p.getUniqueId()) {
                 p.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));
             } else {
                 p.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Other")

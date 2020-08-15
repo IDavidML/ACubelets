@@ -21,7 +21,7 @@ public class CubeletBox {
 
     private HashMap<UUID, Hologram> holograms;
 
-    private Player playerOpening;
+    private CubeletOpener playerOpening;
 
     private CubeletBoxState state;
 
@@ -64,11 +64,11 @@ public class CubeletBox {
 
     public void setState(CubeletBoxState state) { this.state = state; }
 
-    public Player getPlayerOpening() {
+    public CubeletOpener getPlayerOpening() {
         return playerOpening;
     }
 
-    public void setPlayerOpening(Player playerOpening) {
+    public void setPlayerOpening(CubeletOpener playerOpening) {
         this.playerOpening = playerOpening;
     }
 

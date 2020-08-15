@@ -197,7 +197,7 @@ public class Animation4_Task implements Animation {
 		main.getAnimationHandler().getTasks().add(this);
 
 		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
-			reward = main.getCubeletRewardHandler().processReward(cubeletBox.getPlayerOpening(), cubeletType);
+			reward = main.getCubeletRewardHandler().processReward(cubeletType);
 		});
 	}
 	
