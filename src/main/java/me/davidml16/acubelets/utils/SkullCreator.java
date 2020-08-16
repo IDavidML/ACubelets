@@ -43,7 +43,10 @@ public class SkullCreator {
         notNull(id, "id");
 
         SkullMeta meta = (SkullMeta) item.getItemMeta();
-        meta.setOwningPlayer(Bukkit.getOfflinePlayer(id));
+
+        if (XMaterial.isNewVersion()) meta.setOwningPlayer(Bukkit.getPlayer(id));
+        else meta.setOwner(Bukkit.getPlayer(id).getName());
+
         item.setItemMeta(meta);
 
         return item;
@@ -92,7 +95,10 @@ public class SkullCreator {
         notNull(name, "name");
 
         setBlockType(block);
-        ((Skull) block.getState()).setOwningPlayer(Bukkit.getOfflinePlayer(name));
+
+        if (XMaterial.isNewVersion()) ((Skull) block.getState()).setOwningPlayer(Bukkit.getOfflinePlayer(name));
+        else ((Skull) block.getState()).setOwner(name);
+
     }
 
     public static void blockWithUuid(Block block, UUID id) {
@@ -100,7 +106,9 @@ public class SkullCreator {
         notNull(id, "id");
 
         setBlockType(block);
-        ((Skull) block.getState()).setOwningPlayer(Bukkit.getOfflinePlayer(id));
+
+        if (XMaterial.isNewVersion()) ((Skull) block.getState()).setOwningPlayer(Bukkit.getOfflinePlayer(id));
+        else ((Skull) block.getState()).setOwner(Bukkit.getOfflinePlayer(id).getName());
     }
 
     public static void blockWithUrl(Block block, String url) {
