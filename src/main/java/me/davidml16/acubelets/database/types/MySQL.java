@@ -7,6 +7,7 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.Profile;
 import me.davidml16.acubelets.utils.Utils;
+import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -525,39 +526,45 @@ public class MySQL implements Database {
 
     @Override
     public void addCubelets(UUID uuid, Collection<Cubelet> cubelets) {
-        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+        if(XMaterial.supports(11)) {
+            Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
 
-            StringBuilder insertString = new StringBuilder();
-            for(Cubelet cubelet : cubelets) {
-                if(insertString.toString().equalsIgnoreCase("")) insertString.append("('").append(uuid.toString()).append("','").append(cubelet.getUuid()).append("','").append(cubelet.getType()).append("',").append(cubelet.getReceived()).append(",").append(cubelet.getExpire()).append(")");
-                else insertString.append(", ('").append(uuid.toString()).append("','").append(cubelet.getUuid()).append("','").append(cubelet.getType()).append("',").append(cubelet.getReceived()).append(",").append(cubelet.getExpire()).append(")");
-            }
+                StringBuilder insertString = new StringBuilder();
+                for(Cubelet cubelet : cubelets) {
+                    if(insertString.toString().equalsIgnoreCase("")) insertString.append("('").append(uuid.toString()).append("','").append(cubelet.getUuid()).append("','").append(cubelet.getType()).append("',").append(cubelet.getReceived()).append(",").append(cubelet.getExpire()).append(")");
+                    else insertString.append(", ('").append(uuid.toString()).append("','").append(cubelet.getUuid()).append("','").append(cubelet.getType()).append("',").append(cubelet.getReceived()).append(",").append(cubelet.getExpire()).append(")");
+                }
 
-            PreparedStatement ps = null;
-            Connection connection = null;
-            try {
-                connection = hikari.getConnection();
-                ps = connection.prepareStatement("INSERT INTO ac_cubelets (UUID,cubeletUUID,type,received,expire) VALUES " + insertString.toString());
-                ps.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            } finally {
-                if (ps != null) {
-                    try {
-                        ps.close();
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
+                PreparedStatement ps = null;
+                Connection connection = null;
+                try {
+                    connection = hikari.getConnection();
+                    ps = connection.prepareStatement("INSERT INTO ac_cubelets (UUID,cubeletUUID,type,received,expire) VALUES " + insertString.toString());
+                    ps.executeUpdate();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (ps != null) {
+                        try {
+                            ps.close();
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                    }
+                    if (connection != null) {
+                        try {
+                            connection.close();
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
                     }
                 }
-                if (connection != null) {
-                    try {
-                        connection.close();
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                }
+            });
+        } else {
+            for (Cubelet cubelet : cubelets) {
+                addCubelet(uuid, cubelet.getUuid(), cubelet.getType(), cubelet.getReceived(), cubelet.getExpire());
             }
-        });
+        }
     }
 
     @Override
