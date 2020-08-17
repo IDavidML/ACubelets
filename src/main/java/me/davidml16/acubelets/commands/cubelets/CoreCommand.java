@@ -23,6 +23,7 @@ public class CoreCommand extends Command {
     private final ExecuteReload executeReload = new ExecuteReload(main);
     private final ExecuteSetup executeSetup = new ExecuteSetup(main);
     private final ExecuteInfo executeInfo = new ExecuteInfo(main);
+    private final ExecuteClear executeClear = new ExecuteClear(main);
 
     public CoreCommand(String name) {
         super(name);
@@ -62,6 +63,8 @@ public class CoreCommand extends Command {
                 return executeReload.executeCommand(sender, label, args);
             case "info":
                 return executeInfo.executeCommand(sender, label, args);
+            case "clear":
+                return executeClear.executeCommand(sender, label, args);
         }
 
         sender.sendMessage("");
@@ -77,7 +80,7 @@ public class CoreCommand extends Command {
 
         sender.sendMessage("");
         sender.sendMessage(Utils.translate("&7 - &a/" + label + " [give/remove] [player] [typeID] [amount]"));
-        sender.sendMessage(Utils.translate("&7 - &a/" + label + " info [player]"));
+        sender.sendMessage(Utils.translate("&7 - &a/" + label + " [info/clear] [player]"));
         sender.sendMessage("");
         sender.sendMessage(Utils.translate("&7 - &a/" + label + " machine [create/remove/edit]"));
         sender.sendMessage("");
@@ -105,6 +108,7 @@ public class CoreCommand extends Command {
                 list.add("help");
                 list.add("give");
                 list.add("info");
+                list.add("clear");
                 list.add("remove");
                 list.add("machine");
                 list.add("type");
@@ -138,7 +142,7 @@ public class CoreCommand extends Command {
                     list.addAll(main.getCubeletTypesHandler().getTypes().keySet());
                 }
             }
-        } else if (args[0].equalsIgnoreCase("info")) {
+        } else if (args[0].equalsIgnoreCase("info") || args[0].equalsIgnoreCase("clear")) {
             if (args.length == 2) {
                 if (main.playerHasPermission(p, "acubelets.admin")) {
                     for (Player target : main.getServer().getOnlinePlayers()) {

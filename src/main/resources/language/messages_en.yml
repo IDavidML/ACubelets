@@ -31,6 +31,7 @@ Commands:
     Remove:
       Removed: '%prefix% &aRemoved &e%amount%x %cubelet% &afrom &e%player%'
       NoBalance: '%prefix% &6%player% &cdoes not have &6%amount%x %cubelet%&c. Currently balance: &6%balance%'
+    Clear: '%prefix% &aCleared cubelets from &6%player%'
   Points:
     Give: '%prefix% &aGived &e%amount%x Points &ato &e%player%'
     Set: '%prefix% &aSetted &e%amount%x Points &ato &e%player%'

@@ -56,9 +56,13 @@ public class CubeletType {
 
     public List<Reward> getAllRewards() {
         List<Reward> commandRewards = new ArrayList<>();
-        for(String rarity : getRewards().keySet()) {
-            commandRewards.addAll(getRewards().get(rarity));
-        }
+        List<Rarity> rarities = new ArrayList<>(getRarities().values());
+
+        rarities.sort(Collections.reverseOrder());
+
+        for(Rarity rarity : rarities)
+            commandRewards.addAll(getRewards().getOrDefault(rarity.getId(), new ArrayList<>()));
+
         return commandRewards;
     }
 

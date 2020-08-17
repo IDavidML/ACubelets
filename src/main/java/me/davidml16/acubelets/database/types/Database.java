@@ -56,6 +56,8 @@ public interface Database {
 
     void removeCubelets(UUID uuid, Collection<Cubelet> cubelets) throws SQLException;
 
+    void removeCubelets(UUID uuid) throws SQLException;
+
     void removeExpiredCubelets(UUID uuid) throws SQLException;
 
     CompletableFuture<List<Cubelet>> getCubelets(UUID uuid);
