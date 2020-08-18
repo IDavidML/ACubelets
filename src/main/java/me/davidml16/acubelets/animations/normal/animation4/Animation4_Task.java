@@ -6,7 +6,7 @@ import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.enums.Rotation;
-import me.davidml16.acubelets.interfaces.Reward;
+import me.davidml16.acubelets.objects.Reward;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.PermissionReward;

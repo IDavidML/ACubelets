@@ -1,6 +1,5 @@
 package me.davidml16.acubelets.objects;
 
-import me.davidml16.acubelets.interfaces.Reward;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
@@ -22,4 +21,11 @@ public class CommandReward extends Reward {
         this.commands = commands;
     }
 
+    @Override
+    public String toString() {
+        return "CommandReward{" +
+                super.toString() +
+                ", commands=" + commands +
+                '}';
+    }
 }

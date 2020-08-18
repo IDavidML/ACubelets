@@ -3,6 +3,7 @@ package me.davidml16.acubelets.gui;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.rarities.EditRarityMenu;
 import me.davidml16.acubelets.conversation.rarities.RarityMenu;
+import me.davidml16.acubelets.interfaces.RarityComparator;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Pair;
 import me.davidml16.acubelets.objects.Rarity;
@@ -92,7 +93,7 @@ public class Rarities_GUI implements Listener {
 
     private void openPage(Player p, String id, int page) {
         List<Rarity> rarities = new ArrayList<>(main.getCubeletTypesHandler().getTypeBydId(id).getRarities().values());
-        Collections.sort(rarities, Collections.reverseOrder());
+        rarities.sort(new RarityComparator());
 
         if(page > 0 && rarities.size() < (page * 21) + 1) {
             openPage(p, id, page - 1);

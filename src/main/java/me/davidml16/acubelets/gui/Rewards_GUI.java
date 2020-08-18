@@ -5,7 +5,7 @@ import me.davidml16.acubelets.conversation.rewards.CommandRewardMenu;
 import me.davidml16.acubelets.conversation.rewards.EditCommandRewardMenu;
 import me.davidml16.acubelets.conversation.rewards.EditPermissionRewardMenu;
 import me.davidml16.acubelets.conversation.rewards.PermissionRewardMenu;
-import me.davidml16.acubelets.interfaces.Reward;
+import me.davidml16.acubelets.objects.Reward;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Pair;
 import me.davidml16.acubelets.objects.CommandReward;

@@ -1,11 +1,8 @@
-package me.davidml16.acubelets.interfaces;
+package me.davidml16.acubelets.objects;
 
-import me.davidml16.acubelets.objects.Rarity;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
-
-public abstract class Reward {
+public class Reward {
 
     private String id;
     private String name;
@@ -41,6 +38,16 @@ public abstract class Reward {
 
     public void setIcon(ItemStack icon) {
         this.icon = icon;
+    }
+
+    @Override
+    public String toString() {
+        return "Reward{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", rarity=" + rarity +
+                ", icon=" + icon +
+                '}';
     }
 
 }

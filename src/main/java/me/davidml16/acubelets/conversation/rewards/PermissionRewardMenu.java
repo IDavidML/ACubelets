@@ -2,7 +2,7 @@ package me.davidml16.acubelets.conversation.rewards;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.CommonPrompts;
-import me.davidml16.acubelets.interfaces.Reward;
+import me.davidml16.acubelets.objects.Reward;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.PermissionReward;
 import me.davidml16.acubelets.objects.Rarity;
@@ -90,7 +90,7 @@ public class PermissionRewardMenu implements ConversationAbandonedListener, Comm
                                 String rewardPermission = (String) param1ConversationContext.getSessionData("rewardPermission");
                                 ItemStack rewardIcon = (ItemStack) param1ConversationContext.getSessionData("rewardIcon");
 
-                                Reward permissionReward = new PermissionReward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), rewardPermission, rewardIcon);
+                                Reward permissionReward = new PermissionReward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), rewardPermission, rewardIcon.clone());
                                 cubeletType.addReward(rewardRarity, permissionReward);
                                 cubeletType.saveType();
 

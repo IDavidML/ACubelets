@@ -1,7 +1,7 @@
 package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.interfaces.Reward;
+import me.davidml16.acubelets.objects.Reward;
 import me.davidml16.acubelets.objects.*;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.RepeatingTask;
@@ -13,7 +13,6 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.concurrent.TimeUnit;
 
 public class CubeletRewardHandler {
 

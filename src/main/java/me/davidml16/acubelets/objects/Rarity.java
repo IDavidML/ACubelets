@@ -1,6 +1,6 @@
 package me.davidml16.acubelets.objects;
 
-public class Rarity implements Comparable<Rarity> {
+public class Rarity {
 
     private String id;
     private String name;
@@ -51,8 +51,4 @@ public class Rarity implements Comparable<Rarity> {
                 '}';
     }
 
-    @Override
-    public int compareTo(Rarity otherRarity) {
-        return (int) (chance - otherRarity.getChance());
-    }
 }

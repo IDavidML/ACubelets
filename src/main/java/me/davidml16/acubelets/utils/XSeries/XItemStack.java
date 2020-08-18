@@ -88,7 +88,7 @@ public class XItemStack {
             if (damage > 0) config.set(path + "." + "damage", damage);
         }
 
-        if (XMaterial.supports(11)) if (meta.isUnbreakable()) config.set(path + "." + "unbreakable", true);
+        if (XMaterial.supports(11)) config.set(path + "." + "unbreakable", meta.isUnbreakable());
 
         if (meta.getEnchants().size() > 0) config.set(path + "." + "enchanted", true);
         else config.set(path + "." + "enchanted", false);
@@ -189,12 +189,18 @@ public class XItemStack {
         }
 
         // Unbreakable
-        if (XMaterial.supports(11)) meta.setUnbreakable(config.getBoolean(path + "." + "unbreakable"));
+        if (XMaterial.supports(11)) {
+            if(config.contains(path + "." + "unbreakable")) {
+                meta.setUnbreakable(config.getBoolean(path + "." + "unbreakable", false));
+            }
+        }
 
         // Enchantments
-        if(config.getBoolean(path + "." + "enchanted") == true) {
-            meta.addEnchant(Enchantment.DURABILITY, 1, false);
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        if(config.contains(path + "." + "enchanted")) {
+            if (config.getBoolean(path + "." + "enchanted")) {
+                meta.addEnchant(Enchantment.DURABILITY, 1, false);
+                meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
         }
 
         item.setItemMeta(meta);

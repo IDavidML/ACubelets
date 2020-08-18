@@ -2,7 +2,7 @@ package me.davidml16.acubelets.conversation.rewards;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.CommonPrompts;
-import me.davidml16.acubelets.interfaces.Reward;
+import me.davidml16.acubelets.objects.Reward;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Rarity;
 import me.davidml16.acubelets.objects.CommandReward;
@@ -91,7 +91,7 @@ public class CommandRewardMenu implements ConversationAbandonedListener, CommonP
                                 String rewardCommand = (String) param1ConversationContext.getSessionData("rewardCommand");
                                 ItemStack rewardIcon = (ItemStack) param1ConversationContext.getSessionData("rewardIcon");
 
-                                Reward commandReward = new CommandReward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), Arrays.asList(rewardCommand), rewardIcon);
+                                Reward commandReward = new CommandReward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), Arrays.asList(rewardCommand), rewardIcon.clone());
                                 cubeletType.addReward(rewardRarity, commandReward);
                                 cubeletType.saveType();
 
@@ -100,6 +100,7 @@ public class CommandRewardMenu implements ConversationAbandonedListener, CommonP
 
                                 Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
                                         ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
+
                                 main.getRewardsGUI().reloadGUI(cubeletType.getId());
                                 main.getRewardsGUI().open((Player) param1ConversationContext.getSessionData("player"), cubeletType.getId());
                                 main.getGuiHandler().removeConversation((Player) param1ConversationContext.getSessionData("player"));

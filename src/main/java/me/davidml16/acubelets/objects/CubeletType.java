@@ -1,7 +1,8 @@
 package me.davidml16.acubelets.objects;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.interfaces.Reward;
+import me.davidml16.acubelets.interfaces.RarityComparator;
+import me.davidml16.acubelets.interfaces.RewardComparator;
 import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -55,15 +56,21 @@ public class CubeletType {
     public Map<String, List<Reward>> getRewards() { return rewards; }
 
     public List<Reward> getAllRewards() {
-        List<Reward> commandRewards = new ArrayList<>();
+        List<Reward> rewards = new ArrayList<>();
         List<Rarity> rarities = new ArrayList<>(getRarities().values());
 
-        rarities.sort(Collections.reverseOrder());
+        rarities.sort(new RarityComparator());
 
-        for(Rarity rarity : rarities)
-            commandRewards.addAll(getRewards().getOrDefault(rarity.getId(), new ArrayList<>()));
+        for (Rarity rarity : rarities) {
 
-        return commandRewards;
+            List<Reward> rarityRewards = new ArrayList<>(getRewards().getOrDefault(rarity.getId(), new ArrayList<>()));
+            rarityRewards.sort(new RewardComparator());
+
+            rewards.addAll(rarityRewards);
+
+        }
+
+        return rewards;
     }
 
     public Reward getReward(String id) {
@@ -150,7 +157,7 @@ public class CubeletType {
         config.set("type.rarities", new ArrayList<>());
         if (config.contains("type.rarities")) {
             List<Rarity> rts = new ArrayList<>(rarities.values());
-            rts.sort(Collections.reverseOrder());
+            rts.sort(new RarityComparator());
             for (Rarity rarity : rts) {
                 config.set("type.rarities." + rarity.getId() + ".name", rarity.getName());
                 config.set("type.rarities." + rarity.getId() + ".chance", rarity.getChance());
