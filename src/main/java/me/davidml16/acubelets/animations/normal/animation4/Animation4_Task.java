@@ -3,6 +3,7 @@ package me.davidml16.acubelets.animations.normal.animation4;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.animations.Animation;
+import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.enums.Rotation;
@@ -32,8 +33,10 @@ public class Animation4_Task implements Animation {
 	private int id;
 
 	private Main main;
-	public Animation4_Task(Main main) {
+	private AnimationSettings animationSettings;
+	public Animation4_Task(Main main, AnimationSettings animationSettings) {
 		this.main = main;
+		this.animationSettings = animationSettings;
 	}
 
 	private ArmorStand armorStand;
@@ -50,7 +53,7 @@ public class Animation4_Task implements Animation {
 	private List<Color> colors;
 	private Utils.ColorSet<Integer, Integer, Integer> colorRarity;
 
-	private Location armorStandLocation, pigmanLocation;
+	private Location armorStandLocation, pigmanLocation, boxLocation;
 
 	private Location corner1, corner2, corner3, corner4;
 
@@ -126,12 +129,15 @@ public class Animation4_Task implements Animation {
 					if(reward instanceof PermissionReward)
 						hologramAnimation = main.getCubeletRewardHandler().permissionReward(cubeletBox, reward);
 			} else if(time > 295 && time < 435) {
-				UtilParticles.drawParticleLine(corner1, corner2, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
-				UtilParticles.drawParticleLine(corner2, corner3, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
-				UtilParticles.drawParticleLine(corner3, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
-				UtilParticles.drawParticleLine(corner1, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+				if(animationSettings.isOutlineParticles()) {
+					UtilParticles.drawParticleLine(corner1, corner2, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+					UtilParticles.drawParticleLine(corner2, corner3, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+					UtilParticles.drawParticleLine(corner3, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+					UtilParticles.drawParticleLine(corner1, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+				}
 
-				UtilParticles.display(Particles.FLAME, 1f, 0f, 1f, cubeletBox.getLocation(), 2);
+				if(animationSettings.isFloorParticles())
+					UtilParticles.display(Particles.FLAME, 1f, 0f, 1f, boxLocation, 2);
 			} else if(time == 435) {
 				stop();
 				blocks.restore();
@@ -191,6 +197,7 @@ public class Animation4_Task implements Animation {
 		corner2 = cubeletBox.getLocation().clone().add(0.95, box.getPermanentBlockHeight() - 0.325, 0.05);
 		corner3 = cubeletBox.getLocation().clone().add(0.95, box.getPermanentBlockHeight() - 0.325, 0.95);
 		corner4 = cubeletBox.getLocation().clone().add(0.05, box.getPermanentBlockHeight() - 0.325, 0.95);
+		boxLocation = cubeletBox.getLocation().clone().add(0.5, 0, 0.5);
 
 		id = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, new Task(), 0L, 1);
 

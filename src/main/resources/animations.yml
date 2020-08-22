@@ -1,0 +1,44 @@
+#
+# This is the animations settings file.
+# You can change any setting that are in this file
+#
+# If you want to reset a setting back to the default,
+# delete the entire line of the setting is on and restart the plugin.
+#
+
+animations:
+
+  animation_1:
+    AroundParticles: true
+
+  animation_2:
+    OutlineParticles: true
+    FloorParticles: true
+
+  animation_3:
+    OutlineParticles: true
+    FloorParticles: true
+
+  animation_4:
+    OutlineParticles: true
+    FloorParticles: true
+
+  animation_5_summer:
+    OutlineParticles: true
+    FloorParticles: true
+
+  animation_6_easter:
+    OutlineParticles: true
+    FloorParticles: true
+
+  animation_7_halloween:
+    OutlineParticles: true
+    FloorParticles: true
+
+  animation_8_christmas:
+    OutlineParticles: true
+    FloorParticles: true
+
+  animation_9:
+    OutlineParticles: true
+    FloorParticles: true

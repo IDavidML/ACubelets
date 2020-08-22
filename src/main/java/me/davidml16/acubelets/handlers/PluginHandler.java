@@ -64,6 +64,7 @@ public class PluginHandler {
         main.getCubeletRewardHandler().loadRewards();
         main.getCubeletCraftingHandler().loadCrafting();
         main.getLayoutHandler().loadLayouts();
+        main.getAnimationHandler().loadAnimations();
         main.getTypeConfigGUI().reloadAllGUI();
         main.getAnimationsGUI().reloadAllGUI();
         main.getRewardsGUI().reloadAllGUI();

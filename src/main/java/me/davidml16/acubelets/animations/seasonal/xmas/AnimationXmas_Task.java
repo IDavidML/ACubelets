@@ -3,6 +3,7 @@ package me.davidml16.acubelets.animations.seasonal.xmas;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.animations.Animation;
+import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.objects.Reward;
@@ -27,8 +28,10 @@ public class AnimationXmas_Task implements Animation {
 	private int id;
 
 	private Main main;
-	public AnimationXmas_Task(Main main) {
+	private AnimationSettings animationSettings;
+	public AnimationXmas_Task(Main main, AnimationSettings animationSettings) {
 		this.main = main;
+		this.animationSettings = animationSettings;
 	}
 
 	private CubeletBox cubeletBox;
@@ -102,12 +105,15 @@ public class AnimationXmas_Task implements Animation {
 			}
 
 			if (time > 155 && time < 295) {
-				UtilParticles.drawParticleLine(corner1, corner2, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
-				UtilParticles.drawParticleLine(corner2, corner3, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
-				UtilParticles.drawParticleLine(corner3, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
-				UtilParticles.drawParticleLine(corner1, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+				if(animationSettings.isOutlineParticles()) {
+					UtilParticles.drawParticleLine(corner1, corner2, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+					UtilParticles.drawParticleLine(corner2, corner3, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+					UtilParticles.drawParticleLine(corner3, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+					UtilParticles.drawParticleLine(corner1, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+				}
 
-				UtilParticles.display(Particles.FLAME, 1f, 0f, 1f, boxLocation, 2);
+				if(animationSettings.isFloorParticles())
+					UtilParticles.display(Particles.FLAME, 1f, 0f, 1f, boxLocation, 2);
 			}
 
 			if(time >= 295) {

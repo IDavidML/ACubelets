@@ -2,6 +2,7 @@ package me.davidml16.acubelets.animations.normal.animation1;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
+import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.objects.Reward;
 import me.davidml16.acubelets.objects.CubeletBox;
@@ -21,8 +22,10 @@ public class Animation1_Task implements Animation {
 	private int id;
 
 	private Main main;
-	public Animation1_Task(Main main) {
+	private AnimationSettings animationSettings;
+	public Animation1_Task(Main main, AnimationSettings animationSettings) {
 		this.main = main;
+		this.animationSettings = animationSettings;
 	}
 
 	private CubeletBox cubeletBox;
@@ -55,7 +58,8 @@ public class Animation1_Task implements Animation {
 					if(reward instanceof PermissionReward)
 						hologramAnimation = main.getCubeletRewardHandler().permissionReward(cubeletBox, reward);
 			} else if(time > 70 && time < 210) {
-				UtilParticles.display(Particles.FLAME, 0.45f, 0.25f, 0.45f, boxLocation, 10);
+				if(animationSettings.isAroundParticles())
+					UtilParticles.display(Particles.FLAME, 0.45f, 0.25f, 0.45f, boxLocation, 10);
 			} else if(time >= 210) {
 				stop();
 

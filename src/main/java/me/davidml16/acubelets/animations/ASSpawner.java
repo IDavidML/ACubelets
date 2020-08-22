@@ -42,6 +42,28 @@ public class ASSpawner {
         return armorStand;
     }
 
+    public static ArmorStand spawn(Main main, CubeletBox box, CubeletType type, boolean opposite, boolean small, Location loc) {
+        loc.setYaw(getRotation(box, opposite).value);
+
+        ArmorStand armorStand = box.getLocation().getWorld().spawn(loc, ArmorStand.class);
+
+        NBTEditor.set( armorStand, ( byte ) 1, "Silent" );
+        if(XMaterial.supports(10)) armorStand.setSilent(true);
+
+        armorStand.setVisible(false);
+        armorStand.setGravity(false);
+        armorStand.setHelmet(type.getIcon());
+        armorStand.setSmall(small);
+        armorStand.setMarker(false);
+        armorStand.setRemoveWhenFarAway(false);
+        armorStand.setCustomNameVisible(false);
+        armorStand.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
+
+        armorStand.teleport(loc);
+
+        return armorStand;
+    }
+
     public static ArmorStand spawn(Main main, Location loc, ItemStack itemStack, boolean opposite, boolean gravity) {
         ArmorStand armorStand = loc.getWorld().spawn(loc, ArmorStand.class);
 
@@ -72,7 +94,7 @@ public class ASSpawner {
         return armorStand;
     }
 
-    private static Rotation getRotation(CubeletBox box, boolean opposite) {
+    public static Rotation getRotation(CubeletBox box, boolean opposite) {
         if(box.getRotation() == Rotation.NORTH)
             return opposite ? Rotation.SOUTH : Rotation.NORTH;
         else if(box.getRotation() == Rotation.SOUTH)

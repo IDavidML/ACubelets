@@ -40,10 +40,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
 import org.bukkit.potion.PotionEffect;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * <b>XItemStack</b> - YAML Item Serializer<br>
@@ -92,6 +89,13 @@ public class XItemStack {
 
         if (meta.getEnchants().size() > 0) config.set(path + "." + "enchanted", true);
         else config.set(path + "." + "enchanted", false);
+
+        // Flags
+        if (meta.getItemFlags().size() > 0) {
+            List<String> flags = new ArrayList<>();
+            for (ItemFlag flag : meta.getItemFlags()) flags.add(flag.name());
+            config.set(path + "." + "flags", flags);
+        }
 
         if (meta instanceof SkullMeta) {
             if(XMaterial.supports(12)) config.set(path + "." + "skull", ((SkullMeta) meta).getOwningPlayer().getUniqueId().toString());
@@ -195,6 +199,19 @@ public class XItemStack {
             }
         }
 
+        // Flags
+        List<String> flags = config.getStringList("flags");
+        for (String flag : flags) {
+            flag = flag.toUpperCase(Locale.ENGLISH);
+            if (flag.equals("ALL")) {
+                meta.addItemFlags(ItemFlag.values());
+                break;
+            }
+
+            ItemFlag itemFlag = Enums.getIfPresent(ItemFlag.class, flag).orNull();
+            if (itemFlag != null) meta.addItemFlags(itemFlag);
+        }
+
         // Enchantments
         if(config.contains(path + "." + "enchanted")) {
             if (config.getBoolean(path + "." + "enchanted")) {
@@ -219,6 +236,7 @@ public class XItemStack {
         if (Strings.isNullOrEmpty(str)) return Color.BLACK;
         String[] rgb = StringUtils.split(StringUtils.deleteWhitespace(str), ',');
         if (rgb.length < 3) return Color.WHITE;
-        return Color.fromRGB(NumberUtils.toInt(rgb[0], 0), NumberUtils.toInt(rgb[1], 0), NumberUtils.toInt(rgb[1], 0));
+        return Color.fromRGB(NumberUtils.toInt(rgb[0], 0), NumberUtils.toInt(rgb[1], 0), NumberUtils.toInt(rgb[2], 0));
     }
+
 }

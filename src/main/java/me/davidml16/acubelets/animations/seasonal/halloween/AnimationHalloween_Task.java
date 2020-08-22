@@ -3,6 +3,7 @@ package me.davidml16.acubelets.animations.seasonal.halloween;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.animations.Animation;
+import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.objects.Reward;
@@ -28,8 +29,10 @@ public class AnimationHalloween_Task implements Animation {
 	private int id;
 
 	private Main main;
-	public AnimationHalloween_Task(Main main) {
+	private AnimationSettings animationSettings;
+	public AnimationHalloween_Task(Main main, AnimationSettings animationSettings) {
 		this.main = main;
+		this.animationSettings = animationSettings;
 	}
 
 	private ArmorStand armorStand;
@@ -136,12 +139,15 @@ public class AnimationHalloween_Task implements Animation {
 					if(reward instanceof PermissionReward)
 						hologramAnimation = main.getCubeletRewardHandler().permissionReward(cubeletBox, reward);
 			} else if (time > 175 && time < 315) {
-				UtilParticles.drawParticleLine(corner1, corner2, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
-				UtilParticles.drawParticleLine(corner2, corner3, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
-				UtilParticles.drawParticleLine(corner3, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
-				UtilParticles.drawParticleLine(corner1, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+				if(animationSettings.isOutlineParticles()) {
+					UtilParticles.drawParticleLine(corner1, corner2, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+					UtilParticles.drawParticleLine(corner2, corner3, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+					UtilParticles.drawParticleLine(corner3, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+					UtilParticles.drawParticleLine(corner1, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
+				}
 
-				UtilParticles.display(Particles.FLAME, 1f, 0f, 1f, boxLocation, 2);
+				if(animationSettings.isFloorParticles())
+					UtilParticles.display(Particles.FLAME, 1f, 0f, 1f, boxLocation, 2);
 			} else if(time >= 315) {
 				stop();
 

@@ -1,7 +1,7 @@
 package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.animations.AnimationInfo;
+import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ItemBuilder;
@@ -66,57 +66,62 @@ public class Animations_GUI implements Listener {
         gui.setItem(10, new ItemBuilder(XMaterial.OAK_SIGN.parseItem()).setName(Utils.translate("&e&lNormal Animations")).toItemStack());
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation1")) {
-            gui.setItem(11, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation 1")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(11, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation Nº1")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         } else {
-            gui.setItem(11, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation 1")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(11, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation Nº1")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         }
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation2")) {
-            gui.setItem(12, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation 2")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(12, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation Nº2")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         } else {
-            gui.setItem(12, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation 2")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(12, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation Nº2")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         }
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation3")) {
-            gui.setItem(13, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation 3")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(13, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation Nº3")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         } else {
-            gui.setItem(13, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation 3")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(13, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation Nº3")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         }
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation4")) {
-            gui.setItem(14, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation 4")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(14, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation Nº4")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         } else {
-            gui.setItem(14, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation 4")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(14, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation Nº4")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         }
 
-        gui.setItem(15, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(Utils.translate("&cComing soon")).toItemStack());
+        if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation9")) {
+            gui.setItem(15, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation Nº9")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+        } else {
+            gui.setItem(15, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation Nº9")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+        }
+
         gui.setItem(16, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(Utils.translate("&cComing soon")).toItemStack());
 
         /*SEASONAL*/
         gui.setItem(28, new ItemBuilder(XMaterial.OAK_SIGN.parseItem()).setName(Utils.translate("&e&lSeasonal Animations")).toItemStack());
 
-        if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("easter")) {
-            gui.setItem(29, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aEaster Animation")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+        if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("summer")) {
+            gui.setItem(29, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation Nº5 (Summer)")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         } else {
-            gui.setItem(29, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cEaster Animation")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(29, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation Nº5 (Summer)")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         }
 
-        if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("summer")) {
-            gui.setItem(30, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aSummer Animation")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+        if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("easter")) {
+            gui.setItem(30, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation Nº6 (Easter)")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         } else {
-            gui.setItem(30, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cSummer Animation")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(30, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation Nº6 (Easter)")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         }
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("halloween")) {
-            gui.setItem(31, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aHalloween Animation")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(31, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation Nº7 (Halloween)")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         } else {
-            gui.setItem(31, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cHalloween Animation")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(31, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation Nº7 (Halloween)")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         }
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("christmas")) {
-            gui.setItem(32, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aChristmas Animation")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(32, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation Nº8 (Christmas)")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         } else {
-            gui.setItem(32, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cChristmas Animation")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(32, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation Nº8 (Christmas)")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         }
 
         gui.setItem(33, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(Utils.translate("&cComing soon")).toItemStack());
@@ -149,57 +154,62 @@ public class Animations_GUI implements Listener {
         gui.setItem(10, new ItemBuilder(XMaterial.OAK_SIGN.parseItem()).setName(Utils.translate("&e&lNormal Animations")).toItemStack());
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation1")) {
-            gui.setItem(11, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation 1")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(11, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation Nº1")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         } else {
-            gui.setItem(11, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation 1")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(11, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation Nº1")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         }
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation2")) {
-            gui.setItem(12, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation 2")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(12, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation Nº2")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         } else {
-            gui.setItem(12, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation 2")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(12, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation Nº2")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         }
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation3")) {
-            gui.setItem(13, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation 3")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(13, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation Nº3")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         } else {
-            gui.setItem(13, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation 3")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(13, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation Nº3")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         }
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation4")) {
-            gui.setItem(14, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation 4")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(14, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation Nº4")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         } else {
-            gui.setItem(14, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation 4")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(14, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation Nº4")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         }
 
-        gui.setItem(15, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(Utils.translate("&cComing soon")).toItemStack());
+        if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("animation9")) {
+            gui.setItem(15, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation Nº9")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+        } else {
+            gui.setItem(15, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation Nº9")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+        }
+
         gui.setItem(16, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(Utils.translate("&cComing soon")).toItemStack());
 
         /*SEASONAL*/
         gui.setItem(28, new ItemBuilder(XMaterial.OAK_SIGN.parseItem()).setName(Utils.translate("&e&lSeasonal Animations")).toItemStack());
 
-        if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("easter")) {
-            gui.setItem(29, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aEaster Animation")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+        if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("summer")) {
+            gui.setItem(29, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation Nº5 (Summer)")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         } else {
-            gui.setItem(29, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cEaster Animation")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(29, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation Nº5 (Summer)")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         }
 
-        if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("summer")) {
-            gui.setItem(30, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aSummer Animation")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+        if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("easter")) {
+            gui.setItem(30, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation Nº6 (Easter)")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         } else {
-            gui.setItem(30, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cSummer Animation")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(30, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation Nº6 (Easter)")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         }
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("halloween")) {
-            gui.setItem(31, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aHalloween Animation")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(31, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation Nº7 (Halloween)")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         } else {
-            gui.setItem(31, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cHalloween Animation")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(31, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation Nº7 (Halloween)")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         }
 
         if(Objects.requireNonNull(config.getString("type.animation")).equalsIgnoreCase("christmas")) {
-            gui.setItem(32, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aChristmas Animation")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(32, new ItemBuilder(XMaterial.LIME_DYE.parseItem()).setName(Utils.translate("&aAnimation Nº8 (Christmas)")).setLore("", Utils.translate("&eLeft-Click » &cEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         } else {
-            gui.setItem(32, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cChristmas Animation")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
+            gui.setItem(32, new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(Utils.translate("&cAnimation Nº8 (Christmas)")).setLore("", Utils.translate("&eLeft-Click » &aEnable animation "), Utils.translate("&eRight-Click » &aPreview animation ")).toItemStack());
         }
 
         gui.setItem(33, new ItemBuilder(XMaterial.RED_STAINED_GLASS_PANE.parseItem()).setName(Utils.translate("&cComing soon")).toItemStack());
@@ -230,7 +240,7 @@ public class Animations_GUI implements Listener {
         if (opened.containsKey(p.getUniqueId())) {
             e.setCancelled(true);
             int slot = e.getRawSlot();
-            if ((slot >= 11 && slot <= 14) || (slot >= 29 && slot <= 32)) {
+            if ((slot >= 11 && slot <= 15) || (slot >= 29 && slot <= 32)) {
                 if(e.getClick() == ClickType.LEFT || e.getClick() == ClickType.SHIFT_LEFT)
                     chanceAnimationConfig(p, slot);
                 else if(e.getClick() == ClickType.RIGHT || e.getClick() == ClickType.SHIFT_RIGHT)
@@ -265,11 +275,14 @@ public class Animations_GUI implements Listener {
             case 14:
                 changeAnimation(config, p, "animation4", cubeletType);
                 break;
+            case 15:
+                changeAnimation(config, p, "animation9", cubeletType);
+                break;
             case 29:
-                changeAnimation(config, p, "easter", cubeletType);
+                changeAnimation(config, p, "summer", cubeletType);
                 break;
             case 30:
-                changeAnimation(config, p, "summer", cubeletType);
+                changeAnimation(config, p, "easter", cubeletType);
                 break;
             case 31:
                 changeAnimation(config, p, "halloween", cubeletType);
@@ -299,11 +312,14 @@ public class Animations_GUI implements Listener {
             case 14:
                 sendPreviewMessage(p, "animation4");
                 break;
+            case 15:
+                sendPreviewMessage(p, "animation9");
+                break;
             case 29:
-                sendPreviewMessage(p, "easter");
+                sendPreviewMessage(p, "summer");
                 break;
             case 30:
-                sendPreviewMessage(p, "summer");
+                sendPreviewMessage(p, "easter");
                 break;
             case 31:
                 sendPreviewMessage(p, "halloween");
@@ -325,7 +341,7 @@ public class Animations_GUI implements Listener {
     }
 
     private void sendPreviewMessage(Player player, String id) {
-        AnimationInfo animation = main.getAnimationHandler().getAnimationInfo(id);
+        AnimationSettings animation = main.getAnimationHandler().getAnimationSetting(id);
 
         player.sendMessage("");
         player.sendMessage(MessageUtils.centeredMessage(Utils.translate("&e&l" + animation.getDisplayName())));

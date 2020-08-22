@@ -155,6 +155,8 @@ public class CubeletBoxHandler {
                     int y = config.getInt("locations." + i + ".y");
                     int z = config.getInt("locations." + i + ".z");
 
+                    if(Bukkit.getServer().getWorld(world) == null) continue;
+
                     Rotation rotation = Rotation.SOUTH;
                     if(config.contains("locations." + i + ".rotation"))
                         rotation = Rotation.valueOf(config.getString("locations." + i + ".rotation"));
@@ -175,6 +177,7 @@ public class CubeletBoxHandler {
             config.set("locations", new ArrayList<>());
             int i = 1;
             for(CubeletBox bx : boxes.values()) {
+                if(bx.getLocation().getWorld() == null) continue;
                 config.set("locations." + i + ".world", bx.getLocation().getWorld().getName());
                 config.set("locations." + i + ".x", bx.getLocation().getBlockX());
                 config.set("locations." + i + ".y", bx.getLocation().getBlockY());
