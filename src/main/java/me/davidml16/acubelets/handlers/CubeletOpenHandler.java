@@ -19,7 +19,7 @@ public class CubeletOpenHandler {
     }
 
     public void openAnimation(Player p, CubeletBox box, CubeletType type) {
-        if(box.getState() == CubeletBoxState.EMPTY) {
+        if(box.isWaiting()) {
 
             CubeletOpener cubeletOpener = new CubeletOpener(p.getUniqueId(), p.getName());
 

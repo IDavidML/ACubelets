@@ -267,22 +267,33 @@ public class Cubelets_GUI implements Listener {
                     if(e.getClick() != clickType) {
 
                         Profile profile = main.getPlayerDataHandler().getData(p);
-                        Optional<Cubelet> cubelet = profile.getCubelets().stream().filter(cbl -> cbl.getUuid().toString().equalsIgnoreCase(cubeletUUID)).findFirst();
 
-                        if (cubelet.isPresent()) {
-                            if (cubelet.get().getExpire() > System.currentTimeMillis()) {
+                        if(profile.getBoxOpened().isWaiting()) {
 
-                                if (type.getAllRewards().size() > 0) {
-                                    main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), type);
+                            Optional<Cubelet> cubelet = profile.getCubelets().stream().filter(cbl -> cbl.getUuid().toString().equalsIgnoreCase(cubeletUUID)).findFirst();
 
-                                    profile.getCubelets().removeIf(cblt -> cblt.getUuid().toString().equals(cubeletUUID));
+                            if (cubelet.isPresent()) {
+                                if (cubelet.get().getExpire() > System.currentTimeMillis()) {
 
-                                    main.getDatabaseHandler().removeCubelet(p.getUniqueId(), UUID.fromString(Objects.requireNonNull(cubeletUUID)));
+                                    if (type.getAllRewards().size() > 0) {
+                                        main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), type);
 
-                                    main.getHologramHandler().reloadHolograms(p);
+                                        profile.getCubelets().removeIf(cblt -> cblt.getUuid().toString().equals(cubeletUUID));
 
-                                    p.closeInventory();
+                                        main.getDatabaseHandler().removeCubelet(p.getUniqueId(), UUID.fromString(Objects.requireNonNull(cubeletUUID)));
+
+                                        main.getHologramHandler().reloadHolograms(p);
+
+                                        p.closeInventory();
+                                    }
                                 }
+                            }
+
+                        } else {
+                            if(profile.getBoxOpened().getPlayerOpening().getUuid() == p.getUniqueId()) {
+                                p.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));
+                            } else {
+                                p.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Other").replaceAll("%player%", profile.getBoxOpened().getPlayerOpening().getName()));
                             }
                         }
 

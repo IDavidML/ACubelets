@@ -46,7 +46,7 @@ public class Event_Interact implements Listener {
 
                 CubeletBox box = main.getCubeletBoxHandler().getBoxByLocation(e.getClickedBlock().getLocation());
 
-                if(box.getState() == CubeletBoxState.EMPTY) {
+                if(box.isWaiting()) {
                     main.getPlayerDataHandler().getData(p).setBoxOpened(box);
 
                     if(!main.isNoGuiMode()) {

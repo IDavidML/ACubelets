@@ -81,6 +81,8 @@ public class CubeletBox {
     public Rotation getRotation() { return rotation; }
 
     public void setRotation(Rotation rotation) { this.rotation = rotation; }
+    
+    public boolean isWaiting() { return this.state == CubeletBoxState.EMPTY; }
 
     @Override
     public String toString() {
