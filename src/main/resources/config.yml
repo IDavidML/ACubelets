@@ -43,6 +43,10 @@ Crafting: true
 NoGuiMode: false
 
 
+# Enable/disable if you want to disable the automatic sorting of rewards based on rarity and name
+RewardAutoSorting: true
+
+
 # Enable/disable cubelet rewards preview
 # Available click types: LEFT, RIGHT, MIDDLE, SHIFT_LEFT or SHIFT_RIGHT
 RewardsPreview:

@@ -135,6 +135,7 @@ public class Main extends JavaPlugin {
         cubeletBoxHandler.loadBoxes();
         settings.put("NoGuiMode", getConfig().getBoolean("NoGuiMode"));
 
+        settings.put("RewardAutoSorting", getConfig().getBoolean("RewardAutoSorting"));
         cubeletTypesHandler = new CubeletTypesHandler(this);
         cubeletTypesHandler.loadTypes();
 
@@ -361,6 +362,10 @@ public class Main extends JavaPlugin {
     public boolean isNoGuiMode() { return settings.get("NoGuiMode"); }
 
     public void setNoGuiMode(boolean value) { settings.put("NoGuiMode", value); }
+
+    public boolean isRewardSorting() { return settings.get("RewardAutoSorting"); }
+
+    public void setRewardSorting(boolean value) { settings.put("RewardAutoSorting", value); }
 
     public String getNoCubeletsCommand() {
         return noCubeletsCommand;

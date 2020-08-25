@@ -3,6 +3,7 @@ package me.davidml16.acubelets.objects;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.interfaces.RarityComparator;
 import me.davidml16.acubelets.interfaces.RewardComparator;
+import me.davidml16.acubelets.interfaces.RewardIDComparator;
 import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -59,16 +60,19 @@ public class CubeletType {
         List<Reward> rewards = new ArrayList<>();
         List<Rarity> rarities = new ArrayList<>(getRarities().values());
 
-        rarities.sort(new RarityComparator());
+        if(main.isRewardSorting()) rarities.sort(new RarityComparator());
 
         for (Rarity rarity : rarities) {
 
             List<Reward> rarityRewards = new ArrayList<>(getRewards().getOrDefault(rarity.getId(), new ArrayList<>()));
-            rarityRewards.sort(new RewardComparator());
+            if(main.isRewardSorting()) rarityRewards.sort(new RewardComparator());
 
             rewards.addAll(rarityRewards);
 
         }
+
+        if(!main.isRewardSorting())
+            rewards.sort(new RewardIDComparator());
 
         return rewards;
     }
