@@ -84,6 +84,18 @@ public class CubeletType {
         return  null;
     }
 
+    public List<String> getRaritiesIDs() {
+        List<Rarity> rts = new ArrayList<>(getRarities().values());
+        rts.sort(new RarityComparator());
+
+        List<String> rarities = new ArrayList<>();
+        for(Rarity rarity : rts) {
+            rarities.add(rarity.getId());
+        }
+
+        return rarities;
+    }
+
     public void setRewards(Map<String, List<Reward>> rewards) { this.rewards = rewards; }
 
     public Map<String, Rarity> getRarities() { return rarities; }

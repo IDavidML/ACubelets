@@ -2,6 +2,7 @@ package me.davidml16.acubelets.conversation.rewards;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.CommonPrompts;
+import me.davidml16.acubelets.interfaces.RarityComparator;
 import me.davidml16.acubelets.objects.Reward;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Rarity;
@@ -49,15 +50,7 @@ public class CommandRewardMenu implements ConversationAbandonedListener, CommonP
                 case "1":
                     return new CommonPrompts.UncoloredStringPrompt(main, this, true, ChatColor.YELLOW + "  Enter reward name, \"cancel\" to return.\n\n ", "rewardName");
                 case "2":
-                    List<Rarity> rts = new ArrayList<>(cubeletType.getRarities().values());
-                    rts.sort(Collections.reverseOrder());
-
-                    List<String> rarities = new ArrayList<>();
-                    for(Rarity rarity : rts) {
-                        rarities.add(rarity.getId());
-                    }
-
-                    return new CommonStringPrompt(main,this, false, ChatColor.YELLOW + "  Enter reward rarity, \"cancel\" to return.\n  Available rarities: " + rarities + "\n\n ", "rewardRarity");
+                    return new CommonStringPrompt(main,this, false, ChatColor.YELLOW + "  Enter reward rarity, \"cancel\" to return.\n  Available rarities: " + cubeletType.getRaritiesIDs() + "\n\n ", "rewardRarity");
                 case "3":
                     return new CommonStringPrompt(main,this, true,ChatColor.YELLOW + "  Enter reward command, \"cancel\" to return.\n  Available variables: %player%\n\n ", "rewardCommand");
                 case "4":

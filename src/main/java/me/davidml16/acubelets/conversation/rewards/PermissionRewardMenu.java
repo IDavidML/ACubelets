@@ -48,15 +48,7 @@ public class PermissionRewardMenu implements ConversationAbandonedListener, Comm
                 case "1":
                     return new UncoloredStringPrompt(main, this, true, ChatColor.YELLOW + "  Enter reward name, \"cancel\" to return.\n\n ", "rewardName");
                 case "2":
-                    List<Rarity> rts = new ArrayList<>(cubeletType.getRarities().values());
-                    rts.sort(Collections.reverseOrder());
-
-                    List<String> rarities = new ArrayList<>();
-                    for(Rarity rarity : rts) {
-                        rarities.add(rarity.getId());
-                    }
-
-                    return new CommonStringPrompt(main,this, false, ChatColor.YELLOW + "  Enter reward rarity, \"cancel\" to return.\n  Available rarities: " + rarities + "\n\n ", "rewardRarity");
+                    return new CommonStringPrompt(main,this, false, ChatColor.YELLOW + "  Enter reward rarity, \"cancel\" to return.\n  Available rarities: " + cubeletType.getRaritiesIDs() + "\n\n ", "rewardRarity");
                 case "3":
                     return new CommonStringPrompt(main,this, false,ChatColor.YELLOW + "  Enter reward permission, \"cancel\" to return.\n\n ", "rewardPermission");
                 case "4":
