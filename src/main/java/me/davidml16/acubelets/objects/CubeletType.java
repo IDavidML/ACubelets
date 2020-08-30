@@ -4,6 +4,7 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.interfaces.RarityComparator;
 import me.davidml16.acubelets.interfaces.RewardComparator;
 import me.davidml16.acubelets.interfaces.RewardIDComparator;
+import me.davidml16.acubelets.objects.rewards.*;
 import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -183,18 +184,25 @@ public class CubeletType {
 
         config.set("type.rewards", new ArrayList<>());
         if (config.contains("type.rewards")) {
-            List<Reward> commandRewards = getAllRewards();
-            for (int i = 0; i < commandRewards.size(); i++) {
-                Reward reward = commandRewards.get(i);
-                config.set("type.rewards.r" + String.valueOf(i) + ".name", reward.getName());
-                config.set("type.rewards.r" + String.valueOf(i) + ".rarity", reward.getRarity().getId());
+            List<Reward> rewards = getAllRewards();
+            for (int i = 0; i < rewards.size(); i++) {
+                Reward reward = rewards.get(i);
+                config.set("type.rewards.reward_" + String.valueOf(i) + ".name", reward.getName());
+                config.set("type.rewards.reward_" + String.valueOf(i) + ".rarity", reward.getRarity().getId());
 
                 if(reward instanceof CommandReward)
-                    config.set("type.rewards.r" + String.valueOf(i) + ".command", ((CommandReward) reward).getCommands());
+                    config.set("type.rewards.reward_" + String.valueOf(i) + ".command", ((CommandReward) reward).getCommands());
                 else if(reward instanceof PermissionReward)
-                    config.set("type.rewards.r" + String.valueOf(i) + ".permission", ((PermissionReward) reward).getPermission());
+                    config.set("type.rewards.reward_" + String.valueOf(i) + ".permission", ((PermissionReward) reward).getPermission());
+                else if(reward instanceof ItemReward) {
+                    List<Item> items = ((ItemReward) reward).getItems();
+                    config.set("type.rewards.reward_" + String.valueOf(i) + ".item", new ArrayList<>());
+                    for (int j = 0; j < items.size(); j++) {
+                        XItemStack.serializeItem(items.get(j).getItemStack(), config, "type.rewards.reward_" + String.valueOf(i) + ".item.item_" + String.valueOf(j));
+                    }
+                }
 
-                XItemStack.serialize(reward.getIcon(), config, "type.rewards.r" + String.valueOf(i) + ".icon");
+                XItemStack.serializeIcon(reward.getIcon(), config, "type.rewards.reward_" + String.valueOf(i) + ".icon");
             }
         }
 

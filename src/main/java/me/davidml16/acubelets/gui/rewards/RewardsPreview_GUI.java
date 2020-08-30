@@ -1,7 +1,7 @@
-package me.davidml16.acubelets.gui;
+package me.davidml16.acubelets.gui.rewards;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.objects.Reward;
+import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.objects.*;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ItemBuilder;

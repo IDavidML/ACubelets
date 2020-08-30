@@ -1,6 +1,6 @@
 package me.davidml16.acubelets.interfaces;
 
-import me.davidml16.acubelets.objects.Reward;
+import me.davidml16.acubelets.objects.rewards.Reward;
 
 import java.util.Comparator;
 

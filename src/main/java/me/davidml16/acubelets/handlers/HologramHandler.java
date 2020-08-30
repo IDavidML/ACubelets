@@ -5,7 +5,7 @@ import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
 import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.objects.Reward;
+import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.objects.ColorAnimation;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.enums.CubeletBoxState;

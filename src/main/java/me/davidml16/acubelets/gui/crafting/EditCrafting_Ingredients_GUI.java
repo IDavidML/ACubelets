@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.gui;
+package me.davidml16.acubelets.gui.crafting;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.crafting.*;

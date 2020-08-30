@@ -2,10 +2,9 @@ package me.davidml16.acubelets.conversation.rewards;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.CommonPrompts;
-import me.davidml16.acubelets.objects.Reward;
+import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.objects.PermissionReward;
-import me.davidml16.acubelets.objects.Rarity;
+import me.davidml16.acubelets.objects.rewards.PermissionReward;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.ChatColor;
@@ -13,10 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class PermissionRewardMenu implements ConversationAbandonedListener, CommonPrompts {
 
@@ -76,13 +71,13 @@ public class PermissionRewardMenu implements ConversationAbandonedListener, Comm
                             && param1ConversationContext.getSessionData("rewardIcon") != null) {
                         if(cubeletType.getRarities().containsKey((String) param1ConversationContext.getSessionData("rewardRarity"))) {
                             if (!rewardsIdExist(cubeletType, (String) param1ConversationContext.getSessionData("rewardID"))) {
-                                String rewardID = "r" + cubeletType.getAllRewards().size();
+                                String rewardID = "reward_" + cubeletType.getAllRewards().size();
                                 String rewardName = (String) param1ConversationContext.getSessionData("rewardName");
                                 String rewardRarity = (String) param1ConversationContext.getSessionData("rewardRarity");
                                 String rewardPermission = (String) param1ConversationContext.getSessionData("rewardPermission");
                                 ItemStack rewardIcon = (ItemStack) param1ConversationContext.getSessionData("rewardIcon");
 
-                                Reward permissionReward = new PermissionReward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), rewardPermission, rewardIcon.clone());
+                                Reward permissionReward = new PermissionReward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), rewardPermission, rewardIcon.clone(), cubeletType);
                                 cubeletType.addReward(rewardRarity, permissionReward);
                                 cubeletType.saveType();
 

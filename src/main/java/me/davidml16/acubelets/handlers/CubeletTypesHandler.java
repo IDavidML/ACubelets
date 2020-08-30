@@ -200,7 +200,7 @@ public class CubeletTypesHandler {
                                 break;
                         }
                     } else {
-                        cubeletType.setIcon(XItemStack.deserialize(config, "type.icon.texture"));
+                        cubeletType.setIcon(XItemStack.deserializeIcon(config, "type.icon.texture"));
                     }
 
                     List<String> loreAvailable = new ArrayList<>();

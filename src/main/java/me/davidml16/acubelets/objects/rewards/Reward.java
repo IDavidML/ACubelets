@@ -1,5 +1,7 @@
-package me.davidml16.acubelets.objects;
+package me.davidml16.acubelets.objects.rewards;
 
+import me.davidml16.acubelets.objects.CubeletType;
+import me.davidml16.acubelets.objects.Rarity;
 import org.bukkit.inventory.ItemStack;
 
 public class Reward {
@@ -8,12 +10,14 @@ public class Reward {
     private String name;
     private Rarity rarity;
     private ItemStack icon;
+    private CubeletType parentCubelet;
 
-    public Reward(String id, String name, Rarity rarity, ItemStack icon) {
+    public Reward(String id, String name, Rarity rarity, ItemStack icon, CubeletType parentCubelet) {
         this.id = id;
         this.name = name;
         this.rarity = rarity;
         this.icon = icon;
+        this.parentCubelet = parentCubelet;
     }
 
     public String getId() {
@@ -39,6 +43,10 @@ public class Reward {
     public void setIcon(ItemStack icon) {
         this.icon = icon;
     }
+
+    public CubeletType getParentCubelet() { return parentCubelet; }
+
+    public void setParentCubelet(CubeletType parentCubelet) { this.parentCubelet = parentCubelet; }
 
     @Override
     public String toString() {

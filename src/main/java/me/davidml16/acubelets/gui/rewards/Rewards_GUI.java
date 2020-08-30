@@ -1,15 +1,13 @@
-package me.davidml16.acubelets.gui;
+package me.davidml16.acubelets.gui.rewards;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.conversation.rewards.CommandRewardMenu;
-import me.davidml16.acubelets.conversation.rewards.EditCommandRewardMenu;
-import me.davidml16.acubelets.conversation.rewards.EditPermissionRewardMenu;
-import me.davidml16.acubelets.conversation.rewards.PermissionRewardMenu;
-import me.davidml16.acubelets.objects.Reward;
+import me.davidml16.acubelets.conversation.rewards.*;
+import me.davidml16.acubelets.objects.rewards.ItemReward;
+import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Pair;
-import me.davidml16.acubelets.objects.CommandReward;
-import me.davidml16.acubelets.objects.PermissionReward;
+import me.davidml16.acubelets.objects.rewards.CommandReward;
+import me.davidml16.acubelets.objects.rewards.PermissionReward;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.Sounds;
@@ -69,6 +67,7 @@ public class Rewards_GUI implements Listener {
                 .setLore(
                     "",
                     Utils.translate("&eLeft-Click » &aCommand reward "),
+                    Utils.translate("&eMiddle-Click » &aItem reward "),
                     Utils.translate("&eRight-Click » &aPermission reward "))
                 .toItemStack();
         ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(Utils.translate("&aBack to config")).toItemStack();
@@ -137,7 +136,7 @@ public class Rewards_GUI implements Listener {
         if(rewards.size() > 0) {
             for (Reward reward : rewards) {
                 if (reward instanceof CommandReward) {
-                    gui.addItem(new ItemBuilder(reward.getIcon())
+                    gui.addItem(new ItemBuilder(reward.getIcon().clone())
                             .setName(Utils.translate("&a" + reward.getId()))
                             .setLore(
                                     "",
@@ -148,9 +147,9 @@ public class Rewards_GUI implements Listener {
                                     "",
                                     Utils.translate("&eLeft-Click » &aRemove reward "),
                                     Utils.translate("&eRight-Click » &aEdit reward ")
-                            ).toItemStack());
+                            ).hideAttributes().toItemStack());
                 } else if(reward instanceof PermissionReward) {
-                    gui.addItem(new ItemBuilder(reward.getIcon())
+                    gui.addItem(new ItemBuilder(reward.getIcon().clone())
                             .setName(Utils.translate("&a" + reward.getId()))
                             .setLore(
                                     "",
@@ -161,7 +160,21 @@ public class Rewards_GUI implements Listener {
                                     "",
                                     Utils.translate("&eLeft-Click » &aRemove reward "),
                                     Utils.translate("&eRight-Click » &aEdit reward ")
-                            ).toItemStack());
+                            ).hideAttributes().toItemStack());
+                } else if (reward instanceof ItemReward) {
+                    gui.addItem(new ItemBuilder(reward.getIcon().clone())
+                            .setName(Utils.translate("&a" + reward.getId()))
+                            .setLore(
+                                    "",
+                                    Utils.translate(" &7Name: &6" + reward.getName() + " "),
+                                    Utils.translate(" &7Rarity: &6" + reward.getRarity().getId() + " "),
+                                    Utils.translate(" &7Icon: &6" + reward.getIcon().getType().name() + " "),
+                                    Utils.translate(" &7Items: &6" + ((ItemReward) reward).getItems().size() + " "),
+                                    "",
+                                    Utils.translate("&eLeft-Click » &aRemove reward "),
+                                    Utils.translate("&eMiddle-Click » &aEdit items "),
+                                    Utils.translate("&eRight-Click » &aEdit reward ")
+                            ).hideAttributes().toItemStack());
                 }
             }
         } else {
@@ -214,6 +227,8 @@ public class Rewards_GUI implements Listener {
                     new CommandRewardMenu(main).getConversation(p, cubeletType).begin();
                 else if(e.getClick() == ClickType.RIGHT || e.getClick() == ClickType.SHIFT_RIGHT)
                     new PermissionRewardMenu(main).getConversation(p, cubeletType).begin();
+                else if(e.getClick() == ClickType.MIDDLE)
+                    new ItemRewardMenu(main).getConversation(p, cubeletType).begin();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 100, 3);
             } else if (slot == 41) {
                 main.getTypeConfigGUI().open(p, cubeletType.getId());
@@ -239,14 +254,23 @@ public class Rewards_GUI implements Listener {
                     Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
 
                 } else if(e.getClick() == ClickType.RIGHT || e.getClick() == ClickType.SHIFT_RIGHT) {
+
                     p.closeInventory();
 
                     if(reward instanceof CommandReward)
                         new EditCommandRewardMenu(main).getConversation(p, cubeletType, reward).begin();
                     else if(reward instanceof PermissionReward)
                         new EditPermissionRewardMenu(main).getConversation(p, cubeletType, reward).begin();
+                    else if(reward instanceof ItemReward)
+                        new EditItemRewardMenu(main).getConversation(p, cubeletType, reward).begin();
 
                     Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
+
+                } else if(e.getClick() == ClickType.MIDDLE) {
+
+                    if(reward instanceof ItemReward)
+                        main.getEditRewardItemsGUI().open(p, reward);
+
                 }
 
             }

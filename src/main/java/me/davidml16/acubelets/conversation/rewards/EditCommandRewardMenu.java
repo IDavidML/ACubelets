@@ -2,11 +2,9 @@ package me.davidml16.acubelets.conversation.rewards;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.CommonPrompts;
-import me.davidml16.acubelets.interfaces.RarityComparator;
-import me.davidml16.acubelets.objects.Reward;
-import me.davidml16.acubelets.objects.CommandReward;
+import me.davidml16.acubelets.objects.rewards.Reward;
+import me.davidml16.acubelets.objects.rewards.CommandReward;
 import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.objects.Rarity;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.ChatColor;
@@ -15,10 +13,7 @@ import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class EditCommandRewardMenu implements ConversationAbandonedListener, CommonPrompts {
 

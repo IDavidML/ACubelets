@@ -3,6 +3,7 @@ package me.davidml16.acubelets.objects;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.enums.Rotation;
+import me.davidml16.acubelets.objects.rewards.Reward;
 import org.bukkit.Location;
 
 import java.util.HashMap;

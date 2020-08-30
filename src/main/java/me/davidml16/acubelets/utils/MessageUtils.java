@@ -1,7 +1,7 @@
 package me.davidml16.acubelets.utils;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.objects.Reward;
+import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.CubeletType;
 import org.bukkit.Bukkit;
