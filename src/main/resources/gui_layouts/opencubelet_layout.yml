@@ -33,9 +33,11 @@ Layout:
         - '&7this menu'
 
     # Item when you dont have any cubelets
+    # Slot only works if you have dinamic gui size disabled, with this enabled, slot is always 0
     NoCubelets:
       Name: '&4You have no Cubelets'
       Material: 'BARRIER'
+      Slot: 0
       Lore:
         - '&7You can get Cubelets by playing games.'
         - '&7You are also able to purchase them'

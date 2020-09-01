@@ -25,6 +25,7 @@ import com.google.common.base.Strings;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
@@ -42,7 +43,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /**
- * Up to 1.15 potion type support for multiple aliases.
+ * Potion type support for multiple aliases.
  * Uses EssentialsX potion list for aliases.
  * <p>
  * Duration: The duration of the effect in ticks. Values 0 or lower are treated as 1. Optional, and defaults to 1 tick.
@@ -53,7 +54,7 @@ import java.util.regex.Pattern;
  * Potions: https://minecraft.gamepedia.com/Potion
  *
  * @author Crypto Morin
- * @version 1.1.0
+ * @version 1.1.2
  * @see PotionEffect
  * @see PotionEffectType
  * @see PotionType
@@ -93,12 +94,22 @@ public enum XPotion {
     WITHER("DECAY");
 
     /**
-     * An immutable cached list of {@link XPotion#values()} to avoid allocating memory for
+     * Cached list of {@link XPotion#values()} to avoid allocating memory for
      * calling the method every time.
+     * This list is unmodifiable.
      *
      * @since 1.0.0
      */
-    public static final EnumSet<XPotion> VALUES = EnumSet.allOf(XPotion.class);
+    public static final List<XPotion> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
+    /**
+     * An unmodifiable set of "bad" potion effects.
+     *
+     * @since 1.1.0
+     */
+    public static final Set<XPotion> DEBUFFS = Collections.unmodifiableSet(EnumSet.of(
+            BAD_OMEN, BLINDNESS, CONFUSION, HARM, HUNGER, LEVITATION, POISON, SATURATION,
+            SLOW, SLOW_DIGGING, SLOW_FALLING, UNLUCK, WEAKNESS, WITHER));
+
     private static final Pattern FORMAT_PATTERN = Pattern.compile("\\d+|\\W+");
     private final String[] aliases;
 
@@ -135,8 +146,9 @@ public enum XPotion {
         if (idType != null) return Optional.of(matchXPotion(idType));
         potion = format(potion);
 
-        for (XPotion potions : VALUES)
+        for (XPotion potions : VALUES) {
             if (potions.name().equals(potion) || potions.anyMatchAliases(potion)) return Optional.ofNullable(potions);
+        }
         return Optional.empty();
     }
 
@@ -193,9 +205,8 @@ public enum XPotion {
     @Nullable
     public static PotionEffect parsePotionEffectFromString(@Nullable String potion) {
         if (Strings.isNullOrEmpty(potion) || potion.equalsIgnoreCase("none")) return null;
-        String[] split = StringUtils.contains(potion, ',') ?
-                StringUtils.split(StringUtils.deleteWhitespace(potion), ',') :
-                StringUtils.split(potion.replaceAll("  +", " "), ' ');
+        String[] split = StringUtils.split(StringUtils.deleteWhitespace(potion), ',');
+        if (split.length == 0) split = StringUtils.split(potion, ' ');
 
         Optional<XPotion> typeOpt = matchXPotion(split[0]);
         if (!typeOpt.isPresent()) return null;
@@ -204,12 +215,9 @@ public enum XPotion {
 
         int duration = 2400; // 20 ticks * 60 seconds * 2 minutes
         int amplifier = 0;
-        try {
-            if (split.length > 1) {
-                duration = Integer.parseInt(split[1]) * 20;
-                if (split.length > 2) amplifier = Integer.parseInt(split[2]) - 1;
-            }
-        } catch (NumberFormatException ignored) {
+        if (split.length > 1) {
+            duration = NumberUtils.toInt(split[1]) * 20;
+            if (split.length > 2) amplifier = NumberUtils.toInt(split[2]) - 1;
         }
 
         return new PotionEffect(type, duration, amplifier);
@@ -229,7 +237,7 @@ public enum XPotion {
 
         for (String effect : effects) {
             PotionEffect potionEffect = parsePotionEffectFromString(effect);
-            if (potionEffect != null) player.addPotionEffect(potionEffect, true);
+            if (potionEffect != null) player.addPotionEffect(potionEffect);
         }
     }
 
@@ -306,8 +314,7 @@ public enum XPotion {
      * @since 1.0.0
      */
     public static boolean canHaveEffects(@Nullable Material material) {
-        if (material == null) return false;
-        return material.name().endsWith("POTION") || material.name().startsWith("TI"); // TIPPED_ARROW
+        return material != null && (material.name().endsWith("POTION") || material.name().startsWith("TI")); // TIPPED_ARROW
     }
 
     /**
@@ -317,9 +324,10 @@ public enum XPotion {
      * @return true of the aliases contains the potion type.
      * @since 1.0.0
      */
-    private boolean anyMatchAliases(@Nullable String potionEffect) {
-        for (String alias : aliases)
+    private boolean anyMatchAliases(@Nonnull String potionEffect) {
+        for (String alias : aliases) {
             if (potionEffect.equals(alias) || potionEffect.equals(StringUtils.remove(alias, '_'))) return true;
+        }
         return false;
     }
 

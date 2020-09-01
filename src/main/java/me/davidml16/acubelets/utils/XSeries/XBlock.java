@@ -292,10 +292,6 @@ public final class XBlock {
         return name.equals("WATER") || name.equals("STATIONARY_WATER");
     }
 
-    public static boolean isOneOf(Block block, List<String> blocks) {
-        return XMaterial.isOneOf(block.getType(), blocks);
-    }
-
     public static void setCakeSlices(Block block, int amount) {
         if (!isCake(block.getType())) throw new IllegalArgumentException("Block is not a cake: " + block.getType());
         if (ISFLAT) {

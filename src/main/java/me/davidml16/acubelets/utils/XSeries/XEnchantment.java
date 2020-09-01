@@ -21,27 +21,27 @@
  */
 package me.davidml16.acubelets.utils.XSeries;
 
+import com.google.common.base.Enums;
 import com.google.common.base.Strings;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.apache.commons.lang.WordUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.EntityType;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.EnumSet;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
- * Up to 1.15 enchantment support with multiple aliases.
+ * Enchantment support with multiple aliases.
  * Uses EssentialsX enchantment list for aliases.
  * Enchantment levels do not start from 0, they start from 1
  * <p>
@@ -50,7 +50,7 @@ import java.util.regex.Pattern;
  * Enchanting: https://minecraft.gamepedia.com/Enchanting
  *
  * @author Crypto Morin
- * @version 1.0.1
+ * @version 1.2.0
  * @see Enchantment
  */
 public enum XEnchantment {
@@ -68,7 +68,8 @@ public enum XEnchantment {
     DURABILITY("UNBREAKING", "DURA"),
     FIRE_ASPECT(true, "FIRE", "MELEE_FIRE", "MELEE_FLAME", "FA"),
     FROST_WALKER(true, "FROST", "WALKER"),
-    IMPALING("IMPALE", "OCEAN_DAMAGE", "OCEAN_DMG"),
+    IMPALING(true, "IMPALE", "OCEAN_DAMAGE", "OCEAN_DMG"),
+    SOUL_SPEED(true, "SPEED_SOUL", "SOUL_RUNNER"),
     KNOCKBACK(true, "K_BACK", "KB"),
     LOOT_BONUS_BLOCKS("FORTUNE", "BLOCKS_LOOT_BONUS", "FORT", "LBB"),
     LOOT_BONUS_MOBS("LOOTING", "MOB_LOOT", "MOBS_LOOT_BONUS", "LBM"),
@@ -93,19 +94,57 @@ public enum XEnchantment {
     WATER_WORKER("AQUA_AFFINITY", "WATER_WORKER", "AQUA_AFFINITY", "WATER_MINE", "WW");
 
     /**
-     * An immutable cached list of {@link XEnchantment#values()} to avoid allocating memory for
-     * calling the method every time.
+     * Cached list of {@link XEnchantment#values()} to avoid allocating memory for
+     * calling the method every time. This list is unmodifiable.
      *
      * @since 1.0.0
      */
-    public static final EnumSet<XEnchantment> VALUES = EnumSet.allOf(XEnchantment.class);
+    public static final List<XEnchantment> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
 
+    /**
+     * Entity types that {@link #DAMAGE_UNDEAD} enchantment is effective against.
+     * This set is unmodifiable.
+     *
+     * @since 1.2.0
+     */
+    public static final Set<EntityType> EFFECTIVE_SMITE_ENTITIES;
+
+    /**
+     * Entity types that {@link #DAMAGE_ARTHROPODS} enchantment is effective against.
+     * This set is unmodifiable.
+     *
+     * @since 1.2.0
+     */
+    public static final Set<EntityType> EFFECTIVE_BANE_OF_ARTHROPODS_ENTITIES;
     /**
      * Java Edition 1.13/Flattening Update
      * https://minecraft.gamepedia.com/Java_Edition_1.13/Flattening
      */
     private static final boolean ISFLAT;
     private static final Pattern FORMAT_PATTERN = Pattern.compile("\\d+|\\W+");
+
+    static {
+        EntityType bee = Enums.getIfPresent(EntityType.class, "BEE").orNull();
+        EntityType phantom = Enums.getIfPresent(EntityType.class, "PHANTOM").orNull();
+        EntityType drowned = Enums.getIfPresent(EntityType.class, "DROWNED").orNull();
+        EntityType witherSkeleton = Enums.getIfPresent(EntityType.class, "WITHER_SKELETON").orNull();
+        EntityType skeletonHorse = Enums.getIfPresent(EntityType.class, "SKELETON_HORSE").orNull();
+        EntityType stray = Enums.getIfPresent(EntityType.class, "STRAY").orNull();
+        EntityType husk = Enums.getIfPresent(EntityType.class, "HUSK").orNull();
+
+        Set<EntityType> arthorposEffective = EnumSet.of(EntityType.SPIDER, EntityType.CAVE_SPIDER, EntityType.SILVERFISH, EntityType.ENDERMITE);
+        if (bee != null) arthorposEffective.add(bee);
+        EFFECTIVE_BANE_OF_ARTHROPODS_ENTITIES = Collections.unmodifiableSet(arthorposEffective);
+
+        Set<EntityType> smiteEffective = EnumSet.of(EntityType.ZOMBIE, EntityType.SKELETON, EntityType.WITHER);
+        if (phantom != null) smiteEffective.add(phantom);
+        if (drowned != null) smiteEffective.add(drowned);
+        if (witherSkeleton != null) smiteEffective.add(witherSkeleton);
+        if (skeletonHorse != null) smiteEffective.add(skeletonHorse);
+        if (stray != null) smiteEffective.add(stray);
+        if (husk != null) smiteEffective.add(husk);
+        EFFECTIVE_SMITE_ENTITIES = Collections.unmodifiableSet(smiteEffective);
+    }
 
     static {
         boolean flat;
@@ -139,6 +178,30 @@ public enum XEnchantment {
     }
 
     /**
+     * Checks if {@link #DAMAGE_UNDEAD Smite} is effective
+     * against this type of mob.
+     *
+     * @param type the type of the mob.
+     * @return true if smite enchantment is effective against the mob, otherwise false.
+     * @since 1.1.0
+     */
+    public static boolean isSmiteEffectiveAgainst(@Nullable EntityType type) {
+        return type != null && EFFECTIVE_SMITE_ENTITIES.contains(type);
+    }
+
+    /**
+     * Checks if {@link #DAMAGE_ARTHROPODS Bane of Arthropods} is effective
+     * against this type of mob.
+     *
+     * @param type the type of the mob.
+     * @return true if Bane of Arthropods enchantment is effective against the mob, otherwise false.
+     * @since 1.1.0
+     */
+    public static boolean isArthropodsEffectiveAgainst(@Nullable EntityType type) {
+        return type != null && EFFECTIVE_BANE_OF_ARTHROPODS_ENTITIES.contains(type);
+    }
+
+    /**
      * Attempts to build the string like an enum name.
      * Removes all the spaces, numbers and extra non-English characters. Also removes some config/in-game based strings.
      *
@@ -165,8 +228,9 @@ public enum XEnchantment {
         Validate.notEmpty(enchantment, "Enchantment name cannot be null or empty");
         enchantment = format(enchantment);
 
-        for (XEnchantment value : VALUES)
+        for (XEnchantment value : VALUES) {
             if (value.name().equals(enchantment) || value.anyMatchAliases(enchantment)) return Optional.of(value);
+        }
         return Optional.empty();
     }
 
@@ -186,7 +250,7 @@ public enum XEnchantment {
         try {
             return valueOf(enchantment.getName());
         } catch (IllegalArgumentException ex) {
-            throw new IllegalArgumentException("Unsupported Enchantment: " + enchantment.getName(), ex.getCause());
+            throw new IllegalArgumentException("Unsupported enchantment: " + enchantment.getName(), ex.getCause());
         }
     }
 
@@ -211,24 +275,20 @@ public enum XEnchantment {
      * @since 1.0.0
      */
     @Nonnull
-    public static ItemStack addEnchantFromString(ItemStack item, String enchantment) {
+    public static ItemStack addEnchantFromString(@Nonnull ItemStack item, @Nullable String enchantment) {
         Objects.requireNonNull(item, "Cannot add enchantment to null ItemStack");
         if (Strings.isNullOrEmpty(enchantment) || enchantment.equalsIgnoreCase("none")) return item;
 
-        String[] split = StringUtils.contains(enchantment, ',') ?
-                StringUtils.split(StringUtils.deleteWhitespace(enchantment), ',') :
-                StringUtils.split(enchantment.replaceAll("  +", " "), ' ');
+        String[] split = StringUtils.split(StringUtils.deleteWhitespace(enchantment), ',');
+        if (split.length == 0) split = StringUtils.split(enchantment, ' ');
 
         Optional<XEnchantment> enchantOpt = matchXEnchantment(split[0]);
-        if (enchantOpt.isPresent()) return item;
+        if (!enchantOpt.isPresent()) return item;
         Enchantment enchant = enchantOpt.get().parseEnchantment();
-        if (enchant == null) return null;
+        if (enchant == null) return item;
 
         int lvl = 1;
-        try {
-            if (split.length > 1) lvl = Integer.parseInt(split[1]);
-        } catch (NumberFormatException ignored) {
-        }
+        if (split.length > 1) lvl = NumberUtils.toInt(split[1]);
 
         item.addUnsafeEnchantment(enchant, lvl);
         return item;
@@ -258,9 +318,10 @@ public enum XEnchantment {
      * @return true if the aliases conntain the enchantment name, otherwise false.
      * @since 1.0.0
      */
-    private boolean anyMatchAliases(String enchantment) {
-        for (String alias : aliases)
+    private boolean anyMatchAliases(@Nonnull String enchantment) {
+        for (String alias : aliases) {
             if (enchantment.equals(alias) || enchantment.equals(StringUtils.remove(alias, '_'))) return true;
+        }
         return false;
     }
 

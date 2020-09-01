@@ -114,23 +114,23 @@ public class Cubelets_GUI implements Listener {
         for (int i = 0; i <= (neededSize-10); i++)
             gui.setItem(i, null);
 
-        if(cubelets.size() > 0) {
-
-            if(main.getCubeletTypesHandler().getTypes().size() > 1) {
-                if (profile.getOrderBy().equalsIgnoreCase("date")) {
-                    ItemStack orderByDate = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Ordered.Date.Material")).get().parseItem())
-                            .setName(guiLayout.getMessage("Items.Ordered.Date.Name"))
-                            .setLore(guiLayout.getMessageList("Items.Ordered.Date.Lore"))
-                            .toItemStack();
-                    gui.setItem((neededSize - 10) + guiLayout.getSlot("Ordered"), orderByDate);
-                } else if (profile.getOrderBy().equalsIgnoreCase("type")) {
-                    ItemStack orderByType = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Ordered.Type.Material")).get().parseItem())
-                            .setName(guiLayout.getMessage("Items.Ordered.Type.Name"))
-                            .setLore(guiLayout.getMessageList("Items.Ordered.Type.Lore"))
-                            .toItemStack();
-                    gui.setItem((neededSize - 10) + guiLayout.getSlot("Ordered"), orderByType);
-                }
+        if(main.getCubeletTypesHandler().getTypes().size() > 1) {
+            if (profile.getOrderBy().equalsIgnoreCase("date")) {
+                ItemStack orderByDate = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Ordered.Date.Material")).get().parseItem())
+                        .setName(guiLayout.getMessage("Items.Ordered.Date.Name"))
+                        .setLore(guiLayout.getMessageList("Items.Ordered.Date.Lore"))
+                        .toItemStack();
+                gui.setItem((neededSize - 10) + guiLayout.getSlot("Ordered"), orderByDate);
+            } else if (profile.getOrderBy().equalsIgnoreCase("type")) {
+                ItemStack orderByType = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Ordered.Type.Material")).get().parseItem())
+                        .setName(guiLayout.getMessage("Items.Ordered.Type.Name"))
+                        .setLore(guiLayout.getMessageList("Items.Ordered.Type.Lore"))
+                        .toItemStack();
+                gui.setItem((neededSize - 10) + guiLayout.getSlot("Ordered"), orderByType);
             }
+        }
+
+        if(cubelets.size() > 0) {
 
             for (Cubelet cubelet : cubelets) {
                 CubeletType type = main.getCubeletTypesHandler().getTypeBydId(cubelet.getType());
@@ -157,10 +157,17 @@ public class Cubelets_GUI implements Listener {
                 gui.addItem(item);
             }
         } else {
-            gui.setItem(0, new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NoCubelets.Material")).get().parseItem())
+            int slot = 0;
+            if(!guiLayout.getBoolean("Size.Dynamic")) {
+                if(guiLayout.getSlot("NoCubelets") <= (neededSize - 10)) {
+                    slot = guiLayout.getSlot("NoCubelets");
+                }
+            }
+
+            gui.setItem(slot, new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NoCubelets.Material")).get().parseItem())
                     .setName(guiLayout.getMessage("Items.NoCubelets.Name"))
                     .setLore(guiLayout.getMessageList("Items.NoCubelets.Lore")
-            ).toItemStack());
+                    ).toItemStack());
         }
 
         p.openInventory(gui);
