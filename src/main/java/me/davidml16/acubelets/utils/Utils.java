@@ -1,17 +1,38 @@
 package me.davidml16.acubelets.utils;
 
+import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.ChatColor;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utils {
 
     private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf('&') + "[0-9A-FK-OR]");
 
+    private static final Pattern hexPattern = Pattern.compile("\\{#" + "([A-Fa-f0-9]{6})" + "}");
+
+    public static final char COLOR_CHAR = ChatColor.COLOR_CHAR;
+
+    private static String translateHexColorCodes(String message) {
+        Matcher matcher = hexPattern.matcher(message);
+        StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
+        while (matcher.find()) {
+            String group = matcher.group(1);
+            matcher.appendReplacement(buffer, COLOR_CHAR + "x"
+                    + COLOR_CHAR + group.charAt(0) + COLOR_CHAR + group.charAt(1)
+                    + COLOR_CHAR + group.charAt(2) + COLOR_CHAR + group.charAt(3)
+                    + COLOR_CHAR + group.charAt(4) + COLOR_CHAR + group.charAt(5)
+            );
+        }
+        return matcher.appendTail(buffer).toString();
+    }
+
     public static String translate(String msg) {
+        if(XMaterial.supports(16)) msg = translateHexColorCodes(msg);
         return ChatColor.translateAlternateColorCodes('&', msg);
     }
 
