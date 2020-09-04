@@ -24,20 +24,12 @@ public class CubeletRewardHandler {
 	}
 
 	public void loadRewards() {
-		Main.log.sendMessage(Utils.translate("  &eLoading rewards:"));
-
-		int loaded = 0;
 		for(CubeletType cubeletType : main.getCubeletTypesHandler().getTypes().values()) {
-			loaded += loadReward(cubeletType, true);
+			loadReward(cubeletType);
 		}
-
-		if(loaded == 0)
-			Main.log.sendMessage(Utils.translate("    &cNo cubelet rewards has been loaded!"));
-
-		Main.log.sendMessage(Utils.translate(""));
 	}
 
-	public int loadReward(CubeletType cubeletType, boolean log) {
+	public void loadReward(CubeletType cubeletType) {
 		FileConfiguration config = main.getCubeletTypesHandler().getConfig(cubeletType.getId());
 
 		Map<String, List<Reward>> rewards = new HashMap<>();
@@ -104,12 +96,10 @@ public class CubeletRewardHandler {
 				}
 			}
 		}
+
 		cubeletType.setRewards(rewards);
 		cubeletType.saveType();
 
-		if(log) Main.log.sendMessage(Utils.translate("    &a'" + cubeletType.getId() + "' &7- " + (rewardsLoaded > 0 ? "&a" : "&c") + rewardsLoaded + " rewards"));
-
-		return rewardsLoaded;
 	}
 
 	private boolean validRewardData(FileConfiguration config, String rewardID) {

@@ -9,6 +9,7 @@ import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.TimeAPI.TimeAPI;
 import me.davidml16.acubelets.utils.XSeries.XItemStack;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -107,8 +108,6 @@ public class CubeletTypesHandler {
             directory.mkdir();
         }
 
-        Main.log.sendMessage(Utils.translate(""));
-        Main.log.sendMessage(Utils.translate("  &eLoading types:"));
         File[] allFiles = new File(main.getDataFolder(), "types").listFiles();
         for (File file : allFiles) {
             String id = file.getName().toLowerCase().replace(".yml", "");
@@ -232,17 +231,11 @@ public class CubeletTypesHandler {
                         convertedTime = new TimeAPI(config.getString("type.expiration")).getMilliseconds();
                     cubeletType.setExpireTime(convertedTime);
 
-                    Main.log.sendMessage(Utils.translate("    &a'" + id + "' &7- &aCubelet type loaded!"));
-                } else {
-                    Main.log.sendMessage(Utils.translate("    &c'" + id + "' not loaded because cubelet type data is not correct!"));
                 }
-            } else {
-                Main.log.sendMessage(Utils.translate("    &c'" + id + "' not loaded because cubelet type id starts with a number!"));
             }
         }
 
-        if(types.size() == 0)
-            Main.log.sendMessage(Utils.translate("    &cNo cubelet types has been loaded!"));
+
 
     }
 
@@ -358,6 +351,52 @@ public class CubeletTypesHandler {
                 }
             }
         }
+    }
+
+    public void printLog() {
+
+        Main.log.sendMessage(Utils.translate(""));
+        Main.log.sendMessage(Utils.translate("  &eLoading cubelets:"));
+
+        int longestWord = longestID();
+
+        for(CubeletType cubeletType : types.values()) {
+
+            String log = "    &a'" + cubeletType.getId() + "' " + getStringSpaces(cubeletType.getId(), longestWord) + "&7► ";
+
+            int rarities = cubeletType.getRarities().size();
+            log += (rarities > 0 ? "&a" : "&c") + rarities + " rarities&7, ";
+
+            int rewards = cubeletType.getAllRewards().size();
+            log += (rewards > 0 ? "&a" : "&c") + rewards + " rewards";
+
+            Main.log.sendMessage(Utils.translate(log));
+
+        }
+
+        if(types.size() == 0) Main.log.sendMessage(Utils.translate("    &cNo cubelets has been loaded!"));
+        Main.log.sendMessage(Utils.translate(""));
+
+    }
+
+    public int longestID() {
+        int longest = 0;
+
+        for(String cubeletID : types.keySet()) {
+            if(cubeletID.length() > longest) longest = cubeletID.length();
+        }
+
+        return longest;
+    }
+
+    public String getStringSpaces(String word, int longest) {
+        String str = "";
+
+        if(word.length() >= longest) return str;
+
+        str += StringUtils.repeat(" ", longest - word.length());
+
+        return str;
     }
 
 }

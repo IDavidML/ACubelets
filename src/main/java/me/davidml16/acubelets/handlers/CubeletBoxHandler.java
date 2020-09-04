@@ -145,7 +145,7 @@ public class CubeletBoxHandler {
         saveConfig();
 
         Main.log.sendMessage(Utils.translate(""));
-        Main.log.sendMessage(Utils.translate("  &eLoading boxes:"));
+        Main.log.sendMessage(Utils.translate("  &eLoading machines:"));
 
         if(config.contains("locations")) {
             if(config.getConfigurationSection("locations") != null) {
@@ -191,9 +191,9 @@ public class CubeletBoxHandler {
         }
 
         if(boxes.size() == 0)
-            Main.log.sendMessage(Utils.translate("    &cNo cubelet boxes has been loaded!"));
+            Main.log.sendMessage(Utils.translate("    &cNo Cubelet Machines has been loaded!"));
         else
-            Main.log.sendMessage(Utils.translate("    &b" + boxes.size() + " &aCubelet Boxes loaded!"));
+            Main.log.sendMessage(Utils.translate("    &b" + boxes.size() + " &aCubelet Machines loaded!"));
 
     }
 

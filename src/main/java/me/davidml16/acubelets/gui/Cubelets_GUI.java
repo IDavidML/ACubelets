@@ -308,7 +308,13 @@ public class Cubelets_GUI implements Listener {
                         if(main.isPreviewEnabled()) main.getRewardsPreviewGUI().open(p, typeID);
                     }
                 } else {
-                    if(slot == 0) {
+                    int noCubeletsSlot = 0;
+
+                    if(!guiLayout.getBoolean("Size.Dynamic"))
+                        if(guiLayout.getSlot("NoCubelets") <= (getPageSize(guiLayout)))
+                            noCubeletsSlot = guiLayout.getSlot("NoCubelets");
+
+                    if (slot == noCubeletsSlot) {
                         p.closeInventory();
                         MessageUtils.sendShopMessage(p);
                     }

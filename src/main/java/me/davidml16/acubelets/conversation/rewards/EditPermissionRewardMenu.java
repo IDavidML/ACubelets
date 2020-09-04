@@ -91,7 +91,7 @@ public class EditPermissionRewardMenu implements ConversationAbandonedListener, 
 
                                 cubeletType.saveType();
 
-                                main.getCubeletRewardHandler().loadReward(cubeletType, false);
+                                main.getCubeletRewardHandler().loadReward(cubeletType);
 
                                 param1ConversationContext.getForWhom().sendRawMessage("\n" + Utils.translate(main.getLanguageHandler().getPrefix()
                                         + " &aYou edited reward &e" + permissionReward.getId() + " &afrom rewards of cubelet type &e" + cubeletType.getId()));

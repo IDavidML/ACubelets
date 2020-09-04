@@ -150,6 +150,8 @@ public class Main extends JavaPlugin {
         cubeletRewardHandler = new CubeletRewardHandler(this);
         cubeletRewardHandler.loadRewards();
 
+        cubeletTypesHandler.printLog();
+
         settings.put("RewardsDuplication", getConfig().getBoolean("RewardsDuplication.Enabled"));
         duplicationPermissionCommand = getConfig().getString("RewardsDuplication.PermissionCommand");
         duplicationPointsCommand = getConfig().getString("RewardsDuplication.PointsCommand");
@@ -218,13 +220,6 @@ public class Main extends JavaPlugin {
         registerCommands();
         registerEvents();
 
-        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-            new PlaceholderHook(this).register();
-            settings.put("placeholderapi", true);
-        } else {
-            settings.put("placeholderapi", false);
-        }
-
         playerCount = getServer().getOnlinePlayers().size();
 
         PluginDescriptionFile pdf = getDescription();
@@ -232,6 +227,14 @@ public class Main extends JavaPlugin {
         log.sendMessage(Utils.translate("    &aVersion: &b" + pdf.getVersion()));
         log.sendMessage(Utils.translate("    &aAuthor: &b" + pdf.getAuthors().get(0)));
         log.sendMessage("");
+
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new PlaceholderHook(this).register();
+            settings.put("placeholderapi", true);
+        } else {
+            settings.put("placeholderapi", false);
+        }
+
     }
 
     @Override

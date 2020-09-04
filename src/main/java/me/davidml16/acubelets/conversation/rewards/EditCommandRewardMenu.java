@@ -93,7 +93,7 @@ public class EditCommandRewardMenu implements ConversationAbandonedListener, Com
 
                                 cubeletType.saveType();
 
-                                main.getCubeletRewardHandler().loadReward(cubeletType, false);
+                                main.getCubeletRewardHandler().loadReward(cubeletType);
 
                                 param1ConversationContext.getForWhom().sendRawMessage("\n" + Utils.translate(main.getLanguageHandler().getPrefix()
                                         + " &aYou edited reward &e" + commandReward.getId() + " &afrom rewards of cubelet type &e" + cubeletType.getId()));
