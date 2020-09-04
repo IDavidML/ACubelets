@@ -294,8 +294,16 @@ public class XItemStack {
         }
 
         if (meta instanceof SkullMeta) {
-            if (XMaterial.isNewVersion()) config.set(path + "." + "skull", ((SkullMeta) meta).getOwningPlayer().getUniqueId().toString());
-            else config.set(path + "." + "skull", ((SkullMeta) meta).getOwner());
+            String texture = SkullUtils.getSkinValue(item);
+            if(texture == null) {
+                if (XMaterial.supports(12)) {
+                    config.set(path + "." + "skull", ((SkullMeta) meta).getOwningPlayer().getUniqueId().toString());
+                } else {
+                    config.set(path + "." + "skull", ((SkullMeta) meta).getOwner());
+                }
+            } else {
+                config.set(path + "." + "skull", texture);
+            }
         } else if (meta instanceof BannerMeta) {
             BannerMeta banner = (BannerMeta) meta;
             ConfigurationSection patterns = config.createSection(path + "." + "patterns");
