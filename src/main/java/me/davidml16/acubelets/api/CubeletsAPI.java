@@ -7,9 +7,15 @@ import java.sql.SQLException;
 
 public class CubeletsAPI {
 
+    private static Main main;
+
+    public CubeletsAPI(Main main) {
+        CubeletsAPI.main = main;
+    }
+
     public static void giveCubelet(String player, String type, int amount) {
         try {
-            Main.get().getCubeletTypesHandler().giveCubelet(player, type, amount);
+            main.getTransactionHandler().giveCubelet(player, type, amount);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -17,7 +23,7 @@ public class CubeletsAPI {
 
     public static void removeCubelet(String player, String type, int amount) {
         try {
-            Main.get().getCubeletTypesHandler().removeCubelet(player, type, amount);
+            main.getTransactionHandler().removeCubelet(player, type, amount);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

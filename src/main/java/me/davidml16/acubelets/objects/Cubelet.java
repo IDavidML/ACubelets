@@ -11,17 +11,23 @@ public class Cubelet {
     private Long received;
     private Long expire;
 
+    private CubeletType cubeletType;
+
     public Cubelet(UUID uuid, String type, Long received, Long expire) {
         this.uuid = uuid;
         this.type = type;
         this.received = received;
         this.expire = expire;
+
+        this.cubeletType = Main.get().getCubeletTypesHandler().getTypeBydId(type);
     }
 
     public Cubelet(String type, Long received) {
         this.uuid = UUID.randomUUID();
         this.type = type;
         this.received = received;
+
+        this.cubeletType = Main.get().getCubeletTypesHandler().getTypeBydId(type);
     }
 
     public Cubelet(CubeletType type) {
@@ -29,6 +35,8 @@ public class Cubelet {
         this.type = type.getId();
         this.received = System.currentTimeMillis();
         this.expire = received + type.getExpireTime();
+
+        this.cubeletType = type;
     }
 
     public UUID getUuid() {
@@ -58,6 +66,10 @@ public class Cubelet {
     public Long getExpire() { return expire; }
 
     public void setExpire(Long expire) { this.expire = expire; }
+
+    public CubeletType getCubeletType() { return cubeletType; }
+
+    public void setCubeletType(CubeletType cubeletType) { this.cubeletType = cubeletType; }
 
     @Override
     public String toString() {

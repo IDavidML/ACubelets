@@ -53,11 +53,14 @@ public class PluginHandler {
 
         main.setRewardSorting(main.getConfig().getBoolean("RewardAutoSorting"));
 
+        main.setLiveGuiUpdates(main.getConfig().getBoolean("LiveGuiUpdates"));
+
         main.getLanguageHandler().loadLanguage("en");
         main.getLanguageHandler().loadLanguage("es");
         main.getLanguageHandler().setLanguage(main.getConfig().getString("Language").toLowerCase());
 
         main.getHologramTask().stop();
+        main.getLiveGuiTask().stop();
         main.getHologramHandler().removeHolograms();
         main.getLanguageHandler().pushMessages();
         main.getCubeletBoxHandler().loadBoxes();
@@ -75,6 +78,9 @@ public class PluginHandler {
         main.getHologramHandler().getColorAnimation().setColors(main.getConfig().getStringList("Holograms.ColorAnimation"));
         main.getHologramHandler().loadHolograms();
         main.getHologramTask().start();
+
+        if(main.isLiveGuiUpdates())
+            main.getLiveGuiTask().start();
     }
 
 }

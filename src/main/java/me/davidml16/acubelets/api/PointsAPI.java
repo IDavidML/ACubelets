@@ -6,9 +6,15 @@ import java.sql.SQLException;
 
 public class PointsAPI {
 
+    private static Main main;
+
+    public PointsAPI(Main main) {
+        PointsAPI.main = main;
+    }
+
     public static void give(String player, int amount) {
         try {
-            Main.get().getPlayerDataHandler().givePoints(player, amount);
+            main.getTransactionHandler().givePoints(player, amount);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -16,7 +22,7 @@ public class PointsAPI {
 
     public static void remove(String player, int amount) {
         try {
-            Main.get().getPlayerDataHandler().removePoints(player, amount);
+            main.getTransactionHandler().removePoints(player, amount);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -24,7 +30,7 @@ public class PointsAPI {
 
     public static void set(String player, int amount) {
         try {
-            Main.get().getPlayerDataHandler().setPoints(player, amount);
+            main.getTransactionHandler().setPoints(player, amount);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }

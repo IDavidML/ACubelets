@@ -107,7 +107,7 @@ public class CraftingConfirmation_GUI implements Listener {
 
                 main.getCubeletCraftingHandler().removeIngredients(p, craft);
                 try {
-                    main.getCubeletTypesHandler().giveCubelet(p.getUniqueId(), craft.getCubeletType(), 1);
+                    main.getTransactionHandler().giveCubelet(p.getUniqueId(), craft.getCubeletType(), 1);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }

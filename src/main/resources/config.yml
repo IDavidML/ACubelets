@@ -47,6 +47,10 @@ NoGuiMode: false
 RewardAutoSorting: true
 
 
+# Enable/disable if you want cubelet open gui updates in realtime.
+LiveGuiUpdates: true
+
+
 # Enable/disable cubelet rewards preview
 # Available click types: LEFT, RIGHT, MIDDLE, SHIFT_LEFT or SHIFT_RIGHT
 RewardsPreview:

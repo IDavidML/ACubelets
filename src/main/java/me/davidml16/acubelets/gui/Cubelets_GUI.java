@@ -26,7 +26,7 @@ import java.util.*;
 
 public class Cubelets_GUI implements Listener {
 
-    private HashMap<UUID, Integer> opened;
+    private HashMap<UUID, GuiSession> opened;
     private Main main;
 
     private ClickType clickType;
@@ -49,12 +49,12 @@ public class Cubelets_GUI implements Listener {
             this.clickType = ClickType.SHIFT_LEFT;
     }
 
-    public HashMap<UUID, Integer> getOpened() {
+    public HashMap<UUID, GuiSession> getOpened() {
         return opened;
     }
 
     public void reloadPage(Player p) {
-        openPage(p, opened.get(p.getUniqueId()));
+        openPage(p, opened.get(p.getUniqueId()).getPage());
     }
 
     private void openPage(Player p, int page) {
@@ -130,6 +130,8 @@ public class Cubelets_GUI implements Listener {
             }
         }
 
+        List<ItemStack> items = new ArrayList<>();
+
         if(cubelets.size() > 0) {
 
             for (Cubelet cubelet : cubelets) {
@@ -155,6 +157,8 @@ public class Cubelets_GUI implements Listener {
                 item = NBTEditor.set(item, type.getId(), "typeID");
 
                 gui.addItem(item);
+                items.add(item);
+
             }
         } else {
             int slot = 0;
@@ -172,14 +176,12 @@ public class Cubelets_GUI implements Listener {
 
         p.openInventory(gui);
 
-        opened.put(p.getUniqueId(), page);
+        opened.put(p.getUniqueId(), new GuiSession(p.getUniqueId(), page, cubelets, items));
     }
 
     public void open(Player p) {
         p.updateInventory();
         openPage(p, 0);
-
-        opened.put(p.getUniqueId(), 0);
     }
 
     private int getNeededSize(GUILayout guiLayout, int cubelets) {
@@ -250,10 +252,10 @@ public class Cubelets_GUI implements Listener {
 
             if (slot == ((size - 10) + guiLayout.getSlot("PreviousPage"))) {
                 if(e.getClick() != ClickType.DOUBLE_CLICK)
-                    openPage(p, opened.get(p.getUniqueId()) - 1);
+                    openPage(p, opened.get(p.getUniqueId()).getPage() - 1);
             } else if (slot == ((size - 10) + guiLayout.getSlot("NextPage"))) {
                 if(e.getClick() != ClickType.DOUBLE_CLICK)
-                    openPage(p, opened.get(p.getUniqueId()) + 1);
+                    openPage(p, opened.get(p.getUniqueId()).getPage() + 1);
             } else if (slot == ((size - 10) + guiLayout.getSlot("Close"))) {
                 p.closeInventory();
             } else if (slot == ((size - 10) + guiLayout.getSlot("Crafting")) && main.isCraftingEnabled()) {
@@ -264,7 +266,7 @@ public class Cubelets_GUI implements Listener {
                     profile.setOrderBy("type");
                 else if(profile.getOrderBy().equalsIgnoreCase("type"))
                     profile.setOrderBy("date");
-                openPage(p, opened.get(p.getUniqueId()));
+                openPage(p, opened.get(p.getUniqueId()).getPage());
             } else if (slot >= 0 && slot <= (p.getOpenInventory().getTopInventory().getSize() - 10)) {
                 if (main.getPlayerDataHandler().getData(p.getUniqueId()).getCubelets().size() > 0) {
                     String cubeletUUID = NBTEditor.getString(e.getCurrentItem(), "cubeletUUID");
@@ -329,6 +331,48 @@ public class Cubelets_GUI implements Listener {
     public void InventoryCloseEvent(InventoryCloseEvent e) {
         Player p = (Player) e.getPlayer();
         opened.remove(p.getUniqueId());
+    }
+
+    public static class GuiSession {
+
+        private UUID uuid;
+        private int page;
+        private List<Cubelet> cubeletsDisplayed;
+        private List<ItemStack> itemsDisplayed;
+
+        public GuiSession(UUID uuid, int page, List<Cubelet> cubeletsDisplayed, List<ItemStack> itemsDisplayed) {
+            this.uuid = uuid;
+            this.page = page;
+            this.cubeletsDisplayed = cubeletsDisplayed;
+            this.itemsDisplayed = itemsDisplayed;
+        }
+
+        public UUID getUuid() {
+            return uuid;
+        }
+
+        public void setUuid(UUID uuid) {
+            this.uuid = uuid;
+        }
+
+        public int getPage() {
+            return page;
+        }
+
+        public void setPage(int page) {
+            this.page = page;
+        }
+
+        public List<Cubelet> getCubeletsDisplayed() {
+            return cubeletsDisplayed;
+        }
+
+        public void setCubeletsDisplayed(List<Cubelet> cubeletsDisplayed) { this.cubeletsDisplayed = cubeletsDisplayed; }
+
+        public List<ItemStack> getItemsDisplayed() { return itemsDisplayed; }
+
+        public void setItemsDisplayed(List<ItemStack> itemsDisplayed) { this.itemsDisplayed = itemsDisplayed; }
+
     }
 
 }

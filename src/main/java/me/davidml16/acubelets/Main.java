@@ -6,6 +6,8 @@ import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationHandler;
+import me.davidml16.acubelets.api.CubeletsAPI;
+import me.davidml16.acubelets.api.PointsAPI;
 import me.davidml16.acubelets.database.DatabaseHandler;
 import me.davidml16.acubelets.database.types.Database;
 import me.davidml16.acubelets.events.Event_Damage;
@@ -20,6 +22,7 @@ import me.davidml16.acubelets.handlers.*;
 import me.davidml16.acubelets.handlers.PluginHandler;
 import me.davidml16.acubelets.tasks.DataSaveTask;
 import me.davidml16.acubelets.tasks.HologramTask;
+import me.davidml16.acubelets.tasks.LiveGuiTask;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ConfigUpdater;
 import me.davidml16.acubelets.utils.FireworkUtil;
@@ -42,10 +45,14 @@ public class Main extends JavaPlugin {
     public static ConsoleCommandSender log;
     private MetricsLite metrics;
 
+    private CubeletsAPI cubeletsAPI;
+    private PointsAPI pointsAPI;
+
     private ProtocolManager protocolManager;
 
     private HologramTask hologramTask;
     private DataSaveTask dataSaveTask;
+    private LiveGuiTask liveGuiTask;
 
     private LanguageHandler languageHandler;
     private DatabaseHandler databaseHandler;
@@ -61,6 +68,7 @@ public class Main extends JavaPlugin {
     private EconomyHandler economyHandler;
     private LayoutHandler layoutHandler;
     private GUIHandler guiHandler;
+    private TransactionHandler transactionHandler;
 
     private FireworkUtil fireworkUtil;
 
@@ -126,6 +134,8 @@ public class Main extends JavaPlugin {
 
         pluginHandler = new PluginHandler(this);
 
+        transactionHandler = new TransactionHandler(this);
+
         languageHandler = new LanguageHandler(this, getConfig().getString("Language").toLowerCase());
         languageHandler.pushMessages();
 
@@ -184,6 +194,11 @@ public class Main extends JavaPlugin {
 
         cubeletOpenHandler = new CubeletOpenHandler(this);
 
+        settings.put("LiveGuiUpdates", getConfig().getBoolean("LiveGuiUpdates"));
+        liveGuiTask = new LiveGuiTask(this);
+        if(isLiveGuiUpdates())
+            liveGuiTask.start();
+
         layoutHandler = new LayoutHandler(this);
 
         cubeletsGUI = new Cubelets_GUI(this);
@@ -216,6 +231,9 @@ public class Main extends JavaPlugin {
         guiHandler = new GUIHandler(this);
 
         fireworkUtil = new FireworkUtil(this);
+
+        cubeletsAPI = new CubeletsAPI(this);
+        pointsAPI = new PointsAPI(this);
 
         registerCommands();
         registerEvents();
@@ -287,6 +305,8 @@ public class Main extends JavaPlugin {
 
     public DatabaseHandler getDatabase() { return databaseHandler; }
 
+    public TransactionHandler getTransactionHandler() { return transactionHandler; }
+
     public PlayerDataHandler getPlayerDataHandler() { return playerDataHandler; }
 
     public CubeletTypesHandler getCubeletTypesHandler() { return cubeletTypesHandler; }
@@ -343,6 +363,8 @@ public class Main extends JavaPlugin {
 
     public HologramTask getHologramTask() { return hologramTask; }
 
+    public LiveGuiTask getLiveGuiTask() { return liveGuiTask; }
+
     public FireworkUtil getFireworkUtil() { return fireworkUtil; }
 
     public int getPlayerCount() { return playerCount; }
@@ -378,6 +400,10 @@ public class Main extends JavaPlugin {
     public boolean isRewardSorting() { return settings.get("RewardAutoSorting"); }
 
     public void setRewardSorting(boolean value) { settings.put("RewardAutoSorting", value); }
+
+    public boolean isLiveGuiUpdates() { return settings.get("LiveGuiUpdates"); }
+
+    public void setLiveGuiUpdates(boolean value) { settings.put("LiveGuiUpdates", value); }
 
     public String getNoCubeletsCommand() {
         return noCubeletsCommand;

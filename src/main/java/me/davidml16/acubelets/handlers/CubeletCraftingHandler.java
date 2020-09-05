@@ -198,7 +198,7 @@ public class CubeletCraftingHandler {
         for(CraftIngredient ingredient : craft.getIngrediens()) {
             if(ingredient.getCraftType() == CraftType.CUBELET) {
                 try {
-                    main.getCubeletTypesHandler().removeCubelet(player.getUniqueId(), ingredient.getName(), ingredient.getAmount());
+                    main.getTransactionHandler().removeCubelet(player.getUniqueId(), ingredient.getName(), ingredient.getAmount());
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
