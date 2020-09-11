@@ -20,6 +20,8 @@ public class Profile {
 
 	private String orderBy;
 
+	private String animation;
+
 	public Profile(Main main, UUID uuid) {
 		this.main = main;
 		this.uuid = uuid;
@@ -27,6 +29,7 @@ public class Profile {
 		this.boxOpened = null;
 		this.orderBy = "date";
 		this.lootPoints = 0;
+		this.animation = "animation2";
 	}
 
 	public UUID getUuid() {
@@ -52,6 +55,10 @@ public class Profile {
 	public long getLootPoints() { return lootPoints; }
 
 	public void setLootPoints(long lootPoints) { this.lootPoints = lootPoints; }
+
+	public String getAnimation() { return animation; }
+
+	public void setAnimation(String animation) { this.animation = animation; }
 
 	@Override
 	public String toString() {

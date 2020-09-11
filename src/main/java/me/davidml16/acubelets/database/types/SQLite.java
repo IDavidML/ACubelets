@@ -72,7 +72,7 @@ public class SQLite implements Database {
 
         PreparedStatement statement2 = null;
         try {
-            statement2 = connection.prepareStatement("CREATE TABLE IF NOT EXISTS ac_players (`UUID` varchar(40) NOT NULL, `NAME` varchar(40), `LOOT_POINTS` integer(25), `ORDER_BY` varchar(10), PRIMARY KEY (`UUID`));");
+            statement2 = connection.prepareStatement("CREATE TABLE IF NOT EXISTS ac_players (`UUID` varchar(40) NOT NULL, `NAME` varchar(40), `LOOT_POINTS` integer(25), `ORDER_BY` varchar(10), `ANIMATION` varchar(25) NOT NULL DEFAULT 'animation2', PRIMARY KEY (`UUID`));");
             statement2.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -85,6 +85,22 @@ public class SQLite implements Database {
                 }
             }
         }
+
+        PreparedStatement statement3 = null;
+        try {
+            statement3 = connection.prepareStatement("ALTER TABLE ac_players ADD `ANIMATION` varchar(25) NOT NULL DEFAULT 'animation2'");
+            statement3.execute();
+        } catch (SQLException ignored) {
+        } finally {
+            if(statement3 != null) {
+                try {
+                    statement3.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
     }
 
     public boolean hasName(String name) throws SQLException {
@@ -111,11 +127,12 @@ public class SQLite implements Database {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
             try {
-                ps = connection.prepareStatement("INSERT INTO ac_players (UUID,NAME,LOOT_POINTS,ORDER_BY) VALUES(?,?,?,?)");
+                ps = connection.prepareStatement("INSERT INTO ac_players (UUID,NAME,LOOT_POINTS,ORDER_BY,ANIMATION) VALUES(?,?,?,?,?)");
                 ps.setString(1, p.getUniqueId().toString());
                 ps.setString(2, p.getName());
                 ps.setLong(3, 0);
                 ps.setString(4, "date");
+                ps.setString(5, "animation2");
                 ps.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -153,6 +170,57 @@ public class SQLite implements Database {
         });
     }
 
+    public void getPlayerAnimation(UUID uuid, Callback<String> callback) {
+        Bukkit.getScheduler().runTaskAsynchronously(main, (Runnable) () -> {
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            try {
+                ps = connection.prepareStatement("SELECT * FROM ac_players WHERE UUID = '" + uuid + "';");
+                rs = ps.executeQuery();
+
+                String animation = "animation2";
+
+                if (rs.next()) {
+                    animation = rs.getString("ANIMATION");
+                }
+
+                String finalAnimation = animation;
+                Bukkit.getScheduler().runTask(main, () -> callback.done(finalAnimation));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if(ps != null) {
+                    try {
+                        ps.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                if(rs != null) {
+                    try {
+                        rs.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    public void setPlayerAnimation(UUID uuid, String animation) throws SQLException {
+        PreparedStatement ps = null;
+        try {
+            ps = connection.prepareStatement("UPDATE ac_players SET `ANIMATION` = ? WHERE `UUID` = ?");
+            ps.setString(1, animation);
+            ps.setString(2, uuid.toString());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if(ps != null) ps.close();
+        }
+    }
+
     public void getPlayerOrderSetting(UUID uuid, Callback<String> callback) {
         Bukkit.getScheduler().runTaskAsynchronously(main, (Runnable) () -> {
             PreparedStatement ps = null;
@@ -167,7 +235,8 @@ public class SQLite implements Database {
                     order =  rs.getString("ORDER_BY");
                 }
 
-                callback.done(order);
+                String finalOrder = order;
+                Bukkit.getScheduler().runTask(main, () -> callback.done(finalOrder));
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
@@ -203,7 +272,8 @@ public class SQLite implements Database {
                      amount = rs.getLong("LOOT_POINTS");
                 }
 
-                callback.done(amount);
+                long finalAmount = amount;
+                Bukkit.getScheduler().runTask(main, () -> callback.done(finalAmount));
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
@@ -268,11 +338,12 @@ public class SQLite implements Database {
         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
             PreparedStatement ps = null;
             try {
-                ps = connection.prepareStatement("UPDATE ac_players SET `NAME` = ?, `LOOT_POINTS` = ?, `ORDER_BY` = ? WHERE `UUID` = ?");
+                ps = connection.prepareStatement("UPDATE ac_players SET `NAME` = ?, `LOOT_POINTS` = ?, `ORDER_BY` = ?, `ANIMATION` = ? WHERE `UUID` = ?");
                 ps.setString(1, name);
                 ps.setLong(2, profile.getLootPoints());
                 ps.setString(3, profile.getOrderBy());
-                ps.setString(4, profile.getUuid().toString());
+                ps.setString(4, profile.getAnimation());
+                ps.setString(5, profile.getUuid().toString());
                 ps.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -292,11 +363,12 @@ public class SQLite implements Database {
         String name = Bukkit.getPlayer(profile.getUuid()).getName();
         PreparedStatement ps = null;
         try {
-            ps = connection.prepareStatement("UPDATE ac_players SET `NAME` = ?, `LOOT_POINTS` = ?, `ORDER_BY` = ? WHERE `UUID` = ?");
+            ps = connection.prepareStatement("UPDATE ac_players SET `NAME` = ?, `LOOT_POINTS` = ?, `ORDER_BY` = ?, `ANIMATION` = ? WHERE `UUID` = ?");
             ps.setString(1, name);
             ps.setLong(2, profile.getLootPoints());
             ps.setString(3, profile.getOrderBy());
-            ps.setString(4, profile.getUuid().toString());
+            ps.setString(4, profile.getAnimation());
+            ps.setString(5, profile.getUuid().toString());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

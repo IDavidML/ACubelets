@@ -1,0 +1,52 @@
+#
+# This is the gui layout file.
+# You can change any messages that are in this file
+#
+# If you want to reset a message back to the default,
+# delete the entire line the message is on and restart the server.
+#
+# IMPORTANT: Slots numbers between 1-9, if not, the plugin will crash
+#
+
+Layout:
+
+  # GUI Title
+  Title: 'Cubelet animations'
+
+  # GUI items
+  Items:
+
+    # Displayed animation item
+    Animation:
+      Unlocked:
+        Name: '&a%animation%'
+        Lore:
+          - '&7Select your own special'
+          - '&7opening animation'
+          - ''
+          - '&eClick to select'
+
+      Locked:
+        Name: '&a%animation%'
+        Lore:
+          - '&7Select your own special'
+          - '&7opening animation'
+          - ''
+          - '&cNot unlocked yet'
+
+      Selected:
+        Name: '&a%animation%'
+        Lore:
+          - '&7Select your own special'
+          - '&7opening animation'
+          - ''
+          - '&cAlready selected'
+
+    # Back item
+    Back:
+      Name: '&9Back'
+      Material: 'BOOK'
+      Slot: 5
+      Lore:
+        - '&7Go back to the previous'
+        - '&7menu.'

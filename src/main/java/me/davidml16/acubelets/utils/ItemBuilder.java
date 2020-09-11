@@ -295,6 +295,14 @@ public class ItemBuilder {
         return this;
     }
 
+    public me.davidml16.acubelets.utils.ItemBuilder addGlow() {
+        ItemMeta im = is.getItemMeta();
+        im.addEnchant(Enchantment.DURABILITY, 1, true);
+        im.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        is.setItemMeta(im);
+        return this;
+    }
+
     /**
      * Retrieves the itemstack from the ItemBuilder.
      *

@@ -1,30 +1,39 @@
 package me.davidml16.acubelets.animations;
 
+import org.bukkit.inventory.ItemStack;
+
 public class AnimationSettings {
 
     private String id;
     private String displayName;
     private String previewURL;
+    private int animationNumber;
+
+    private ItemStack displayItem;
 
     private boolean outlineParticles;
     private boolean floorParticles;
     private boolean aroundParticles;
 
-    public AnimationSettings(String id, String displayName, String previewURL) {
-        this(id, displayName, previewURL, true, true);
+    public AnimationSettings(String id, String displayName, ItemStack displayItem, int animationNumber, String previewURL) {
+        this(id, displayName, displayItem, animationNumber, previewURL, true, true);
     }
 
-    public AnimationSettings(String id, String displayName, String previewURL, boolean outline, boolean floor) {
+    public AnimationSettings(String id, String displayName, ItemStack displayItem, int animationNumber, String previewURL, boolean outline, boolean floor) {
         this.id = id;
         this.displayName = displayName;
+        this.displayItem = displayItem;
+        this.animationNumber = animationNumber;
         this.previewURL = previewURL;
         this.outlineParticles = outline;
         this.floorParticles = floor;
     }
 
-    public AnimationSettings(String id, String displayName, String previewURL, boolean around) {
+    public AnimationSettings(String id, String displayName, ItemStack displayItem, int animationNumber, String previewURL, boolean around) {
         this.id = id;
         this.displayName = displayName;
+        this.displayItem = displayItem;
+        this.animationNumber = animationNumber;
         this.previewURL = previewURL;
         this.aroundParticles = around;
         this.outlineParticles = true;
@@ -46,6 +55,14 @@ public class AnimationSettings {
     public void setDisplayName(String displayName) {
         this.displayName = displayName;
     }
+
+    public ItemStack getDisplayItem() { return displayItem; }
+
+    public void setDisplayItem(ItemStack displayItem) { this.displayItem = displayItem; }
+
+    public int getAnimationNumber() { return animationNumber; }
+
+    public void setAnimationNumber(int animationNumber) { this.animationNumber = animationNumber; }
 
     public String getPreviewURL() {
         return previewURL;

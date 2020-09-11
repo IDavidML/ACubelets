@@ -30,6 +30,10 @@ public interface Database {
 
     String getPlayerUUID(String name) throws SQLException;
 
+    void getPlayerAnimation(UUID uuid, Callback<String> callback) throws SQLException;
+
+    void setPlayerAnimation(UUID uuid, String animation) throws SQLException;
+
     void getPlayerLootPoints(UUID uuid, Callback<Long> callback) throws SQLException;
 
     void setPlayerLootPoints(UUID uuid, long amount) throws SQLException;

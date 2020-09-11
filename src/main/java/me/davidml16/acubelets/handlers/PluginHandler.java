@@ -55,6 +55,8 @@ public class PluginHandler {
 
         main.setLiveGuiUpdates(main.getConfig().getBoolean("LiveGuiUpdates"));
 
+        main.setAnimationsByPlayer(main.getConfig().getBoolean("AnimationsByPlayer"));
+
         main.getLanguageHandler().loadLanguage("en");
         main.getLanguageHandler().loadLanguage("es");
         main.getLanguageHandler().setLanguage(main.getConfig().getString("Language").toLowerCase());

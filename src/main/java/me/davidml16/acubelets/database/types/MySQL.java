@@ -1,5 +1,6 @@
 package me.davidml16.acubelets.database.types;
 
+import com.mysql.jdbc.exceptions.MySQLSyntaxErrorException;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.pool.HikariPool;
@@ -102,7 +103,7 @@ public class MySQL implements Database {
         Connection connection2 = null;
         try {
             connection2 = hikari.getConnection();
-            statement2 = connection2.prepareStatement("CREATE TABLE IF NOT EXISTS ac_players (`UUID` varchar(40) NOT NULL, `NAME` varchar(40), `LOOT_POINTS` integer(25), `ORDER_BY` varchar(10), PRIMARY KEY (`UUID`));");
+            statement2 = connection2.prepareStatement("CREATE TABLE IF NOT EXISTS ac_players (`UUID` varchar(40) NOT NULL, `NAME` varchar(40), `LOOT_POINTS` integer(25), `ORDER_BY` varchar(10), `ANIMATION` varchar(25), PRIMARY KEY (`UUID`));");
             statement2.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -122,6 +123,32 @@ public class MySQL implements Database {
                 }
             }
         }
+
+        PreparedStatement statement3 = null;
+        Connection connection3 = null;
+        try {
+            connection3 = hikari.getConnection();
+            statement3 = connection3.prepareStatement("ALTER TABLE ac_players ADD `ANIMATION` varchar(25) NOT NULL DEFAULT 'animation2'");
+            statement3.execute();
+        } catch (SQLException ignored) {
+        } finally {
+            if(statement3 != null) {
+                try {
+                    statement3.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if(connection3 != null) {
+                try {
+                    connection3.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
     }
 
     public boolean hasName(String name) throws SQLException {
@@ -153,11 +180,12 @@ public class MySQL implements Database {
             Connection connection = null;
             try {
                 connection = hikari.getConnection();
-                ps = connection.prepareStatement("INSERT INTO ac_players (UUID,NAME,LOOT_POINTS,ORDER_BY) VALUES(?,?,?,?)");
+                ps = connection.prepareStatement("INSERT INTO ac_players (UUID,NAME,LOOT_POINTS,ORDER_BY,ANIMATION) VALUES(?,?,?,?,?)");
                 ps.setString(1, p.getUniqueId().toString());
                 ps.setString(2, p.getName());
                 ps.setLong(3, 0);
                 ps.setString(4, "date");
+                ps.setString(5, "animation2");
                 ps.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -180,6 +208,68 @@ public class MySQL implements Database {
         });
     }
 
+    public void getPlayerAnimation(UUID uuid, Callback<String> callback) {
+        Bukkit.getScheduler().runTaskAsynchronously(main, (Runnable) () -> {
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            Connection connection = null;
+            try {
+                connection = hikari.getConnection();
+                ps = connection.prepareStatement("SELECT * FROM ac_players WHERE UUID = '" + uuid + "';");
+                rs = ps.executeQuery();
+
+                String animation = "animation2";
+
+                if (rs.next()) {
+                    animation = rs.getString("ANIMATION");
+                }
+
+                String finalAnimation = animation;
+                Bukkit.getScheduler().runTask(main, () -> callback.done(finalAnimation));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if(ps != null) {
+                    try {
+                        ps.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                if(rs != null) {
+                    try {
+                        rs.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    public void setPlayerAnimation(UUID uuid, String animation) throws SQLException {
+        PreparedStatement ps = null;
+        Connection connection = null;
+        try {
+            ps = connection.prepareStatement("UPDATE ac_players SET `ANIMATION` = ? WHERE `UUID` = ?");
+            ps.setString(1, animation);
+            ps.setString(2, uuid.toString());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            if(ps != null) ps.close();
+            if(connection != null) connection.close();
+        }
+    }
+
     public void getPlayerOrderSetting(UUID uuid, Callback<String> callback) {
         Bukkit.getScheduler().runTaskAsynchronously(main, (Runnable) () -> {
             PreparedStatement ps = null;
@@ -196,7 +286,8 @@ public class MySQL implements Database {
                     order =  rs.getString("ORDER_BY");
                 }
 
-                callback.done(order);
+                String finalOrder = order;
+                Bukkit.getScheduler().runTask(main, () -> callback.done(finalOrder));
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
@@ -241,7 +332,8 @@ public class MySQL implements Database {
                     amount = rs.getLong("LOOT_POINTS");
                 }
 
-                callback.done(amount);
+                long finalAmount = amount;
+                Bukkit.getScheduler().runTask(main, () -> callback.done(finalAmount));
             } catch (SQLException e) {
                 e.printStackTrace();
             } finally {
@@ -341,11 +433,12 @@ public class MySQL implements Database {
             Connection connection = null;
             try {
                 connection = hikari.getConnection();
-                ps = connection.prepareStatement("UPDATE ac_players SET `NAME` = ?, `LOOT_POINTS` = ?, `ORDER_BY` = ? WHERE `UUID` = ?");
+                ps = connection.prepareStatement("UPDATE ac_players SET `NAME` = ?, `LOOT_POINTS` = ?, `ORDER_BY` = ?, `ANIMATION` = ? WHERE `UUID` = ?");
                 ps.setString(1, name);
                 ps.setLong(2, profile.getLootPoints());
                 ps.setString(3, profile.getOrderBy());
-                ps.setString(4, profile.getUuid().toString());
+                ps.setString(4, profile.getAnimation());
+                ps.setString(5, profile.getUuid().toString());
                 ps.executeUpdate();
             } catch (SQLException e) {
                 e.printStackTrace();
@@ -374,11 +467,12 @@ public class MySQL implements Database {
         Connection connection = null;
         try {
             connection = hikari.getConnection();
-            ps = connection.prepareStatement("UPDATE ac_players SET `NAME` = ?, `LOOT_POINTS` = ?, `ORDER_BY` = ? WHERE `UUID` = ?");
+            ps = connection.prepareStatement("UPDATE ac_players SET `NAME` = ?, `LOOT_POINTS` = ?, `ORDER_BY` = ?, `ANIMATION` = ? WHERE `UUID` = ?");
             ps.setString(1, name);
             ps.setLong(2, profile.getLootPoints());
             ps.setString(3, profile.getOrderBy());
-            ps.setString(4, profile.getUuid().toString());
+            ps.setString(4, profile.getAnimation());
+            ps.setString(5, profile.getUuid().toString());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

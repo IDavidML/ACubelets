@@ -95,6 +95,9 @@ public class LayoutHandler {
 
 		createLayoutFile("preview");
 		loadLayout("preview");
+
+		createLayoutFile("animations");
+		loadLayout("animations");
 	}
 
 	public void loadLayout(String layout) {

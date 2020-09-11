@@ -9,36 +9,45 @@
 animations:
 
   animation_1:
+    DisplayName: 'Animation 1'
     AroundParticles: true
 
   animation_2:
+    DisplayName: 'Animation 2'
     OutlineParticles: true
     FloorParticles: true
 
   animation_3:
+    DisplayName: 'Animation 3'
     OutlineParticles: true
     FloorParticles: true
 
   animation_4:
+    DisplayName: 'Animation 4'
     OutlineParticles: true
     FloorParticles: true
 
   animation_5_summer:
+    DisplayName: 'Animation 5 (Summer)'
     OutlineParticles: true
     FloorParticles: true
 
   animation_6_easter:
+    DisplayName: 'Animation 6 (Easter)'
     OutlineParticles: true
     FloorParticles: true
 
   animation_7_halloween:
+    DisplayName: 'Animation 7 (Halloween)'
     OutlineParticles: true
     FloorParticles: true
 
   animation_8_christmas:
+    DisplayName: 'Animation 8 (Christmas)'
     OutlineParticles: true
     FloorParticles: true
 
   animation_9:
+    DisplayName: 'Animation 9'
     OutlineParticles: true
     FloorParticles: true

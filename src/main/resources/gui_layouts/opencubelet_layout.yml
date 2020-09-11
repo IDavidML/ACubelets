@@ -74,6 +74,16 @@ Layout:
         - '&7rarer items.'
         - '&6Click to open.'
 
+    # Item to select your cubelet opening animation
+    Animations:
+      Name: '&a&lAnimations'
+      Material: 'REDSTONE'
+      Slot: 8
+      Lore:
+        - '&7Select your Cubelet'
+        - '&7opening animation.'
+        - '&6Click to open.'
+
     # Next page item
     NextPage:
       Name: '&6Next page'

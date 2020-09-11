@@ -29,7 +29,13 @@ public class CubeletOpenHandler {
                 hologram.clearLines();
             }
 
-            Animation animation = main.getAnimationHandler().getAnimation(type.getAnimation());
+            Animation animation;
+
+            if(!main.isAnimationByPlayer())
+                animation = main.getAnimationHandler().getAnimation(type.getAnimation());
+            else
+                animation = main.getAnimationHandler().getAnimation(main.getPlayerDataHandler().getData(p).getAnimation());
+                
             animation.start(box, type);
             Bukkit.getPluginManager().callEvent(new CubeletOpenEvent(cubeletOpener, type));
 

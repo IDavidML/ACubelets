@@ -39,6 +39,10 @@ NoCubelets:
 Crafting: true
 
 
+# Enable/disable players can select her opening animations
+AnimationsByPlayer: false
+
+
 # Enable/disable if you want to disable the gui and open the most recent cubelet just by right clicking on the cubelet machine.
 NoGuiMode: false
 

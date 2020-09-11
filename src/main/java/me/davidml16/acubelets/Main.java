@@ -75,6 +75,7 @@ public class Main extends JavaPlugin {
     private PluginHandler pluginHandler;
 
     private Cubelets_GUI cubeletsGUI;
+    private PlayerAnimation_GUI playerAnimationGUI;
     private EditBox_GUI editBoxGUI;
     private TypeConfig_GUI typeConfigGUI;
     private Rewards_GUI rewardsGUI;
@@ -145,6 +146,9 @@ public class Main extends JavaPlugin {
 
         animationHandler = new AnimationHandler(this);
         animationHandler.loadAnimations();
+
+        settings.put("AnimationsByPlayer", getConfig().getBoolean("AnimationsByPlayer"));
+        playerAnimationGUI = new PlayerAnimation_GUI(this);
 
         cubeletBoxHandler = new CubeletBoxHandler(this);
         cubeletBoxHandler.loadBoxes();
@@ -333,6 +337,8 @@ public class Main extends JavaPlugin {
 
     public Cubelets_GUI getCubeletsGUI() { return cubeletsGUI; }
 
+    public PlayerAnimation_GUI getPlayerAnimationGUI() { return playerAnimationGUI; }
+
     public TypeConfig_GUI getTypeConfigGUI() { return typeConfigGUI; }
 
     public Rewards_GUI getRewardsGUI() { return rewardsGUI; }
@@ -404,6 +410,10 @@ public class Main extends JavaPlugin {
     public boolean isLiveGuiUpdates() { return settings.get("LiveGuiUpdates"); }
 
     public void setLiveGuiUpdates(boolean value) { settings.put("LiveGuiUpdates", value); }
+
+    public boolean isAnimationByPlayer() { return settings.get("AnimationsByPlayer"); }
+
+    public void setAnimationsByPlayer(boolean value) { settings.put("AnimationsByPlayer", value); }
 
     public String getNoCubeletsCommand() {
         return noCubeletsCommand;

@@ -51,11 +51,13 @@ public class PlayerDataHandler {
 				main.getDatabaseHandler().createPlayerData(p);
 				profile.setOrderBy("date");
 				profile.setLootPoints(0);
+				profile.setAnimation("animation2");
 			} else {
 				main.getDatabaseHandler().updatePlayerName(p);
 
 				main.getDatabaseHandler().getPlayerOrderSetting(p.getUniqueId(), profile::setOrderBy);
 				main.getDatabaseHandler().getPlayerLootPoints(p.getUniqueId(), profile::setLootPoints);
+				main.getDatabaseHandler().getPlayerAnimation(p.getUniqueId(), profile::setAnimation);
 			}
 		} catch (SQLException throwables) {
 			throwables.printStackTrace();
