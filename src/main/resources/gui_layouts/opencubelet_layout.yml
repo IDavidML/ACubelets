@@ -78,7 +78,7 @@ Layout:
     Animations:
       Name: '&a&lAnimations'
       Material: 'REDSTONE'
-      Slot: 8
+      Slot: 5
       Lore:
         - '&7Select your Cubelet'
         - '&7opening animation.'

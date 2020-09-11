@@ -13,7 +13,7 @@ animations:
     AroundParticles: true
 
   animation_2:
-    DisplayName: 'Animation 2'
+    DisplayName: 'Animation 2 (Default)'
     OutlineParticles: true
     FloorParticles: true
 

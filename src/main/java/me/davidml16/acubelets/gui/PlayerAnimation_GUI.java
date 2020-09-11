@@ -4,6 +4,7 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.GUILayout;
+import me.davidml16.acubelets.objects.Profile;
 import me.davidml16.acubelets.utils.*;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
@@ -39,6 +40,13 @@ public class PlayerAnimation_GUI implements Listener {
 
     public void open(Player p) {
         p.updateInventory();
+
+        Profile profile = main.getPlayerDataHandler().getData(p);
+        if(!profile.getAnimation().equalsIgnoreCase("animation2")) {
+            AnimationSettings animationSettings = main.getAnimationHandler().getAnimationSetting(profile.getAnimation());
+            if(!p.hasPermission("acubelets.animations.animation" + animationSettings.getAnimationNumber()))
+                profile.setAnimation("animation2");
+        }
 
         GUILayout guiLayout = main.getLayoutHandler().getLayout("animations");
 
@@ -109,36 +117,37 @@ public class PlayerAnimation_GUI implements Listener {
 
         ItemStack item = animationSettings.getDisplayItem().clone();
 
-        if (player.isOp() || player.hasPermission("acubelets.animations.animation" + animationSettings.getAnimationNumber())) {
-
-            if (!main.getPlayerDataHandler().getData(player).getAnimation().equalsIgnoreCase(animation)) {
-
-                String name = guiLayout.getMessage("Items.Animation.Unlocked.Name").replaceAll("%animation%", animationSettings.getDisplayName());
-                List<String> lore = guiLayout.getMessageList("Items.Animation.Unlocked.Lore");
-                item = new ItemBuilder(item).setName(name).setLore(lore).toItemStack();
-                item = NBTEditor.set(item, "unlocked", "status");
-
-            } else {
-
-                String name = guiLayout.getMessage("Items.Animation.Selected.Name").replaceAll("%animation%", animationSettings.getDisplayName());
-                List<String> lore = guiLayout.getMessageList("Items.Animation.Selected.Lore");
-                item = new ItemBuilder(item).setName(name).setLore(lore).addGlow().toItemStack();
-                item = NBTEditor.set(item, "selected", "status");
-
-            }
-
-        } else {
-
-            String name = guiLayout.getMessage("Items.Animation.Locked.Name").replaceAll("%animation%", animationSettings.getDisplayName());
-            List<String> lore = guiLayout.getMessageList("Items.Animation.Locked.Lore");
-            item = new ItemBuilder(XMaterial.GRAY_DYE.parseItem()).setName(name).setLore(lore).toItemStack();
-            item = NBTEditor.set(item, "locked", "status");
-
-        }
+        if(!animation.equalsIgnoreCase("animation2"))
+            if (player.isOp() || player.hasPermission("acubelets.animations.animation" + animationSettings.getAnimationNumber()))
+                if (!main.getPlayerDataHandler().getData(player).getAnimation().equalsIgnoreCase(animation))
+                    item = getItem(guiLayout, animationSettings, "Unlocked", item);
+                else
+                    item = getItem(guiLayout, animationSettings, "Selected", item);
+            else
+                item = getItem(guiLayout, animationSettings, "Locked", XMaterial.GRAY_DYE.parseItem());
+        else
+            if(!main.getPlayerDataHandler().getData(player).getAnimation().equalsIgnoreCase(animation))
+                item = getItem(guiLayout, animationSettings, "Unlocked", item);
+            else
+                item = getItem(guiLayout, animationSettings, "Selected", item);
 
         item = NBTEditor.set(item, animation, "animation");
-
         return item;
+
+    }
+
+    private ItemStack getItem(GUILayout guiLayout, AnimationSettings animationSettings, String status, ItemStack itemStack) {
+
+        String name = guiLayout.getMessage("Items.Animation." + status + ".Name").replaceAll("%animation%", animationSettings.getDisplayName());
+        List<String> lore = guiLayout.getMessageList("Items.Animation." + status + ".Lore");
+
+        ItemStack item;
+        if(status.equalsIgnoreCase("Selected"))
+            item = new ItemBuilder(itemStack).setName(name).setLore(lore).addGlow().toItemStack();
+        else
+            item = new ItemBuilder(itemStack).setName(name).setLore(lore).toItemStack();
+
+        return NBTEditor.set(item, status.toLowerCase(), "status");
 
     }
 
