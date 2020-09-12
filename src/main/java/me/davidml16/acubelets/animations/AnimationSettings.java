@@ -2,7 +2,9 @@ package me.davidml16.acubelets.animations;
 
 import org.bukkit.inventory.ItemStack;
 
-public class AnimationSettings {
+import java.util.Comparator;
+
+public class AnimationSettings implements Comparable<AnimationSettings> {
 
     private String id;
     private String displayName;
@@ -84,4 +86,8 @@ public class AnimationSettings {
 
     public void setAroundParticles(boolean aroundParticles) { this.aroundParticles = aroundParticles; }
 
+    @Override
+    public int compareTo(AnimationSettings o) {
+        return getAnimationNumber() - o.getAnimationNumber();
+    }
 }

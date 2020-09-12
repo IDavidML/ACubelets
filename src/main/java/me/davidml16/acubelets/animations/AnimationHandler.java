@@ -205,6 +205,8 @@ public class AnimationHandler {
         return this.config.getBoolean("animations." + animation + ".AroundParticles", true);
     }
 
+    public Map<String, AnimationSettings> getAnimations() { return animations; }
+
     public File getFile() {
         return file;
     }

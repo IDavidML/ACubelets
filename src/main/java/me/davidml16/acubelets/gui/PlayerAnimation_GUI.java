@@ -2,15 +2,12 @@ package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.AnimationSettings;
-import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.GUILayout;
 import me.davidml16.acubelets.objects.Profile;
 import me.davidml16.acubelets.utils.*;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,13 +17,14 @@ import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.File;
 import java.util.*;
 
 public class PlayerAnimation_GUI implements Listener {
 
     private Set<UUID> opened;
     private HashMap<String, Inventory> guis;
+
+    private static List<Integer> panels = Arrays.asList(0,1,2,3,4,5,6,7,8,9,17,18,26);
 
     private Main main;
 
@@ -58,15 +56,18 @@ public class PlayerAnimation_GUI implements Listener {
                 .toItemStack();
         gui.setItem(40, back);
 
-        gui.setItem(10, getAnimationItem(p, guiLayout, "animation1"));
-        gui.setItem(11, getAnimationItem(p, guiLayout, "animation2"));
-        gui.setItem(12, getAnimationItem(p, guiLayout, "animation3"));
-        gui.setItem(13, getAnimationItem(p, guiLayout, "animation4"));
-        gui.setItem(14, getAnimationItem(p, guiLayout, "summer"));
-        gui.setItem(15, getAnimationItem(p, guiLayout, "easter"));
-        gui.setItem(16, getAnimationItem(p, guiLayout, "halloween"));
-        gui.setItem(19, getAnimationItem(p, guiLayout, "christmas"));
-        gui.setItem(20, getAnimationItem(p, guiLayout, "animation9"));
+        ItemStack filler = XMaterial.GRAY_STAINED_GLASS_PANE.parseItem();
+        for(int i : panels)
+            gui.setItem(i, filler);
+
+        List<AnimationSettings> animationSettings = new ArrayList<>(main.getAnimationHandler().getAnimations().values());
+        Collections.sort(animationSettings);
+
+        for(AnimationSettings animation : animationSettings)
+            gui.addItem(getAnimationItem(p, guiLayout, animation.getId()));
+
+        for(int i : panels)
+            gui.setItem(i, null);
 
         p.openInventory(gui);
 
@@ -79,6 +80,7 @@ public class PlayerAnimation_GUI implements Listener {
 
         if (e.getCurrentItem() == null) return;
         if (e.getCurrentItem().getType() == Material.AIR) return;
+        if (e.getClick() == ClickType.DOUBLE_CLICK) return;
 
         if (opened.contains(p.getUniqueId())) {
             e.setCancelled(true);
@@ -97,8 +99,15 @@ public class PlayerAnimation_GUI implements Listener {
 
                     main.getPlayerDataHandler().getData(p).setAnimation(animation);
                     Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+
+                    AnimationSettings animationSettings = main.getAnimationHandler().getAnimationSetting(animation);
+
+                    p.sendMessage(Utils.translate(main.getLanguageHandler().getMessage("Animations.Selected").replaceAll("%animation%", animationSettings.getDisplayName())));
+
                     open(p);
 
+                } else if(status.equalsIgnoreCase("locked")) {
+                    p.sendMessage(Utils.translate(main.getLanguageHandler().getMessage("Animations.Locked")));
                 }
 
             }
