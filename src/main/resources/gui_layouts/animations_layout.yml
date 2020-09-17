@@ -42,6 +42,26 @@ Layout:
           - ''
           - '&cAlready selected'
 
+    # Displayed random animation item
+    RandomAnimation:
+      Selected:
+        Name: '&aRandom animation'
+        Lore:
+          - '&7A random animation will'
+          - '&7be chosen each time you'
+          - '&7open a cubelet.'
+          - ''
+          - '&cAlready enabled'
+
+      NoSelected:
+        Name: '&aRandom animation'
+        Lore:
+          - '&7A random animation will'
+          - '&7be chosen each time you'
+          - '&7open a cubelet.'
+          - ''
+          - '&eClick to enable it'
+
     # Back item
     Back:
       Name: '&9Back'

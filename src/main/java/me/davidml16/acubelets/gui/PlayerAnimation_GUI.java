@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.animations.AnimationHandler;
 import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.objects.GUILayout;
 import me.davidml16.acubelets.objects.Profile;
@@ -40,10 +41,12 @@ public class PlayerAnimation_GUI implements Listener {
         p.updateInventory();
 
         Profile profile = main.getPlayerDataHandler().getData(p);
-        if(!profile.getAnimation().equalsIgnoreCase("animation2")) {
-            AnimationSettings animationSettings = main.getAnimationHandler().getAnimationSetting(profile.getAnimation());
-            if(!p.hasPermission("acubelets.animations.animation" + animationSettings.getAnimationNumber()))
-                profile.setAnimation("animation2");
+        if(!profile.getAnimation().equalsIgnoreCase("random")) {
+            AnimationSettings animationSetting = main.getAnimationHandler().getAnimationSetting(profile.getAnimation());
+            if (animationSetting.isNeedPermission()) {
+                if (!main.getAnimationHandler().haveAnimationPermission(p, animationSetting))
+                    profile.setAnimation(AnimationHandler.DEFAULT_ANIMATION);
+            }
         }
 
         GUILayout guiLayout = main.getLayoutHandler().getLayout("animations");
@@ -65,6 +68,8 @@ public class PlayerAnimation_GUI implements Listener {
 
         for(AnimationSettings animation : animationSettings)
             gui.addItem(getAnimationItem(p, guiLayout, animation.getId()));
+
+        gui.setItem(38, getRandomAnimationItem(p, guiLayout));
 
         for(int i : panels)
             gui.setItem(i, null);
@@ -90,6 +95,16 @@ public class PlayerAnimation_GUI implements Listener {
 
                 main.getCubeletsGUI().open(p);
 
+            } else if (slot == 38) {
+
+                String status = NBTEditor.getString(e.getCurrentItem(), "status");
+
+                if(status.equalsIgnoreCase("disabled")) {
+                    main.getPlayerDataHandler().getData(p).setAnimation("random");
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+                    open(p);
+                }
+
             } else {
 
                 String animation = NBTEditor.getString(e.getCurrentItem(), "animation");
@@ -99,15 +114,8 @@ public class PlayerAnimation_GUI implements Listener {
 
                     main.getPlayerDataHandler().getData(p).setAnimation(animation);
                     Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
-
-                    AnimationSettings animationSettings = main.getAnimationHandler().getAnimationSetting(animation);
-
-                    p.sendMessage(Utils.translate(main.getLanguageHandler().getMessage("Animations.Selected").replaceAll("%animation%", animationSettings.getDisplayName())));
-
                     open(p);
 
-                } else if(status.equalsIgnoreCase("locked")) {
-                    p.sendMessage(Utils.translate(main.getLanguageHandler().getMessage("Animations.Locked")));
                 }
 
             }
@@ -126,8 +134,8 @@ public class PlayerAnimation_GUI implements Listener {
 
         ItemStack item = animationSettings.getDisplayItem().clone();
 
-        if(!animation.equalsIgnoreCase("animation2"))
-            if (player.isOp() || player.hasPermission("acubelets.animations.animation" + animationSettings.getAnimationNumber()))
+        if(animationSettings.isNeedPermission())
+            if (main.getAnimationHandler().haveAnimationPermission(player, animationSettings))
                 if (!main.getPlayerDataHandler().getData(player).getAnimation().equalsIgnoreCase(animation))
                     item = getItem(guiLayout, animationSettings, "Unlocked", item);
                 else
@@ -155,6 +163,28 @@ public class PlayerAnimation_GUI implements Listener {
             item = new ItemBuilder(itemStack).setName(name).setLore(lore).addGlow().toItemStack();
         else
             item = new ItemBuilder(itemStack).setName(name).setLore(lore).toItemStack();
+
+        return NBTEditor.set(item, status.toLowerCase(), "status");
+
+    }
+
+    private ItemStack getRandomAnimationItem(Player player, GUILayout guiLayout) {
+
+        ItemStack item = new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).toItemStack();
+
+        String status;
+
+        if(!main.getPlayerDataHandler().getData(player).getAnimation().equalsIgnoreCase("random")) {
+            String name = guiLayout.getMessage("Items.RandomAnimation.NoSelected.Name");
+            List<String> lore = guiLayout.getMessageList("Items.RandomAnimation.NoSelected.Lore");
+            item = new ItemBuilder(item).setName(name).setLore(lore).toItemStack();
+            status = "disabled";
+        } else {
+            String name = guiLayout.getMessage("Items.RandomAnimation.Selected.Name");
+            List<String> lore = guiLayout.getMessageList("Items.RandomAnimation.Selected.Lore");
+            item = new ItemBuilder(item).setName(name).setLore(lore).addGlow().toItemStack();
+            status = "enabled";
+        }
 
         return NBTEditor.set(item, status.toLowerCase(), "status");
 

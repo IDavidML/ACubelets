@@ -3,6 +3,7 @@ package me.davidml16.acubelets.handlers;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
+import me.davidml16.acubelets.animations.AnimationHandler;
 import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.objects.CubeletBox;
@@ -38,13 +39,23 @@ public class CubeletOpenHandler {
             } else {
 
                 Profile profile = main.getPlayerDataHandler().getData(p);
-                if(!profile.getAnimation().equalsIgnoreCase("animation2")) {
-                    AnimationSettings animationSettings = main.getAnimationHandler().getAnimationSetting(profile.getAnimation());
-                    if(!p.hasPermission("acubelets.animations.animation" + animationSettings.getAnimationNumber()))
-                        profile.setAnimation("animation2");
+
+                if(!profile.getAnimation().equalsIgnoreCase("random")) {
+
+                    AnimationSettings animationSetting = main.getAnimationHandler().getAnimationSetting(profile.getAnimation());
+                    if (animationSetting.isNeedPermission()) {
+                        if (!main.getAnimationHandler().haveAnimationPermission(p, animationSetting))
+                            profile.setAnimation(AnimationHandler.DEFAULT_ANIMATION);
+                    }
+
+                    animation = main.getAnimationHandler().getAnimation(profile.getAnimation());
+
+                } else {
+
+                    animation = main.getAnimationHandler().getAnimation(main.getAnimationHandler().getRandomAnimation(p).getId());
+
                 }
 
-                animation = main.getAnimationHandler().getAnimation(profile.getAnimation());
             }
                 
             animation.start(box, type);

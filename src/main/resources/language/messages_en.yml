@@ -63,10 +63,6 @@ Cubelet:
     - '%center%&6https://example.com'
     - ''
 
-Animations:
-  Selected: "&aYour animation has been changed to &e%animation%"
-  Locked: "&cYou haven't unlocked this animation yet."
-
 Holograms:
   CubeletAvailable:
     - '&e&lCubelet Machine'

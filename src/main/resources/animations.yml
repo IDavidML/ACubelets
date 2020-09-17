@@ -8,6 +8,11 @@
 
 animations:
 
+  animation_0:
+    DisplayName: 'No animation'
+    OutlineParticles: true
+    FloorParticles: true
+
   animation_1:
     DisplayName: 'Animation 1'
     AroundParticles: true

@@ -16,35 +16,13 @@ public class AnimationSettings implements Comparable<AnimationSettings> {
     private boolean outlineParticles;
     private boolean floorParticles;
     private boolean aroundParticles;
+    private boolean needPermission;
 
-    public AnimationSettings(String id, String displayName, ItemStack displayItem, int animationNumber, String previewURL) {
-        this(id, displayName, displayItem, animationNumber, previewURL, true, true);
-    }
-
-    public AnimationSettings(String id, String displayName, ItemStack displayItem, int animationNumber, String previewURL, boolean outline, boolean floor) {
+    public AnimationSettings(String id) {
         this.id = id;
-        this.displayName = displayName;
-        this.displayItem = displayItem;
-        this.animationNumber = animationNumber;
-        this.previewURL = previewURL;
-        this.outlineParticles = outline;
-        this.floorParticles = floor;
     }
 
-    public AnimationSettings(String id, String displayName, ItemStack displayItem, int animationNumber, String previewURL, boolean around) {
-        this.id = id;
-        this.displayName = displayName;
-        this.displayItem = displayItem;
-        this.animationNumber = animationNumber;
-        this.previewURL = previewURL;
-        this.aroundParticles = around;
-        this.outlineParticles = true;
-        this.floorParticles = true;
-    }
-
-    public String getId() {
-        return id;
-    }
+    public String getId() { return id; }
 
     public void setId(String id) {
         this.id = id;
@@ -85,6 +63,10 @@ public class AnimationSettings implements Comparable<AnimationSettings> {
     public boolean isAroundParticles() { return aroundParticles; }
 
     public void setAroundParticles(boolean aroundParticles) { this.aroundParticles = aroundParticles; }
+
+    public boolean isNeedPermission() { return needPermission; }
+
+    public void setNeedPermission(boolean needPermission) { this.needPermission = needPermission; }
 
     @Override
     public int compareTo(AnimationSettings o) {
