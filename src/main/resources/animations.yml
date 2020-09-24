@@ -56,3 +56,8 @@ animations:
     DisplayName: 'Animation 9'
     OutlineParticles: true
     FloorParticles: true
+
+  animation_10:
+    DisplayName: 'Animation 10'
+    OutlineParticles: true
+    FloorParticles: true

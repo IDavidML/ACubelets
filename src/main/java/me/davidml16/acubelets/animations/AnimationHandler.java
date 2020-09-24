@@ -3,6 +3,7 @@ package me.davidml16.acubelets.animations;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.normal.animation0.Animation0_Task;
 import me.davidml16.acubelets.animations.normal.animation1.Animation1_Task;
+import me.davidml16.acubelets.animations.normal.animation10.Animation10_Task;
 import me.davidml16.acubelets.animations.normal.animation2.Animation2_Task;
 import me.davidml16.acubelets.animations.normal.animation3.Animation3_Task;
 import me.davidml16.acubelets.animations.normal.animation4.Animation4_Task;
@@ -165,6 +166,16 @@ public class AnimationHandler {
         animation9.setNeedPermission(true);
         this.animations.put("animation9", animation9);
 
+        AnimationSettings animation10 = new AnimationSettings("animation10");
+        animation10.setDisplayName(getDisplayName("animation_10"));
+        animation10.setDisplayItem(XMaterial.FIRE_CHARGE.parseItem());
+        animation10.setAnimationNumber(10);
+        animation10.setPreviewURL("");
+        animation10.setOutlineParticles(getOutlineParticles("animation_10"));
+        animation10.setFloorParticles(getFloorParticles("animation_10"));
+        animation10.setNeedPermission(true);
+        this.animations.put("animation10", animation10);
+
     }
 
     public AnimationSettings getAnimationSetting(String id) {
@@ -191,6 +202,8 @@ public class AnimationHandler {
                 return new AnimationXmas_Task(main, getAnimationSetting(animation));
             case "animation9":
                 return new Animation9_Task(main, getAnimationSetting(animation));
+            case "animation10":
+                return new Animation10_Task(main, getAnimationSetting(animation));
             default:
                 return new Animation2_Task(main, getAnimationSetting(animation));
         }
