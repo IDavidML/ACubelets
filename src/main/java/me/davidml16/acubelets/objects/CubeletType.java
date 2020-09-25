@@ -202,7 +202,7 @@ public class CubeletType {
                     }
                 }
 
-                XItemStack.serializeIcon(reward.getIcon(), config, "type.rewards.reward_" + String.valueOf(i) + ".icon");
+                XItemStack.serializeIcon(reward.getIcon(), config, "type.rewards.reward_" + String.valueOf(i) + ".icon", true);
             }
         }
 

@@ -81,6 +81,12 @@ public class RewardsPreview_GUI implements Listener {
             for (Reward reward : rewards) {
 
                 List<String> lore = new ArrayList<>();
+
+                if(reward.getIcon().getItemMeta().hasLore()) {
+                    lore.addAll(reward.getIcon().getItemMeta().getLore());
+                    lore.add("");
+                }
+
                 for (String line : guiLayout.getMessageList("Items.Reward.Lore")) {
                     lore.add(Utils.translate(line.replaceAll("%reward_rarity%", reward.getRarity().getName())));
                 }

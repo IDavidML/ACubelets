@@ -199,7 +199,7 @@ public class CubeletTypesHandler {
                                 break;
                         }
                     } else {
-                        cubeletType.setIcon(XItemStack.deserializeIcon(config, "type.icon.texture"));
+                        cubeletType.setIcon(XItemStack.deserializeIcon(config, "type.icon.texture", false));
                     }
 
                     List<String> loreAvailable = new ArrayList<>();

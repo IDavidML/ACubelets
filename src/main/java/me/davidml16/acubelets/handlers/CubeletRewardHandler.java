@@ -44,7 +44,7 @@ public class CubeletRewardHandler {
 						if (cubeletType.getRarities().containsKey(rarity)) {
 
 							String name = config.getString("type.rewards." + rewardid + ".name");
-							ItemStack rewardIcon = XItemStack.deserializeIcon(config, "type.rewards." + rewardid + ".icon");
+							ItemStack rewardIcon = XItemStack.deserializeIcon(config, "type.rewards." + rewardid + ".icon", true);
 							rewardIcon = NBTEditor.set(rewardIcon, "reward_" + iterator, "rewardID");
 
 							List<Reward> rewardsRarity;

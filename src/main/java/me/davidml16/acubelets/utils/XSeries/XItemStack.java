@@ -75,7 +75,7 @@ public class XItemStack {
      * @param config the config section to write this item to.
      * @since 1.0.0
      */
-    public static void serializeIcon(ItemStack item, FileConfiguration config, String path) {
+    public static void serializeIcon(ItemStack item, FileConfiguration config, String path, boolean lore) {
         Objects.requireNonNull(item, "Cannot serialize a null item");
         Objects.requireNonNull(config, "Cannot serialize item from a null configuration section.");
         ItemMeta meta = item.getItemMeta();
@@ -91,6 +91,14 @@ public class XItemStack {
         } else {
             int damage = item.getDurability();
             if (damage > 0) config.set(path + "." + "damage", damage);
+        }
+
+        if(lore) {
+            if (meta.hasLore()) {
+                List<String> lines = new ArrayList<>();
+                for (String line : meta.getLore()) lines.add(line.replace('§', '&'));
+                config.set(path + "." + "lore", lines);
+            }
         }
 
         if (XMaterial.supports(11)) config.set(path + "." + "unbreakable", meta.isUnbreakable());
@@ -145,7 +153,7 @@ public class XItemStack {
      * @since 1.0.0
      */
     @SuppressWarnings("deprecation")
-    public static ItemStack deserializeIcon(FileConfiguration config, String path) {
+    public static ItemStack deserializeIcon(FileConfiguration config, String path, boolean lore) {
         Objects.requireNonNull(config, "Cannot deserialize item to a null configuration section.");
 
         // Material
@@ -235,6 +243,49 @@ public class XItemStack {
             if (config.getBoolean(path + "." + "enchanted")) {
                 meta.addEnchant(Enchantment.DURABILITY, 1, false);
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+            }
+        }
+
+        if(lore) {
+            if(config.contains(path + "." + "lore")) {
+                List<String> lores = config.getStringList(path + "." + "lore");
+                if (!lores.isEmpty()) {
+                    List<String> translatedLore = new ArrayList<>();
+
+                    for (String line : lores) {
+                        if (line.isEmpty()) {
+                            translatedLore.add(" ");
+                            continue;
+                        }
+
+                        for (String singleLore : StringUtils.splitPreserveAllTokens(line, '\n')) {
+                            if (singleLore.isEmpty()) {
+                                translatedLore.add(" ");
+                                continue;
+                            }
+                            singleLore = ChatColor.translateAlternateColorCodes('&', singleLore);
+                            translatedLore.add(singleLore);
+                        }
+                    }
+
+                    meta.setLore(translatedLore);
+                } else {
+                    String line = config.getString(path + "." + "lore");
+                    if (!Strings.isNullOrEmpty(line)) {
+                        List<String> translatedLore = new ArrayList<>();
+
+                        for (String singleLore : StringUtils.splitPreserveAllTokens(line, '\n')) {
+                            if (singleLore.isEmpty()) {
+                                translatedLore.add(" ");
+                                continue;
+                            }
+                            singleLore = ChatColor.translateAlternateColorCodes('&', singleLore);
+                            translatedLore.add(singleLore);
+                        }
+
+                        meta.setLore(translatedLore);
+                    }
+                }
             }
         }
 

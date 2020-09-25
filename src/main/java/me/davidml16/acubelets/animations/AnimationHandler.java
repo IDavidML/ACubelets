@@ -138,7 +138,7 @@ public class AnimationHandler {
 
         AnimationSettings halloween = new AnimationSettings("halloween");
         halloween.setDisplayName(getDisplayName("animation_7_halloween"));
-        halloween.setDisplayItem(XMaterial.CARVED_PUMPKIN.parseItem());
+        halloween.setDisplayItem(XMaterial.PUMPKIN.parseItem());
         halloween.setAnimationNumber(7);
         halloween.setPreviewURL("https://www.youtube.com/watch?v=CF2gwwGl0E0");
         halloween.setOutlineParticles(getOutlineParticles("animation_7_halloween"));
