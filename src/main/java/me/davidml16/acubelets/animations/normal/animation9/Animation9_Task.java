@@ -195,7 +195,10 @@ public class Animation9_Task implements Animation {
 
 			Vector vector = randomLoc.toVector().subtract(loc.toVector()).normalize();
 			Vector direction = vector.multiply(1.5D + new Random().nextDouble() * 5.0D);
-			loc.getWorld().spawnParticle(Particle.ENCHANTMENT_TABLE,  loc, 0, direction.getX(), direction.getY(), direction.getZ(), 5.0D);
+
+			for(int j = 0; j < 3; j++)
+				UtilParticles.display(Particles.ENCHANTMENT_TABLE, direction, loc, 5);
+
 		}
 	}
 	

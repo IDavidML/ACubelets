@@ -72,9 +72,10 @@ public class Animation10_Task implements Animation {
 			if(time > 0 && time < 70) armorStand.teleport(armorStandLocation);
 
 			if(time == 50) {
+				Location eye = armorStand.getEyeLocation().add(0.0D, 0.4D, 0.0D);
 				for (Location location2 : LocationUtils.getCircle(armorStand.getLocation().clone().add(0, 0.75,0), 0.25D, 50)) {
 					Vector direction = location2.toVector().subtract(armorStand.getLocation().clone().add(0, 0.75,0).toVector()).normalize();
-					armorStand.getWorld().spawnParticle(Particle.CLOUD, armorStand.getEyeLocation().add(0.0D, 0.4D, 0.0D), 0, direction.getX(), direction.getY(), direction.getZ(), 0.3D);
+					UtilParticles.display(Particles.CLOUD, direction, eye, 0.3F);
 				}
 				Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.FIREWORK_BLAST, 0.5f, 0);
 			} else if(time == 70) {

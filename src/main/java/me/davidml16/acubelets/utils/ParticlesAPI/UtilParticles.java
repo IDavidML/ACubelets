@@ -84,6 +84,10 @@ public class UtilParticles {
         effect.display((float) x, (float) y, (float) z, 0f, amount, location, 128);
     }
 
+    public static void display(Particles effect, Vector direction, Location location, float speed) {
+        effect.display(direction, speed, location, 128);
+    }
+
     public static void display(Particles effect, int red, int green, int blue, Location location, int amount) {
         for (int i = 0; i < amount; i++)
             effect.display(new Particles.OrdinaryColor(red, green, blue), location, DEF_RADIUS);
