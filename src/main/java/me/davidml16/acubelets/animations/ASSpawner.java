@@ -64,6 +64,28 @@ public class ASSpawner {
         return armorStand;
     }
 
+    public static ArmorStand spawn(Main main, CubeletBox box, ItemStack head, boolean opposite, boolean small, Location loc) {
+        loc.setYaw(getRotation(box, opposite).value);
+
+        ArmorStand armorStand = box.getLocation().getWorld().spawn(loc, ArmorStand.class);
+
+        NBTEditor.set( armorStand, ( byte ) 1, "Silent" );
+        if(XMaterial.supports(10)) armorStand.setSilent(true);
+
+        armorStand.setVisible(false);
+        armorStand.setGravity(false);
+        armorStand.setHelmet(head);
+        armorStand.setSmall(small);
+        armorStand.setMarker(false);
+        armorStand.setRemoveWhenFarAway(false);
+        armorStand.setCustomNameVisible(false);
+        armorStand.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
+
+        armorStand.teleport(loc);
+
+        return armorStand;
+    }
+
     public static ArmorStand spawn(Main main, Location loc, ItemStack itemStack, boolean opposite, boolean gravity) {
         ArmorStand armorStand = loc.getWorld().spawn(loc, ArmorStand.class);
 

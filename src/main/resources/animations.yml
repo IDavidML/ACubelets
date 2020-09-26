@@ -61,3 +61,8 @@ animations:
     DisplayName: 'Animation 10'
     OutlineParticles: true
     FloorParticles: true
+
+  animation_11_galaxy:
+    DisplayName: 'Animation 11 (Galaxy)'
+    OutlineParticles: true
+    FloorParticles: true

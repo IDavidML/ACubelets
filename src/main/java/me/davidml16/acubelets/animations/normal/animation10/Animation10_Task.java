@@ -36,7 +36,6 @@ public class Animation10_Task implements Animation {
 	private ArmorStand armorStand;
 	private CubeletBox cubeletBox;
 	private CubeletType cubeletType;
-	private Animation10_Music music;
 	private Animation10_Spiral spiral;
 	private List<Color> colors;
 
@@ -135,9 +134,6 @@ public class Animation10_Task implements Animation {
 		armorStandLocation = armorStand.getLocation();
 		Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.FIREWORK_LAUNCH, 0.5f, 0);
 
-		music = new Animation10_Music(box.getLocation());
-		music.runTaskTimer(main, 5L, 3L);
-
 		spiral = new Animation10_Spiral(armorStand);
 		spiral.runTaskTimer(main, 0L, 1L);
 
@@ -160,7 +156,6 @@ public class Animation10_Task implements Animation {
 	}
 	
 	public void stop() {
-		music.cancel();
 		spiral.cancel();
 
 		main.getAnimationHandler().getTasks().remove(this);

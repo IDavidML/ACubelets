@@ -9,6 +9,7 @@ import me.davidml16.acubelets.animations.normal.animation3.Animation3_Task;
 import me.davidml16.acubelets.animations.normal.animation4.Animation4_Task;
 import me.davidml16.acubelets.animations.normal.animation9.Animation9_Task;
 import me.davidml16.acubelets.animations.seasonal.easter.AnimationEaster_Task;
+import me.davidml16.acubelets.animations.seasonal.galaxy.AnimationGalaxy_Task;
 import me.davidml16.acubelets.animations.seasonal.halloween.AnimationHalloween_Task;
 import me.davidml16.acubelets.animations.seasonal.summer.AnimationSummer_Task;
 import me.davidml16.acubelets.animations.seasonal.xmas.AnimationXmas_Task;
@@ -170,11 +171,21 @@ public class AnimationHandler {
         animation10.setDisplayName(getDisplayName("animation_10"));
         animation10.setDisplayItem(XMaterial.FIRE_CHARGE.parseItem());
         animation10.setAnimationNumber(10);
-        animation10.setPreviewURL("");
+        animation10.setPreviewURL("https://www.youtube.com/watch?v=uBwLCUTiisw");
         animation10.setOutlineParticles(getOutlineParticles("animation_10"));
         animation10.setFloorParticles(getFloorParticles("animation_10"));
         animation10.setNeedPermission(true);
         this.animations.put("animation10", animation10);
+
+        AnimationSettings galaxy = new AnimationSettings("galaxy");
+        galaxy.setDisplayName(getDisplayName("animation_11_galaxy"));
+        galaxy.setDisplayItem(XMaterial.ENDER_EYE.parseItem());
+        galaxy.setAnimationNumber(11);
+        galaxy.setPreviewURL("https://www.youtube.com/watch?v=Xv0ReDWH3y0");
+        galaxy.setOutlineParticles(getOutlineParticles("animation_11_galaxy"));
+        galaxy.setFloorParticles(getFloorParticles("animation_11_galaxy"));
+        galaxy.setNeedPermission(true);
+        this.animations.put("galaxy", galaxy);
 
     }
 
@@ -204,6 +215,8 @@ public class AnimationHandler {
                 return new Animation9_Task(main, getAnimationSetting(animation));
             case "animation10":
                 return new Animation10_Task(main, getAnimationSetting(animation));
+            case "galaxy":
+                return new AnimationGalaxy_Task(main, getAnimationSetting(animation));
             default:
                 return new Animation2_Task(main, getAnimationSetting(animation));
         }
