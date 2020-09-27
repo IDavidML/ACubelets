@@ -92,8 +92,11 @@ public class AnimationGalaxy_Task implements Animation {
 				Objects.requireNonNull(armorStandLocation).add(0, 0.05, 0);
 				Objects.requireNonNull(armorStand).setHeadPose(armorStand.getHeadPose().add(0, 0.08, 0));
 			} else {
-				if(armorStand != null)
+				if(armorStand != null) {
 					Objects.requireNonNull(armorStand).setHeadPose(armorStand.getHeadPose().add(0, 0.05, 0));
+					if(time > 40)
+						UtilParticles.display(Particles.FLAME, 0.25F, 0.25F, 0.25F, armorStand.getLocation().clone().add(0, 1.75, 0), 1);
+				}
 			}
 
 			if(time < 160)
@@ -160,7 +163,7 @@ public class AnimationGalaxy_Task implements Animation {
 
 			if (time == 160) {
 				Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.IRONGOLEM_DEATH, 0.5f, 0);
-				UtilParticles.display(Particles.EXPLOSION_LARGE, armorStand.getLocation().clone().add(0, 0.5, 0), 2);
+				UtilParticles.display(Particles.EXPLOSION_LARGE, armorStand.getLocation().clone().add(0, 1.25, 0), 2);
 
 				armorStand.setGravity(true);
 				Method getHandle = null;
