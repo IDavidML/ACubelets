@@ -331,7 +331,9 @@ public class SQLite implements Database {
         });
     }
 
-    public void saveProfileAsync(Profile profile) {
+    public void saveProfileAsync(final Profile profile) {
+
+        if(profile == null) return;
 
         String name = Bukkit.getPlayer(profile.getUuid()).getName();
 
@@ -359,8 +361,12 @@ public class SQLite implements Database {
         });
     }
 
-    public void saveProfileSync(Profile profile) {
+    public void saveProfileSync(final Profile profile) {
+
+        if(profile == null) return;
+
         String name = Bukkit.getPlayer(profile.getUuid()).getName();
+
         PreparedStatement ps = null;
         try {
             ps = connection.prepareStatement("UPDATE ac_players SET `NAME` = ?, `LOOT_POINTS` = ?, `ORDER_BY` = ?, `ANIMATION` = ? WHERE `UUID` = ?");

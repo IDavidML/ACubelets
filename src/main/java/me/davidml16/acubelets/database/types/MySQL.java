@@ -424,7 +424,9 @@ public class MySQL implements Database {
         });
     }
 
-    public void saveProfileAsync(Profile profile) {
+    public void saveProfileAsync(final Profile profile) {
+
+        if(profile == null) return;
 
         String name = Bukkit.getPlayer(profile.getUuid()).getName();
 
@@ -461,8 +463,12 @@ public class MySQL implements Database {
         });
     }
 
-    public void saveProfileSync(Profile profile) {
+    public void saveProfileSync(final Profile profile) {
+
+        if(profile == null) return;
+
         String name = Bukkit.getPlayer(profile.getUuid()).getName();
+
         PreparedStatement ps = null;
         Connection connection = null;
         try {

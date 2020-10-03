@@ -13,6 +13,7 @@ import me.davidml16.acubelets.objects.CubeletOpener;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.RepeatingTask;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.PlayerInventory;
 
@@ -27,7 +28,7 @@ public class HologramHandler {
     private ColorAnimation colorAnimation;
     private String actualColor;
 
-    private static final double LINE_HEIGHT = 0.34;
+    private static final double LINE_HEIGHT = 0.36;
     private static final double LINE_HEIGHT_REWARD = 0.32;
 
     public HologramHandler(Main main) {
@@ -41,7 +42,6 @@ public class HologramHandler {
             loadHolograms(p);
         }
     }
-
 
     public void loadHolograms(Player p) {
         for(CubeletBox box : main.getCubeletBoxHandler().getBoxes().values()) {
