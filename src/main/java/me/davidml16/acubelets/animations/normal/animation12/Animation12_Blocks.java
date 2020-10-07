@@ -5,6 +5,7 @@ import me.davidml16.acubelets.utils.MultiVersion.AB_12;
 import me.davidml16.acubelets.utils.MultiVersion.AB_13;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -42,7 +43,10 @@ public class Animation12_Blocks extends BukkitRunnable {
         if(step == 0) {
             cancel();
         } else if(step == 1) {
-            this.location.clone().add(0, 0, 0).getBlock().setType(XMaterial.CAULDRON.parseMaterial());
+            if(XMaterial.supports(13))
+                this.location.clone().add(0, 0, 0).getBlock().setType(XMaterial.CAULDRON.parseMaterial());
+            else
+                this.location.clone().add(0, 0, 0).getBlock().setType(Material.matchMaterial("CAULDRON"));
         } else if(step == 2) {
             placeSprucePlanks(this.location.clone().add(0, -1, 0));
             placeSprucePlanks(this.location.clone().add(1, -1, 0));
