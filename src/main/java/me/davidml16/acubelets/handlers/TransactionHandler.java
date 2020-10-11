@@ -74,6 +74,8 @@ public class TransactionHandler {
 
                     if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(target);
                     if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(target);
+                    if (main.getGiftGUI().getOpened().containsKey(uuid)) main.getGiftGUI().reloadGui(target);
+                    if (main.getGiftAmountGUI().getOpened().containsKey(uuid)) main.getGiftAmountGUI().reloadGui(target);
                     main.getHologramHandler().reloadHolograms(target);
 
                     Bukkit.getPluginManager().callEvent(new CubeletReceivedEvent(target, main.getCubeletTypesHandler().getTypeBydId(type), amount));
@@ -115,6 +117,7 @@ public class TransactionHandler {
 
                     if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(target);
                     if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(target);
+                    if (main.getGiftGUI().getOpened().containsKey(uuid)) main.getGiftGUI().reloadGui(target);
                     main.getHologramHandler().reloadHolograms(target);
 
                     main.getDatabaseHandler().removeCubelets(uuid, cubelets);
@@ -123,6 +126,19 @@ public class TransactionHandler {
                     main.getDatabaseHandler().removeCubelet(uuid, type, amount);
                 }
             }
+        }
+    }
+
+    public void transferCubelets(UUID player, UUID target, CubeletType type, int amount) {
+        if (main.getCubeletTypesHandler().getTypes().containsKey(type.getId())) {
+
+            try {
+                removeCubelet(player, type.getId(), amount);
+                giveCubelet(target, type.getId(), amount);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 
@@ -142,6 +158,7 @@ public class TransactionHandler {
             main.getPlayerDataHandler().getData(uuid).setLootPoints(main.getPlayerDataHandler().getData(uuid).getLootPoints() + amount);
             if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(Bukkit.getPlayer(uuid));
             if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(Bukkit.getPlayer(uuid));
+            if (main.getGiftGUI().getOpened().containsKey(uuid)) main.getGiftGUI().reloadGui(Bukkit.getPlayer(uuid));
         } else {
             main.getDatabaseHandler().getPlayerLootPoints(uuid, done -> {
                 try {
@@ -174,6 +191,7 @@ public class TransactionHandler {
 
             if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(Bukkit.getPlayer(uuid));
             if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(Bukkit.getPlayer(uuid));
+            if (main.getGiftGUI().getOpened().containsKey(uuid)) main.getGiftGUI().reloadGui(Bukkit.getPlayer(uuid));
         } else {
             main.getDatabaseHandler().getPlayerLootPoints(uuid, done -> {
                 if((done - amount) < 0) {
@@ -212,6 +230,7 @@ public class TransactionHandler {
             main.getPlayerDataHandler().getData(uuid).setLootPoints(amount);
             if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(Bukkit.getPlayer(uuid));
             if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(Bukkit.getPlayer(uuid));
+            if (main.getGiftGUI().getOpened().containsKey(uuid)) main.getGiftGUI().reloadGui(Bukkit.getPlayer(uuid));
         } else {
             main.getDatabaseHandler().setPlayerLootPoints(uuid, amount);
         }

@@ -5,6 +5,7 @@ import me.davidml16.acubelets.api.CubeletReceivedEvent;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Profile;
+import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.TimeAPI.TimeAPI;
@@ -199,7 +200,12 @@ public class CubeletTypesHandler {
                                 break;
                         }
                     } else {
-                        cubeletType.setIcon(XItemStack.deserializeIcon(config, "type.icon.texture", false));
+                        try {
+                            cubeletType.setIcon(new ItemBuilder(XItemStack.itemStackFromBase64(config.getString("type.icon.texture"))).setLore("").toItemStack());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
                     }
 
                     List<String> loreAvailable = new ArrayList<>();

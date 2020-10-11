@@ -1,0 +1,43 @@
+#
+# This is the gui layout file.
+# You can change any messages that are in this file
+#
+# If you want to reset a message back to the default,
+# delete the entire line the message is on and restart the server.
+#
+# IMPORTANT: Slots numbers between 1-9, if not, the plugin will crash
+#
+
+Layout:
+
+  # GUI Title
+  Title: 'Gift (%cubelet_type%) x%amount%'
+
+  # GUI items
+  Items:
+
+    # Cubelet item
+    Cubelet:
+      Name: '&a%cubelet_name%'
+      Lore:
+        - '&5Receiver: &a%receiver%'
+        - '&5Amount to gift: &a%gift_amount%'
+        - ''
+        - '&6Click to send this cubelets!'
+
+    # Add 1 to amount
+    Add:
+      Name: '&6Add 1'
+
+    # Substract 1 to amount
+    Substract:
+      Name: '&6Substract 1'
+
+    # Back item
+    Back:
+      Name: '&9Back'
+      Material: 'BOOK'
+      Slot: 5
+      Lore:
+        - '&7Go back to the previous'
+        - '&7menu.'

@@ -91,7 +91,7 @@ public class RewardsPreview_GUI implements Listener {
                     lore.add(Utils.translate(line.replaceAll("%reward_rarity%", reward.getRarity().getName())));
                 }
 
-                gui.addItem(new ItemBuilder(reward.getIcon())
+                gui.addItem(new ItemBuilder(reward.getIcon().clone())
                     .setName(Utils.translate(guiLayout.getMessage("Items.Reward.Name").replaceAll("%reward_name%", reward.getName())))
                     .setLore(lore)
                     .hideAttributes()

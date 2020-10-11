@@ -24,6 +24,7 @@ public class CoreCommand extends Command {
     private final ExecuteSetup executeSetup = new ExecuteSetup(main);
     private final ExecuteInfo executeInfo = new ExecuteInfo(main);
     private final ExecuteClear executeClear = new ExecuteClear(main);
+    private final ExecuteGift executeGift = new ExecuteGift(main);
 
     public CoreCommand(String name) {
         super(name);
@@ -65,6 +66,8 @@ public class CoreCommand extends Command {
                 return executeInfo.executeCommand(sender, label, args);
             case "clear":
                 return executeClear.executeCommand(sender, label, args);
+            case "gift":
+                return executeGift.executeCommand(sender, label, args);
         }
 
         sender.sendMessage("");
@@ -74,21 +77,42 @@ public class CoreCommand extends Command {
     }
 
     private boolean sendCommandHelp(CommandSender sender, String label) {
+
         if(sender instanceof Player) {
-            if (!main.playerHasPermission((Player) sender, "acubelets.admin")) return false;
+
+            if(main.isGiftCubelets()) {
+                sender.sendMessage("");
+                sender.sendMessage(Utils.translate("&7 - &a/" + label + " gift [player]"));
+            }
+
+            if (main.playerHasPermission((Player) sender, "acubelets.admin")) {
+                sender.sendMessage("");
+                sender.sendMessage(Utils.translate("&7 - &a/" + label + " [give/remove] [player] [typeID] [amount]"));
+                sender.sendMessage(Utils.translate("&7 - &a/" + label + " [info/clear] [player]"));
+                sender.sendMessage("");
+                sender.sendMessage(Utils.translate("&7 - &a/" + label + " machine [create/remove/edit]"));
+                sender.sendMessage("");
+                sender.sendMessage(Utils.translate("&7 - &a/" + label + " type"));
+                sender.sendMessage(Utils.translate("&7 - &a/" + label + " setup [typeID]"));
+                sender.sendMessage("");
+                sender.sendMessage(Utils.translate("&7 - &a/" + label + " reload"));
+                sender.sendMessage("");
+            }
+
+        } else {
+            sender.sendMessage("");
+            sender.sendMessage(Utils.translate("&7 - &a/" + label + " [give/remove] [player] [typeID] [amount]"));
+            sender.sendMessage(Utils.translate("&7 - &a/" + label + " [info/clear] [player]"));
+            sender.sendMessage("");
+            sender.sendMessage(Utils.translate("&7 - &a/" + label + " machine [create/remove/edit]"));
+            sender.sendMessage("");
+            sender.sendMessage(Utils.translate("&7 - &a/" + label + " type"));
+            sender.sendMessage(Utils.translate("&7 - &a/" + label + " setup [typeID]"));
+            sender.sendMessage("");
+            sender.sendMessage(Utils.translate("&7 - &a/" + label + " reload"));
+            sender.sendMessage("");
         }
 
-        sender.sendMessage("");
-        sender.sendMessage(Utils.translate("&7 - &a/" + label + " [give/remove] [player] [typeID] [amount]"));
-        sender.sendMessage(Utils.translate("&7 - &a/" + label + " [info/clear] [player]"));
-        sender.sendMessage("");
-        sender.sendMessage(Utils.translate("&7 - &a/" + label + " machine [create/remove/edit]"));
-        sender.sendMessage("");
-        sender.sendMessage(Utils.translate("&7 - &a/" + label + " type"));
-        sender.sendMessage(Utils.translate("&7 - &a/" + label + " setup [typeID]"));
-        sender.sendMessage("");
-        sender.sendMessage(Utils.translate("&7 - &a/" + label + " reload"));
-        sender.sendMessage("");
         return true;
     }
 
@@ -104,6 +128,8 @@ public class CoreCommand extends Command {
         List<String> auto = new ArrayList<String>();
 
         if (args.length == 1) {
+            if(main.isGiftCubelets())
+                list.add("gift");
             if (main.playerHasPermission(p, "acubelets.admin")) {
                 list.add("help");
                 list.add("give");
@@ -183,6 +209,13 @@ public class CoreCommand extends Command {
                         list.addAll(main.getTemplates());
                         list.add("*");
                     }
+                }
+            }
+        } else if (args[0].equalsIgnoreCase("gift")) {
+            if (args.length == 2) {
+                for (Player target : main.getServer().getOnlinePlayers()) {
+                    if(!target.getName().equalsIgnoreCase(p.getName()))
+                        list.add(target.getName());
                 }
             }
         }

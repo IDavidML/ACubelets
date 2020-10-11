@@ -98,6 +98,12 @@ public class LayoutHandler {
 
 		createLayoutFile("animations");
 		loadLayout("animations");
+
+		createLayoutFile("gift");
+		loadLayout("gift");
+
+		createLayoutFile("giftamount");
+		loadLayout("giftamount");
 	}
 
 	public void loadLayout(String layout) {

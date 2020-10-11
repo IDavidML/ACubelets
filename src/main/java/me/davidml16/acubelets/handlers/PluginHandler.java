@@ -55,6 +55,10 @@ public class PluginHandler {
 
         main.setLiveGuiUpdates(main.getConfig().getBoolean("LiveGuiUpdates"));
 
+        main.setSerializeBase64(main.getConfig().getBoolean("SerializeBase64"));
+
+        main.setGiftCubelets(main.getConfig().getBoolean("GiftCubeletsCommand"));
+
         main.setAnimationsByPlayer(main.getConfig().getBoolean("AnimationsByPlayer"));
 
         main.getLanguageHandler().loadLanguage("en");

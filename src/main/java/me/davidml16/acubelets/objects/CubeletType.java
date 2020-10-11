@@ -198,11 +198,17 @@ public class CubeletType {
                     List<Item> items = ((ItemReward) reward).getItems();
                     config.set("type.rewards.reward_" + String.valueOf(i) + ".item", new ArrayList<>());
                     for (int j = 0; j < items.size(); j++) {
-                        XItemStack.serializeItem(items.get(j).getItemStack(), config, "type.rewards.reward_" + String.valueOf(i) + ".item.item_" + String.valueOf(j));
+                        if(!main.isSerializeBase64())
+                            XItemStack.serializeItem(items.get(j).getItemStack(), config, "type.rewards.reward_" + i + ".item.item_" + j);
+                        else
+                            config.set("type.rewards.reward_" + i + ".item.item_" + j, XItemStack.itemStackToBase64(items.get(j).getItemStack()));
                     }
                 }
 
-                XItemStack.serializeIcon(reward.getIcon(), config, "type.rewards.reward_" + String.valueOf(i) + ".icon", true);
+                if(!main.isSerializeBase64())
+                    XItemStack.serializeIcon(reward.getIcon(), config, "type.rewards.reward_" + i + ".icon", true);
+                else
+                    config.set("type.rewards.reward_" + i + ".icon", XItemStack.itemStackToBase64(reward.getIcon()));
             }
         }
 

@@ -89,6 +89,8 @@ public class Main extends JavaPlugin {
     private EditCrafting_Crafts_GUI editCraftingCraftsGUI;
     private EditCrafting_Ingredients_GUI editCraftingIngredientsGUI;
     private EditRewardItems_GUI editRewardItemsGUI;
+    private Gift_GUI giftGUI;
+    private GiftCubelet_GUI giftCubeletGUI;
 
     private int playerCount;
 
@@ -161,6 +163,7 @@ public class Main extends JavaPlugin {
         cubeletRarityHandler = new CubeletRarityHandler(this);
         cubeletRarityHandler.loadRarities();
 
+        settings.put("SerializeBase64", getConfig().getBoolean("SerializeBase64"));
         cubeletRewardHandler = new CubeletRewardHandler(this);
         cubeletRewardHandler.loadRewards();
 
@@ -229,6 +232,10 @@ public class Main extends JavaPlugin {
         settings.put("RewardsPreview", getConfig().getBoolean("RewardsPreview.Enabled"));
         rewardsPreviewGUI = new RewardsPreview_GUI(this);
         cubeletsGUI.setClickType(getConfig().getString("RewardsPreview.ClickType"));
+
+        settings.put("GiftCubeletsCommand", getConfig().getBoolean("GiftCubeletsCommand"));
+        giftGUI = new Gift_GUI(this);
+        giftCubeletGUI = new GiftCubelet_GUI(this);
 
         typeListGUI = new TypeList_GUI(this);
 
@@ -351,6 +358,10 @@ public class Main extends JavaPlugin {
 
     public Crafting_GUI getCraftingGUI() { return craftingGUI; }
 
+    public Gift_GUI getGiftGUI() { return giftGUI; }
+
+    public GiftCubelet_GUI getGiftAmountGUI() { return giftCubeletGUI; }
+
     public CraftingConfirmation_GUI getCraftingConfirmationGUI() { return craftingConfirmationGUI; }
 
     public RewardsPreview_GUI getRewardsPreviewGUI() { return rewardsPreviewGUI; }
@@ -414,6 +425,14 @@ public class Main extends JavaPlugin {
     public boolean isAnimationByPlayer() { return settings.get("AnimationsByPlayer"); }
 
     public void setAnimationsByPlayer(boolean value) { settings.put("AnimationsByPlayer", value); }
+
+    public boolean isSerializeBase64() { return settings.get("SerializeBase64"); }
+
+    public void setSerializeBase64(boolean value) { settings.put("SerializeBase64", value); }
+
+    public boolean isGiftCubelets() { return settings.get("GiftCubeletsCommand"); }
+
+    public void setGiftCubelets(boolean value) { settings.put("GiftCubeletsCommand", value); }
 
     public String getNoCubeletsCommand() {
         return noCubeletsCommand;

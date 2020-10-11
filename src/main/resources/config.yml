@@ -55,6 +55,14 @@ RewardAutoSorting: true
 LiveGuiUpdates: true
 
 
+# Enable/disable if you want to serialize/deserialize rewards with base64 format.
+SerializeBase64: false
+
+
+# Enable/disable if you want to gift cubelets by command
+GiftCubeletsCommand: false
+
+
 # Enable/disable cubelet rewards preview
 # Available click types: LEFT, RIGHT, MIDDLE, SHIFT_LEFT or SHIFT_RIGHT
 RewardsPreview:

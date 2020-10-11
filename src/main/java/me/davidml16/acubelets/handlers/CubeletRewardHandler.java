@@ -3,16 +3,15 @@ package me.davidml16.acubelets.handlers;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.rewards.*;
 import me.davidml16.acubelets.objects.*;
-import me.davidml16.acubelets.utils.NBTEditor;
-import me.davidml16.acubelets.utils.Sounds;
-import me.davidml16.acubelets.utils.Utils;
-import me.davidml16.acubelets.utils.RepeatingTask;
+import me.davidml16.acubelets.utils.*;
 import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -44,7 +43,18 @@ public class CubeletRewardHandler {
 						if (cubeletType.getRarities().containsKey(rarity)) {
 
 							String name = config.getString("type.rewards." + rewardid + ".name");
-							ItemStack rewardIcon = XItemStack.deserializeIcon(config, "type.rewards." + rewardid + ".icon", true);
+
+							ItemStack rewardIcon = null;
+							if (config.get("type.rewards." + rewardid + ".icon") instanceof MemorySection) {
+								rewardIcon = XItemStack.deserializeIcon(config, "type.rewards." + rewardid + ".icon", true);
+							} else {
+								try {
+									rewardIcon = XItemStack.itemStackFromBase64(config.getString("type.rewards." + rewardid + ".icon"));
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+							}
+
 							rewardIcon = NBTEditor.set(rewardIcon, "reward_" + iterator, "rewardID");
 
 							List<Reward> rewardsRarity;
@@ -77,7 +87,15 @@ public class CubeletRewardHandler {
 								if (config.contains("type.rewards." + rewardid + ".item")) {
 									if (config.getConfigurationSection("type.rewards." + rewardid + ".item") != null) {
 										for (String itemid : config.getConfigurationSection("type.rewards." + rewardid + ".item").getKeys(false)) {
-											items.add(new Item("item_" + iterator2, XItemStack.deserializeItem(config, "type.rewards." + rewardid + ".item." + itemid)));
+											if (config.get("type.rewards." + rewardid + ".item." + itemid) instanceof MemorySection) {
+												items.add(new Item("item_" + iterator2, XItemStack.deserializeItem(config, "type.rewards." + rewardid + ".item." + itemid)));
+											} else {
+												try {
+													items.add(new Item("item_" + iterator2, XItemStack.itemStackFromBase64(config.getString("type.rewards." + rewardid + ".item." + itemid))));
+												} catch (IOException e) {
+													e.printStackTrace();
+												}
+											}
 											iterator2++;
 										}
 									}
