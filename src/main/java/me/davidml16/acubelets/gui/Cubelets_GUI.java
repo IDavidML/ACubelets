@@ -93,7 +93,8 @@ public class Cubelets_GUI implements Listener {
                     .setName(guiLayout.getMessage("Items.PreviousPage.Name"))
                     .toItemStack();
             item = NBTEditor.set(item, "previous", "action");
-            gui.setItem(((neededSize - 10) + guiLayout.getSlot("PreviousPage")), item);
+            if(guiLayout.getSlot("PreviousPage") >= 0)
+                gui.setItem(((neededSize - 10) + guiLayout.getSlot("PreviousPage")), item);
         }
 
         if (main.getPlayerDataHandler().getData(p.getUniqueId()).getCubelets().size() > (page + 1) * pageSize) {
@@ -102,15 +103,9 @@ public class Cubelets_GUI implements Listener {
                     .setName(guiLayout.getMessage("Items.NextPage.Name"))
                     .toItemStack();
             item = NBTEditor.set(item, "next", "action");
-            gui.setItem((neededSize - 10) + guiLayout.getSlot("NextPage"), item);
+            if(guiLayout.getSlot("NextPage") >= 0)
+                gui.setItem((neededSize - 10) + guiLayout.getSlot("NextPage"), item);
         }
-
-        ItemStack close = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Close.Material")).get().parseItem())
-                .setName(guiLayout.getMessage("Items.Close.Name"))
-                .setLore(guiLayout.getMessageList("Items.Close.Lore"))
-                .toItemStack();
-        close = NBTEditor.set(close, "close", "action");
-        gui.setItem((neededSize - 10) + guiLayout.getSlot("Close"), close);
 
         if(main.isCraftingEnabled()) {
             ItemStack crafting = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Crafting.Material")).get().parseItem())
@@ -118,7 +113,8 @@ public class Cubelets_GUI implements Listener {
                     .setLore(guiLayout.getMessageList("Items.Crafting.Lore"))
                     .toItemStack();
             crafting = NBTEditor.set(crafting, "crafting", "action");
-            gui.setItem((neededSize - 10) + guiLayout.getSlot("Crafting"), crafting);
+            if(guiLayout.getSlot("Crafting") >= 0)
+                gui.setItem((neededSize - 10) + guiLayout.getSlot("Crafting"), crafting);
         }
 
         if(main.isAnimationByPlayer()) {
@@ -127,7 +123,26 @@ public class Cubelets_GUI implements Listener {
                     .setLore(guiLayout.getMessageList("Items.Animations.Lore"))
                     .toItemStack();
             animation = NBTEditor.set(animation, "animations", "action");
-            gui.setItem((neededSize - 10) + guiLayout.getSlot("Animations"), animation);
+            if(guiLayout.getSlot("Animations") >= 0)
+                gui.setItem((neededSize - 10) + guiLayout.getSlot("Animations"), animation);
+        } else {
+            ItemStack close = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Close.Material")).get().parseItem())
+                    .setName(guiLayout.getMessage("Items.Close.Name"))
+                    .setLore(guiLayout.getMessageList("Items.Close.Lore"))
+                    .toItemStack();
+            close = NBTEditor.set(close, "close", "action");
+            if(guiLayout.getSlot("Close") >= 0)
+                gui.setItem((neededSize - 10) + guiLayout.getSlot("Close"), close);
+        }
+
+        if(main.isGiftCubelets()) {
+            ItemStack gift = new ItemBuilder(SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmNlZjlhYTE0ZTg4NDc3M2VhYzEzNGE0ZWU4OTcyMDYzZjQ2NmRlNjc4MzYzY2Y3YjFhMjFhODViNyJ9fX0="))
+                    .setName(guiLayout.getMessage("Items.Gift.Name"))
+                    .setLore(guiLayout.getMessageList("Items.Gift.Lore"))
+                    .toItemStack();
+            gift = NBTEditor.set(gift, "gift", "action");
+            if(guiLayout.getSlot("Gift") >= 0)
+                gui.setItem((neededSize - 10) + guiLayout.getSlot("Gift"), gift);
         }
 
         for (int i = 0; i <= (neededSize-10); i++)
@@ -301,6 +316,9 @@ public class Cubelets_GUI implements Listener {
                         break;
                     case "animations":
                         main.getPlayerAnimationGUI().open(p);
+                        break;
+                    case "gift":
+                        main.getGiftPlayerGUI().open(p);
                         break;
                 }
 

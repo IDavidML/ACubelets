@@ -78,11 +78,20 @@ Layout:
     Animations:
       Name: '&a&lAnimations'
       Material: 'REDSTONE'
-      Slot: 5
+      Slot: 6
       Lore:
         - '&7Select your Cubelet'
         - '&7opening animation.'
         - '&6Click to open.'
+
+    # Item to gift cubelets, only shown if gift command is enabled
+    Gift:
+      Name: '&b&lGift Cubelet'
+      Slot: 4
+      Lore:
+        - '&7Gift cubelet to'
+        - '&7searched player.'
+        - '&6Click to search player.'
 
     # Next page item
     NextPage:

@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.gui;
+package me.davidml16.acubelets.gui.gifts;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.*;
@@ -33,22 +33,24 @@ public class GiftCubelet_GUI implements Listener {
     }
 
     public void reloadGui(Player player) {
-        if(opened.containsKey(player.getUniqueId()))
-            openPage(player, opened.get(player.getUniqueId()).getTarget(), opened.get(player.getUniqueId()).getCubeletType(), opened.get(player.getUniqueId()).getCubeletAmount());
+        if(opened.containsKey(player.getUniqueId())){
+            GiftAmountGuiSession session = opened.get(player.getUniqueId());
+            openPage(player, session.getTarget(), session.getTargetName(), session.getCubeletType(), session.getCubeletAmount(), session.isOpenedByCommand());
+        }
     }
 
-    private void openPage(Player player, UUID target, CubeletType cubeletType, int amount) {
+    private void openPage(Player player, UUID target, String targetName, CubeletType cubeletType, int amount, boolean openedByCommand) {
         GUILayout guiLayout = main.getLayoutHandler().getLayout("giftamount");
 
         Profile profile = main.getPlayerDataHandler().getData(player);
 
-        GiftAmountGuiSession giftAmountGuiSession = new GiftAmountGuiSession(player.getUniqueId(), target, cubeletType, amount);
+        GiftAmountGuiSession giftAmountGuiSession = new GiftAmountGuiSession(player.getUniqueId(), target, targetName, cubeletType, amount, openedByCommand);
 
         if(giftAmountGuiSession.getAvailable() == 0) {
-            main.getGiftGUI().open(player, target);
+            main.getGiftGUI().open(player, target, targetName, openedByCommand);
             return;
         }
-        if(amount > giftAmountGuiSession.getAvailable()) openPage(player, target, cubeletType, 1);
+        if(amount > giftAmountGuiSession.getAvailable()) openPage(player, target, targetName, cubeletType, 1, openedByCommand);
 
         Inventory gui = Bukkit.createInventory(null, 36, guiLayout.getMessage("Title")
                 .replaceAll("%cubelet_type%", Utils.removeColors(cubeletType.getName()))
@@ -103,11 +105,9 @@ public class GiftCubelet_GUI implements Listener {
         Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> opened.put(player.getUniqueId(), giftAmountGuiSession), 1L);
     }
 
-    public void open(Player p, UUID target, CubeletType cubeletType) {
+    public void open(Player p, UUID target, String targetName, CubeletType cubeletType, boolean openedByCommand) {
         p.updateInventory();
-        openPage(p, target, cubeletType, 1);
-
-        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
+        openPage(p, target, targetName, cubeletType, 1, openedByCommand);
     }
 
     @SuppressWarnings("deprecation")
@@ -132,17 +132,17 @@ public class GiftCubelet_GUI implements Listener {
                 case "send":
 
                     p.sendMessage(Utils.translate(main.getLanguageHandler().getMessage("Commands.Cubelets.Gift.Gifted")
-                            .replaceAll("%amount%", String.valueOf(opened.get(p.getUniqueId()).getCubeletAmount()))
-                            .replaceAll("%cubelet%", Utils.removeColors(opened.get(p.getUniqueId()).getCubeletType().getName()))
-                            .replaceAll("%player%", p.getName())
+                            .replaceAll("%amount%", String.valueOf(giftAmountGuiSession.getCubeletAmount()))
+                            .replaceAll("%cubelet%", Utils.removeColors(giftAmountGuiSession.getCubeletType().getName()))
+                            .replaceAll("%player%", giftAmountGuiSession.getTargetName())
                     ));
 
                     Player target = Bukkit.getPlayer(opened.get(p.getUniqueId()).getTarget());
                     if(target != null) {
                         target.sendMessage(Utils.translate(main.getLanguageHandler().getMessage("Commands.Cubelets.Gift.Received")
-                                .replaceAll("%amount%", String.valueOf(opened.get(p.getUniqueId()).getCubeletAmount()))
-                                .replaceAll("%cubelet%", Utils.removeColors(opened.get(p.getUniqueId()).getCubeletType().getName()))
-                                .replaceAll("%player%", p.getName())
+                                .replaceAll("%amount%", String.valueOf(giftAmountGuiSession.getCubeletAmount()))
+                                .replaceAll("%cubelet%", Utils.removeColors(giftAmountGuiSession.getCubeletType().getName()))
+                                .replaceAll("%player%", giftAmountGuiSession.getTargetName())
                         ));
                     }
 
@@ -159,19 +159,19 @@ public class GiftCubelet_GUI implements Listener {
                 case "add":
                     if(giftAmountGuiSession.getCubeletAmount() < giftAmountGuiSession.getAvailable()) {
                         giftAmountGuiSession.setCubeletAmount(giftAmountGuiSession.getCubeletAmount() + 1);
-                        openPage(p, opened.get(p.getUniqueId()).getTarget(), opened.get(p.getUniqueId()).getCubeletType(), giftAmountGuiSession.getCubeletAmount());
+                        openPage(p, giftAmountGuiSession.getTarget(), giftAmountGuiSession.getTargetName(), giftAmountGuiSession.getCubeletType(), giftAmountGuiSession.getCubeletAmount(), giftAmountGuiSession.isOpenedByCommand());
                         Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
                     }
                     break;
                 case "substract":
                     if(giftAmountGuiSession.getCubeletAmount() > 1) {
                         giftAmountGuiSession.setCubeletAmount(giftAmountGuiSession.getCubeletAmount() - 1);
-                        openPage(p, opened.get(p.getUniqueId()).getTarget(), opened.get(p.getUniqueId()).getCubeletType(), giftAmountGuiSession.getCubeletAmount());
+                        openPage(p, giftAmountGuiSession.getTarget(), giftAmountGuiSession.getTargetName(), giftAmountGuiSession.getCubeletType(), giftAmountGuiSession.getCubeletAmount(), giftAmountGuiSession.isOpenedByCommand());
                         Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
                     }
                     break;
                 case "back":
-                    main.getGiftGUI().open(p, opened.get(p.getUniqueId()).getTarget());
+                    main.getGiftGUI().open(p, giftAmountGuiSession.getTarget(), giftAmountGuiSession.getTargetName(), giftAmountGuiSession.isOpenedByCommand());
                     break;
             }
 

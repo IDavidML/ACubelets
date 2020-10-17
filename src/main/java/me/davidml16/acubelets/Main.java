@@ -15,6 +15,9 @@ import me.davidml16.acubelets.events.Event_Interact;
 import me.davidml16.acubelets.events.Event_JoinQuit;
 import me.davidml16.acubelets.gui.*;
 import me.davidml16.acubelets.gui.crafting.*;
+import me.davidml16.acubelets.gui.gifts.GiftCubelet_GUI;
+import me.davidml16.acubelets.gui.gifts.GiftPlayer_GUI;
+import me.davidml16.acubelets.gui.gifts.Gift_GUI;
 import me.davidml16.acubelets.gui.rewards.EditRewardItems_GUI;
 import me.davidml16.acubelets.gui.rewards.RewardsPreview_GUI;
 import me.davidml16.acubelets.gui.rewards.Rewards_GUI;
@@ -91,6 +94,7 @@ public class Main extends JavaPlugin {
     private EditRewardItems_GUI editRewardItemsGUI;
     private Gift_GUI giftGUI;
     private GiftCubelet_GUI giftCubeletGUI;
+    private GiftPlayer_GUI giftPlayerGUI;
 
     private int playerCount;
 
@@ -236,6 +240,7 @@ public class Main extends JavaPlugin {
         settings.put("GiftCubeletsCommand", getConfig().getBoolean("GiftCubeletsCommand"));
         giftGUI = new Gift_GUI(this);
         giftCubeletGUI = new GiftCubelet_GUI(this);
+        giftPlayerGUI = new GiftPlayer_GUI(this);
 
         typeListGUI = new TypeList_GUI(this);
 
@@ -361,6 +366,8 @@ public class Main extends JavaPlugin {
     public Gift_GUI getGiftGUI() { return giftGUI; }
 
     public GiftCubelet_GUI getGiftAmountGUI() { return giftCubeletGUI; }
+
+    public GiftPlayer_GUI getGiftPlayerGUI() { return giftPlayerGUI; }
 
     public CraftingConfirmation_GUI getCraftingConfirmationGUI() { return craftingConfirmationGUI; }
 

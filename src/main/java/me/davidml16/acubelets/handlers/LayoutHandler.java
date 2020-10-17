@@ -104,6 +104,9 @@ public class LayoutHandler {
 
 		createLayoutFile("giftamount");
 		loadLayout("giftamount");
+
+		createLayoutFile("giftplayer");
+		loadLayout("giftplayer");
 	}
 
 	public void loadLayout(String layout) {

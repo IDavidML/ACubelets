@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.gui;
+package me.davidml16.acubelets.gui.gifts;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.*;
@@ -29,7 +29,7 @@ public class Gift_GUI implements Listener {
     public Gift_GUI(Main main) {
         this.main = main;
         this.opened = new HashMap<>();
-        this.borders = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 37, 38, 40, 42, 43, 44);
+        this.borders = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35);
         this.main.getServer().getPluginManager().registerEvents(this, this.main);
     }
 
@@ -38,15 +38,17 @@ public class Gift_GUI implements Listener {
     }
 
     public void reloadGui(Player player) {
-        if(opened.containsKey(player.getUniqueId()))
-            openPage(player, opened.get(player.getUniqueId()).getTarget(), opened.get(player.getUniqueId()).getPage());
+        if(opened.containsKey(player.getUniqueId())) {
+            GiftGuiSession session = opened.get(player.getUniqueId());
+            openPage(player, session.getTarget(), session.getTargetName(), session.getPage(), session.isOpenedByCommand());
+        }
     }
 
-    private void openPage(Player player, UUID target, int page) {
+    private void openPage(Player player, UUID target, String targetName, int page, boolean openedByCommand) {
         List<CubeletType> cubeletTypes = getCubeletTypesAvailable(player);
 
         if(page > 0 && cubeletTypes.size() < (page * 14) + 1) {
-            openPage(player, target, page - 1);
+            openPage(player, target, targetName, page - 1, openedByCommand);
             return;
         }
 
@@ -75,12 +77,21 @@ public class Gift_GUI implements Listener {
             gui.setItem((45 - 10) + guiLayout.getSlot("NextPage"), item);
         }
 
-        ItemStack close = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Close.Material")).get().parseItem())
-                .setName(guiLayout.getMessage("Items.Close.Name"))
-                .setLore(guiLayout.getMessageList("Items.Close.Lore"))
-                .toItemStack();
-        close = NBTEditor.set(close, "close", "action");
-        gui.setItem((45 - 10) + guiLayout.getSlot("Close"), close);
+        if(openedByCommand) {
+            ItemStack close = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Close.Material")).get().parseItem())
+                    .setName(guiLayout.getMessage("Items.Close.Name"))
+                    .setLore(guiLayout.getMessageList("Items.Close.Lore"))
+                    .toItemStack();
+            close = NBTEditor.set(close, "close", "action");
+            gui.setItem((45 - 10) + guiLayout.getSlot("Close"), close);
+        } else {
+            ItemStack back = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Back.Material")).get().parseItem())
+                    .setName(guiLayout.getMessage("Items.Back.Name"))
+                    .setLore(guiLayout.getMessageList("Items.Back.Lore"))
+                    .toItemStack();
+            back = NBTEditor.set(back, "back", "action");
+            gui.setItem((45 - 10) + guiLayout.getSlot("Back"), back);
+        }
 
         for(int i : borders)
             if(gui.getItem(i) == null)
@@ -116,14 +127,12 @@ public class Gift_GUI implements Listener {
 
         player.openInventory(gui);
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> opened.put(player.getUniqueId(), new GiftGuiSession(player.getUniqueId(), target, page)), 1L);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> opened.put(player.getUniqueId(), new GiftGuiSession(player.getUniqueId(), target, targetName, page, openedByCommand)), 1L);
     }
 
-    public void open(Player p, UUID target) {
+    public void open(Player p, UUID target, String targetName, boolean openedByCommand) {
         p.updateInventory();
-        openPage(p, target, 0);
-
-        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
+        openPage(p, target, targetName, 0, openedByCommand);
     }
 
     @SuppressWarnings("deprecation")
@@ -140,20 +149,25 @@ public class Gift_GUI implements Listener {
 
             if(e.getClick() == ClickType.DOUBLE_CLICK) return;
 
+            GiftGuiSession session = opened.get(p.getUniqueId());
+
             switch (Objects.requireNonNull(action)) {
                 case "send":
                     String type = NBTEditor.getString(e.getCurrentItem(), "typeID");
                     CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(type);
-                    main.getGiftAmountGUI().open(p, opened.get(p.getUniqueId()).getTarget(), cubeletType);
+                    main.getGiftAmountGUI().open(p, session.getTarget(), session.getTargetName(), cubeletType, session.isOpenedByCommand());
                     break;
                 case "previous":
-                    openPage(p, opened.get(p.getUniqueId()).getTarget(), opened.get(p.getUniqueId()).getPage() - 1);
+                    openPage(p, session.getTarget(), session.getTargetName(),session.getPage() - 1, session.isOpenedByCommand());
                     break;
                 case "next":
-                    openPage(p, opened.get(p.getUniqueId()).getTarget(), opened.get(p.getUniqueId()).getPage() + 1);
+                    openPage(p, session.getTarget(), session.getTargetName(), session.getPage() + 1, session.isOpenedByCommand());
                     break;
                 case "close":
                     p.closeInventory();
+                    break;
+                case "back":
+                    main.getCubeletsGUI().open(p);
                     break;
             }
 

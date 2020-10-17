@@ -50,7 +50,7 @@ public class ExecuteGift {
 
         try {
             UUID uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
-            main.getGiftGUI().open(((Player) sender), uuid);
+            main.getGiftGUI().open(((Player) sender), uuid, player, true);
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -11,18 +11,16 @@
 Layout:
 
   # GUI Title
-  Title: 'Gift Cubelets'
+  Title: 'Select player to Gift'
 
   # GUI items
   Items:
 
-    # Cubelet item
-    Cubelet:
-      Name: '&a%cubelet_name%'
+    # Player item
+    Player:
+      Name: '&a%player%'
       Lore:
-        - '&5Available: &a%cubelets_available%'
-        - ''
-        - '&6Click to send this cubelets!'
+        - '&6Click to send gifts!'
 
     # Next page item
     NextPage:
@@ -38,16 +36,7 @@ Layout:
       Slot: 1
       ShowPageNumber: false
 
-    # Close item, this item is shown if gui is opened by command
-    Close:
-      Name: '&9Close'
-      Material: 'BOOK'
-      Slot: 5
-      Lore:
-        - '&7Click to close'
-        - '&7this menu'
-
-    # Back item, this item is shown if gui is opened by cubelet open gui
+    # Back item
     Back:
       Name: '&9Back'
       Material: 'BOOK'

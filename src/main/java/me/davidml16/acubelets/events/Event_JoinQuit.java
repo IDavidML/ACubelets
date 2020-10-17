@@ -31,6 +31,8 @@ public class Event_JoinQuit implements Listener {
         main.getPlayerDataHandler().loadPlayerData(p);
         main.setPlayerCount(main.getPlayerCount() + 1);
 
+        main.getGiftPlayerGUI().reloadAll();
+
         if(p.getName().equalsIgnoreCase("DavidML16")) {
             Bukkit.getScheduler().runTaskLater(main, () -> {
                 PluginDescriptionFile pdf = main.getDescription();
@@ -58,6 +60,8 @@ public class Event_JoinQuit implements Listener {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
+        Bukkit.getScheduler().runTaskLater(main, () -> main.getGiftPlayerGUI().reloadAll(), 1);
     }
 
     @EventHandler
