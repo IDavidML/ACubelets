@@ -34,7 +34,7 @@ public class AnimationHalloween_Pumpkin extends BukkitRunnable {
         this.playerUUID = playerUUID;
 
         Player target = Bukkit.getPlayer(playerUUID);
-        if(target != null) {
+        if(target != null && target.getWorld().equals(spawnLoc.getWorld())) {
             spawnLoc.setDirection(target.getLocation().subtract(spawnLoc).toVector());
         }
         spawnLoc.add(0, -0.87, 0);
@@ -67,7 +67,7 @@ public class AnimationHalloween_Pumpkin extends BukkitRunnable {
 
     public void run() {
         Player target = Bukkit.getPlayer(playerUUID);
-        if(target != null) {
+        if(target != null && target.getWorld().equals(armorStand.getWorld())) {
             spawnLoc.setDirection(target.getLocation().subtract(armorStand.getLocation()).toVector());
             armorStand.teleport(spawnLoc);
         }
