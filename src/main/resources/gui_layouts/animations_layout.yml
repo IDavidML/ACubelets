@@ -44,6 +44,7 @@ Layout:
 
     # Displayed random animation item
     RandomAnimation:
+      Slot: 3
       Selected:
         Name: '&aRandom animation'
         Lore:
@@ -61,6 +62,20 @@ Layout:
           - '&7open a cubelet.'
           - ''
           - '&eClick to enable it'
+
+    # Next page item
+    NextPage:
+      Name: '&6Next page'
+      Material: 'SUGAR_CANE'
+      Slot: 9
+      ShowPageNumber: false
+
+    # Previous page item
+    PreviousPage:
+      Name: '&6Previous page'
+      Material: 'SUGAR_CANE'
+      Slot: 1
+      ShowPageNumber: false
 
     # Back item
     Back:

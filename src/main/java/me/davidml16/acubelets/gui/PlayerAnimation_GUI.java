@@ -22,7 +22,7 @@ import java.util.*;
 
 public class PlayerAnimation_GUI implements Listener {
 
-    private Set<UUID> opened;
+    private Map<UUID, Integer> opened;
     private HashMap<String, Inventory> guis;
 
     private static List<Integer> panels = Arrays.asList(0,1,2,3,4,5,6,7,8,9,17,18,26);
@@ -31,13 +31,13 @@ public class PlayerAnimation_GUI implements Listener {
 
     public PlayerAnimation_GUI(Main main) {
         this.main = main;
-        this.opened = new HashSet<>();
+        this.opened = new HashMap<>();
         this.main.getServer().getPluginManager().registerEvents(this, this.main);
     }
 
-    public Set<UUID> getOpened() { return opened; }
+    public Map<UUID, Integer> getOpened() { return opened; }
 
-    public void open(Player p) {
+    public void openPage(Player p, int page) {
         p.updateInventory();
 
         Profile profile = main.getPlayerDataHandler().getData(p);
@@ -49,34 +49,76 @@ public class PlayerAnimation_GUI implements Listener {
             }
         }
 
+
+        List<AnimationSettings> animations = new ArrayList<>(main.getAnimationHandler().getAnimations().values());
+        Collections.sort(animations);
+
+        if(page < 0) {
+            openPage(p, 0);
+            return;
+        }
+
+        if(page > 0 && animations.size() < (page * 14) + 1) {
+            openPage(p, page - 1);
+            return;
+        }
+
+        if (animations.size() > 14) animations = animations.subList(page * 14, Math.min(((page * 14) + 14), animations.size()));
+
         GUILayout guiLayout = main.getLayoutHandler().getLayout("animations");
 
         Inventory gui = Bukkit.createInventory(null, 45, guiLayout.getMessage("Title"));
+
+        if (page > 0) {
+            int amount = guiLayout.getBoolean("Items.PreviousPage.ShowPageNumber") ? page : 1;
+            ItemStack item = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.PreviousPage.Material")).get().parseMaterial(), amount)
+                    .setName(guiLayout.getMessage("Items.PreviousPage.Name"))
+                    .toItemStack();
+            item = NBTEditor.set(item, "previous", "action");
+            if(guiLayout.getSlot("PreviousPage") >= 0)
+                gui.setItem(((45 - 10) + guiLayout.getSlot("PreviousPage")), item);
+        }
+
+        if (main.getAnimationHandler().getAnimations().values().size() > (page + 1) * 14) {
+            int amount = guiLayout.getBoolean("Items.NextPage.ShowPageNumber") ? (page + 2) : 1;
+            ItemStack item = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NextPage.Material")).get().parseMaterial(), amount)
+                    .setName(guiLayout.getMessage("Items.NextPage.Name"))
+                    .toItemStack();
+            item = NBTEditor.set(item, "next", "action");
+            if(guiLayout.getSlot("NextPage") >= 0)
+                gui.setItem((gui.getSize() - 10) + guiLayout.getSlot("NextPage"), item);
+        }
 
         ItemStack back = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Back.Material")).get().parseItem())
                 .setName(guiLayout.getMessage("Items.Back.Name"))
                 .setLore(guiLayout.getMessageList("Items.Back.Lore"))
                 .toItemStack();
-        gui.setItem(40, back);
+        back = NBTEditor.set(back, "back", "action");
+        gui.setItem((gui.getSize() - 10) + guiLayout.getSlot("Back"), back);
 
         ItemStack filler = XMaterial.GRAY_STAINED_GLASS_PANE.parseItem();
         for(int i : panels)
             gui.setItem(i, filler);
 
-        List<AnimationSettings> animationSettings = new ArrayList<>(main.getAnimationHandler().getAnimations().values());
-        Collections.sort(animationSettings);
 
-        for(AnimationSettings animation : animationSettings)
+        for(AnimationSettings animation : animations)
             gui.addItem(getAnimationItem(p, guiLayout, animation.getId()));
 
-        gui.setItem(38, getRandomAnimationItem(p, guiLayout));
+        ItemStack randomAnimation = getRandomAnimationItem(p, guiLayout);
+        randomAnimation = NBTEditor.set(randomAnimation, "random", "action");
+        gui.setItem((gui.getSize() - 10) + guiLayout.getSlot("RandomAnimation"), randomAnimation);
 
         for(int i : panels)
             gui.setItem(i, null);
 
         p.openInventory(gui);
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> opened.add(p.getUniqueId()), 1L);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> opened.put(p.getUniqueId(), page), 1L);
+    }
+
+    public void open(Player p) {
+        p.updateInventory();
+        openPage(p, 0);
     }
 
     @EventHandler
@@ -87,38 +129,42 @@ public class PlayerAnimation_GUI implements Listener {
         if (e.getCurrentItem().getType() == Material.AIR) return;
         if (e.getClick() == ClickType.DOUBLE_CLICK) return;
 
-        if (opened.contains(p.getUniqueId())) {
+        if (opened.containsKey(p.getUniqueId())) {
             e.setCancelled(true);
-            int slot = e.getRawSlot();
 
-            if (slot == 40) {
+            String action = NBTEditor.getString(e.getCurrentItem(), "action");
 
-                main.getCubeletsGUI().open(p);
+            if(e.getClick() == ClickType.DOUBLE_CLICK) return;
 
-            } else if (slot == 38) {
-
-                String status = NBTEditor.getString(e.getCurrentItem(), "status");
-
-                if(status.equalsIgnoreCase("disabled")) {
-                    main.getPlayerDataHandler().getData(p).setAnimation("random");
-                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
-                    open(p);
-                }
-
-            } else {
-
-                String animation = NBTEditor.getString(e.getCurrentItem(), "animation");
-                String status = NBTEditor.getString(e.getCurrentItem(), "status");
-
-                if(status.equalsIgnoreCase("unlocked")) {
-
-                    main.getPlayerDataHandler().getData(p).setAnimation(animation);
-                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
-                    open(p);
-
-                }
-
+            switch (Objects.requireNonNull(action)) {
+                case "previous":
+                    openPage(p, opened.get(p.getUniqueId()) - 1);
+                    break;
+                case "next":
+                    openPage(p, opened.get(p.getUniqueId()) + 1);
+                    break;
+                case "random":
+                    String status = NBTEditor.getString(e.getCurrentItem(), "status");
+                    if(status.equalsIgnoreCase("disabled")) {
+                        main.getPlayerDataHandler().getData(p).setAnimation("random");
+                        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+                        openPage(p, opened.get(p.getUniqueId()));
+                    }
+                    break;
+                case "animation":
+                    String animation = NBTEditor.getString(e.getCurrentItem(), "animation");
+                    status = NBTEditor.getString(e.getCurrentItem(), "status");
+                    if(status.equalsIgnoreCase("unlocked")) {
+                        main.getPlayerDataHandler().getData(p).setAnimation(animation);
+                        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+                        openPage(p, opened.get(p.getUniqueId()));
+                    }
+                    break;
+                case "back":
+                    main.getCubeletsGUI().open(p);
+                    break;
             }
+
         }
     }
 
@@ -148,6 +194,7 @@ public class PlayerAnimation_GUI implements Listener {
             else
                 item = getItem(guiLayout, animationSettings, "Selected", item);
 
+        item = NBTEditor.set(item, "animation", "action");
         item = NBTEditor.set(item, animation, "animation");
         return item;
 

@@ -6,6 +6,7 @@ import me.davidml16.acubelets.animations.normal.animation1.Animation1_Task;
 import me.davidml16.acubelets.animations.normal.animation10.Animation10_Task;
 import me.davidml16.acubelets.animations.normal.animation12.Animation12_Task;
 import me.davidml16.acubelets.animations.normal.animation13.Animation13_Task;
+import me.davidml16.acubelets.animations.normal.animation14.Animation14_Task;
 import me.davidml16.acubelets.animations.normal.animation2.Animation2_Task;
 import me.davidml16.acubelets.animations.normal.animation3.Animation3_Task;
 import me.davidml16.acubelets.animations.normal.animation4.Animation4_Task;
@@ -207,6 +208,16 @@ public class AnimationHandler {
         animation13.setNeedPermission(true);
         this.animations.put("animation13", animation13);
 
+        AnimationSettings animation14 = new AnimationSettings("animation14");
+        animation14.setDisplayName(getDisplayName("animation_14"));
+        animation14.setDisplayItem(XMaterial.POPPY.parseItem());
+        animation14.setAnimationNumber(14);
+        animation14.setPreviewURL("https://www.youtube.com/watch?v=V56LIrVMULY");
+        animation14.setOutlineParticles(getOutlineParticles("animation_14"));
+        animation14.setFloorParticles(getFloorParticles("animation_14"));
+        animation14.setNeedPermission(true);
+        this.animations.put("animation14", animation14);
+
     }
 
     public AnimationSettings getAnimationSetting(String id) {
@@ -241,6 +252,8 @@ public class AnimationHandler {
                 return new Animation12_Task(main, getAnimationSetting(animation));
             case "animation13":
                 return new Animation13_Task(main, getAnimationSetting(animation));
+            case "animation14":
+                return new Animation14_Task(main, getAnimationSetting(animation));
             default:
                 return new Animation2_Task(main, getAnimationSetting(animation));
         }

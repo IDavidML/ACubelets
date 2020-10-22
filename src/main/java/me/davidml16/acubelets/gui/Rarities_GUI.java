@@ -84,7 +84,7 @@ public class Rarities_GUI implements Listener {
 
     public void reloadGUI(String id) {
         for(UUID uuid : opened.keySet()) {
-            if(opened.get(uuid).getCubeletType().equals(id)) {
+            if(opened.get(uuid).getId().equals(id)) {
                 Player p = Bukkit.getPlayer(uuid);
                 openPage(p, id, opened.get(uuid).getPage());
             }
@@ -176,8 +176,8 @@ public class Rarities_GUI implements Listener {
         if (opened.containsKey(p.getUniqueId())) {
             e.setCancelled(true);
             int slot = e.getRawSlot();
-            String id = opened.get(p.getUniqueId()).getCubeletType();
-            CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(opened.get(p.getUniqueId()).getCubeletType());
+            String id = opened.get(p.getUniqueId()).getId();
+            CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(opened.get(p.getUniqueId()).getId());
             if (slot == 18 && e.getCurrentItem().getType() == XMaterial.ENDER_PEARL.parseMaterial()) {
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
                 openPage(p, id, opened.get(p.getUniqueId()).getPage() - 1);
@@ -220,7 +220,7 @@ public class Rarities_GUI implements Listener {
     public void InventoryCloseEvent(InventoryCloseEvent e) {
         Player p = (Player) e.getPlayer();
         if (opened.containsKey(p.getUniqueId())) {
-            main.getCubeletTypesHandler().getTypeBydId(opened.get(p.getUniqueId()).getCubeletType()).saveType();
+            main.getCubeletTypesHandler().getTypeBydId(opened.get(p.getUniqueId()).getId()).saveType();
             opened.remove(p.getUniqueId());
         }
     }

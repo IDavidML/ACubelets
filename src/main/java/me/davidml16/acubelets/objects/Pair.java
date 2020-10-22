@@ -2,16 +2,16 @@ package me.davidml16.acubelets.objects;
 
 public class Pair {
 
-    private String cubeletType;
+    private String id;
     private int page;
 
-    public Pair(String cubeletType, int page) {
-        this.cubeletType = cubeletType;
+    public Pair(String id, int page) {
+        this.id = id;
         this.page = page;
     }
 
-    public String getCubeletType() {
-        return cubeletType;
+    public String getId() {
+        return id;
     }
 
     public int getPage() {
@@ -21,7 +21,7 @@ public class Pair {
     @Override
     public String toString() {
         return "Pair{" +
-                "cubeletType='" + cubeletType + '\'' +
+                "cubeletType='" + id + '\'' +
                 ", page=" + page +
                 '}';
     }

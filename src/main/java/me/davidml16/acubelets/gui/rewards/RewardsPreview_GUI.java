@@ -181,9 +181,9 @@ public class RewardsPreview_GUI implements Listener {
 
             if(e.getClick() != ClickType.DOUBLE_CLICK) {
                 if (slot == ((size - 10) + guiLayout.getSlot("PreviousPage"))) {
-                    openPage(p, opened.get(p.getUniqueId()).getCubeletType(), opened.get(p.getUniqueId()).getPage() - 1);
+                    openPage(p, opened.get(p.getUniqueId()).getId(), opened.get(p.getUniqueId()).getPage() - 1);
                 } else if (slot == ((size - 10) + guiLayout.getSlot("NextPage"))) {
-                    openPage(p, opened.get(p.getUniqueId()).getCubeletType(), opened.get(p.getUniqueId()).getPage() + 1);
+                    openPage(p, opened.get(p.getUniqueId()).getId(), opened.get(p.getUniqueId()).getPage() + 1);
                 } else if (slot == ((size - 10) + guiLayout.getSlot("Back"))) {
                     main.getCubeletsGUI().open(p);
                 }
