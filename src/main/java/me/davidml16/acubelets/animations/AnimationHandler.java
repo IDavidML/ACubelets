@@ -7,6 +7,7 @@ import me.davidml16.acubelets.animations.normal.animation10.Animation10_Task;
 import me.davidml16.acubelets.animations.normal.animation12.Animation12_Task;
 import me.davidml16.acubelets.animations.normal.animation13.Animation13_Task;
 import me.davidml16.acubelets.animations.normal.animation14.Animation14_Task;
+import me.davidml16.acubelets.animations.normal.animation15.Animation15_Task;
 import me.davidml16.acubelets.animations.normal.animation2.Animation2_Task;
 import me.davidml16.acubelets.animations.normal.animation3.Animation3_Task;
 import me.davidml16.acubelets.animations.normal.animation4.Animation4_Task;
@@ -202,7 +203,7 @@ public class AnimationHandler {
         animation13.setDisplayName(getDisplayName("animation_13"));
         animation13.setDisplayItem(XMaterial.PRISMARINE_SHARD.parseItem());
         animation13.setAnimationNumber(13);
-        animation13.setPreviewURL("https://youtu.be/t6KGQ-Pet6E");
+        animation13.setPreviewURL("https://www.youtube.com/watch?v=t6KGQ-Pet6E");
         animation13.setOutlineParticles(getOutlineParticles("animation_13"));
         animation13.setFloorParticles(getFloorParticles("animation_13"));
         animation13.setNeedPermission(true);
@@ -217,6 +218,16 @@ public class AnimationHandler {
         animation14.setFloorParticles(getFloorParticles("animation_14"));
         animation14.setNeedPermission(true);
         this.animations.put("animation14", animation14);
+
+        AnimationSettings animation15 = new AnimationSettings("animation15");
+        animation15.setDisplayName(getDisplayName("animation_15"));
+        animation15.setDisplayItem(XMaterial.BLAZE_POWDER.parseItem());
+        animation15.setAnimationNumber(15);
+        animation15.setPreviewURL("https://www.youtube.com/watch?v=lKq_Q-owv-Q");
+        animation15.setOutlineParticles(getOutlineParticles("animation_15"));
+        animation15.setFloorParticles(getFloorParticles("animation_15"));
+        animation15.setNeedPermission(true);
+        this.animations.put("animation15", animation15);
 
     }
 
@@ -254,6 +265,8 @@ public class AnimationHandler {
                 return new Animation13_Task(main, getAnimationSetting(animation));
             case "animation14":
                 return new Animation14_Task(main, getAnimationSetting(animation));
+            case "animation15":
+                return new Animation15_Task(main, getAnimationSetting(animation));
             default:
                 return new Animation2_Task(main, getAnimationSetting(animation));
         }

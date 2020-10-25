@@ -422,12 +422,12 @@ public final class XParticle {
      * @param mode   blackhole mode. There are 5 modes.
      * @since 3.0.0
      */
-    public static void blackhole(JavaPlugin plugin, int points, double radius, double rate, int mode, ParticleDisplay display) {
+    public static BukkitTask blackhole(JavaPlugin plugin, int points, double radius, double rate, int mode, ParticleDisplay display) {
         display.directional();
         display.extra = 0.1;
         double rateDiv = Math.PI / rate;
 
-        new BukkitRunnable() {
+        return new BukkitRunnable() {
             double theta = 0;
 
             @Override
