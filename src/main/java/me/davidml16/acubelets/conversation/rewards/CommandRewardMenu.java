@@ -14,6 +14,7 @@ import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class CommandRewardMenu implements ConversationAbandonedListener, CommonPrompts {
@@ -80,7 +81,7 @@ public class CommandRewardMenu implements ConversationAbandonedListener, CommonP
                                 String rewardCommand = (String) param1ConversationContext.getSessionData("rewardCommand");
                                 ItemStack rewardIcon = (ItemStack) param1ConversationContext.getSessionData("rewardIcon");
 
-                                Reward commandReward = new CommandReward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), null, rewardIcon.clone(), cubeletType);
+                                Reward commandReward = new CommandReward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), new ArrayList<>(), rewardIcon.clone(), cubeletType);
                                 ((CommandReward) commandReward).getCommands().add(new CommandObject("command-0", rewardCommand));
 
                                 cubeletType.addReward(rewardRarity, commandReward);
