@@ -146,6 +146,7 @@ public class Rewards_GUI implements Listener {
                                     Utils.translate(" &7Commands: &6" + ((CommandReward) reward).getCommands().size() + " "),
                                     "",
                                     Utils.translate("&eLeft-Click » &aRemove reward "),
+                                    Utils.translate("&eMiddle-Click » &aEdit commands "),
                                     Utils.translate("&eRight-Click » &aEdit reward ")
                             ).hideAttributes().toItemStack());
                 } else if(reward instanceof PermissionReward) {
@@ -270,6 +271,8 @@ public class Rewards_GUI implements Listener {
 
                     if(reward instanceof ItemReward)
                         main.getEditRewardItemsGUI().open(p, reward);
+                    else if(reward instanceof CommandReward)
+                        main.getEditRewardCommandsGUI().open(p, reward);
 
                 }
 

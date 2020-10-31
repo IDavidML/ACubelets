@@ -2,6 +2,7 @@ package me.davidml16.acubelets.conversation.rewards;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.CommonPrompts;
+import me.davidml16.acubelets.objects.CommandObject;
 import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.rewards.CommandReward;
@@ -79,7 +80,9 @@ public class CommandRewardMenu implements ConversationAbandonedListener, CommonP
                                 String rewardCommand = (String) param1ConversationContext.getSessionData("rewardCommand");
                                 ItemStack rewardIcon = (ItemStack) param1ConversationContext.getSessionData("rewardIcon");
 
-                                Reward commandReward = new CommandReward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), Arrays.asList(rewardCommand), rewardIcon.clone(), cubeletType);
+                                Reward commandReward = new CommandReward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), null, rewardIcon.clone(), cubeletType);
+                                ((CommandReward) commandReward).getCommands().add(new CommandObject("command-0", rewardCommand));
+
                                 cubeletType.addReward(rewardRarity, commandReward);
                                 cubeletType.saveType();
 

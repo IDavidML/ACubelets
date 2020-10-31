@@ -29,7 +29,6 @@ public class EditCommandRewardMenu implements ConversationAbandonedListener, Com
 
         conversation.getContext().setSessionData("rewardID", reward.getId());
         conversation.getContext().setSessionData("rewardName", reward.getName());
-        conversation.getContext().setSessionData("rewardCommand", ((CommandReward) reward).getCommands().get(0));
         conversation.getContext().setSessionData("rewardRarity", reward.getRarity().getId());
         conversation.getContext().setSessionData("rewardIcon", reward.getIcon());
 
@@ -43,7 +42,7 @@ public class EditCommandRewardMenu implements ConversationAbandonedListener, Com
     public void conversationAbandoned(ConversationAbandonedEvent paramConversationAbandonedEvent) {}
 
     public class RewardMenuOptions extends FixedSetPrompt {
-        RewardMenuOptions() { super("1", "2", "3", "4", "5", "6"); }
+        RewardMenuOptions() { super("1", "2", "3", "4", "5"); }
 
         protected Prompt acceptValidatedInput(ConversationContext param1ConversationContext, String param1String) {
             CubeletType cubeletType = (CubeletType) param1ConversationContext.getSessionData("cubeletType");
@@ -53,8 +52,6 @@ public class EditCommandRewardMenu implements ConversationAbandonedListener, Com
                 case "2":
                     return new CommonStringPrompt(main,this, false, ChatColor.YELLOW + "  Edit reward rarity, \"cancel\" to return.\n  Available rarities: " + cubeletType.getRaritiesIDs() + "\n\n ", "rewardRarity");
                 case "3":
-                    return new CommonStringPrompt(main,this, true,ChatColor.YELLOW + "  Edit reward command, \"cancel\" to return.\n  Available variables: %player%\n\n ", "rewardCommand");
-                case "4":
                      Player p = (Player) param1ConversationContext.getSessionData("player");
                      ItemStack itemHand = p.getInventory().getItemInHand();
 
@@ -72,7 +69,7 @@ public class EditCommandRewardMenu implements ConversationAbandonedListener, Com
                             ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.CLICK, 10, 2);
 
                     return this;
-                case "5":
+                case "4":
                     if(param1ConversationContext.getSessionData("rewardName") != null
                             && param1ConversationContext.getSessionData("rewardCommand") != null
                             && param1ConversationContext.getSessionData("rewardRarity") != null
@@ -82,12 +79,10 @@ public class EditCommandRewardMenu implements ConversationAbandonedListener, Com
                                 String rewardID = (String) param1ConversationContext.getSessionData("rewardID");
                                 String rewardName = (String) param1ConversationContext.getSessionData("rewardName");
                                 String rewardRarity = (String) param1ConversationContext.getSessionData("rewardRarity");
-                                String rewardCommand = (String) param1ConversationContext.getSessionData("rewardCommand");
                                 ItemStack rewardIcon = (ItemStack) param1ConversationContext.getSessionData("rewardIcon");
 
                                 Reward commandReward = cubeletType.getReward(rewardID);
                                 commandReward.setName(rewardName);
-                                ((CommandReward) commandReward).setCommands(Arrays.asList(rewardCommand));
                                 commandReward.setIcon(rewardIcon.clone());
                                 commandReward.setRarity(cubeletType.getRarities().get(rewardRarity));
 
@@ -114,7 +109,7 @@ public class EditCommandRewardMenu implements ConversationAbandonedListener, Com
                     } else {
                         return new ErrorPrompt(main, this, "\n" + ChatColor.RED + "  You need to setup ID, NAME, RARITY, COMMAND and ICON to save reward!\n  Write anything to continue\n ");
                     }
-                case "6":
+                case "5":
                     return new ConfirmExitPrompt(main, this);
             }
             return null;
@@ -137,21 +132,15 @@ public class EditCommandRewardMenu implements ConversationAbandonedListener, Com
                 cadena += ChatColor.GREEN + "    2 " + ChatColor.GRAY + "- Edit reward rarity (" + ChatColor.YELLOW + ChatColor.translateAlternateColorCodes('&', (String)param1ConversationContext.getSessionData("rewardRarity")) + ChatColor.GRAY + ")\n";
             }
 
-            if (param1ConversationContext.getSessionData("rewardCommand") == null) {
-                cadena += ChatColor.RED + "    3 " + ChatColor.GRAY + "- Edit reward command (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
-            } else {
-                cadena += ChatColor.GREEN + "    3 " + ChatColor.GRAY + "- Edit reward command (" + ChatColor.YELLOW + param1ConversationContext.getSessionData("rewardCommand") + ChatColor.GRAY + ")\n";
-            }
-
             if (param1ConversationContext.getSessionData("rewardIcon") == null) {
-                cadena += ChatColor.RED + "    4 " + ChatColor.GRAY + "- Edit reward icon 'Item in Hand' (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
+                cadena += ChatColor.RED + "    3 " + ChatColor.GRAY + "- Edit reward icon 'Item in Hand' (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
             } else {
                 ItemStack icon = (ItemStack) param1ConversationContext.getSessionData("rewardIcon");
-                cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Edit reward icon 'Item in Hand' (" + ChatColor.YELLOW + icon.getType().name() + ChatColor.GRAY + ")\n";
+                cadena += ChatColor.GREEN + "    3 " + ChatColor.GRAY + "- Edit reward icon 'Item in Hand' (" + ChatColor.YELLOW + icon.getType().name() + ChatColor.GRAY + ")\n";
             }
 
-            cadena += ChatColor.GREEN + "    5 " + ChatColor.GRAY + "- Save\n";
-            cadena += ChatColor.GREEN + "    6 " + ChatColor.GRAY + "- Exit and discard\n";
+            cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Save\n";
+            cadena += ChatColor.GREEN + "    5 " + ChatColor.GRAY + "- Exit and discard\n";
             cadena += ChatColor.GREEN + " \n";
             cadena += ChatColor.GOLD + "" + ChatColor.YELLOW + "  Choose the option: \n";
             cadena += ChatColor.GREEN + " \n";

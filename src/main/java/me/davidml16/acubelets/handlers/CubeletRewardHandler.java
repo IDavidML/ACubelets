@@ -66,11 +66,15 @@ public class CubeletRewardHandler {
 
 							if(config.contains("type.rewards." + rewardid + ".command")) {
 
-								List<String> commands = new ArrayList<>();
-								if (config.get("type.rewards." + rewardid + ".command") instanceof ArrayList)
-									commands.addAll(config.getStringList("type.rewards." + rewardid + ".command"));
-								else
-									commands.add(config.getString("type.rewards." + rewardid + ".command"));
+								List<CommandObject> commands = new ArrayList<>();
+								int i = 0;
+								if (config.get("type.rewards." + rewardid + ".command") instanceof ArrayList) {
+									for(String cmd : config.getStringList("type.rewards." + rewardid + ".command")) {
+										commands.add(new CommandObject("command-" + i, cmd));
+										i++;
+									}
+								} else
+									commands.add(new CommandObject("command-" + i, config.getString("type.rewards." + rewardid + ".command")));
 
 								rewardsRarity.add(new CommandReward("reward_" + iterator, name, cubeletType.getRarities().get(rarity), commands, rewardIcon, cubeletType));
 
@@ -144,8 +148,8 @@ public class CubeletRewardHandler {
 
 	public void giveReward(CubeletBox cubeletBox, Reward reward) {
 		if (reward instanceof CommandReward) {
-			for (String command : ((CommandReward) reward).getCommands()) {
-				Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(), command.replaceAll("%player%", cubeletBox.getPlayerOpening().getName()));
+			for (CommandObject command : ((CommandReward) reward).getCommands()) {
+				Bukkit.getServer().dispatchCommand(main.getServer().getConsoleSender(), command.getCommand().replaceAll("%player%", cubeletBox.getPlayerOpening().getName()));
 			}
 		} else if(reward instanceof PermissionReward) {
 			if(main.isDuplicationEnabled() && isDuplicated(cubeletBox, reward)) {

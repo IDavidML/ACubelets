@@ -190,9 +190,12 @@ public class CubeletType {
                 config.set("type.rewards.reward_" + String.valueOf(i) + ".name", reward.getName());
                 config.set("type.rewards.reward_" + String.valueOf(i) + ".rarity", reward.getRarity().getId());
 
-                if(reward instanceof CommandReward)
-                    config.set("type.rewards.reward_" + String.valueOf(i) + ".command", ((CommandReward) reward).getCommands());
-                else if(reward instanceof PermissionReward)
+                if(reward instanceof CommandReward) {
+                    List<String> commands = new ArrayList<>();
+                    for(CommandObject command : ((CommandReward) reward).getCommands())
+                        commands.add(command.getCommand());
+                    config.set("type.rewards.reward_" + String.valueOf(i) + ".command", commands);
+                } else if(reward instanceof PermissionReward)
                     config.set("type.rewards.reward_" + String.valueOf(i) + ".permission", ((PermissionReward) reward).getPermission());
                 else if(reward instanceof ItemReward) {
                     List<Item> items = ((ItemReward) reward).getItems();

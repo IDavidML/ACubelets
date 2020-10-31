@@ -18,6 +18,7 @@ import me.davidml16.acubelets.gui.crafting.*;
 import me.davidml16.acubelets.gui.gifts.GiftCubelet_GUI;
 import me.davidml16.acubelets.gui.gifts.GiftPlayer_GUI;
 import me.davidml16.acubelets.gui.gifts.Gift_GUI;
+import me.davidml16.acubelets.gui.rewards.EditRewardCommands_GUI;
 import me.davidml16.acubelets.gui.rewards.EditRewardItems_GUI;
 import me.davidml16.acubelets.gui.rewards.RewardsPreview_GUI;
 import me.davidml16.acubelets.gui.rewards.Rewards_GUI;
@@ -92,6 +93,7 @@ public class Main extends JavaPlugin {
     private EditCrafting_Crafts_GUI editCraftingCraftsGUI;
     private EditCrafting_Ingredients_GUI editCraftingIngredientsGUI;
     private EditRewardItems_GUI editRewardItemsGUI;
+    private EditRewardCommands_GUI editRewardCommandsGUI;
     private Gift_GUI giftGUI;
     private GiftCubelet_GUI giftCubeletGUI;
     private GiftPlayer_GUI giftPlayerGUI;
@@ -221,6 +223,8 @@ public class Main extends JavaPlugin {
         rewardsGUI.loadGUI();
 
         editRewardItemsGUI = new EditRewardItems_GUI(this);
+
+        editRewardCommandsGUI = new EditRewardCommands_GUI(this);
 
         raritiesGUI = new Rarities_GUI(this);
         raritiesGUI.loadGUI();
@@ -382,6 +386,8 @@ public class Main extends JavaPlugin {
     public EditCrafting_Ingredients_GUI getEditCraftingIngredientsGUI() { return editCraftingIngredientsGUI; }
 
     public EditRewardItems_GUI getEditRewardItemsGUI() { return editRewardItemsGUI; }
+
+    public EditRewardCommands_GUI getEditRewardCommandsGUI() { return editRewardCommandsGUI; }
 
     public PluginHandler getPluginHandler() { return pluginHandler; }
 
