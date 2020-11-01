@@ -83,6 +83,7 @@ public class PluginHandler {
         main.getRaritiesGUI().reloadAllGUI();
         main.getHologramHandler().getColorAnimation().setColors(main.getConfig().getStringList("Holograms.ColorAnimation"));
         main.getHologramHandler().loadHolograms();
+
         main.getHologramTask().start();
 
         if(main.isLiveGuiUpdates())

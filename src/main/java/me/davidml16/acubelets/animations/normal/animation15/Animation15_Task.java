@@ -96,7 +96,9 @@ public class Animation15_Task implements Animation {
 				}
 				Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.FIREWORK_BLAST, 0.5f, 0);
 
-				blackHole = XParticle.blackhole(main, 8, 4, 200, 2, new ParticleDisplay(Particle.SMOKE_LARGE, cubeletBox.getLocation().clone().add(0.5, 7, 0.5), 1));
+				try {
+					blackHole = XParticle.blackhole(main, 8, 4, 200, 2, 999999, new ParticleDisplay(Particle.SMOKE_LARGE, cubeletBox.getLocation().clone().add(0.5, 7, 0.5), 1));
+				} catch (NoClassDefFoundError ignore) {}
 
 				Animation15_RotatingFlame orbit1 = new Animation15_RotatingFlame(main, cubeletBox.getLocation().clone().add(0.5, 6, 0.5), 5f, 120, true, 0);
 				orbit1.runTaskTimer(main, 0L, 1L);
@@ -114,7 +116,7 @@ public class Animation15_Task implements Animation {
 			}
 
 			if (time == 150) {
-				blackHole.cancel();
+				if(blackHole != null) blackHole.cancel();
 				try {
 					for(Animation15_RotatingFlame orbit : orbits) {
 						orbit.cancel();
