@@ -54,7 +54,7 @@ public class Animation16_Sheep extends BukkitRunnable {
         NBTEditor.set( sheep, ( byte ) 1, "NoAI" );
         if(XMaterial.supports(10)) sheep.setSilent(true);
         sheep.setBaby();
-        sheep.setCollidable(false);
+        if(XMaterial.supports(9)) sheep.setCollidable(false);
         sheep.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
         sheep.teleport(locations.get(step));
 
