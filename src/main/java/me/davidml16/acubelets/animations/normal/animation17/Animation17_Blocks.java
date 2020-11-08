@@ -30,6 +30,8 @@ public class Animation17_Blocks extends BukkitRunnable {
         for(Block block : cr.getSideBlocks()) blockStates.add(block.getState());
         CuboidRegion cr2 = new CuboidRegion(this.location.clone().add(-1, -1, -1), this.location.clone().add(1, -1, 1));
         for(Block block : cr2.getSideBlocks()) blockStates.add(block.getState());
+        CuboidRegion cr3 = new CuboidRegion(this.location.clone().add(-1, 0, -1), this.location.clone().add(1, 0, 1));
+        for(Block block : cr3.getSideBlocks()) blockStates.add(block.getState());
         blockStates.add(this.location.clone().add(0, 0, 0).getBlock().getState());
         blockStates.add(this.location.clone().add(0, -1, 0).getBlock().getState());
 

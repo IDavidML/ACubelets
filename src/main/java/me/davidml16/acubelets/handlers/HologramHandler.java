@@ -20,6 +20,7 @@ import org.bukkit.inventory.PlayerInventory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
 
 public class HologramHandler {
 
@@ -260,7 +261,7 @@ public class HologramHandler {
             for(String line : main.getLanguageHandler().getMessageList("Holograms.Reward.New.Me")) {
                 lines.add(Utils.translate(line
                         .replaceAll("%player%", opening.getName())
-                        .replaceAll("%reward_name%", reward.getName())
+                        .replaceAll("%reward_name%", Matcher.quoteReplacement(reward.getName()))
                         .replaceAll("%reward_rarity%", reward.getRarity().getName())
                 ));
             }
@@ -268,7 +269,7 @@ public class HologramHandler {
             for(String line : main.getLanguageHandler().getMessageList("Holograms.Reward.New.Other")) {
                 lines.add(Utils.translate(line
                         .replaceAll("%player%", opening.getName())
-                        .replaceAll("%reward_name%", reward.getName())
+                        .replaceAll("%reward_name%", Matcher.quoteReplacement(reward.getName()))
                         .replaceAll("%reward_rarity%", reward.getRarity().getName())
                 ));
             }
@@ -283,7 +284,7 @@ public class HologramHandler {
         for(String line : main.getLanguageHandler().getMessageList("Holograms.Reward.Duplicate")) {
             lines.add(Utils.translate(line
                     .replaceAll("%points%", ""+duplicatePoints)
-                    .replaceAll("%reward_name%", reward.getName())
+                    .replaceAll("%reward_name%", Matcher.quoteReplacement(reward.getName()))
                     .replaceAll("%reward_rarity%", reward.getRarity().getName())
             ));
         }

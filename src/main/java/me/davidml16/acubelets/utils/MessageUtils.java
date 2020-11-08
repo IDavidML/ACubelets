@@ -8,6 +8,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.util.regex.Matcher;
+
 public class MessageUtils {
 
     public enum DefaultFontInfo {
@@ -195,13 +197,13 @@ public class MessageUtils {
                 line = line.replaceAll("%center%", "");
                 target.sendMessage(MessageUtils.centeredMessage(Utils.translate(line
                         .replaceAll("%cubelet_type%", cubeletType.getName())
-                        .replaceAll("%reward_name%", reward.getName())
+                        .replaceAll("%reward_name%", Matcher.quoteReplacement(reward.getName()))
                         .replaceAll("%reward_rarity%", reward.getRarity().getName())
                 )));
             } else {
                 target.sendMessage(Utils.translate(line
                         .replaceAll("%cubelet_type%", cubeletType.getName())
-                        .replaceAll("%reward_name%", reward.getName())
+                        .replaceAll("%reward_name%", Matcher.quoteReplacement(reward.getName()))
                         .replaceAll("%reward_rarity%", reward.getRarity().getName())
                 ));
             }
@@ -220,14 +222,14 @@ public class MessageUtils {
                 line = line.replaceAll("%center%", "");
                 target.sendMessage(MessageUtils.centeredMessage(Utils.translate(line
                         .replaceAll("%cubelet_type%", cubeletType.getName())
-                        .replaceAll("%reward_name%", reward.getName())
+                        .replaceAll("%reward_name%", Matcher.quoteReplacement(reward.getName()))
                         .replaceAll("%reward_rarity%", reward.getRarity().getName())
                         .replaceAll("%points%", ""+duplicatePoints)
                 )));
             } else {
                 target.sendMessage(Utils.translate(line
                         .replaceAll("%cubelet_type%", cubeletType.getName())
-                        .replaceAll("%reward_name%", reward.getName())
+                        .replaceAll("%reward_name%", Matcher.quoteReplacement(reward.getName()))
                         .replaceAll("%reward_rarity%", reward.getRarity().getName())
                         .replaceAll("%points%", ""+duplicatePoints)
                 ));
