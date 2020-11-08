@@ -9,6 +9,7 @@ import me.davidml16.acubelets.animations.normal.animation13.Animation13_Task;
 import me.davidml16.acubelets.animations.normal.animation14.Animation14_Task;
 import me.davidml16.acubelets.animations.normal.animation15.Animation15_Task;
 import me.davidml16.acubelets.animations.normal.animation16.Animation16_Task;
+import me.davidml16.acubelets.animations.normal.animation17.Animation17_Task;
 import me.davidml16.acubelets.animations.normal.animation2.Animation2_Task;
 import me.davidml16.acubelets.animations.normal.animation3.Animation3_Task;
 import me.davidml16.acubelets.animations.normal.animation4.Animation4_Task;
@@ -75,7 +76,7 @@ public class AnimationHandler {
         animation0.setDisplayName(getDisplayName("animation_0"));
         animation0.setDisplayItem(XMaterial.BARRIER.parseItem());
         animation0.setAnimationNumber(0);
-        animation0.setPreviewURL("");
+        animation0.setPreviewURL("https://www.youtube.com/watch?v=mOMt3lVctKE");
         animation0.setOutlineParticles(getOutlineParticles("animation_0"));
         animation0.setFloorParticles(getFloorParticles("animation_0"));
         animation0.setNeedPermission(false);
@@ -240,6 +241,16 @@ public class AnimationHandler {
         animation16.setNeedPermission(true);
         this.animations.put("animation16", animation16);
 
+        AnimationSettings animation17 = new AnimationSettings("animation17");
+        animation17.setDisplayName(getDisplayName("animation_17"));
+        animation17.setDisplayItem(XMaterial.SNOWBALL.parseItem());
+        animation17.setAnimationNumber(17);
+        animation17.setPreviewURL("https://www.youtube.com/watch?v=KRirzc3U_YM");
+        animation17.setOutlineParticles(getOutlineParticles("animation_17"));
+        animation17.setFloorParticles(getFloorParticles("animation_17"));
+        animation17.setNeedPermission(true);
+        this.animations.put("animation17", animation17);
+
     }
 
     public AnimationSettings getAnimationSetting(String id) {
@@ -280,6 +291,8 @@ public class AnimationHandler {
                 return new Animation15_Task(main, getAnimationSetting(animation));
             case "animation16":
                 return new Animation16_Task(main, getAnimationSetting(animation));
+            case "animation17":
+                return new Animation17_Task(main, getAnimationSetting(animation));
             default:
                 return new Animation2_Task(main, getAnimationSetting(animation));
         }
