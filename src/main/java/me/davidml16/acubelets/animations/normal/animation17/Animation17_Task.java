@@ -260,6 +260,8 @@ public class Animation17_Task implements Animation {
 		blocks.cancel();
 		music.cancel();
 
+		if(snowman != null) snowman.remove();
+
 		if(hologramAnimation != null) hologramAnimation.canncel();
 		if(blocks != null) blocks.restore();
 

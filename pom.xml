@@ -6,7 +6,7 @@
 
     <groupId>me.davidml16</groupId>
     <artifactId>acubelets</artifactId>
-    <version>1.7.7</version>
+    <version>1.7.8</version>
     <packaging>jar</packaging>
 
     <name>ACubelets</name>
@@ -80,7 +80,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.13.2-R0.1-SNAPSHOT</version>
+            <version>1.15.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

@@ -96,3 +96,8 @@ animations:
     DisplayName: 'Animation 17'
     OutlineParticles: true
     FloorParticles: true
+
+  animation_18:
+    DisplayName: 'Animation 18'
+    OutlineParticles: true
+    FloorParticles: true

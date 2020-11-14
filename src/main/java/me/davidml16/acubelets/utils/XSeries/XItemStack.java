@@ -108,6 +108,7 @@ public class XItemStack {
         }
 
         if (XMaterial.supports(11)) config.set(path + "." + "unbreakable", meta.isUnbreakable());
+        if (XMaterial.supports(14)) if (meta.hasCustomModelData()) config.set(path + "." + "custom-model", meta.getCustomModelData());
 
         if (meta.getEnchants().size() > 0) config.set(path + "." + "enchanted", true);
         else config.set(path + "." + "enchanted", false);
@@ -231,6 +232,12 @@ public class XItemStack {
             }
         }
 
+        // Custom Model Data
+        if (XMaterial.supports(14)) {
+            int modelData = config.getInt(path + "." + "model-data");
+            if (modelData != 0) meta.setCustomModelData(modelData);
+        }
+
         // Flags
         List<String> flags = config.getStringList("flags");
         for (String flag : flags) {
@@ -322,6 +329,7 @@ public class XItemStack {
         }
         config.set(path + "." + "material", item.getType().name());
         if (XMaterial.supports(11)) if (meta.isUnbreakable()) config.set(path + "." + "unbreakable", true);
+        if (XMaterial.supports(14)) if (meta.hasCustomModelData()) config.set(path + "." + "custom-model", meta.getCustomModelData());
 
         // Enchantments
         for (Map.Entry<Enchantment, Integer> enchant : meta.getEnchants().entrySet()) {
@@ -530,6 +538,12 @@ public class XItemStack {
             if(config.contains(path + "." + "unbreakable")) {
                 meta.setUnbreakable(config.getBoolean(path + "." + "unbreakable", false));
             }
+        }
+
+        // Custom Model Data
+        if (XMaterial.supports(14)) {
+            int modelData = config.getInt(path + "." + "model-data");
+            if (modelData != 0) meta.setCustomModelData(modelData);
         }
 
         // Lore
