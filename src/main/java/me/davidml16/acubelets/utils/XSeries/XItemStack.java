@@ -123,10 +123,12 @@ public class XItemStack {
         if (meta instanceof SkullMeta) {
             String texture = SkullUtils.getSkinValue(item);
             if(texture == null) {
-                if (XMaterial.supports(12)) {
-                    config.set(path + "." + "skull", ((SkullMeta) meta).getOwningPlayer().getUniqueId().toString());
-                } else {
-                    config.set(path + "." + "skull", ((SkullMeta) meta).getOwner());
+                if(((SkullMeta) meta).hasOwner()) {
+                    if (XMaterial.supports(12)) {
+                        config.set(path + "." + "skull", ((SkullMeta) meta).getOwningPlayer().getUniqueId().toString());
+                    } else {
+                        config.set(path + "." + "skull", ((SkullMeta) meta).getOwner());
+                    }
                 }
             } else {
                 config.set(path + "." + "skull", texture);
@@ -361,10 +363,12 @@ public class XItemStack {
         if (meta instanceof SkullMeta) {
             String texture = SkullUtils.getSkinValue(item);
             if(texture == null) {
-                if (XMaterial.supports(12)) {
-                    config.set(path + "." + "skull", ((SkullMeta) meta).getOwningPlayer().getUniqueId().toString());
-                } else {
-                    config.set(path + "." + "skull", ((SkullMeta) meta).getOwner());
+                if(((SkullMeta) meta).hasOwner()) {
+                    if (XMaterial.supports(12)) {
+                        config.set(path + "." + "skull", ((SkullMeta) meta).getOwningPlayer().getUniqueId().toString());
+                    } else {
+                        config.set(path + "." + "skull", ((SkullMeta) meta).getOwner());
+                    }
                 }
             } else {
                 config.set(path + "." + "skull", texture);

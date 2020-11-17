@@ -71,7 +71,6 @@ public class EditCommandRewardMenu implements ConversationAbandonedListener, Com
                     return this;
                 case "4":
                     if(param1ConversationContext.getSessionData("rewardName") != null
-                            && param1ConversationContext.getSessionData("rewardCommand") != null
                             && param1ConversationContext.getSessionData("rewardRarity") != null
                             && param1ConversationContext.getSessionData("rewardIcon") != null) {
                         if(cubeletType.getRarities().containsKey((String) param1ConversationContext.getSessionData("rewardRarity"))) {
