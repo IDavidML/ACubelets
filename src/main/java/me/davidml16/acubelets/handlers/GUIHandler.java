@@ -21,6 +21,7 @@ public class GUIHandler {
     public boolean isOpened(Player player) {
         if(main.getCubeletsGUI().getOpened().containsKey(player.getUniqueId())) return true;
         if(main.getTypeConfigGUI().getOpened().containsKey(player.getUniqueId())) return true;
+        if(main.getTypeSettingsGUI().getOpened().containsKey(player.getUniqueId())) return true;
         if(main.getRewardsGUI().getOpened().containsKey(player.getUniqueId())) return true;
         if(main.getRaritiesGUI().getOpened().containsKey(player.getUniqueId())) return true;
         if(main.getAnimationsGUI().getOpened().containsKey(player.getUniqueId())) return true;
@@ -48,6 +49,7 @@ public class GUIHandler {
     public void removeOpened(Player player) {
         main.getCubeletsGUI().getOpened().remove(player.getUniqueId());
         main.getTypeConfigGUI().getOpened().remove(player.getUniqueId());
+        main.getTypeSettingsGUI().getOpened().remove(player.getUniqueId());
         main.getRewardsGUI().getOpened().remove(player.getUniqueId());
         main.getRaritiesGUI().getOpened().remove(player.getUniqueId());
         main.getAnimationsGUI().getOpened().remove(player.getUniqueId());

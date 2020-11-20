@@ -5,7 +5,6 @@ import me.davidml16.acubelets.conversation.rarities.EditRarityMenu;
 import me.davidml16.acubelets.conversation.rarities.RarityMenu;
 import me.davidml16.acubelets.interfaces.RarityComparator;
 import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.objects.Pair;
 import me.davidml16.acubelets.objects.Rarity;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ItemBuilder;
@@ -27,6 +26,33 @@ import java.io.File;
 import java.util.*;
 
 public class Rarities_GUI implements Listener {
+
+    static class Pair {
+
+        private String id;
+        private int page;
+
+        public Pair(String id, int page) {
+            this.id = id;
+            this.page = page;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public int getPage() {
+            return page;
+        }
+
+        @Override
+        public String toString() {
+            return "Pair{" +
+                    "cubeletType='" + id + '\'' +
+                    ", page=" + page +
+                    '}';
+        }
+    }
 
     private HashMap<UUID, Pair> opened;
     private HashMap<String, Inventory> guis;

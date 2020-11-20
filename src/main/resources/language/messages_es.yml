@@ -36,6 +36,9 @@ Commands:
       Yourself: '%prefix% &cNo puedes regalarte cubelets a ti mismo!'
       Gifted: '%prefix% &aRegalados &e%amount%x %cubelet% &aa &e%player%'
       Received: '%prefix% &aHas recibido &e%amount%x %cubelet% &ade &e%player%'
+    GiveKey:
+      Give: '%prefix% &aEnvidado &e%amount%x llave(s) de %cubelet% &aa &e%player%'
+      Received: '%prefix% &aRecibidas &e%amount%x llave(s) de %cubelet%'
   Points:
     Give: '%prefix% &aEnviados &e%amount%x Puntos &aa &e%player%'
     Set: '%prefix% &aCambiados &e%amount%x Puntos &aa &e%player%'

@@ -63,6 +63,10 @@ SerializeBase64: false
 GiftCubeletsCommand: false
 
 
+# Enable/disable if you want that additionally keys can be used to directly open a cubelet
+UseKeys: false
+
+
 # Enable/disable cubelet rewards preview
 # Available click types: LEFT, RIGHT, MIDDLE, SHIFT_LEFT or SHIFT_RIGHT
 RewardsPreview:

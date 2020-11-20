@@ -61,6 +61,8 @@ public class PluginHandler {
 
         main.setAnimationsByPlayer(main.getConfig().getBoolean("AnimationsByPlayer"));
 
+        main.setKeysEnabled(main.getConfig().getBoolean("UseKeys"));
+
         main.getLanguageHandler().loadLanguage("en");
         main.getLanguageHandler().loadLanguage("es");
         main.getLanguageHandler().setLanguage(main.getConfig().getString("Language").toLowerCase());

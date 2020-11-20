@@ -87,7 +87,8 @@ public class TypeIconMenu implements ConversationAbandonedListener, CommonPrompt
 
                         Sounds.playSound(player, player.getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
                         main.getTypeConfigGUI().reloadGUI(cubeletType.getId());
-                        main.getTypeConfigGUI().open(player, cubeletType.getId());
+                        main.getTypeSettingsGUI().reloadGUI(cubeletType.getId());
+                        main.getTypeSettingsGUI().open(player, cubeletType.getId());
                     } else {
                         Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
                             DataOutputStream out = null;
@@ -118,7 +119,8 @@ public class TypeIconMenu implements ConversationAbandonedListener, CommonPrompt
 
                                     Sounds.playSound(player, player.getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
                                     main.getTypeConfigGUI().reloadGUI(cubeletType.getId());
-                                    main.getTypeConfigGUI().open(player, cubeletType.getId());
+                                    main.getTypeSettingsGUI().reloadGUI(cubeletType.getId());
+                                    main.getTypeSettingsGUI().open(player, cubeletType.getId());
                                 });
                             } catch (Throwable t) {
                                 t.printStackTrace();

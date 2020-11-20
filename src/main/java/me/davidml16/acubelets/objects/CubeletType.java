@@ -5,6 +5,7 @@ import me.davidml16.acubelets.interfaces.RarityComparator;
 import me.davidml16.acubelets.interfaces.RewardComparator;
 import me.davidml16.acubelets.interfaces.RewardIDComparator;
 import me.davidml16.acubelets.objects.rewards.*;
+import me.davidml16.acubelets.utils.NBTEditor;
 import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
@@ -29,6 +30,8 @@ public class CubeletType {
 
     private Map<String, List<Reward>> rewards;
     private Map<String, Rarity> rarities;
+
+    private ItemStack key;
 
     public CubeletType(Main main, String id, String name) {
         this.main = main;
@@ -147,6 +150,16 @@ public class CubeletType {
         this.expireTime = expireTime;
     }
 
+    public ItemStack getKey() { return key; }
+
+    public void setKey(ItemStack key) { this.key = key; }
+
+    public ItemStack getKeyNBT() {
+        ItemStack key = getKey().clone();
+        key = NBTEditor.set(key, getId(), "keyType");
+        return key;
+    }
+
     public void addReward(String rarity, Reward reward) {
         Map<String, List<Reward>> rewardsAll = getRewards();
         List<Reward> commandRewards;
@@ -170,6 +183,12 @@ public class CubeletType {
 
     public void saveType() {
         FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
+
+        config.set("type.key", null);
+        if(!main.isSerializeBase64())
+            XItemStack.serializeItem(key, config, "type.key");
+        else
+            config.set("type.key", XItemStack.itemStackToBase64(key));
 
         config.set("type.rarities", new ArrayList<>());
         if (config.contains("type.rarities")) {

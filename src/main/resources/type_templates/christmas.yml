@@ -58,7 +58,7 @@ type:
       name: Example common
       rarity: common
       command:
-      - '[give %player% diamond_block 1]'
+      - 'give %player% diamond_block 1'
       icon:
         material: DIAMOND_BLOCK
         enchanted: false

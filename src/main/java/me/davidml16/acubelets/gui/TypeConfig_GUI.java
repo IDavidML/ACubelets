@@ -54,39 +54,10 @@ public class TypeConfig_GUI implements Listener {
         Inventory gui = Bukkit.createInventory(null, 45, "%cubelet_type% | Configuration".replaceAll("%cubelet_type%", id));
         ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
 
-        FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
-
         CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
-        List<String> lore = new ArrayList<>();
-        for(String line : type.getLoreAvailable()) {
-            lore.add(Utils.translate(line));
-        }
-        gui.setItem(10, new ItemBuilder(XMaterial.NAME_TAG.parseItem()).setName(Utils.translate(type.getName())).setLore(lore).toItemStack());
-        gui.setItem(19, new ItemBuilder(type.getIcon()).setName(Utils.translate("&aCubelet type icon"))
-                .setLore(
-                        "",
-                        Utils.translate(" &7You can change the "),
-                        Utils.translate(" &7icon clicking this item "),
-                        Utils.translate(" &7and opening icon setup "),
-                        "",
-                        Utils.translate("&eClick change skull texture! ")
-                )
-                .toItemStack());
+        gui.setItem(4, new ItemBuilder(type.getIcon().clone()).setName(Utils.translate(type.getName())).toItemStack());
 
-        gui.setItem(21, new ItemBuilder(XMaterial.ANVIL.parseItem()).setName(Utils.translate("&aCubelet type name"))
-                .setLore(
-                        "",
-                        Utils.translate(" &7Click on the anvil "),
-                        Utils.translate(" &7to start rename menu "),
-                        "",
-                        Utils.translate(" &7Choose 1 to rename cubelet type "),
-                        Utils.translate(" &7Choose 2 to save and exit menu. "),
-                        "",
-                        Utils.translate("&eClick to rename cubelet! ")
-                )
-                .toItemStack());
-
-        gui.setItem(23, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem())
+        gui.setItem(19, new ItemBuilder(XMaterial.ARMOR_STAND.parseItem())
                 .setName(Utils.translate("&aAnimations"))
                 .setLore(
                         "",
@@ -97,7 +68,7 @@ public class TypeConfig_GUI implements Listener {
                         Utils.translate("&eClick to config animations! ")
                 ).toItemStack());
 
-        gui.setItem(16, new ItemBuilder(XMaterial.ITEM_FRAME.parseItem())
+        gui.setItem(21, new ItemBuilder(XMaterial.ITEM_FRAME.parseItem())
                 .setName(Utils.translate("&aRarities"))
                 .setLore(
                         "",
@@ -111,7 +82,7 @@ public class TypeConfig_GUI implements Listener {
                         Utils.translate("&eClick to config rarities! ")
                 ).toItemStack());
 
-        gui.setItem(25, new ItemBuilder(XMaterial.GOLD_NUGGET.parseItem())
+        gui.setItem(23, new ItemBuilder(XMaterial.GOLD_NUGGET.parseItem())
                 .setName(Utils.translate("&aRewards"))
                 .setLore(
                         "",
@@ -124,6 +95,20 @@ public class TypeConfig_GUI implements Listener {
                         "",
                         Utils.translate("&eClick to config rewards! ")
                 ).toItemStack());
+
+        gui.setItem(25, new ItemBuilder(XMaterial.CHEST.parseItem()).setName(Utils.translate("&aSettings"))
+                .setLore(
+                        "",
+                        Utils.translate(" &7Click on the chest "),
+                        Utils.translate(" &7to change some settings "),
+                        "",
+                        Utils.translate(" &7- Cubelet type name "),
+                        Utils.translate(" &7- Cubelet type icon "),
+                        Utils.translate(" &7- Cubelet type key "),
+                        "",
+                        Utils.translate("&eClick to open settings menu! ")
+                )
+                .toItemStack());
         
         gui.setItem(40, new ItemBuilder(XMaterial.BARRIER.parseItem())
                 .setName(Utils.translate("&cReload configuration "))
@@ -156,21 +141,7 @@ public class TypeConfig_GUI implements Listener {
         Inventory gui = guis.get(id);
 
         CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
-        List<String> lore = new ArrayList<>();
-        for(String line : type.getLoreAvailable()) {
-            lore.add(Utils.translate(line));
-        }
-        gui.setItem(10, new ItemBuilder(XMaterial.NAME_TAG.parseItem()).setName(Utils.translate(type.getName())).setLore(lore).toItemStack());
-        gui.setItem(19, new ItemBuilder(type.getIcon()).setName(Utils.translate("&aCubelet type icon"))
-                .setLore(
-                        "",
-                        Utils.translate(" &7You can change the "),
-                        Utils.translate(" &7icon clicking this item "),
-                        Utils.translate(" &7and opening icon setup "),
-                        "",
-                        Utils.translate("&eClick change skull texture! ")
-                )
-                .toItemStack());
+        gui.setItem(4, new ItemBuilder(type.getIcon().clone()).setName(Utils.translate(type.getName())).toItemStack());
 
         for(HumanEntity pl : gui.getViewers()) {
             pl.getOpenInventory().getTopInventory().setContents(gui.getContents());
@@ -204,23 +175,17 @@ public class TypeConfig_GUI implements Listener {
             CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
 
             if (slot == 19) {
-                p.closeInventory();
-                new TypeIconMenu(main).getConversation(p, type).begin();
-                Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
-            } else if (slot == 16) {
+                main.getAnimationsGUI().open(p, id);
+            } else if (slot == 21) {
                 main.getRaritiesGUI().open(p, id);
             } else if (slot == 23) {
-                main.getAnimationsGUI().open(p, id);
-            } else if (slot == 25) {
                 main.getRewardsGUI().open(p, id);
+            } else if (slot == 25) {
+                main.getTypeSettingsGUI().open(p, id);
             } else if (slot == 40) {
                 main.getPluginHandler().reloadAll();
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
                 p.sendMessage(main.getLanguageHandler().getMessage("Commands.Reload"));
-            } else if (slot == 21) {
-                p.closeInventory();
-                new RenameMenu(main).getConversation(p, type).begin();
-                Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 50, 3);
             }
         }
     }

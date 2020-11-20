@@ -10,12 +10,14 @@ import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.TimeAPI.TimeAPI;
 import me.davidml16.acubelets.utils.XSeries.XItemStack;
+import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
@@ -168,6 +170,26 @@ public class CubeletTypesHandler {
                         config.set("type.icon.texture", "base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWYyMmI2YTNhMGYyNGJkZWVhYjJhNmFjZDliMWY1MmJiOTU5NGQ1ZjZiMWUyYzA1ZGRkYjIxOTQxMGM4In19fQ==");
                     }
 
+                    if (!config.contains("type.key")) {
+
+                        ItemStack key = new ItemBuilder(XMaterial.TRIPWIRE_HOOK.parseMaterial(), 1)
+                                .addGlow()
+                                .setName(Utils.translate(config.getString("type.name") + "'s key"))
+                                .setLore(Arrays.asList(
+                                        Utils.translate("&8&oGo to a Cubelets Machine to"),
+                                        Utils.translate("&8&oopen this key."),
+                                        "",
+                                        Utils.translate("&a&lLeft-Click: &6Preview rewards"),
+                                        Utils.translate("&a&lRight-Click: &6Open cubelet key")
+                                ))
+                                .toItemStack();
+
+                        if(!main.isSerializeBase64())
+                            XItemStack.serializeItem(key, config, "type.key");
+                        else
+                            config.set("type.key", XItemStack.itemStackToBase64(key));
+
+                    }
 
                     if (!config.contains("type.rarities")) {
                         config.set("type.rarities", new ArrayList<>());
@@ -236,6 +258,18 @@ public class CubeletTypesHandler {
                     else
                         convertedTime = new TimeAPI(config.getString("type.expiration")).getMilliseconds();
                     cubeletType.setExpireTime(convertedTime);
+
+                    ItemStack key = null;
+                    if (config.get("type.key") instanceof MemorySection) {
+                        key = XItemStack.deserializeItem(config, "type.key");
+                    } else {
+                        try {
+                            key = XItemStack.itemStackFromBase64(config.getString("type.key"));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    cubeletType.setKey(key);
 
                 }
             }

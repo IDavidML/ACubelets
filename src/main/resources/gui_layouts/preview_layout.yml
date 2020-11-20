@@ -38,6 +38,15 @@ Layout:
         - '&7Go back to the previous'
         - '&7menu.'
 
+    # Close item
+    Close:
+      Name: '&9Close'
+      Material: 'BOOK'
+      Slot: 5
+      Lore:
+        - '&7Click to close'
+        - '&7this menu'
+
     # Next page item
     NextPage:
       Name: '&6Next page'

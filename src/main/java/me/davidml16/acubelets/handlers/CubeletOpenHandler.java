@@ -21,7 +21,7 @@ public class CubeletOpenHandler {
         this.main = main;
     }
 
-    public void openAnimation(Player p, CubeletBox box, CubeletType type) {
+    public void openAnimation(Player p, CubeletBox box, CubeletType type, boolean openedByKey) {
         if(box.isWaiting()) {
 
             CubeletOpener cubeletOpener = new CubeletOpener(p.getUniqueId(), p.getName());
@@ -34,7 +34,7 @@ public class CubeletOpenHandler {
 
             Animation animation;
 
-            if(!main.isAnimationByPlayer()) {
+            if(!main.isAnimationByPlayer() || openedByKey) {
                 animation = main.getAnimationHandler().getAnimation(type.getAnimation());
             } else {
 

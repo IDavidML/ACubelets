@@ -48,7 +48,8 @@ public class RenameMenu implements ConversationAbandonedListener, CommonPrompts 
                             + " &aSaved data of cubelet type &e" + type.getId() + " &awithout errors!"));
                     Sounds.playSound(player, player.getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
                     main.getTypeConfigGUI().reloadGUI(type.getId());
-                    main.getTypeConfigGUI().open(player, type.getId());
+                    main.getTypeSettingsGUI().reloadGUI(type.getId());
+                    main.getTypeSettingsGUI().open(player, type.getId());
                     main.getGuiHandler().removeConversation(player);
                     return Prompt.END_OF_CONVERSATION;
             }

@@ -3,6 +3,7 @@ package me.davidml16.acubelets.gui.rewards;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.objects.*;
+import me.davidml16.acubelets.utils.NBTEditor;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
@@ -21,6 +22,42 @@ import java.util.*;
 
 public class RewardsPreview_GUI implements Listener {
 
+    static class Pair {
+
+        private String id;
+        private int page;
+        private boolean openedExternally;
+
+        public Pair(String id, int page) {
+            this(id, page, false);
+        }
+
+        public Pair(String id, int page, boolean openedExternally) {
+            this.id = id;
+            this.page = page;
+            this.openedExternally = openedExternally;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public int getPage() {
+            return page;
+        }
+
+        public boolean isOpenedExternally() { return openedExternally; }
+
+        @Override
+        public String toString() {
+            return "Pair{" +
+                    "cubeletType='" + id + '\'' +
+                    ", page=" + page +
+                    '}';
+        }
+    }
+
+
     private HashMap<UUID, Pair> opened;
     private Main main;
 
@@ -34,7 +71,7 @@ public class RewardsPreview_GUI implements Listener {
         return opened;
     }
 
-    private void openPage(Player p, String type, int page) {
+    private void openPage(Player p, String type, int page, boolean openedExternally) {
 
         CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(type);
         List<Reward> rewards = cubeletType.getAllRewards();
@@ -44,7 +81,7 @@ public class RewardsPreview_GUI implements Listener {
         int pageSize = getPageSize(guiLayout);
 
         if(page > 0 && rewards.size() < (page * pageSize) + 1) {
-            openPage(p, type, page - 1);
+            openPage(p, type, page - 1, openedExternally);
             return;
         }
 
@@ -56,23 +93,39 @@ public class RewardsPreview_GUI implements Listener {
 
         if (page > 0) {
             int amount = guiLayout.getBoolean("Items.PreviousPage.ShowPageNumber") ? page : 1;
-            gui.setItem((neededSize - 10) + guiLayout.getSlot("PreviousPage"), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.PreviousPage.Material")).get().parseMaterial(), amount)
+            ItemStack item = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.PreviousPage.Material")).get().parseMaterial(), amount)
                     .setName(guiLayout.getMessage("Items.PreviousPage.Name"))
-                    .toItemStack());
+                    .toItemStack();
+            item = NBTEditor.set(item, "previous", "action");
+            if(guiLayout.getSlot("PreviousPage") >= 0)
+                gui.setItem(((neededSize - 10) + guiLayout.getSlot("PreviousPage")), item);
         }
 
         if (cubeletType.getAllRewards().size() > (page + 1) * pageSize) {
-            int amount = guiLayout.getBoolean("Items.PreviousPage.ShowPageNumber") ? (page + 2) : 1;
-            gui.setItem((neededSize - 10) + guiLayout.getSlot("NextPage"), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NextPage.Material")).get().parseMaterial(), amount)
+            int amount = guiLayout.getBoolean("Items.NextPage.ShowPageNumber") ? (page + 2) : 1;
+            ItemStack item = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NextPage.Material")).get().parseMaterial(), amount)
                     .setName(guiLayout.getMessage("Items.NextPage.Name"))
-                    .toItemStack());
+                    .toItemStack();
+            item = NBTEditor.set(item, "next", "action");
+            if(guiLayout.getSlot("NextPage") >= 0)
+                gui.setItem((neededSize - 10) + guiLayout.getSlot("NextPage"), item);
         }
 
-        ItemStack back = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Back.Material")).get().parseItem())
-                .setName(guiLayout.getMessage("Items.Back.Name"))
-                .setLore(guiLayout.getMessageList("Items.Back.Lore"))
-                .toItemStack();
-        gui.setItem((neededSize - 10) + guiLayout.getSlot("Back"), back);
+        if(!openedExternally) {
+            ItemStack back = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Back.Material")).get().parseItem())
+                    .setName(guiLayout.getMessage("Items.Back.Name"))
+                    .setLore(guiLayout.getMessageList("Items.Back.Lore"))
+                    .toItemStack();
+            back = NBTEditor.set(back, "back", "action");
+            gui.setItem((neededSize - 10) + guiLayout.getSlot("Back"), back);
+        } else {
+            ItemStack close = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Close.Material")).get().parseItem())
+                    .setName(guiLayout.getMessage("Items.Close.Name"))
+                    .setLore(guiLayout.getMessageList("Items.Close.Lore"))
+                    .toItemStack();
+            close = NBTEditor.set(close, "close", "action");
+            gui.setItem((neededSize - 10) + guiLayout.getSlot("Close"), close);
+        }
 
         for (int i = 0; i <= (neededSize-10); i++)
             gui.setItem(i, null);
@@ -103,14 +156,14 @@ public class RewardsPreview_GUI implements Listener {
 
         p.openInventory(gui);
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> opened.put(p.getUniqueId(), new Pair(type, page)), 1L);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> opened.put(p.getUniqueId(), new Pair(type, page, openedExternally)), 1L);
     }
 
-    public void open(Player p, String type) {
+    public void open(Player p, String type, boolean openedExternally) {
         p.updateInventory();
-        openPage(p, type, 0);
+        openPage(p, type, 0, openedExternally);
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> opened.put(p.getUniqueId(), new Pair(type, 0)), 1L);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> opened.put(p.getUniqueId(), new Pair(type, 0, openedExternally)), 1L);
     }
 
     private int getNeededSize(GUILayout guiLayout, int cubelets) {
@@ -179,14 +232,28 @@ public class RewardsPreview_GUI implements Listener {
             int size = p.getOpenInventory().getTopInventory().getSize();
             GUILayout guiLayout = main.getLayoutHandler().getLayout("preview");
 
-            if(e.getClick() != ClickType.DOUBLE_CLICK) {
-                if (slot == ((size - 10) + guiLayout.getSlot("PreviousPage"))) {
-                    openPage(p, opened.get(p.getUniqueId()).getId(), opened.get(p.getUniqueId()).getPage() - 1);
-                } else if (slot == ((size - 10) + guiLayout.getSlot("NextPage"))) {
-                    openPage(p, opened.get(p.getUniqueId()).getId(), opened.get(p.getUniqueId()).getPage() + 1);
-                } else if (slot == ((size - 10) + guiLayout.getSlot("Back"))) {
-                    main.getCubeletsGUI().open(p);
+            if (slot >= (size - 9) && slot <= size) {
+
+                Pair pair = opened.get(p.getUniqueId());
+                String action = NBTEditor.getString(e.getCurrentItem(), "action");
+
+                if(e.getClick() == ClickType.DOUBLE_CLICK) return;
+
+                switch (Objects.requireNonNull(action)) {
+                    case "previous":
+                        openPage(p, pair.getId(), pair.getPage() - 1, pair.isOpenedExternally());
+                        break;
+                    case "next":
+                        openPage(p, pair.getId(), pair.getPage() + 1, pair.isOpenedExternally());
+                        break;
+                    case "close":
+                        p.closeInventory();
+                        break;
+                    case "back":
+                        main.getCubeletsGUI().open(p);
+                        break;
                 }
+
             }
 
             p.updateInventory();

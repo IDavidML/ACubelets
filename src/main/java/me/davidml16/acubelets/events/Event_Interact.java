@@ -7,8 +7,10 @@ import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Profile;
+import me.davidml16.acubelets.utils.NBTEditor;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,6 +19,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.ItemStack;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -36,51 +39,65 @@ public class Event_Interact implements Listener {
         Player p = e.getPlayer();
         Action action = e.getAction();
 
-        if(action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
-            if(main.getCubeletBoxHandler().getBoxes().containsKey(e.getClickedBlock().getLocation())) {
-                e.setCancelled(true);
+        ItemStack item = e.getItem();
 
-                if(!Bukkit.getVersion().contains("1.8")) {
-                    if(e.getHand() == EquipmentSlot.OFF_HAND) return;
+        if(action == Action.RIGHT_CLICK_AIR || action == Action.LEFT_CLICK_AIR ||
+                action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
+            if(item != null) {
+                if (NBTEditor.contains(item, "keyType")) {
+                    e.setCancelled(true);
                 }
+            }
+        }
 
-                CubeletBox box = main.getCubeletBoxHandler().getBoxByLocation(e.getClickedBlock().getLocation());
+        if(item == null || !NBTEditor.contains(item, "keyType") || !main.isKeysEnabled()) {
+            if(action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
+                if (main.getCubeletBoxHandler().getBoxes().containsKey(e.getClickedBlock().getLocation())) {
+                    e.setCancelled(true);
 
-                if(box.isWaiting()) {
-                    main.getPlayerDataHandler().getData(p).setBoxOpened(box);
+                    if (!Bukkit.getVersion().contains("1.8")) {
+                        if (e.getHand() == EquipmentSlot.OFF_HAND) return;
+                    }
 
-                    if(!main.isNoGuiMode()) {
+                    CubeletBox box = main.getCubeletBoxHandler().getBoxByLocation(e.getClickedBlock().getLocation());
 
-                        main.getCubeletsGUI().open(p);
+                    if (box.isWaiting()) {
+                        main.getPlayerDataHandler().getData(p).setBoxOpened(box);
 
-                    } else {
+                        if (!main.isNoGuiMode()) {
 
-                        Profile profile = main.getPlayerDataHandler().getData(p.getUniqueId());
-                        List<Cubelet> cubelets = profile.getCubelets();
-                        cubelets.sort(new CubeletDateComparator());
+                            main.getCubeletsGUI().open(p);
 
-                        Optional<Cubelet> optionalCubelet = cubelets.stream().findFirst();
+                        } else {
 
-                        if (optionalCubelet.isPresent()) {
+                            Profile profile = main.getPlayerDataHandler().getData(p.getUniqueId());
+                            List<Cubelet> cubelets = profile.getCubelets();
+                            cubelets.sort(new CubeletDateComparator());
 
-                            Cubelet cubelet = optionalCubelet.get();
+                            Optional<Cubelet> optionalCubelet = cubelets.stream().findFirst();
 
-                            if (cubelet.getExpire() > System.currentTimeMillis()) {
+                            if (optionalCubelet.isPresent()) {
 
-                                CubeletType type = main.getCubeletTypesHandler().getTypeBydId(cubelet.getType());
+                                Cubelet cubelet = optionalCubelet.get();
 
-                                if (type.getAllRewards().size() > 0) {
+                                if (cubelet.getExpire() > System.currentTimeMillis()) {
 
-                                    main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), type);
+                                    CubeletType type = main.getCubeletTypesHandler().getTypeBydId(cubelet.getType());
 
-                                    try {
-                                        main.getDatabaseHandler().removeCubelet(p.getUniqueId(), cubelet.getUuid());
-                                    } catch (SQLException throwables) {
-                                        throwables.printStackTrace();
+                                    if (type.getAllRewards().size() > 0) {
+
+                                        main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), type, false);
+
+                                        try {
+                                            main.getDatabaseHandler().removeCubelet(p.getUniqueId(), cubelet.getUuid());
+                                        } catch (SQLException throwables) {
+                                            throwables.printStackTrace();
+                                        }
+
+                                        profile.getCubelets().remove(cubelet);
+                                        main.getHologramHandler().reloadHolograms(p);
+
                                     }
-
-                                    profile.getCubelets().remove(cubelet);
-                                    main.getHologramHandler().reloadHolograms(p);
 
                                 }
 
@@ -88,16 +105,62 @@ public class Event_Interact implements Listener {
 
                         }
 
-                    }
-
-                } else {
-                    if(box.getPlayerOpening().getUuid() == p.getUniqueId()) {
-                        p.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));
                     } else {
-                        p.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Other").replaceAll("%player%", box.getPlayerOpening().getName()));
+                        if (box.getPlayerOpening().getUuid() == p.getUniqueId()) {
+                            p.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));
+                        } else {
+                            p.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Other").replaceAll("%player%", box.getPlayerOpening().getName()));
+                        }
                     }
-                }
 
+                }
+            }
+        } else {
+
+            if(action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
+                if (main.getCubeletBoxHandler().getBoxes().containsKey(e.getClickedBlock().getLocation())) {
+
+                    e.setCancelled(true);
+
+                    String typeID = NBTEditor.getString(item, "keyType");
+
+                    if(action == Action.LEFT_CLICK_BLOCK) {
+
+                        if(main.isPreviewEnabled()) main.getRewardsPreviewGUI().open(p, typeID, true);
+
+                    } else {
+
+                        CubeletBox box = main.getCubeletBoxHandler().getBoxByLocation(e.getClickedBlock().getLocation());
+
+                        if (box.isWaiting()) {
+
+                            CubeletType type = main.getCubeletTypesHandler().getTypeBydId(typeID);
+
+                            if (type.getAllRewards().size() > 0) {
+
+                                main.getCubeletOpenHandler().openAnimation(p, box, type, true);
+
+                                if (item.getAmount() > 0) {
+                                    item.setAmount(item.getAmount() - 1);
+                                }
+
+                                main.getHologramHandler().reloadHolograms(p);
+
+                            }
+
+                        } else {
+
+                            if (box.getPlayerOpening().getUuid() == p.getUniqueId()) {
+                                p.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));
+                            } else {
+                                p.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Other").replaceAll("%player%", box.getPlayerOpening().getName()));
+                            }
+
+                        }
+
+                    }
+
+                }
             }
         }
     }

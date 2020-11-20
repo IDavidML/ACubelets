@@ -340,7 +340,7 @@ public class Cubelets_GUI implements Listener {
                                 if (cubelet.get().getExpire() > System.currentTimeMillis()) {
 
                                     if (type.getAllRewards().size() > 0) {
-                                        main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), type);
+                                        main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), type, false);
 
                                         profile.getCubelets().removeIf(cblt -> cblt.getUuid().toString().equals(cubeletUUID));
 
@@ -362,7 +362,7 @@ public class Cubelets_GUI implements Listener {
                         }
 
                     } else if (e.getClick() == clickType) {
-                        if(main.isPreviewEnabled()) main.getRewardsPreviewGUI().open(p, typeID);
+                        if(main.isPreviewEnabled()) main.getRewardsPreviewGUI().open(p, typeID, false);
                     }
                 } else {
                     int noCubeletsSlot = 0;

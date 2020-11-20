@@ -36,6 +36,9 @@ Commands:
       Yourself: '%prefix% &cYou can not gift yourself cubelets!'
       Gifted: '%prefix% &aGifted &e%amount%x %cubelet% &ato &e%player%'
       Received: '%prefix% &aReceived &e%amount%x %cubelet% &afrom &e%player%'
+    GiveKey:
+      Give: '%prefix% &aGived &e%amount%x %cubelet% key(s) &ato &e%player%'
+      Received: '%prefix% &aReceived &e%amount%x %cubelet% key(s)'
   Points:
     Give: '%prefix% &aGived &e%amount%x Points &ato &e%player%'
     Set: '%prefix% &aSetted &e%amount%x Points &ato &e%player%'

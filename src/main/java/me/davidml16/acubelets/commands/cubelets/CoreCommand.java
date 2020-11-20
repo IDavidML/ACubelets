@@ -25,6 +25,7 @@ public class CoreCommand extends Command {
     private final ExecuteInfo executeInfo = new ExecuteInfo(main);
     private final ExecuteClear executeClear = new ExecuteClear(main);
     private final ExecuteGift executeGift = new ExecuteGift(main);
+    private final ExecuteGiveKey executeGiveKey = new ExecuteGiveKey(main);
 
     public CoreCommand(String name) {
         super(name);
@@ -54,6 +55,8 @@ public class CoreCommand extends Command {
                 return executeBox.executeCommand(sender, label, args);
             case "give":
                 return executeGive.executeCommand(sender, label, args);
+            case "givekey":
+                return executeGiveKey.executeCommand(sender, label, args);
             case "remove":
                 return executeRemove.executeCommand(sender, label, args);
             case "type":
@@ -89,6 +92,10 @@ public class CoreCommand extends Command {
                 sender.sendMessage("");
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " [give/remove] [player] [typeID] [amount]"));
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " [info/clear] [player]"));
+
+                if(main.isKeysEnabled())
+                    sender.sendMessage(Utils.translate("&7 - &a/" + label + " givekey [player] [typeID] [amount]"));
+
                 sender.sendMessage("");
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " machine [create/remove/edit]"));
                 sender.sendMessage("");
@@ -103,6 +110,10 @@ public class CoreCommand extends Command {
             sender.sendMessage("");
             sender.sendMessage(Utils.translate("&7 - &a/" + label + " [give/remove] [player] [typeID] [amount]"));
             sender.sendMessage(Utils.translate("&7 - &a/" + label + " [info/clear] [player]"));
+
+            if(main.isKeysEnabled())
+                sender.sendMessage(Utils.translate("&7 - &a/" + label + " givekey [player] [typeID] [amount]"));
+
             sender.sendMessage("");
             sender.sendMessage(Utils.translate("&7 - &a/" + label + " machine [create/remove/edit]"));
             sender.sendMessage("");
@@ -133,6 +144,10 @@ public class CoreCommand extends Command {
             if (main.playerHasPermission(p, "acubelets.admin")) {
                 list.add("help");
                 list.add("give");
+
+                if(main.isKeysEnabled())
+                    list.add("givekey");
+
                 list.add("info");
                 list.add("clear");
                 list.add("remove");
@@ -143,7 +158,7 @@ public class CoreCommand extends Command {
             }
         }
 
-        if (args[0].equalsIgnoreCase("give")) {
+        if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("givekey")) {
             if (args.length == 2) {
                 if (main.playerHasPermission(p, "acubelets.admin")) {
                     for (Player target : main.getServer().getOnlinePlayers()) {
@@ -151,10 +166,12 @@ public class CoreCommand extends Command {
                     }
                     list.add("*");
                 }
-            } else {
+            } else if (args.length == 3) {
                 if (main.playerHasPermission(p, "acubelets.admin")) {
                     list.addAll(main.getCubeletTypesHandler().getTypes().keySet());
                 }
+            } else if (args.length == 4) {
+                list.add("1");
             }
         } else if (args[0].equalsIgnoreCase("remove")) {
             if (args.length == 2) {
@@ -163,7 +180,7 @@ public class CoreCommand extends Command {
                         list.add(target.getName());
                     }
                 }
-            } else {
+            } else if (args.length == 3) {
                 if (main.playerHasPermission(p, "acubelets.admin")) {
                     list.addAll(main.getCubeletTypesHandler().getTypes().keySet());
                 }

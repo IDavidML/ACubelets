@@ -10,6 +10,7 @@ import me.davidml16.acubelets.api.CubeletsAPI;
 import me.davidml16.acubelets.api.PointsAPI;
 import me.davidml16.acubelets.database.DatabaseHandler;
 import me.davidml16.acubelets.database.types.Database;
+import me.davidml16.acubelets.events.Event_Block;
 import me.davidml16.acubelets.events.Event_Damage;
 import me.davidml16.acubelets.events.Event_Interact;
 import me.davidml16.acubelets.events.Event_JoinQuit;
@@ -82,6 +83,7 @@ public class Main extends JavaPlugin {
     private PlayerAnimation_GUI playerAnimationGUI;
     private EditBox_GUI editBoxGUI;
     private TypeConfig_GUI typeConfigGUI;
+    private TypeSettings_GUI typeSettingsGUI;
     private Rewards_GUI rewardsGUI;
     private Rarities_GUI raritiesGUI;
     private Animations_GUI animationsGUI;
@@ -162,14 +164,15 @@ public class Main extends JavaPlugin {
         cubeletBoxHandler.loadBoxes();
         settings.put("NoGuiMode", getConfig().getBoolean("NoGuiMode"));
 
+        settings.put("SerializeBase64", getConfig().getBoolean("SerializeBase64"));
         settings.put("RewardAutoSorting", getConfig().getBoolean("RewardAutoSorting"));
+        settings.put("UseKeys", getConfig().getBoolean("UseKeys"));
         cubeletTypesHandler = new CubeletTypesHandler(this);
         cubeletTypesHandler.loadTypes();
 
         cubeletRarityHandler = new CubeletRarityHandler(this);
         cubeletRarityHandler.loadRarities();
 
-        settings.put("SerializeBase64", getConfig().getBoolean("SerializeBase64"));
         cubeletRewardHandler = new CubeletRewardHandler(this);
         cubeletRewardHandler.loadRewards();
 
@@ -218,6 +221,9 @@ public class Main extends JavaPlugin {
 
         typeConfigGUI = new TypeConfig_GUI(this);
         typeConfigGUI.loadGUI();
+
+        typeSettingsGUI = new TypeSettings_GUI(this);
+        typeSettingsGUI.loadGUI();
 
         rewardsGUI = new Rewards_GUI(this);
         rewardsGUI.loadGUI();
@@ -357,6 +363,8 @@ public class Main extends JavaPlugin {
 
     public TypeConfig_GUI getTypeConfigGUI() { return typeConfigGUI; }
 
+    public TypeSettings_GUI getTypeSettingsGUI() { return typeSettingsGUI; }
+
     public Rewards_GUI getRewardsGUI() { return rewardsGUI; }
 
     public Rarities_GUI getRaritiesGUI() { return raritiesGUI; }
@@ -447,6 +455,10 @@ public class Main extends JavaPlugin {
 
     public void setGiftCubelets(boolean value) { settings.put("GiftCubeletsCommand", value); }
 
+    public boolean isKeysEnabled() { return settings.get("UseKeys"); }
+
+    public void setKeysEnabled(boolean value) { settings.put("UseKeys", value); }
+
     public String getNoCubeletsCommand() {
         return noCubeletsCommand;
     }
@@ -485,6 +497,7 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new Event_Interact(this), this);
         Bukkit.getPluginManager().registerEvents(new Event_JoinQuit(this), this);
         Bukkit.getPluginManager().registerEvents(new Event_Damage(), this);
+        Bukkit.getPluginManager().registerEvents(new Event_Block(), this);
     }
 
 }

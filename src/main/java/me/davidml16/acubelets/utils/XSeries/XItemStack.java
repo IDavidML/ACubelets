@@ -194,7 +194,9 @@ public class XItemStack {
         // Special Items
         if (item.getType() == XMaterial.PLAYER_HEAD.parseMaterial()) {
             String skull = config.getString(path + "." + "skull");
-            if (skull != null) SkullUtils.applySkin(meta, skull);
+            if (skull != null) {
+                SkullUtils.applySkin(meta, skull);
+            }
         } else if (meta instanceof BannerMeta) {
             BannerMeta banner = (BannerMeta) meta;
 
