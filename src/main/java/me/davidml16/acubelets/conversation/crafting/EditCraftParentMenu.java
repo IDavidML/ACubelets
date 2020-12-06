@@ -53,6 +53,10 @@ public class EditCraftParentMenu implements ConversationAbandonedListener, Commo
                         String cubeletType = (String) param1ConversationContext.getSessionData("cubeletType");
                         int slot = (int) param1ConversationContext.getSessionData("slot");
 
+                        if(main.getCubeletTypesHandler().getTypeBydId(cubeletType) == null) {
+                            return new ErrorPrompt(main, this, "\n" + ChatColor.RED + "  The crafted cubelet type not exists!\n  Write anything to continue\n ");
+                        }
+
                         craftParent.setCubeletType(cubeletType);
                         craftParent.setSlot(slot);
                         main.getCubeletCraftingHandler().saveCrafting();

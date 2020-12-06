@@ -134,8 +134,8 @@ public class SQLite implements Database {
                 ps.setString(4, "date");
                 ps.setString(5, "animation2");
                 ps.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
+            } catch (SQLException ignore) {
+
             } finally {
                 if (ps != null) {
                     try {

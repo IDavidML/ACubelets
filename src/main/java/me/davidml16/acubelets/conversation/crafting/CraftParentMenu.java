@@ -45,6 +45,11 @@ public class CraftParentMenu implements ConversationAbandonedListener, CommonPro
                     if(param1ConversationContext.getSessionData("cubeletType") != null
                             && param1ConversationContext.getSessionData("slot") != null) {
                         String cubeletType = (String) param1ConversationContext.getSessionData("cubeletType");
+
+                        if(main.getCubeletTypesHandler().getTypeBydId(cubeletType) == null) {
+                            return new ErrorPrompt(main, this, "\n" + ChatColor.RED + "  The crafted cubelet type not exists!\n  Write anything to continue\n ");
+                        }
+
                         int slot = (int) param1ConversationContext.getSessionData("slot");
 
                         CraftParent craftParent = new CraftParent(cubeletType, slot);

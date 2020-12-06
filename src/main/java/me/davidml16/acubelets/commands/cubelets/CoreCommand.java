@@ -26,6 +26,7 @@ public class CoreCommand extends Command {
     private final ExecuteClear executeClear = new ExecuteClear(main);
     private final ExecuteGift executeGift = new ExecuteGift(main);
     private final ExecuteGiveKey executeGiveKey = new ExecuteGiveKey(main);
+    private final ExecutePreview executePreview = new ExecutePreview(main);
 
     public CoreCommand(String name) {
         super(name);
@@ -71,6 +72,8 @@ public class CoreCommand extends Command {
                 return executeClear.executeCommand(sender, label, args);
             case "gift":
                 return executeGift.executeCommand(sender, label, args);
+            case "preview":
+                return executePreview.executeCommand(sender, label, args);
         }
 
         sender.sendMessage("");
@@ -86,6 +89,12 @@ public class CoreCommand extends Command {
             if(main.isGiftCubelets()) {
                 sender.sendMessage("");
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " gift [player]"));
+            } else {
+                sender.sendMessage("");
+            }
+
+            if(main.isPreviewEnabled()) {
+                sender.sendMessage(Utils.translate("&7 - &a/" + label + " preview [typeID]"));
             }
 
             if (main.playerHasPermission((Player) sender, "acubelets.admin")) {
@@ -103,6 +112,8 @@ public class CoreCommand extends Command {
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " setup [typeID]"));
                 sender.sendMessage("");
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " reload"));
+                sender.sendMessage("");
+            } else {
                 sender.sendMessage("");
             }
 
@@ -141,6 +152,8 @@ public class CoreCommand extends Command {
         if (args.length == 1) {
             if(main.isGiftCubelets())
                 list.add("gift");
+            if(main.isPreviewEnabled())
+                list.add("preview");
             if (main.playerHasPermission(p, "acubelets.admin")) {
                 list.add("help");
                 list.add("give");
@@ -234,6 +247,10 @@ public class CoreCommand extends Command {
                     if(!target.getName().equalsIgnoreCase(p.getName()))
                         list.add(target.getName());
                 }
+            }
+        } else if (args[0].equalsIgnoreCase("preview")) {
+            if(args.length == 2) {
+                list.addAll( main.getCubeletTypesHandler().getTypes().keySet());
             }
         }
 

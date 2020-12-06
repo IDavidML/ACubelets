@@ -349,7 +349,7 @@ public class XItemStack {
         }
 
         // Attributes - https://minecraft.gamepedia.com/Attribute
-        if (XMaterial.supports(9) && meta.hasAttributeModifiers()) {
+        if (XMaterial.supports(14) && meta.hasAttributeModifiers()) {
             for (Map.Entry<Attribute, AttributeModifier> attribute : meta.getAttributeModifiers().entries()) {
                 String path2 = path + "." + "attributes." + attribute.getKey().name() + '.';
                 AttributeModifier modifier = attribute.getValue();
@@ -615,7 +615,7 @@ public class XItemStack {
         }
 
         // Atrributes - https://minecraft.gamepedia.com/Attribute
-        if (XMaterial.supports(9)) {
+        if (XMaterial.supports(14)) {
             ConfigurationSection attributes = config.getConfigurationSection(path + "." + "attributes");
             if (attributes != null) {
                 for (String attribute : attributes.getKeys(false)) {

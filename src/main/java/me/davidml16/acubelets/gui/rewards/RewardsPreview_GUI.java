@@ -19,6 +19,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+import java.util.regex.Matcher;
 
 public class RewardsPreview_GUI implements Listener {
 
@@ -145,7 +146,7 @@ public class RewardsPreview_GUI implements Listener {
                 }
 
                 gui.addItem(new ItemBuilder(reward.getIcon().clone())
-                    .setName(Utils.translate(guiLayout.getMessage("Items.Reward.Name").replaceAll("%reward_name%", reward.getName())))
+                    .setName(Utils.translate(guiLayout.getMessage("Items.Reward.Name").replaceAll("%reward_name%", Matcher.quoteReplacement(reward.getName()))))
                     .setLore(lore)
                     .hideAttributes()
                     .toItemStack());
