@@ -63,6 +63,8 @@ public class PluginHandler {
 
         main.setKeysEnabled(main.getConfig().getBoolean("UseKeys"));
 
+        main.setBroadcastEnabled(main.getConfig().getBoolean("BroadcastReward"));
+
         main.getLanguageHandler().loadLanguage("en");
         main.getLanguageHandler().loadLanguage("es");
         main.getLanguageHandler().setLanguage(main.getConfig().getString("Language").toLowerCase());

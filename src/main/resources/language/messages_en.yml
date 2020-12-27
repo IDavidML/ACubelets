@@ -51,6 +51,7 @@ Cubelet:
     Me: '&cYou already opening a Cubelet here!'
     Other: '&6%player% &cis already opening a Cubelet at this machine!'
   Reward:
+    Broadcast: '%prefix% &6&l%player% &agot &l%reward% &ain &6%cubelet%'
     New:
       - ''
       - '%center%%cubelet_type% Loot'

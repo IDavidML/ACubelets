@@ -154,20 +154,22 @@ public class TransactionHandler {
     }
 
     public void givePoints(UUID uuid, int amount) throws SQLException {
+
         if(Bukkit.getPlayer(uuid) != null) {
             main.getPlayerDataHandler().getData(uuid).setLootPoints(main.getPlayerDataHandler().getData(uuid).getLootPoints() + amount);
             if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(Bukkit.getPlayer(uuid));
             if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(Bukkit.getPlayer(uuid));
             if (main.getGiftGUI().getOpened().containsKey(uuid)) main.getGiftGUI().reloadGui(Bukkit.getPlayer(uuid));
-        } else {
-            main.getDatabaseHandler().getPlayerLootPoints(uuid, done -> {
-                try {
-                    main.getDatabaseHandler().setPlayerLootPoints(uuid, done + amount);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            });
+
         }
+
+        main.getDatabaseHandler().getPlayerLootPoints(uuid, done -> {
+            try {
+                main.getDatabaseHandler().setPlayerLootPoints(uuid, done + amount);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        });
 
     }
 
@@ -183,6 +185,7 @@ public class TransactionHandler {
     }
 
     public void removePoints(UUID uuid, int amount) throws SQLException {
+
         if(Bukkit.getPlayer(uuid) != null) {
             if ((main.getPlayerDataHandler().getData(uuid).getLootPoints() - amount) < 0)
                 main.getPlayerDataHandler().getData(uuid).setLootPoints(0);
@@ -192,26 +195,25 @@ public class TransactionHandler {
             if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(Bukkit.getPlayer(uuid));
             if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(Bukkit.getPlayer(uuid));
             if (main.getGiftGUI().getOpened().containsKey(uuid)) main.getGiftGUI().reloadGui(Bukkit.getPlayer(uuid));
-        } else {
-            main.getDatabaseHandler().getPlayerLootPoints(uuid, done -> {
-                if((done - amount) < 0) {
-                    try {
-                        main.getDatabaseHandler().setPlayerLootPoints(uuid, 0);
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                }
-                else {
-                    try {
-                        main.getDatabaseHandler().setPlayerLootPoints(uuid, done - amount);
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
-                }
-            });
-
-
         }
+
+        main.getDatabaseHandler().getPlayerLootPoints(uuid, done -> {
+            if((done - amount) < 0) {
+                try {
+                    main.getDatabaseHandler().setPlayerLootPoints(uuid, 0);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+            else {
+                try {
+                    main.getDatabaseHandler().setPlayerLootPoints(uuid, done - amount);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        });
+
     }
 
     public void setPoints(String player, int amount) throws SQLException {
@@ -226,14 +228,16 @@ public class TransactionHandler {
     }
 
     public void setPoints(UUID uuid, int amount) throws SQLException {
+
         if(Bukkit.getPlayer(uuid) != null) {
             main.getPlayerDataHandler().getData(uuid).setLootPoints(amount);
             if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(Bukkit.getPlayer(uuid));
             if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(Bukkit.getPlayer(uuid));
             if (main.getGiftGUI().getOpened().containsKey(uuid)) main.getGiftGUI().reloadGui(Bukkit.getPlayer(uuid));
-        } else {
-            main.getDatabaseHandler().setPlayerLootPoints(uuid, amount);
         }
+
+        main.getDatabaseHandler().setPlayerLootPoints(uuid, amount);
+
     }
 
 }

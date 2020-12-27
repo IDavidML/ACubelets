@@ -31,6 +31,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.block.banner.Pattern;
 import org.bukkit.block.banner.PatternType;
 import org.bukkit.configuration.ConfigurationSection;
@@ -42,6 +43,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.*;
+import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
@@ -328,7 +330,7 @@ public class XItemStack {
                 Damageable damageable = (Damageable) meta;
                 if (damageable.hasDamage()) config.set(path + "." + "damage", damageable.getDamage());
             }
-        } else if (XMaterial.isDamageable(item.getType().name())) {
+        } else if (item.getType().getMaxDurability() > 0) {
             config.set(path + "." + "damage", item.getDurability());
         }
         config.set(path + "." + "material", item.getType().name());
@@ -362,7 +364,13 @@ public class XItemStack {
             }
         }
 
-        if (meta instanceof SkullMeta) {
+        if (meta instanceof EnchantmentStorageMeta) {
+            EnchantmentStorageMeta book = (EnchantmentStorageMeta) meta;
+            for (Map.Entry<Enchantment, Integer> enchant : book.getStoredEnchants().entrySet()) {
+                String entry = path + "." + "stored-enchants." + XEnchantment.matchXEnchantment(enchant.getKey()).name();
+                config.set(entry, enchant.getValue());
+            }
+        } else if (meta instanceof SkullMeta) {
             String texture = SkullUtils.getSkinValue(item);
             if(texture == null) {
                 if(((SkullMeta) meta).hasOwner()) {
@@ -387,34 +395,53 @@ public class XItemStack {
             Color color = leather.getColor();
             config.set(path + "." + "color", color.getRed() + ", " + color.getGreen() + ", " + color.getBlue());
         } else if (meta instanceof PotionMeta) {
-            PotionMeta potion = (PotionMeta) meta;
-            List<String> effects = new ArrayList<>();
-            for (PotionEffect effect : potion.getCustomEffects())
-                effects.add(effect.getType().getName() + ", " + effect.getDuration() + ", " + effect.getAmplifier());
+            if (XMaterial.supports(9)) {
 
-            config.set(path + "." + "effects", effects);
-            PotionData potionData = potion.getBasePotionData();
-            config.set(path + "." + "base-effect", potionData.getType().name() + ", " + potionData.isExtended() + ", " + potionData.isUpgraded());
+                PotionMeta potion = (PotionMeta) meta;
+                List<PotionEffect> customEffects = potion.getCustomEffects();
+                List<String> effects = new ArrayList<>(customEffects.size());
+                for (PotionEffect effect : customEffects) {
+                    effects.add(effect.getType().getName() + ", " + effect.getDuration() + ", " + effect.getAmplifier());
+                }
 
-            if (potion.hasColor()) {
-                config.set(path + "." + "color", potion.getColor().asRGB());
+                config.set(path + "custom-effects", effects);
+                PotionData potionData = potion.getBasePotionData();
+                config.set(path + "base-effect", potionData.getType().name() + ", " + potionData.isExtended() + ", " + potionData.isUpgraded());
+
+                if (potion.hasColor()) config.set(path + "color", potion.getColor().asRGB());
+
+            } else {
+
+                //check for water bottles in 1.8
+                if (item.getDurability() != 0) {
+                    Potion potion = Potion.fromItemStack(item);
+                    config.set("level", potion.getLevel());
+                    config.set("base-effect", potion.getType().name() + ", " + potion.hasExtendedDuration() + ", " + potion.isSplash());
+                }
             }
         } else if (meta instanceof FireworkMeta) {
             FireworkMeta firework = (FireworkMeta) meta;
-            config.set("power", firework.getPower());
+            config.set(path + "." + "power", firework.getPower());
             int i = 0;
 
             for (FireworkEffect fw : firework.getEffects()) {
+                config.set(path + "." + "firework." + i + ".type", fw.getType().name());
                 ConfigurationSection fwc = config.getConfigurationSection(path + "." + "firework." + i);
-                fwc.set("type", fw.getType().name());
+                fwc.set("flicker", fw.hasFlicker());
+                fwc.set("trail", fw.hasTrail());
 
-                List<String> colors = new ArrayList<>();
-                for (Color color : fw.getColors()) colors.add(color.getRed() + ", " + color.getGreen() + ", " + color.getBlue());
-                fwc.set("colors", colors);
+                List<Color> fwBaseColors = fw.getColors();
+                List<Color> fwFadeColors = fw.getFadeColors();
 
-                colors.clear();
-                for (Color color : fw.getFadeColors()) colors.add(color.getRed() + ", " + color.getGreen() + ", " + color.getBlue());
-                fwc.set("fade-colors", colors);
+                List<String> baseColors = new ArrayList<>(fwBaseColors.size());
+                List<String> fadeColors = new ArrayList<>(fwFadeColors.size());
+
+                for (Color color : fwBaseColors) baseColors.add(color.getRed() + ", " + color.getGreen() + ", " + color.getBlue());
+                fwc.set("base-colors", baseColors);
+
+                for (Color color : fwFadeColors) fadeColors.add(color.getRed() + ", " + color.getGreen() + ", " + color.getBlue());
+                fwc.set("fade-colors", fadeColors);
+                i++;
             }
         }
     }
@@ -598,6 +625,16 @@ public class XItemStack {
             for (String ench : enchants.getKeys(false)) {
                 Optional<XEnchantment> enchant = XEnchantment.matchXEnchantment(ench);
                 enchant.ifPresent(xEnchantment -> meta.addEnchant(xEnchantment.parseEnchantment(), enchants.getInt(ench), true));
+            }
+        }
+
+        // Enchanted Books
+        ConfigurationSection enchantment = config.getConfigurationSection(path + "." + "stored-enchants");
+        if (enchantment != null) {
+            for (String ench : enchantment.getKeys(false)) {
+                Optional<XEnchantment> enchant = XEnchantment.matchXEnchantment(ench);
+                EnchantmentStorageMeta book = (EnchantmentStorageMeta) meta;
+                enchant.ifPresent(xEnchantment -> book.addStoredEnchant(xEnchantment.parseEnchantment(), enchantment.getInt(ench), true));
             }
         }
 

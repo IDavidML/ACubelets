@@ -140,6 +140,8 @@ public class Main extends JavaPlugin {
 
         settings.put("Crafting", getConfig().getBoolean("Crafting"));
 
+        settings.put("BroadcastReward", getConfig().getBoolean("BroadcastReward"));
+
         settings.put("CubeletsCommand", getConfig().getBoolean("NoCubelets.ExecuteCommand"));
         noCubeletsCommand = getConfig().getString("NoCubelets.Command");
 
@@ -458,6 +460,10 @@ public class Main extends JavaPlugin {
     public boolean isKeysEnabled() { return settings.get("UseKeys"); }
 
     public void setKeysEnabled(boolean value) { settings.put("UseKeys", value); }
+
+    public boolean isBroadcastEnabled() { return settings.get("BroadcastReward"); }
+
+    public void setBroadcastEnabled(boolean value) { settings.put("BroadcastReward", value); }
 
     public String getNoCubeletsCommand() {
         return noCubeletsCommand;

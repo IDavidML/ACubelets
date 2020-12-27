@@ -51,6 +51,7 @@ Cubelet:
     Me: '&cTu ya estas abriendo un Cubelet en esta maquina!'
     Other: '&6%player% &cesta abriendo un Cubelet en esta maquina!'
   Reward:
+    Broadcast: '%prefix% &6&l%player% &aconsiguó &6&l%reward% &aen &6%cubelet%'
     New:
       - ''
       - '%center%%cubelet_type% Loot'

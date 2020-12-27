@@ -180,6 +180,18 @@ public class CubeletRewardHandler {
 			if(target != null)
 				Sounds.playSound(target, target.getLocation(), Sounds.MySound.ITEM_PICKUP, 0.5F, (float) ThreadLocalRandom.current().nextDouble(1, 3));
 		}
+
+		if(main.isBroadcastEnabled()) {
+
+			String msg = main.getLanguageHandler().getMessage("Cubelet.Reward.Broadcast");
+			msg = msg.replaceAll("%player%", cubeletBox.getPlayerOpening().getName());
+			msg = msg.replaceAll("%reward%",  Utils.getColorByText(reward.getRarity().getName()) + reward.getName());
+			msg = msg.replaceAll("%cubelet%", reward.getParentCubelet().getName());
+
+			main.getServer().broadcastMessage(Utils.translate(msg));
+
+		}
+
 	}
 
 	public RepeatingTask permissionReward(CubeletBox cubeletBox, Reward reward) {
