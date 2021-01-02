@@ -142,6 +142,8 @@ public class Main extends JavaPlugin {
 
         settings.put("BroadcastReward", getConfig().getBoolean("BroadcastReward"));
 
+        settings.put("LoginReminder", getConfig().getBoolean("LoginReminder"));
+
         settings.put("CubeletsCommand", getConfig().getBoolean("NoCubelets.ExecuteCommand"));
         noCubeletsCommand = getConfig().getString("NoCubelets.Command");
 
@@ -464,6 +466,10 @@ public class Main extends JavaPlugin {
     public boolean isBroadcastEnabled() { return settings.get("BroadcastReward"); }
 
     public void setBroadcastEnabled(boolean value) { settings.put("BroadcastReward", value); }
+
+    public void setLoginReminder(boolean value) { settings.put("LoginReminder", value); }
+
+    public boolean isLoginReminder() { return settings.get("LoginReminder"); }
 
     public String getNoCubeletsCommand() {
         return noCubeletsCommand;

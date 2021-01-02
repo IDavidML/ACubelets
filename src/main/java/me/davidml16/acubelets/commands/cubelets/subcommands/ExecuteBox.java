@@ -48,9 +48,7 @@ public class ExecuteBox {
                     armorStand.setSmall(false);
                     armorStand.setRemoveWhenFarAway(false);
 
-                    Bukkit.getScheduler().runTaskLater(main, () -> {
-                            armorStand.setVelocity(new Vector(0, -10, 0));
-                    }, 1);
+                    Bukkit.getScheduler().runTaskLater(main, () -> armorStand.setVelocity(new Vector(0, -10, 0)), 1);
 
                     Sounds.playSound(((Player)sender), ((Player)sender).getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
 

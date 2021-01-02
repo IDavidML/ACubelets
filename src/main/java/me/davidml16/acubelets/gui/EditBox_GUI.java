@@ -226,8 +226,8 @@ public class EditBox_GUI implements Listener {
                             ", &aY: &e" + box.getLocation().getBlockY() +
                             ", &aZ: &e" + box.getLocation().getBlockZ()));
 
-                    for(Player player : Bukkit.getOnlinePlayers()) {
-                        if(opened.get(player.getUniqueId()).getLocation().equals(box.getLocation())) {
+                    for(UUID uuid : opened.keySet()) {
+                        if(opened.get(uuid).getLocation().equals(box.getLocation())) {
                             p.closeInventory();
                         }
                     }

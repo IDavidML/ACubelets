@@ -137,11 +137,11 @@ public class XItemStack {
             }
         } else if (meta instanceof BannerMeta) {
             BannerMeta banner = (BannerMeta) meta;
-            List<String> patterns = new ArrayList<>();
+            ConfigurationSection patterns = config.createSection(path + "." + "patterns");
+
             for (Pattern pattern : banner.getPatterns()) {
-                patterns.add(pattern.getColor() + " " + pattern.getPattern().getIdentifier());
+                patterns.set(pattern.getPattern().name(), pattern.getColor().name());
             }
-            config.set(path + "." + "patterns", patterns);
         } else if (meta instanceof LeatherArmorMeta) {
             LeatherArmorMeta leather = (LeatherArmorMeta) meta;
             Color color = leather.getColor();
@@ -201,21 +201,16 @@ public class XItemStack {
             }
         } else if (meta instanceof BannerMeta) {
             BannerMeta banner = (BannerMeta) meta;
+            ConfigurationSection patterns = config.getConfigurationSection(path + "." + "patterns");
 
-            for (String pattern : config.getStringList(path + "." + "patterns")) {
-                String[] split = pattern.split("  +");
-                if (split.length == 0) continue;
-                DyeColor color = Enums.getIfPresent(DyeColor.class, split[0]).or(DyeColor.WHITE);
-                PatternType type;
+            if (patterns != null) {
+                for (String pattern : patterns.getKeys(false)) {
+                    PatternType type = PatternType.getByIdentifier(pattern);
+                    if (type == null) type = Enums.getIfPresent(PatternType.class, pattern.toUpperCase(Locale.ENGLISH)).or(PatternType.BASE);
+                    DyeColor color = Enums.getIfPresent(DyeColor.class, patterns.getString(pattern).toUpperCase(Locale.ENGLISH)).or(DyeColor.WHITE);
 
-                if (split.length > 1) {
-                    type = PatternType.getByIdentifier(split[1]);
-                    if (type == null) type = Enums.getIfPresent(PatternType.class, split[1]).or(PatternType.BASE);
-                } else {
-                    type = PatternType.BASE;
+                    banner.addPattern(new Pattern(color, type));
                 }
-
-                banner.addPattern(new Pattern(color, type));
             }
         } else if (meta instanceof LeatherArmorMeta) {
             LeatherArmorMeta leather = (LeatherArmorMeta) meta;

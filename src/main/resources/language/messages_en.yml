@@ -47,6 +47,10 @@ Commands:
       NoBalance: '%prefix% &6%player% &cdoes not have &6%amount%x Points&c. Currently balance: &6%balance%'
 
 Cubelet:
+  LoginReminder:
+    - ''
+    - '&6%player% &ayou still have &6%amount% &acubelets to open!'
+    - ''
   BoxInUse:
     Me: '&cYou already opening a Cubelet here!'
     Other: '&6%player% &cis already opening a Cubelet at this machine!'

@@ -45,6 +45,7 @@ public class PlayerDataHandler {
 
 	public void loadPlayerData(Player p) {
 		Profile profile = new Profile(main, p.getUniqueId());
+		data.put(p.getUniqueId(), profile);
 
 		try {
 			if(!main.getDatabaseHandler().hasName(p.getName())) {
@@ -73,8 +74,6 @@ public class PlayerDataHandler {
 			profile.setCubelets(cubelets);
 			Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramHandler().reloadHolograms(p), 2L);
 		});
-
-		data.put(p.getUniqueId(), profile);
 	}
 
 	public void loadAllPlayerData() {

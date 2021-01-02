@@ -65,6 +65,8 @@ public class PluginHandler {
 
         main.setBroadcastEnabled(main.getConfig().getBoolean("BroadcastReward"));
 
+        main.setLoginReminder(main.getConfig().getBoolean("LoginReminder"));
+
         main.getLanguageHandler().loadLanguage("en");
         main.getLanguageHandler().loadLanguage("es");
         main.getLanguageHandler().setLanguage(main.getConfig().getString("Language").toLowerCase());
