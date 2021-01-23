@@ -61,6 +61,11 @@ public class ExecuteType {
                 name.append(args[i]).append(args.length - 1 > i ? " " : "");
             }
 
+            if (id.equalsIgnoreCase("random")) {
+                sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis " + label + " type id its not valid!"));
+                return true;
+            }
+
             if (main.getCubeletTypesHandler().typeExist(id)) {
                 sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis " + label + " type already exists!"));
                 return true;

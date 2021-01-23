@@ -136,7 +136,12 @@ public class PlayerAnimation_GUI implements Listener {
 
             if(e.getClick() == ClickType.DOUBLE_CLICK) return;
 
-            switch (Objects.requireNonNull(action)) {
+            if(action == null) {
+                e.setCancelled(true);
+                return;
+            }
+
+            switch (action) {
                 case "previous":
                     openPage(p, opened.get(p.getUniqueId()) - 1);
                     break;

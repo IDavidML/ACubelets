@@ -231,7 +231,6 @@ public class RewardsPreview_GUI implements Listener {
 
             int slot = e.getRawSlot();
             int size = p.getOpenInventory().getTopInventory().getSize();
-            GUILayout guiLayout = main.getLayoutHandler().getLayout("preview");
 
             if (slot >= (size - 9) && slot <= size) {
 
@@ -240,7 +239,12 @@ public class RewardsPreview_GUI implements Listener {
 
                 if(e.getClick() == ClickType.DOUBLE_CLICK) return;
 
-                switch (Objects.requireNonNull(action)) {
+                if(action == null) {
+                    e.setCancelled(true);
+                    return;
+                }
+
+                switch (action) {
                     case "previous":
                         openPage(p, pair.getId(), pair.getPage() - 1, pair.isOpenedExternally());
                         break;

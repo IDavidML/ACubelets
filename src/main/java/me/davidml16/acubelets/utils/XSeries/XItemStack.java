@@ -147,12 +147,30 @@ public class XItemStack {
             Color color = leather.getColor();
             config.set(path + "." + "color", color.getRed() + ", " + color.getGreen() + ", " + color.getBlue());
         } else if (meta instanceof PotionMeta) {
-            PotionMeta potion = (PotionMeta) meta;
-            List<String> effects = new ArrayList<>();
-            for (PotionEffect effect : potion.getCustomEffects())
-                effects.add(effect.getType().getName() + " " + effect.getDuration() + " " + effect.getAmplifier());
+            if (XMaterial.supports(9)) {
 
-            config.set(path + "." + "effects", effects);
+                PotionMeta potion = (PotionMeta) meta;
+                List<PotionEffect> customEffects = potion.getCustomEffects();
+                List<String> effects = new ArrayList<>(customEffects.size());
+                for (PotionEffect effect : customEffects) {
+                    effects.add(effect.getType().getName() + ", " + effect.getDuration() + ", " + effect.getAmplifier());
+                }
+
+                config.set(path + "custom-effects", effects);
+                PotionData potionData = potion.getBasePotionData();
+                config.set(path + "base-effect", potionData.getType().name() + ", " + potionData.isExtended() + ", " + potionData.isUpgraded());
+
+                if (potion.hasColor()) config.set(path + "color", potion.getColor().asRGB());
+
+            } else {
+
+                //check for water bottles in 1.8
+                if (item.getDurability() != 0) {
+                    Potion potion = Potion.fromItemStack(item);
+                    config.set("level", potion.getLevel());
+                    config.set("base-effect", potion.getType().name() + ", " + potion.hasExtendedDuration() + ", " + potion.isSplash());
+                }
+            }
         }
     }
 
@@ -223,6 +241,21 @@ public class XItemStack {
             for (String effects : config.getStringList(path + "." + "effects")) {
                 PotionEffect effect = XPotion.parsePotionEffectFromString(effects);
                 potion.addCustomEffect(effect, true);
+            }
+
+            String baseEffect = config.getString(path + "." + "base-effect");
+            if (!Strings.isNullOrEmpty(baseEffect)) {
+                String[] split = StringUtils.split(baseEffect, ',');
+                PotionType type = Enums.getIfPresent(PotionType.class, split[0].trim().toUpperCase(Locale.ENGLISH)).or(PotionType.UNCRAFTABLE);
+                boolean extended = split.length != 1 && Boolean.parseBoolean(split[1].trim());
+                boolean upgraded = split.length > 2 && Boolean.parseBoolean(split[2].trim());
+
+                PotionData potionData = new PotionData(type, extended, upgraded);
+                potion.setBasePotionData(potionData);
+            }
+
+            if (config.contains(path + "." + "color")) {
+                potion.setColor(Color.fromRGB(config.getInt(path + "." + "color")));
             }
         }
 

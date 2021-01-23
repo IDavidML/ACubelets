@@ -43,7 +43,7 @@ public class TransactionHandler {
         return 0;
     }
 
-    public void giveCubelet(String player, String type, int amount) throws SQLException {
+    public CubeletType giveCubelet(String player, String type, int amount) throws SQLException {
         UUID uuid;
 
         if(Bukkit.getPlayer(player) != null)
@@ -51,12 +51,20 @@ public class TransactionHandler {
         else
             uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
 
-        giveCubelet(uuid, type, amount);
+        return giveCubelet(uuid, type, amount);
     }
 
-    public void giveCubelet(UUID uuid, String type, int amount) throws SQLException {
-        if (main.getCubeletTypesHandler().getTypes().containsKey(type)) {
-            CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(type);
+    public CubeletType giveCubelet(UUID uuid, String type, int amount) throws SQLException {
+        if (main.getCubeletTypesHandler().getTypes().containsKey(type) || type.equalsIgnoreCase("random")) {
+
+            CubeletType cubeletType = null;
+
+            if(!type.equalsIgnoreCase("random")) {
+                cubeletType =  main.getCubeletTypesHandler().getTypeBydId(type);
+            } else {
+                List<CubeletType> available = new ArrayList<>(main.getCubeletTypesHandler().getTypes().values());
+                cubeletType = available.get((int) (Math.random() * available.size()));
+            }
 
             Collection<Cubelet> cubelets = new ArrayList<>();
 
@@ -82,7 +90,11 @@ public class TransactionHandler {
                 }
 
             }
+
+            return cubeletType;
         }
+
+        return null;
     }
 
     public void removeCubelet(String player, String type, int amount) throws SQLException {

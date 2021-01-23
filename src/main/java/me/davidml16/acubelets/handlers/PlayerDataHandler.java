@@ -72,7 +72,20 @@ public class PlayerDataHandler {
 
 		main.getDatabaseHandler().getCubelets(p.getUniqueId()).thenAccept(cubelets -> {
 			profile.setCubelets(cubelets);
+
 			Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramHandler().reloadHolograms(p), 2L);
+
+			if(main.isLoginReminder()) {
+				Bukkit.getScheduler().runTaskLater(main, () -> {
+					if(cubelets.size() > 0) {
+						for (String line : main.getLanguageHandler().getMessageList("Cubelet.LoginReminder")) {
+							line = line.replaceAll("%amount%", Integer.toString(cubelets.size()));
+							line = line.replaceAll("%player%", p.getName());
+							p.sendMessage(line);
+						}
+					}
+				}, 20L);
+			}
 		});
 	}
 

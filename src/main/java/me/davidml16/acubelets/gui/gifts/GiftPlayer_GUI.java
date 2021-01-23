@@ -130,7 +130,12 @@ public class GiftPlayer_GUI implements Listener {
 
             if(e.getClick() == ClickType.DOUBLE_CLICK) return;
 
-            switch (Objects.requireNonNull(action)) {
+            if(action == null) {
+                e.setCancelled(true);
+                return;
+            }
+
+            switch (action) {
                 case "player":
                     String name = NBTEditor.getString(e.getCurrentItem(), "name");
                     UUID uuid = UUID.fromString(NBTEditor.getString(e.getCurrentItem(), "uuid"));

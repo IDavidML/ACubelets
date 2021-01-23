@@ -120,15 +120,18 @@ public class GiftCubelet_GUI implements Listener {
         if (opened.containsKey(p.getUniqueId())) {
             e.setCancelled(true);
 
-            GUILayout guiLayout = main.getLayoutHandler().getLayout("giftamount");
-
             String action = NBTEditor.getString(e.getCurrentItem(), "action");
 
             if(e.getClick() == ClickType.DOUBLE_CLICK) return;
 
+            if(action == null) {
+                e.setCancelled(true);
+                return;
+            }
+
             GiftAmountGuiSession giftAmountGuiSession = opened.get(p.getUniqueId());
 
-            switch (Objects.requireNonNull(action)) {
+            switch (action) {
                 case "send":
 
                     p.sendMessage(Utils.translate(main.getLanguageHandler().getMessage("Commands.Cubelets.Gift.Gifted")

@@ -40,16 +40,6 @@ public class Event_JoinQuit implements Listener {
             }, 40L);
         }
 
-        if(main.isLoginReminder()) {
-            Bukkit.getScheduler().runTaskLater(main, () -> {
-                for(String line : main.getLanguageHandler().getMessageList("Cubelet.LoginReminder")) {
-                    line = line.replaceAll("%amount%", Integer.toString(main.getPlayerDataHandler().getData(p).getCubelets().size()));
-                    line = line.replaceAll("%player%", p.getName());
-                    p.sendMessage(line);
-                }
-            }, 40L);
-        }
-
     }
 
     @EventHandler

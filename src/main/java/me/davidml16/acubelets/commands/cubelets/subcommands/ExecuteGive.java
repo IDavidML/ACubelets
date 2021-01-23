@@ -2,6 +2,7 @@ package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.api.CubeletsAPI;
+import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -35,7 +36,7 @@ public class ExecuteGive {
         String player = args[1];
 
         String id = args[2];
-        if (!main.getCubeletTypesHandler().getTypes().containsKey(id)) {
+        if (!id.equalsIgnoreCase("random") && !main.getCubeletTypesHandler().getTypes().containsKey(id)) {
             sender.sendMessage(Utils.translate(
                     main.getLanguageHandler().getPrefix() + " &cThis " + label + " type doesn't exists!"));
             return false;
@@ -46,11 +47,11 @@ public class ExecuteGive {
         if(player.equalsIgnoreCase("*") || player.equalsIgnoreCase("all")) {
             if(args.length == 3) {
                 for(Player iterator : Bukkit.getOnlinePlayers()) {
-                    CubeletsAPI.giveCubelet(iterator.getName(), id, 1);
+                    CubeletType typeGived = CubeletsAPI.giveCubelet(iterator.getName(), id, 1);
 
                     String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Give");
                     msg = msg.replaceAll("%amount%", Integer.toString(amount));
-                    msg = msg.replaceAll("%cubelet%",  main.getCubeletTypesHandler().getTypeBydId(id).getName());
+                    msg = msg.replaceAll("%cubelet%",  typeGived.getName());
                     msg = msg.replaceAll("%player%", iterator.getName());
                     sender.sendMessage(Utils.translate(msg));
                 }
@@ -59,11 +60,11 @@ public class ExecuteGive {
                 amount = Integer.parseInt(args[3]);
                 if(amount > 0) {
                     for(Player iterator : Bukkit.getOnlinePlayers()) {
-                        CubeletsAPI.giveCubelet(iterator.getName(), id, amount);
+                        CubeletType typeGived = CubeletsAPI.giveCubelet(iterator.getName(), id, amount);
 
                         String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Give");
                         msg = msg.replaceAll("%amount%", Integer.toString(amount));
-                        msg = msg.replaceAll("%cubelet%",  main.getCubeletTypesHandler().getTypeBydId(id).getName());
+                        msg = msg.replaceAll("%cubelet%", typeGived.getName());
                         msg = msg.replaceAll("%player%", iterator.getName());
                         sender.sendMessage(Utils.translate(msg));
                     }
@@ -86,22 +87,22 @@ public class ExecuteGive {
             }
 
             if(args.length == 3) {
-                CubeletsAPI.giveCubelet(player, id, 1);
+                CubeletType typeGived = CubeletsAPI.giveCubelet(player, id, 1);
 
                 String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Give");
                 msg = msg.replaceAll("%amount%", Integer.toString(amount));
-                msg = msg.replaceAll("%cubelet%",  main.getCubeletTypesHandler().getTypeBydId(id).getName());
+                msg = msg.replaceAll("%cubelet%",  typeGived.getName());
                 msg = msg.replaceAll("%player%", player);
                 sender.sendMessage(Utils.translate(msg));
 
             } else if(args.length == 4) {
                 amount = Integer.parseInt(args[3]);
                 if(amount > 0) {
-                    CubeletsAPI.giveCubelet(player, id, amount);
+                    CubeletType typeGived = CubeletsAPI.giveCubelet(player, id, amount);
 
                     String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Give");
                     msg = msg.replaceAll("%amount%", Integer.toString(amount));
-                    msg = msg.replaceAll("%cubelet%",  main.getCubeletTypesHandler().getTypeBydId(id).getName());
+                    msg = msg.replaceAll("%cubelet%", typeGived.getName());
                     msg = msg.replaceAll("%player%", player);
                     sender.sendMessage(Utils.translate(msg));
 

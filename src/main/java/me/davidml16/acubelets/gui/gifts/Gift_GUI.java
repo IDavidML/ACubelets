@@ -149,9 +149,14 @@ public class Gift_GUI implements Listener {
 
             if(e.getClick() == ClickType.DOUBLE_CLICK) return;
 
+            if(action == null) {
+                e.setCancelled(true);
+                return;
+            }
+
             GiftGuiSession session = opened.get(p.getUniqueId());
 
-            switch (Objects.requireNonNull(action)) {
+            switch (action) {
                 case "send":
                     String type = NBTEditor.getString(e.getCurrentItem(), "typeID");
                     CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(type);
