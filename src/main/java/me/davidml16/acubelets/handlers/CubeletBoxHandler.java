@@ -1,6 +1,5 @@
 package me.davidml16.acubelets.handlers;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.enums.Rotation;
 import me.davidml16.acubelets.objects.CubeletBox;
@@ -46,7 +45,7 @@ public class CubeletBoxHandler {
     public void createBox(Location loc, double blockHeight) {
         CubeletBox box = new CubeletBox(loc, blockHeight, blockHeight, Rotation.SOUTH);
         boxes.put(loc, box);
-        main.getHologramHandler().loadHolograms(box);
+        main.getHologramImplementation().loadHolograms(box);
 
         config.set("locations", new ArrayList<>());
 
@@ -69,10 +68,9 @@ public class CubeletBoxHandler {
         if(boxes.containsKey(loc)) {
 
             CubeletBox box = getBoxByLocation(loc);
-            for(Hologram holo : box.getHolograms().values()) {
-                holo.delete();
-            }
-            box.getHolograms().clear();
+            main.getHologramImplementation().removeHolograms(box);
+
+            main.getHologramImplementation().clearHolograms(box);
 
             boxes.remove(loc);
 

@@ -4,8 +4,6 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
-import me.davidml16.acubelets.animations.normal.animation9.Animation9_Charge;
-import me.davidml16.acubelets.animations.seasonal.galaxy.AnimationGalaxy_Planet;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.enums.Rotation;
@@ -144,7 +142,7 @@ public class Animation12_Task implements Animation {
 			if(time == 155) {
 				witch.remove();
 				cubeletBox.setLastReward(reward);
-				main.getHologramHandler().rewardHologram(cubeletBox, reward);
+				main.getHologramImplementation().rewardHologram(cubeletBox, reward);
 				cubeletBox.setState(CubeletBoxState.REWARD);
 				glassStand.remove();
 				glassStand = null;
@@ -181,7 +179,7 @@ public class Animation12_Task implements Animation {
 
 				cubeletBox.setState(CubeletBoxState.EMPTY);
 				cubeletBox.setPlayerOpening(null);
-				main.getHologramHandler().reloadHologram(cubeletBox);
+				main.getHologramImplementation().reloadHologram(cubeletBox);
 			}
 
 			if(time > 45 && time < 145) {

@@ -3,13 +3,9 @@ package me.davidml16.acubelets.events;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -27,7 +23,7 @@ public class Event_JoinQuit implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
         Player p = e.getPlayer();
-        main.getHologramHandler().loadHolograms(p);
+        main.getHologramImplementation().loadHolograms(p);
         main.getPlayerDataHandler().loadPlayerData(p);
         main.setPlayerCount(main.getPlayerCount() + 1);
 
@@ -47,7 +43,7 @@ public class Event_JoinQuit implements Listener {
         Player p = e.getPlayer();
 
         main.getGuiHandler().removeOpened(p);
-        main.getHologramHandler().removeHolograms(p);
+        main.getHologramImplementation().removeHolograms(p);
 
         main.getDatabaseHandler().saveProfileAsync(main.getPlayerDataHandler().getData(p));
 
@@ -66,7 +62,7 @@ public class Event_JoinQuit implements Listener {
 
     @EventHandler
     public void worldChange(PlayerChangedWorldEvent e) {
-        main.getHologramHandler().reloadHolograms(e.getPlayer());
+        main.getHologramImplementation().reloadHolograms(e.getPlayer());
     }
 
 }

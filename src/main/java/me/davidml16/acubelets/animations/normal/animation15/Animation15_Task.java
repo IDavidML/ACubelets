@@ -4,9 +4,6 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
-import me.davidml16.acubelets.animations.normal.animation10.Animation10_Spiral;
-import me.davidml16.acubelets.animations.normal.animation12.Animation12_Orbit;
-import me.davidml16.acubelets.animations.normal.animation4.Animation4_Blocks;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.objects.CubeletBox;
@@ -20,7 +17,6 @@ import me.davidml16.acubelets.utils.XSeries.ParticleDisplay;
 import me.davidml16.acubelets.utils.XSeries.XParticle;
 import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
@@ -155,7 +151,7 @@ public class Animation15_Task implements Animation {
 
 			if(time == 165) {
 				cubeletBox.setLastReward(reward);
-				main.getHologramHandler().rewardHologram(cubeletBox, reward);
+				main.getHologramImplementation().rewardHologram(cubeletBox, reward);
 				cubeletBox.setState(CubeletBoxState.REWARD);
 				armorStand.remove();
 				armorStand = null;
@@ -189,7 +185,7 @@ public class Animation15_Task implements Animation {
 
 				cubeletBox.setState(CubeletBoxState.EMPTY);
 				cubeletBox.setPlayerOpening(null);
-				main.getHologramHandler().reloadHologram(cubeletBox);
+				main.getHologramImplementation().reloadHologram(cubeletBox);
 			}
 
 			time++;

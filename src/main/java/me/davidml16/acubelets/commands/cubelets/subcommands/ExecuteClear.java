@@ -1,15 +1,12 @@
 package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.objects.Cubelet;
-import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
-import java.util.List;
 import java.util.UUID;
 
 public class ExecuteClear {
@@ -70,7 +67,7 @@ public class ExecuteClear {
 
                 if (main.getCubeletsGUI().getOpened().containsKey(target.getUniqueId())) main.getCubeletsGUI().reloadPage(target);
                 if (main.getCraftingGUI().getOpened().contains(target.getUniqueId())) main.getCraftingGUI().open(target);
-                main.getHologramHandler().reloadHolograms(target);
+                main.getHologramImplementation().reloadHolograms(target);
 
                 main.getDatabaseHandler().removeCubelets(target.getUniqueId());
             } catch (SQLException throwables) {

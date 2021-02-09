@@ -2,6 +2,7 @@ package me.davidml16.acubelets.tasks;
 
 import me.davidml16.acubelets.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class HologramTask {
 	
@@ -15,8 +16,9 @@ public class HologramTask {
 	class Task implements Runnable {
 		@Override
 		public void run() {
-			if(main.getPlayerCount() > 0)
-				main.getHologramHandler().reloadHolograms();
+			if(main.getPlayerCount() > 0) {
+				main.getHologramImplementation().reloadHolograms();
+			}
 		}
 	}
 	

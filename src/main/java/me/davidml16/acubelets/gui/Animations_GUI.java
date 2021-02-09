@@ -69,6 +69,11 @@ public class Animations_GUI implements Listener {
             gui.setItem(i, edge);
         }
 
+        GUILayout guiLayout = main.getLayoutHandler().getLayout("animations");
+        ItemStack randomAnimation = getRandomAnimationItem(selectedAnimation, guiLayout);
+        randomAnimation = NBTEditor.set(randomAnimation, "random", "animation");
+        gui.setItem(38, randomAnimation);
+
         List<AnimationSettings> animationSettings = new ArrayList<>(main.getAnimationHandler().getAnimations().values());
         Collections.sort(animationSettings);
 
@@ -104,6 +109,11 @@ public class Animations_GUI implements Listener {
         for (Integer i : borders) {
             gui.setItem(i, edge);
         }
+
+        GUILayout guiLayout = main.getLayoutHandler().getLayout("animations");
+        ItemStack randomAnimation = getRandomAnimationItem(selectedAnimation, guiLayout);
+        randomAnimation = NBTEditor.set(randomAnimation, "random", "animation");
+        gui.setItem(38, randomAnimation);
 
         List<AnimationSettings> animationSettings = new ArrayList<>(main.getAnimationHandler().getAnimations().values());
         Collections.sort(animationSettings);
@@ -142,6 +152,25 @@ public class Animations_GUI implements Listener {
 
             if (slot == 40) {
                 main.getTypeConfigGUI().open(p, id);
+            } else if (slot == 38) {
+
+                String animation = NBTEditor.getString(e.getCurrentItem(), "animation");
+                String status = NBTEditor.getString(e.getCurrentItem(), "status");
+
+                if (status.equalsIgnoreCase("unlocked")) {
+
+                    CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(id);
+                    FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
+
+                    config.set("type.animation", animation);
+                    cubeletType.setAnimation(animation);
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+
+                    cubeletType.saveType();
+                    reloadGUI(id);
+
+                }
+
             } else {
 
                 if(e.getCurrentItem().equals(new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack())) return;
@@ -164,6 +193,7 @@ public class Animations_GUI implements Listener {
                         reloadGUI(id);
 
                     }
+
                 } else if(e.getClick() == ClickType.RIGHT || e.getClick() == ClickType.SHIFT_RIGHT) {
 
                     sendPreviewMessage(p, animation);
@@ -218,6 +248,28 @@ public class Animations_GUI implements Listener {
             item = new ItemBuilder(itemStack).setName(name).setLore(lore).addGlow().toItemStack();
         else
             item = new ItemBuilder(itemStack).setName(name).setLore(lore).toItemStack();
+
+        return NBTEditor.set(item, status.toLowerCase(), "status");
+
+    }
+
+    private ItemStack getRandomAnimationItem(String animation, GUILayout guiLayout) {
+
+        ItemStack item = new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).toItemStack();
+
+        String status;
+
+        if(!animation.equalsIgnoreCase("random")) {
+            String name = guiLayout.getMessage("Items.RandomAnimation.NoSelected.Name");
+            List<String> lore = guiLayout.getMessageList("Items.RandomAnimation.NoSelected.Lore");
+            item = new ItemBuilder(item).setName(name).setLore(lore).toItemStack();
+            status = "Unlocked";
+        } else {
+            String name = guiLayout.getMessage("Items.RandomAnimation.Selected.Name");
+            List<String> lore = guiLayout.getMessageList("Items.RandomAnimation.Selected.Lore");
+            item = new ItemBuilder(item).setName(name).setLore(lore).addGlow().toItemStack();
+            status = "Selected";
+        }
 
         return NBTEditor.set(item, status.toLowerCase(), "status");
 

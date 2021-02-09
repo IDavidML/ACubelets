@@ -130,7 +130,7 @@ public class AnimationHalloween_Task implements Animation {
 			} else if(time == 175) {
 				music.cancel();
 				cubeletBox.setLastReward(reward);
-				main.getHologramHandler().rewardHologram(cubeletBox, reward);
+				main.getHologramImplementation().rewardHologram(cubeletBox, reward);
 				cubeletBox.setState(CubeletBoxState.REWARD);
 				armorStand.remove();
 				armorStand = null;
@@ -156,7 +156,7 @@ public class AnimationHalloween_Task implements Animation {
 
 				cubeletBox.setState(CubeletBoxState.EMPTY);
 				cubeletBox.setPlayerOpening(null);
-				main.getHologramHandler().reloadHologram(cubeletBox);
+				main.getHologramImplementation().reloadHologram(cubeletBox);
 			}
 
 			time++;

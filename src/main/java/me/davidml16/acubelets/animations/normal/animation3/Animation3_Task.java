@@ -98,7 +98,7 @@ public class Animation3_Task implements Animation {
 			} else if(time == 150) {
 				cubeletBox.setLastReward(reward);
 				colorRarity = Utils.getRGBbyColor(Utils.getColorByText(reward.getRarity().getName()));
-				main.getHologramHandler().rewardHologram(cubeletBox, reward);
+				main.getHologramImplementation().rewardHologram(cubeletBox, reward);
 				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 2, 0.5), FireworkEffect.Type.STAR, colors.get(0), colors.get(1));
 				Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.EXPLODE, 0.5f, 0);
 				cubeletBox.setState(CubeletBoxState.REWARD);
@@ -126,7 +126,7 @@ public class Animation3_Task implements Animation {
 
 				cubeletBox.setState(CubeletBoxState.EMPTY);
 				cubeletBox.setPlayerOpening(null);
-				main.getHologramHandler().reloadHologram(cubeletBox);
+				main.getHologramImplementation().reloadHologram(cubeletBox);
 			}
 
 		}

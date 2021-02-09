@@ -330,8 +330,13 @@ public class AnimationHandler {
         return animations.get(ThreadLocalRandom.current().nextInt(animations.size()) % animations.size());
     }
 
+    public AnimationSettings getRandomAnimation() {
+        List<AnimationSettings> animations = new ArrayList<>(getAnimations().values());
+        return animations.get(ThreadLocalRandom.current().nextInt(animations.size()) % animations.size());
+    }
+
     public boolean haveAnimationPermission(Player player, AnimationSettings animationSettings) {
-        return (player.hasPermission("acubelets.animations.animation" + animationSettings.getAnimationNumber()));
+        return (player.hasPermission("acubelets.animations.*") || player.hasPermission("acubelets.animations.animation" + animationSettings.getAnimationNumber()));
     }
 
     public List<Animation> getTasks() {

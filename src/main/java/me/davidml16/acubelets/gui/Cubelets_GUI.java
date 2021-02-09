@@ -149,20 +149,24 @@ public class Cubelets_GUI implements Listener {
             gui.setItem(i, null);
 
         if(main.getCubeletTypesHandler().getTypes().size() > 1) {
-            if (profile.getOrderBy().equalsIgnoreCase("date")) {
-                ItemStack orderByDate = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Ordered.Date.Material")).get().parseItem())
-                        .setName(guiLayout.getMessage("Items.Ordered.Date.Name"))
-                        .setLore(guiLayout.getMessageList("Items.Ordered.Date.Lore"))
-                        .toItemStack();
-                orderByDate = NBTEditor.set(orderByDate, "ordered", "action");
-                gui.setItem((neededSize - 10) + guiLayout.getSlot("Ordered"), orderByDate);
-            } else if (profile.getOrderBy().equalsIgnoreCase("type")) {
-                ItemStack orderByType = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Ordered.Type.Material")).get().parseItem())
-                        .setName(guiLayout.getMessage("Items.Ordered.Type.Name"))
-                        .setLore(guiLayout.getMessageList("Items.Ordered.Type.Lore"))
-                        .toItemStack();
-                orderByType = NBTEditor.set(orderByType, "ordered", "action");
-                gui.setItem((neededSize - 10) + guiLayout.getSlot("Ordered"), orderByType);
+            if(guiLayout.getBoolean("Items.Ordered.Enabled")) {
+                if (profile.getOrderBy().equalsIgnoreCase("date")) {
+                    ItemStack orderByDate = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Ordered.Date.Material")).get().parseItem())
+                            .setName(guiLayout.getMessage("Items.Ordered.Date.Name"))
+                            .setLore(guiLayout.getMessageList("Items.Ordered.Date.Lore"))
+                            .toItemStack();
+                    orderByDate = NBTEditor.set(orderByDate, "ordered", "action");
+                    gui.setItem((neededSize - 10) + guiLayout.getSlot("Ordered"), orderByDate);
+                } else if (profile.getOrderBy().equalsIgnoreCase("type")) {
+                    ItemStack orderByType = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Ordered.Type.Material")).get().parseItem())
+                            .setName(guiLayout.getMessage("Items.Ordered.Type.Name"))
+                            .setLore(guiLayout.getMessageList("Items.Ordered.Type.Lore"))
+                            .toItemStack();
+                    orderByType = NBTEditor.set(orderByType, "ordered", "action");
+                    gui.setItem((neededSize - 10) + guiLayout.getSlot("Ordered"), orderByType);
+                }
+            } else {
+                cubelets.sort(new CubeletDateComparator());
             }
         }
 
@@ -351,7 +355,7 @@ public class Cubelets_GUI implements Listener {
 
                                         main.getDatabaseHandler().removeCubelet(p.getUniqueId(), UUID.fromString(Objects.requireNonNull(cubeletUUID)));
 
-                                        main.getHologramHandler().reloadHolograms(p);
+                                        main.getHologramImplementation().reloadHolograms(p);
 
                                         p.closeInventory();
                                     }

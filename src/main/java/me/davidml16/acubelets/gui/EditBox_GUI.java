@@ -179,7 +179,7 @@ public class EditBox_GUI implements Listener {
 
             if(slot == 10) {
                 box.setBlockHeight(box.getBlockHeight() + 0.015);
-                main.getHologramHandler().moveHologram(box);
+                main.getHologramImplementation().moveHologram(box);
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
                 reloadGUI(box);
             } else if(slot == 11) {
@@ -188,8 +188,8 @@ public class EditBox_GUI implements Listener {
                     Sounds.playSound(p, p.getLocation(), Sounds.MySound.CHICKEN_EGG_POP, 100, 3);
                     reloadGUI(box);
 
-                    main.getHologramHandler().moveHologram(box);
-                    Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramHandler().moveHologram(box), 5L);
+                    main.getHologramImplementation().moveHologram(box);
+                    Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramImplementation().moveHologram(box), 5L);
                 } else if(e.getClick() == ClickType.SHIFT_RIGHT || e.getClick() == ClickType.SHIFT_LEFT) {
                     box.setPermanentBlockHeight(box.getBlockHeight());
                     Sounds.playSound(p, p.getLocation(), Sounds.MySound.CHICKEN_EGG_POP, 100, 3);
@@ -197,7 +197,7 @@ public class EditBox_GUI implements Listener {
                 }
             } else if(slot == 12) {
                 box.setBlockHeight(box.getBlockHeight() - 0.015);
-                main.getHologramHandler().moveHologram(box);
+                main.getHologramImplementation().moveHologram(box);
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
                 reloadGUI(box);
             } else if(slot == 14) {

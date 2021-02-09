@@ -1,13 +1,11 @@
 package me.davidml16.acubelets.handlers;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationHandler;
 import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.objects.CubeletBox;
-import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.objects.CubeletOpener;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Profile;
@@ -28,14 +26,22 @@ public class CubeletOpenHandler {
 
             box.setPlayerOpening(cubeletOpener);
 
-            for (Hologram hologram : box.getHolograms().values()) {
-                hologram.clearLines();
-            }
+            main.getHologramImplementation().clearLines(box);
 
             Animation animation;
 
             if(!main.isAnimationByPlayer() || openedByKey) {
-                animation = main.getAnimationHandler().getAnimation(type.getAnimation());
+
+                if(!type.getAnimation().equalsIgnoreCase("random")) {
+
+                    animation = main.getAnimationHandler().getAnimation(type.getAnimation());
+
+                } else {
+
+                    animation = main.getAnimationHandler().getAnimation(main.getAnimationHandler().getRandomAnimation().getId());
+
+                }
+
             } else {
 
                 Profile profile = main.getPlayerDataHandler().getData(p);

@@ -25,6 +25,8 @@ import me.davidml16.acubelets.gui.rewards.RewardsPreview_GUI;
 import me.davidml16.acubelets.gui.rewards.Rewards_GUI;
 import me.davidml16.acubelets.handlers.*;
 import me.davidml16.acubelets.handlers.PluginHandler;
+import me.davidml16.acubelets.holograms.HologramHandler;
+import me.davidml16.acubelets.holograms.HologramImplementation;
 import me.davidml16.acubelets.tasks.DataSaveTask;
 import me.davidml16.acubelets.tasks.HologramTask;
 import me.davidml16.acubelets.tasks.LiveGuiTask;
@@ -129,8 +131,8 @@ public class Main extends JavaPlugin {
         }
         reloadConfig();
 
-        if (!Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays") || !Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-            getLogger().severe("*** HolographicDisplays / ProtocolLib is not installed or not enabled. ***");
+        if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
+            getLogger().severe("*** ProtocolLib is not installed or not enabled. ***");
             getLogger().severe("*** This plugin will be disabled. ***");
             setEnabled(false);
             return;
@@ -199,8 +201,18 @@ public class Main extends JavaPlugin {
         playerDataHandler = new PlayerDataHandler(this);
 
         hologramHandler = new HologramHandler(this);
+
+        if(hologramHandler.getImplementation() == null) {
+            getLogger().severe("*** HolographicDisplays is not installed or not enabled. ***");
+            getLogger().severe("*** This plugin will be disabled. ***");
+            setEnabled(false);
+            return;
+        }
+
+        hologramHandler.setVisibilityDistance(getConfig().getInt("Holograms.VisibilityDistance"));
+
         hologramHandler.getColorAnimation().setColors(getConfig().getStringList("Holograms.ColorAnimation"));
-        hologramHandler.loadHolograms();
+        hologramHandler.getImplementation().loadHolograms();
 
         settings.put("HDVisibleToAllPlayers", getConfig().getBoolean("Holograms.Duplication.VisibleToAllPlayers"));
 
@@ -294,7 +306,7 @@ public class Main extends JavaPlugin {
         log.sendMessage(Utils.translate("    &aAuthor: &b" + pdf.getAuthors().get(0)));
         log.sendMessage("");
 
-        if(hologramHandler != null) hologramHandler.removeHolograms();
+        if(hologramHandler != null) hologramHandler.getImplementation().removeHolograms();
 
         for (Hologram hologram : HologramsAPI.getHolograms(this)) {
             hologram.delete();
@@ -348,6 +360,8 @@ public class Main extends JavaPlugin {
     public CubeletBoxHandler getCubeletBoxHandler() { return cubeletBoxHandler; }
 
     public HologramHandler getHologramHandler() { return hologramHandler; }
+
+    public HologramImplementation getHologramImplementation() { return hologramHandler.getImplementation(); }
 
     public CubeletOpenHandler getCubeletOpenHandler() { return cubeletOpenHandler; }
 

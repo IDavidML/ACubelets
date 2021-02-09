@@ -56,7 +56,7 @@ public class Animation0_Task implements Animation {
 				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 0.25, 0.5), FireworkEffect.Type.BURST, colors.get(0), colors.get(1));
 			} else if(time == 5) {
 				cubeletBox.setLastReward(reward);
-				main.getHologramHandler().rewardHologram(cubeletBox, reward);
+				main.getHologramImplementation().rewardHologram(cubeletBox, reward);
 				cubeletBox.setState(CubeletBoxState.REWARD);
 			} else if(time == 135) {
 				if(main.isDuplicationEnabled())
@@ -80,7 +80,7 @@ public class Animation0_Task implements Animation {
 
 				cubeletBox.setState(CubeletBoxState.EMPTY);
 				cubeletBox.setPlayerOpening(null);
-				main.getHologramHandler().reloadHologram(cubeletBox);
+				main.getHologramImplementation().reloadHologram(cubeletBox);
 			}
 
 			time++;

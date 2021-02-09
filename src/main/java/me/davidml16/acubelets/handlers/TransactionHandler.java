@@ -84,7 +84,7 @@ public class TransactionHandler {
                     if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(target);
                     if (main.getGiftGUI().getOpened().containsKey(uuid)) main.getGiftGUI().reloadGui(target);
                     if (main.getGiftAmountGUI().getOpened().containsKey(uuid)) main.getGiftAmountGUI().reloadGui(target);
-                    main.getHologramHandler().reloadHolograms(target);
+                    main.getHologramImplementation().reloadHolograms(target);
 
                     Bukkit.getPluginManager().callEvent(new CubeletReceivedEvent(target, main.getCubeletTypesHandler().getTypeBydId(type), amount));
                 }
@@ -130,7 +130,7 @@ public class TransactionHandler {
                     if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(target);
                     if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(target);
                     if (main.getGiftGUI().getOpened().containsKey(uuid)) main.getGiftGUI().reloadGui(target);
-                    main.getHologramHandler().reloadHolograms(target);
+                    main.getHologramImplementation().reloadHolograms(target);
 
                     main.getDatabaseHandler().removeCubelets(uuid, cubelets);
 

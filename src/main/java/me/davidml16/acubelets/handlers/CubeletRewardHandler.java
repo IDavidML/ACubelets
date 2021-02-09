@@ -204,7 +204,7 @@ public class CubeletRewardHandler {
 
 			int randomPoints = ThreadLocalRandom.current().nextInt(min, max);
 			cubeletBox.setLastDuplicationPoints(randomPoints);
-			return main.getHologramHandler().duplicationRewardHologram(cubeletBox, reward);
+			return main.getHologramImplementation().duplicationRewardHologram(cubeletBox, reward);
 		}
 		return null;
 	}

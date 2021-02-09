@@ -20,7 +20,6 @@ import org.bukkit.util.Vector;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 public class Animation10_Task implements Animation {
 
@@ -90,7 +89,7 @@ public class Animation10_Task implements Animation {
 			} else if(time == 85) {
 				cubeletBox.setLastReward(reward);
 				colorRarity = Utils.getRGBbyColor(Utils.getColorByText(reward.getRarity().getName()));
-				main.getHologramHandler().rewardHologram(cubeletBox, reward);
+				main.getHologramImplementation().rewardHologram(cubeletBox, reward);
 				cubeletBox.setState(CubeletBoxState.REWARD);
 				armorStand.remove();
 				armorStand = null;
@@ -116,7 +115,7 @@ public class Animation10_Task implements Animation {
 
 				cubeletBox.setState(CubeletBoxState.EMPTY);
 				cubeletBox.setPlayerOpening(null);
-				main.getHologramHandler().reloadHologram(cubeletBox);
+				main.getHologramImplementation().reloadHologram(cubeletBox);
 			}
 
 			time++;

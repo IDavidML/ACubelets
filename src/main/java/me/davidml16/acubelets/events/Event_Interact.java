@@ -4,13 +4,10 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.interfaces.CubeletDateComparator;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.CubeletBox;
-import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Profile;
 import me.davidml16.acubelets.utils.NBTEditor;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,9 +20,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.UUID;
 
 public class Event_Interact implements Listener {
 
@@ -95,7 +90,7 @@ public class Event_Interact implements Listener {
                                         }
 
                                         profile.getCubelets().remove(cubelet);
-                                        main.getHologramHandler().reloadHolograms(p);
+                                        main.getHologramImplementation().reloadHolograms(p);
 
                                     }
 
@@ -144,7 +139,7 @@ public class Event_Interact implements Listener {
                                     item.setAmount(item.getAmount() - 1);
                                 }
 
-                                main.getHologramHandler().reloadHolograms(p);
+                                main.getHologramImplementation().reloadHolograms(p);
 
                             }
 

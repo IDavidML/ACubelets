@@ -94,7 +94,7 @@ public class AnimationXmas_Task implements Animation {
 				present.remove();
 				present = null;
 				cubeletBox.setLastReward(reward);
-				main.getHologramHandler().rewardHologram(cubeletBox, reward);
+				main.getHologramImplementation().rewardHologram(cubeletBox, reward);
 				cubeletBox.setState(CubeletBoxState.REWARD);
 			}
 
@@ -124,7 +124,7 @@ public class AnimationXmas_Task implements Animation {
 
 				cubeletBox.setState(CubeletBoxState.EMPTY);
 				cubeletBox.setPlayerOpening(null);
-				main.getHologramHandler().reloadHologram(cubeletBox);
+				main.getHologramImplementation().reloadHologram(cubeletBox);
 			}
 
 			if(time % 2 == 0) UtilParticles.display(Particles.FIREWORKS_SPARK, getRandomLocation(pc1, pc2));

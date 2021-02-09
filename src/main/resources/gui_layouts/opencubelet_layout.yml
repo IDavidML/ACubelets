@@ -46,6 +46,7 @@ Layout:
 
     # Item to order cubelets by date or type
     Ordered:
+      Enabled: true
       Slot: 7
       Type:
         Name: '&aOrderer by - &a&lType'

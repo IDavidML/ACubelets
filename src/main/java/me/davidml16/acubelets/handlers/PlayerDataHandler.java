@@ -1,17 +1,12 @@
 package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.api.CubeletReceivedEvent;
-import me.davidml16.acubelets.database.types.Database;
-import me.davidml16.acubelets.objects.Cubelet;
-import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.UUID;
 
 public class PlayerDataHandler {
@@ -73,7 +68,7 @@ public class PlayerDataHandler {
 		main.getDatabaseHandler().getCubelets(p.getUniqueId()).thenAccept(cubelets -> {
 			profile.setCubelets(cubelets);
 
-			Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramHandler().reloadHolograms(p), 2L);
+			Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramImplementation().reloadHolograms(p), 2L);
 
 			if(main.isLoginReminder()) {
 				Bukkit.getScheduler().runTaskLater(main, () -> {

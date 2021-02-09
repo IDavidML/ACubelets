@@ -104,7 +104,7 @@ public class Animation9_Task implements Animation {
 				Sounds.playSound(armorStand.getLocation(), Sounds.MySound.EXPLODE, 0.5F, 1F);
 			} else if(time == 125) {
 				cubeletBox.setLastReward(reward);
-				main.getHologramHandler().rewardHologram(cubeletBox, reward);
+				main.getHologramImplementation().rewardHologram(cubeletBox, reward);
 				cubeletBox.setState(CubeletBoxState.REWARD);
 				Sounds.playSound(armorStand.getLocation(), Sounds.MySound.LEVEL_UP, 0.5F, 1F);
 			} else if(time == 165) {
@@ -129,7 +129,7 @@ public class Animation9_Task implements Animation {
 
 				cubeletBox.setState(CubeletBoxState.EMPTY);
 				cubeletBox.setPlayerOpening(null);
-				main.getHologramHandler().reloadHologram(cubeletBox);
+				main.getHologramImplementation().reloadHologram(cubeletBox);
 			}
 
 		}

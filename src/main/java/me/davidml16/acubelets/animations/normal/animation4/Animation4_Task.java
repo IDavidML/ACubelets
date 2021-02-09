@@ -120,7 +120,7 @@ public class Animation4_Task implements Animation {
 				entityPackets.cancel();
 				Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.ZOMBIE_WOODBREAK, 0.5F, 1F);
 				cubeletBox.setLastReward(reward);
-				main.getHologramHandler().rewardHologram(cubeletBox, reward);
+				main.getHologramImplementation().rewardHologram(cubeletBox, reward);
 				cubeletBox.setState(CubeletBoxState.REWARD);
 				armorStand.remove();
 				armorStand = null;
@@ -147,7 +147,7 @@ public class Animation4_Task implements Animation {
 
 				cubeletBox.setState(CubeletBoxState.EMPTY);
 				cubeletBox.setPlayerOpening(null);
-				main.getHologramHandler().reloadHologram(cubeletBox);
+				main.getHologramImplementation().reloadHologram(cubeletBox);
 			}
 
 			time++;

@@ -18,8 +18,6 @@ public class CubeletBox {
 
     private Rotation rotation;
 
-    private HashMap<UUID, Hologram> holograms;
-
     private CubeletOpener playerOpening;
 
     private CubeletBoxState state;
@@ -29,7 +27,6 @@ public class CubeletBox {
 
     public CubeletBox(Location location, double blockHeight, double permanentBlockHeight, Rotation rotation) {
         this.location = location;
-        this.holograms = new HashMap<>();
         this.state = CubeletBoxState.EMPTY;
         this.playerOpening = null;
         this.lastReward = null;
@@ -54,10 +51,6 @@ public class CubeletBox {
     public double getPermanentBlockHeight() { return permanentBlockHeight; }
 
     public void setPermanentBlockHeight(double permanentBlockHeight) { this.permanentBlockHeight = permanentBlockHeight; }
-
-    public HashMap<UUID, Hologram> getHolograms() {
-        return holograms;
-    }
 
     public CubeletBoxState getState() { return state; }
 

@@ -92,10 +92,12 @@ RewardsDuplication:
 
 
 # Change hologram settings
+# Visibility and update distance in blocks unit
 # Update interval default: 30 (1.5s)
 # Color animation default colors: &f and &c
 # Duplication hologram visible to all players (Default: false)
 Holograms:
+    VisibilityDistance: 75
     UpdateInterval: 30
     ColorAnimation:
         - '&f'
