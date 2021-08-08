@@ -197,13 +197,16 @@ public class Rarities_GUI implements Listener {
     public void onInventoryClickEvent(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
-        if (e.getCurrentItem() == null) return;
-
         if (opened.containsKey(p.getUniqueId())) {
+
             e.setCancelled(true);
+
+            if (e.getCurrentItem() == null) return;
+
             int slot = e.getRawSlot();
             String id = opened.get(p.getUniqueId()).getId();
             CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(opened.get(p.getUniqueId()).getId());
+
             if (slot == 18 && e.getCurrentItem().getType() == XMaterial.ENDER_PEARL.parseMaterial()) {
                 Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
                 openPage(p, id, opened.get(p.getUniqueId()).getPage() - 1);

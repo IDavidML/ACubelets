@@ -195,6 +195,7 @@ public class CubeletRewardHandler {
 	}
 
 	public RepeatingTask permissionReward(CubeletBox cubeletBox, Reward reward) {
+
 		if(isDuplicated(cubeletBox, reward)) {
 
 			int min = Math.min(Integer.parseInt(reward.getRarity().getDuplicatePointsRange().split("-")[0]),

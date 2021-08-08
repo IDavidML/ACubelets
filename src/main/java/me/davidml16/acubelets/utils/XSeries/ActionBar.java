@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  *
- * Copyright (c) 2020 Crypto Morin
+ * Copyright (c) 2021 Crypto Morin
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,6 +21,9 @@
  */
 package me.davidml16.acubelets.utils.XSeries;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -53,10 +56,15 @@ import java.util.concurrent.Callable;
  * PacketPlayOutTitle: https://wiki.vg/Protocol#Title
  *
  * @author Crypto Morin
- * @version 1.0.0
+ * @version 3.1.0
  * @see ReflectionUtils
  */
-public class ActionBar {
+public final class ActionBar {
+    /**
+     * If the server is running Spigot which has an official ActionBar API.
+     * This should technically be available from 1.9
+     */
+    private static final boolean SPIGOT;
     /**
      * ChatComponentText JSON message builder.
      */
@@ -64,88 +72,136 @@ public class ActionBar {
     /**
      * PacketPlayOutChat
      */
-    private static final MethodHandle PACKET;
+    private static final MethodHandle PACKET_PLAY_OUT_CHAT;
     /**
      * GAME_INFO enum constant.
      */
     private static final Object CHAT_MESSAGE_TYPE;
 
     static {
-        MethodHandles.Lookup lookup = MethodHandles.lookup();
-        Class<?> packetPlayOutChatClass = ReflectionUtils.getNMSClass("PacketPlayOutChat");
-        Class<?> iChatBaseComponentClass = ReflectionUtils.getNMSClass("IChatBaseComponent");
+        boolean exists = false;
+        try {
+            Player.Spigot.class.getDeclaredMethod("sendMessage", ChatMessageType.class, BaseComponent.class);
+            exists = true;
+        } catch (NoClassDefFoundError | NoSuchMethodException ignored) {
+        }
+        SPIGOT = exists;
+    }
 
+    static {
         MethodHandle packet = null;
         MethodHandle chatComp = null;
         Object chatMsgType = null;
 
-        try {
-            // Game Info Message Type
-            Class<?> chatMessageTypeClass = Class.forName("net.minecraft.server." + ReflectionUtils.VERSION + ".ChatMessageType");
-            for (Object obj : chatMessageTypeClass.getEnumConstants()) {
-                if (obj.toString().equals("GAME_INFO")) {
-                    chatMsgType = obj;
-                    break;
-                }
-            }
+        if (!SPIGOT) {
+            // Supporting 1.17 is not necessary, the package guards are just for readability.
+            MethodHandles.Lookup lookup = MethodHandles.lookup();
+            Class<?> packetPlayOutChatClass = ReflectionUtils.getNMSClass("network.protocol.game", "PacketPlayOutChat");
+            Class<?> iChatBaseComponentClass = ReflectionUtils.getNMSClass("network.chat", "IChatBaseComponent");
 
-            // JSON Message Builder
-            Class<?> chatComponentTextClass = ReflectionUtils.getNMSClass("ChatComponentText");
-            chatComp = lookup.findConstructor(chatComponentTextClass, MethodType.methodType(void.class, String.class));
-
-            // Packet Constructor
-            packet = lookup.findConstructor(packetPlayOutChatClass, MethodType.methodType(void.class, iChatBaseComponentClass, chatMessageTypeClass));
-        } catch (NoSuchMethodException | IllegalAccessException | ClassNotFoundException ignored) {
             try {
                 // Game Info Message Type
-                chatMsgType = (byte) 2;
-
-                // JSON Message Builder
-                Class<?> chatComponentTextClass = ReflectionUtils.getNMSClass("ChatComponentText");
-                chatComp = lookup.findConstructor(chatComponentTextClass, MethodType.methodType(void.class, String.class));
+                Class<?> chatMessageTypeClass = Class.forName(
+                        ReflectionUtils.NMS + (ReflectionUtils.supports(17) ? "network.chat" : "") + "ChatMessageType"
+                );
 
                 // Packet Constructor
-                packet = lookup.findConstructor(packetPlayOutChatClass, MethodType.methodType(void.class, iChatBaseComponentClass, byte.class));
-            } catch (NoSuchMethodException | IllegalAccessException ex) {
-                ex.printStackTrace();
+                MethodType type = MethodType.methodType(void.class, iChatBaseComponentClass, chatMessageTypeClass);
+
+                for (Object obj : chatMessageTypeClass.getEnumConstants()) {
+                    String name = obj.toString();
+                    if (name.equals("GAME_INFO") || name.equalsIgnoreCase("ACTION_BAR")) {
+                        chatMsgType = obj;
+                        break;
+                    }
+                }
+
+                // JSON Message Builder
+                Class<?> chatComponentTextClass = ReflectionUtils.getNMSClass("network.chat", "ChatComponentText");
+                chatComp = lookup.findConstructor(chatComponentTextClass, MethodType.methodType(void.class, String.class));
+
+                packet = lookup.findConstructor(packetPlayOutChatClass, type);
+            } catch (NoSuchMethodException | IllegalAccessException | ClassNotFoundException ignored) {
+                try {
+                    // Game Info Message Type
+                    chatMsgType = (byte) 2;
+
+                    // JSON Message Builder
+                    Class<?> chatComponentTextClass = ReflectionUtils.getNMSClass("ChatComponentText");
+                    chatComp = lookup.findConstructor(chatComponentTextClass, MethodType.methodType(void.class, String.class));
+
+                    // Packet Constructor
+                    packet = lookup.findConstructor(packetPlayOutChatClass, MethodType.methodType(void.class, iChatBaseComponentClass, byte.class));
+                } catch (NoSuchMethodException | IllegalAccessException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
 
         CHAT_MESSAGE_TYPE = chatMsgType;
         CHAT_COMPONENT_TEXT = chatComp;
-        PACKET = packet;
+        PACKET_PLAY_OUT_CHAT = packet;
     }
+
+    private ActionBar() { }
 
     /**
      * Sends an action bar to a player.
      *
      * @param player  the player to send the action bar to.
      * @param message the message to send.
+     *
      * @see #sendActionBar(JavaPlugin, Player, String, long)
      * @since 1.0.0
      */
     public static void sendActionBar(@Nonnull Player player, @Nullable String message) {
         Objects.requireNonNull(player, "Cannot send action bar to null player");
-        Object packet = null;
+        if (SPIGOT) {
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
+            return;
+        }
 
         try {
             Object component = CHAT_COMPONENT_TEXT.invoke(message);
-            packet = PACKET.invoke(component, CHAT_MESSAGE_TYPE);
+            Object packet = PACKET_PLAY_OUT_CHAT.invoke(component, CHAT_MESSAGE_TYPE);
+            ReflectionUtils.sendPacket(player, packet);
         } catch (Throwable throwable) {
             throwable.printStackTrace();
         }
-        ReflectionUtils.sendPacket(player, packet);
     }
 
     /**
      * Sends an action bar all the online players.
      *
      * @param message the message to send.
+     *
      * @see #sendActionBar(Player, String)
      * @since 1.0.0
      */
     public static void sendPlayersActionBar(@Nullable String message) {
         for (Player player : Bukkit.getOnlinePlayers()) sendActionBar(player, message);
+    }
+
+    /**
+     * Clear the action bar by sending an empty message.
+     *
+     * @param player the player to send the action bar to.
+     *
+     * @see #sendActionBar(Player, String)
+     * @since 2.1.1
+     */
+    public static void clearActionBar(@Nonnull Player player) {
+        sendActionBar(player, " ");
+    }
+
+    /**
+     * Clear the action bar by sending an empty message to all the online players.
+     *
+     * @see #clearActionBar(Player player)
+     * @since 2.1.1
+     */
+    public static void clearPlayersActionBar() {
+        for (Player player : Bukkit.getOnlinePlayers()) clearActionBar(player);
     }
 
     /**
@@ -155,9 +211,11 @@ public class ActionBar {
      * If the caller returns true, the action bar will continue.
      * If the caller returns false, action bar will not be sent anymore.
      *
+     * @param plugin   the plugin handling the message scheduler.
      * @param player   the player to send the action bar to.
      * @param message  the message to send. The message will not be updated.
      * @param callable the condition for the action bar to continue.
+     *
      * @see #sendActionBar(JavaPlugin, Player, String, long)
      * @since 1.0.0
      */
@@ -185,9 +243,11 @@ public class ActionBar {
      * If the caller returns true, the action bar will continue.
      * If the caller returns false, action bar will not be sent anymore.
      *
+     * @param plugin   the plugin handling the message scheduler.
      * @param player   the player to send the action bar to.
      * @param message  the message to send. The message will be updated.
      * @param callable the condition for the action bar to continue.
+     *
      * @see #sendActionBarWhile(JavaPlugin, Player, String, Callable)
      * @since 1.0.0
      */
@@ -212,9 +272,11 @@ public class ActionBar {
     /**
      * Sends an action bar to a player for a specific amount of ticks.
      *
+     * @param plugin   the plugin handling the message scheduler.
      * @param player   the player to send the action bar to.
      * @param message  the message to send.
      * @param duration the duration to keep the action bar in ticks.
+     *
      * @see #sendActionBarWhile(JavaPlugin, Player, String, Callable)
      * @since 1.0.0
      */

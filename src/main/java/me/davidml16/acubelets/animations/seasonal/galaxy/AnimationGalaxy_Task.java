@@ -160,15 +160,17 @@ public class AnimationGalaxy_Task implements Animation {
 				UtilParticles.display(Particles.EXPLOSION_LARGE, armorStand.getLocation().clone().add(0, 1.25, 0), 2);
 
 				armorStand.setGravity(true);
-				Method getHandle = null;
-				try {
-					getHandle = armorStand.getClass().getMethod("getHandle");
-					Object armorS = getHandle.invoke(armorStand);
-					Field field = armorS.getClass().getField("noclip");
-					field.setAccessible(true);
-					field.setBoolean(armorS, true);
-				} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
-					e.printStackTrace();
+				if(!VersionUtil.supports(17)) {
+					Method getHandle = null;
+					try {
+						getHandle = armorStand.getClass().getMethod("getHandle");
+						Object armorS = getHandle.invoke(armorStand);
+						Field field = armorS.getClass().getField("noclip");
+						field.setAccessible(true);
+						field.setBoolean(armorS, true);
+					} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
+						e.printStackTrace();
+					}
 				}
 
 			} else if(time > 160 && time < 173) {

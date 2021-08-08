@@ -42,6 +42,7 @@ public class PluginHandler {
 
         main.setCubeletsCommandEnabled(main.getConfig().getBoolean("NoCubelets.ExecuteCommand"));
         main.setNoCubeletsCommand(main.getConfig().getString("NoCubelets.Command"));
+        main.setNoCubeletsCommandExecutor(main.getConfig().getString("NoCubelets.Executor"));
 
         main.setDuplicationEnabled(main.getConfig().getBoolean("RewardsDuplication.Enabled"));
         main.setDuplicationPermissionCommand(main.getConfig().getString("RewardsDuplication.PermissionCommand"));

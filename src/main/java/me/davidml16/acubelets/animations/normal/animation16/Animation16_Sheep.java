@@ -6,6 +6,7 @@ import me.davidml16.acubelets.utils.NBTEditor;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import me.davidml16.acubelets.utils.Sounds;
+import me.davidml16.acubelets.utils.VersionUtil;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -58,15 +59,17 @@ public class Animation16_Sheep extends BukkitRunnable {
         sheep.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
         sheep.teleport(locations.get(step));
 
-        Method getHandle = null;
-        try {
-            getHandle = sheep.getClass().getMethod("getHandle");
-            Object armorS = getHandle.invoke(sheep);
-            Field field = armorS.getClass().getField("noclip");
-            field.setAccessible(true);
-            field.setBoolean(armorS, true);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
-            e.printStackTrace();
+        if(!VersionUtil.supports(17)) {
+            Method getHandle = null;
+            try {
+                getHandle = sheep.getClass().getMethod("getHandle");
+                Object armorS = getHandle.invoke(sheep);
+                Field field = armorS.getClass().getField("noclip");
+                field.setAccessible(true);
+                field.setBoolean(armorS, true);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
+                e.printStackTrace();
+            }
         }
 
         main.getAnimationHandler().getEntities().add(sheep);

@@ -115,10 +115,11 @@ public class GiftCubelet_GUI implements Listener {
     public void onInventoryClickEvent(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
-        if (e.getCurrentItem() == null) return;
-
         if (opened.containsKey(p.getUniqueId())) {
+
             e.setCancelled(true);
+
+            if (e.getCurrentItem() == null) return;
 
             String action = NBTEditor.getString(e.getCurrentItem(), "action");
 
@@ -145,7 +146,7 @@ public class GiftCubelet_GUI implements Listener {
                         target.sendMessage(Utils.translate(main.getLanguageHandler().getMessage("Commands.Cubelets.Gift.Received")
                                 .replaceAll("%amount%", String.valueOf(giftAmountGuiSession.getCubeletAmount()))
                                 .replaceAll("%cubelet%", Utils.removeColors(giftAmountGuiSession.getCubeletType().getName()))
-                                .replaceAll("%player%", giftAmountGuiSession.getTargetName())
+                                .replaceAll("%player%", p.getName())
                         ));
                     }
 

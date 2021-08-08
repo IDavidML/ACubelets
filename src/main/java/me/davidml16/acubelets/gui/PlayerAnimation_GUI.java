@@ -125,12 +125,13 @@ public class PlayerAnimation_GUI implements Listener {
     public void onInventoryClickEvent(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
-        if (e.getCurrentItem() == null) return;
-        if (e.getCurrentItem().getType() == Material.AIR) return;
-        if (e.getClick() == ClickType.DOUBLE_CLICK) return;
-
         if (opened.containsKey(p.getUniqueId())) {
+
             e.setCancelled(true);
+
+            if (e.getCurrentItem() == null) return;
+            if (e.getCurrentItem().getType() == Material.AIR) return;
+            if (e.getClick() == ClickType.DOUBLE_CLICK) return;
 
             String action = NBTEditor.getString(e.getCurrentItem(), "action");
 

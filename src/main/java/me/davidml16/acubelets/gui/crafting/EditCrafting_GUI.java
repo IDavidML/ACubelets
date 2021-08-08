@@ -192,10 +192,12 @@ public class EditCrafting_GUI implements Listener {
     public void onInventoryClickEvent(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
-        if (e.getCurrentItem() == null) return;
-
         if (opened.contains(p.getUniqueId())) {
+
             e.setCancelled(true);
+
+            if (e.getCurrentItem() == null) return;
+
             int slot = e.getRawSlot();
 
             if(e.getClick() != ClickType.DOUBLE_CLICK) {

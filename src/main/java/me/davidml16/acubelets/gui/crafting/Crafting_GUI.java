@@ -137,11 +137,12 @@ public class Crafting_GUI implements Listener {
     public void onInventoryClickEvent(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
-        if (e.getCurrentItem() == null) return;
-        if (e.getCurrentItem().getType() == Material.AIR) return;
-
         if (opened.contains(p.getUniqueId())) {
+
             e.setCancelled(true);
+
+            if (e.getCurrentItem() == null) return;
+            if (e.getCurrentItem().getType() == Material.AIR) return;
 
             int inventorySize = main.getCubeletCraftingHandler().getInventorySize();
             int slot = e.getRawSlot();

@@ -127,11 +127,13 @@ public class EditRewardItems_GUI implements Listener {
     public void onInventoryClickEvent(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
-        if (e.getCurrentItem() == null) return;
-        if (e.getCurrentItem().getType() == Material.AIR) return;
-
         if (opened.containsKey(p.getUniqueId())) {
+
             e.setCancelled(true);
+
+            if (e.getCurrentItem() == null) return;
+            if (e.getCurrentItem().getType() == Material.AIR) return;
+
             int slot = e.getRawSlot();
 
             Reward reward = opened.get(p.getUniqueId()).getReward();

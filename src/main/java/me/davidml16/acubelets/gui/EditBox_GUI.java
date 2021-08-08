@@ -170,10 +170,12 @@ public class EditBox_GUI implements Listener {
     public void onInventoryClickEvent(InventoryClickEvent e) {
         Player p = (Player) e.getWhoClicked();
 
-        if (e.getCurrentItem() == null) return;
-
         if (opened.containsKey(p.getUniqueId())) {
+
             e.setCancelled(true);
+
+            if (e.getCurrentItem() == null) return;
+
             int slot = e.getRawSlot();
             CubeletBox box = opened.get(p.getUniqueId());
 

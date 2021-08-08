@@ -3,6 +3,7 @@ package me.davidml16.acubelets.animations.seasonal.summer;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.Sounds;
+import me.davidml16.acubelets.utils.VersionUtil;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
@@ -33,15 +34,17 @@ public class AnimationSummer_Ball extends BukkitRunnable {
         armorStand.setCustomNameVisible(false);
         armorStand.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
 
-        Method getHandle = null;
-        try {
-            getHandle = armorStand.getClass().getMethod("getHandle");
-            Object armorS = getHandle.invoke(armorStand);
-            Field field = armorS.getClass().getField("noclip");
-            field.setAccessible(true);
-            field.setBoolean(armorS, true);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
-            e.printStackTrace();
+        if(!VersionUtil.supports(17)) {
+            Method getHandle = null;
+            try {
+                getHandle = armorStand.getClass().getMethod("getHandle");
+                Object armorS = getHandle.invoke(armorStand);
+                Field field = armorS.getClass().getField("noclip");
+                field.setAccessible(true);
+                field.setBoolean(armorS, true);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
+                e.printStackTrace();
+            }
         }
 
         armorStand.teleport(spawnLoc.clone().add(0, -2.5, 0));

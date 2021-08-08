@@ -5,6 +5,7 @@ import me.davidml16.acubelets.enums.Rotation;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.utils.NBTEditor;
+import me.davidml16.acubelets.utils.VersionUtil;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -100,15 +101,17 @@ public class ASSpawner {
         armorStand.setCustomNameVisible(false);
         armorStand.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
 
-        Method getHandle = null;
-        try {
-            getHandle = armorStand.getClass().getMethod("getHandle");
-            Object armorS = getHandle.invoke(armorStand);
-            Field field = armorS.getClass().getField("noclip");
-            field.setAccessible(true);
-            field.setBoolean(armorS, true);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
-            e.printStackTrace();
+        if(!VersionUtil.supports(17)) {
+            Method getHandle = null;
+            try {
+                getHandle = armorStand.getClass().getMethod("getHandle");
+                Object armorS = getHandle.invoke(armorStand);
+                Field field = armorS.getClass().getField("noclip");
+                field.setAccessible(true);
+                field.setBoolean(armorS, true);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
+                e.printStackTrace();
+            }
         }
 
         armorStand.teleport(loc);
@@ -130,15 +133,17 @@ public class ASSpawner {
         armorStand.setCustomNameVisible(false);
         armorStand.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
 
-        Method getHandle = null;
-        try {
-            getHandle = armorStand.getClass().getMethod("getHandle");
-            Object armorS = getHandle.invoke(armorStand);
-            Field field = armorS.getClass().getField("noclip");
-            field.setAccessible(true);
-            field.setBoolean(armorS, true);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
-            e.printStackTrace();
+        if(!VersionUtil.supports(17)) {
+            Method getHandle = null;
+            try {
+                getHandle = armorStand.getClass().getMethod("getHandle");
+                Object armorS = getHandle.invoke(armorStand);
+                Field field = armorS.getClass().getField("noclip");
+                field.setAccessible(true);
+                field.setBoolean(armorS, true);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
+                e.printStackTrace();
+            }
         }
 
         armorStand.teleport(loc);

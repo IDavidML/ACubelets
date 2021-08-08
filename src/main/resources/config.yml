@@ -29,9 +29,12 @@ MySQL:
 
 
 # Enable/disable if execute a command when click on barrier
+# Executor: player or console
+# Variables when executor is player: %player%
 # When dont have any cubelets to open
 NoCubelets:
     ExecuteCommand: false
+    Executor: player
     Command: 'help'
 
 

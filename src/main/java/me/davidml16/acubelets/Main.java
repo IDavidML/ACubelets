@@ -107,6 +107,7 @@ public class Main extends JavaPlugin {
     private Map<String, Boolean> settings;
 
     private String noCubeletsCommand;
+    private String noCubeletsCommandExecutor;
 
     private String duplicationPermissionCommand;
     private String duplicationPointsCommand;
@@ -148,6 +149,7 @@ public class Main extends JavaPlugin {
 
         settings.put("CubeletsCommand", getConfig().getBoolean("NoCubelets.ExecuteCommand"));
         noCubeletsCommand = getConfig().getString("NoCubelets.Command");
+        noCubeletsCommandExecutor = getConfig().getString("NoCubelets.Executor");
 
         pluginHandler = new PluginHandler(this);
 
@@ -436,6 +438,10 @@ public class Main extends JavaPlugin {
     public boolean isCubeletsCommandEnabled() { return settings.get("CubeletsCommand"); }
 
     public void setCubeletsCommandEnabled(boolean value) { settings.put("CubeletsCommand", value); }
+
+    public String getNoCubeletsCommandExecutor() { return noCubeletsCommandExecutor; }
+
+    public void setNoCubeletsCommandExecutor(String noCubeletsCommandExecutor) { this.noCubeletsCommandExecutor = noCubeletsCommandExecutor; }
 
     public boolean isCraftingEnabled() { return settings.get("Crafting"); }
 

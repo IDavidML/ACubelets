@@ -240,7 +240,15 @@ public class MessageUtils {
     public static void sendShopMessage(Player player) {
         if (player != null) {
             if(Main.get().isCubeletsCommandEnabled()) {
-                player.performCommand(Main.get().getNoCubeletsCommand());
+                switch (Main.get().getNoCubeletsCommandExecutor()) {
+                    case "player":
+                        player.chat("/" + Main.get().getNoCubeletsCommand());
+                        break;
+                    case "console":
+                        Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),
+                                Main.get().getNoCubeletsCommand().replaceAll("%player%", player.getName()));
+                        break;
+                }
             } else {
                 for (String line : Main.get().getLanguageHandler().getMessageList("Cubelet.NoCubelets")) {
                     if (line.contains("%center%")) {

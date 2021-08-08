@@ -55,7 +55,7 @@ public class LanguageHandler {
 	public List<String> getMessageList(String message) {
 		List<String> lines = new ArrayList<>();
 		for(String line : messageList.get(message)) {
-			lines.add(Utils.translate(line));
+			lines.add(Utils.translate(line).replaceAll("%prefix%", messages.get("Prefix")));
 		}
 		return lines;
 	}

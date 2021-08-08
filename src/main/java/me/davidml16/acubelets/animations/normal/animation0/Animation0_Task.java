@@ -58,7 +58,7 @@ public class Animation0_Task implements Animation {
 				cubeletBox.setLastReward(reward);
 				main.getHologramImplementation().rewardHologram(cubeletBox, reward);
 				cubeletBox.setState(CubeletBoxState.REWARD);
-			} else if(time == 135) {
+			} else if(time == 35) {
 				if(main.isDuplicationEnabled())
 					if(reward instanceof PermissionReward)
 						hologramAnimation = main.getCubeletRewardHandler().permissionReward(cubeletBox, reward);

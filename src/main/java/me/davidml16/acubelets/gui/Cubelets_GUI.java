@@ -235,27 +235,12 @@ public class Cubelets_GUI implements Listener {
 
         if(guiLayout.getBoolean("Size.Dynamic")) {
 
-            if(rows == 1) {
-                finalRows = 1;
-            } else if(rows == 2) {
-                if(cubelets <= 9) finalRows = 1;
-                else finalRows = 2;
-            } else if(rows == 3) {
-                if(cubelets >= 0 && cubelets <= 9) finalRows = 1;
-                else if(cubelets >= 9 && cubelets <= 18) finalRows = 2;
-                else finalRows = 3;
-            } else if(rows == 4) {
-                if(cubelets >= 0 && cubelets <= 9) finalRows = 1;
-                else if(cubelets >= 9 && cubelets <= 18) finalRows = 2;
-                else if(cubelets >= 18 && cubelets <= 27) finalRows = 3;
-                else finalRows = 4;
-            } else {
-                if(cubelets >= 0 && cubelets <= 9) finalRows = 1;
-                else if(cubelets >= 9 && cubelets <= 18) finalRows = 2;
-                else if(cubelets >= 18 && cubelets <= 27) finalRows = 3;
-                else if(cubelets >= 27 && cubelets <= 36) finalRows = 4;
-                else finalRows = 5;
-            }
+            if(cubelets > 36)
+                finalRows = 5;
+            else
+                finalRows = (cubelets / 9) + (cubelets == 0 ? 1 : cubelets % 9 != 0 ? 1 : 0);
+
+            finalRows = Math.min(finalRows, rows);
 
         } else {
 
@@ -281,11 +266,12 @@ public class Cubelets_GUI implements Listener {
     public void onInventoryClickEvent(InventoryClickEvent e) throws SQLException {
         Player p = (Player) e.getWhoClicked();
 
-        if (e.getCurrentItem() == null) return;
-        if (e.getCurrentItem().getType() == Material.AIR) return;
-
         if (opened.containsKey(p.getUniqueId())) {
+
             e.setCancelled(true);
+
+            if (e.getCurrentItem() == null) return;
+            if (e.getCurrentItem().getType() == Material.AIR) return;
 
             int slot = e.getRawSlot();
             int size = p.getOpenInventory().getTopInventory().getSize();
