@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.api;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.database.types.Database;
 import me.davidml16.acubelets.objects.CubeletType;
 import org.bukkit.entity.Player;
 
@@ -14,12 +15,20 @@ public class CubeletsAPI {
         CubeletsAPI.main = main;
     }
 
-    public static CubeletType giveCubelet(String player, String type, int amount) {
+    public static CubeletType giveCubelet(String player, String type, int amount, Database.Callback<CubeletType> callback) {
+
         try {
-            return main.getTransactionHandler().giveCubelet(player, type, amount);
+
+            main.getTransactionHandler().giveCubelet(player, type, amount, cubeletType -> {
+
+                callback.done(cubeletType);
+
+            });
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
         return null;
     }
 

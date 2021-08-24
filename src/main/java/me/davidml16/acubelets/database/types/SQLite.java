@@ -103,24 +103,44 @@ public class SQLite implements Database {
 
     }
 
-    public boolean hasName(String name) throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            ps = connection.prepareStatement("SELECT * FROM ac_players WHERE NAME = '" + name + "';");
-            rs = ps.executeQuery();
+    public void hasName(String name, Callback<Boolean> callback) throws SQLException {
 
-            if (rs.next()) {
-                return true;
+        Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+
+            try {
+                ps = connection.prepareStatement("SELECT * FROM ac_players WHERE NAME = '" + name + "';");
+                rs = ps.executeQuery();
+
+                if (rs.next()) {
+                   callback.done(true);
+                } else {
+                    callback.done(false);
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (ps != null) {
+                    try {
+                        ps.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (rs != null) {
+                    try {
+                        rs.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if(ps != null) ps.close();
-            if(rs != null) rs.close();
-        }
 
-        return false;
+        });
+
     }
 
     public void createPlayerData(Player p) {
@@ -207,18 +227,26 @@ public class SQLite implements Database {
         });
     }
 
-    public void setPlayerAnimation(UUID uuid, String animation) throws SQLException {
-        PreparedStatement ps = null;
-        try {
-            ps = connection.prepareStatement("UPDATE ac_players SET `ANIMATION` = ? WHERE `UUID` = ?");
-            ps.setString(1, animation);
-            ps.setString(2, uuid.toString());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if(ps != null) ps.close();
-        }
+    public void setPlayerAnimation(UUID uuid, String animation) {
+        Bukkit.getScheduler().runTaskAsynchronously(main, (Runnable) () -> {
+            PreparedStatement ps = null;
+            try {
+                ps = connection.prepareStatement("UPDATE ac_players SET `ANIMATION` = ? WHERE `UUID` = ?");
+                ps.setString(1, animation);
+                ps.setString(2, uuid.toString());
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (ps != null) {
+                    try {
+                        ps.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     public void getPlayerOrderSetting(UUID uuid, Callback<String> callback) {
@@ -295,18 +323,26 @@ public class SQLite implements Database {
         });
     }
 
-    public void setPlayerOrderSetting(UUID uuid, String orderBy) throws SQLException {
-        PreparedStatement ps = null;
-        try {
-            ps = connection.prepareStatement("UPDATE ac_players SET `ORDER_BY` = ? WHERE `UUID` = ?");
-            ps.setString(1, orderBy);
-            ps.setString(2, uuid.toString());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if(ps != null) ps.close();
-        }
+    public void setPlayerOrderSetting(UUID uuid, String orderBy) {
+        Bukkit.getScheduler().runTaskAsynchronously(main, (Runnable) () -> {
+            PreparedStatement ps = null;
+            try {
+                ps = connection.prepareStatement("UPDATE ac_players SET `ORDER_BY` = ? WHERE `UUID` = ?");
+                ps.setString(1, orderBy);
+                ps.setString(2, uuid.toString());
+                ps.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (ps != null) {
+                    try {
+                        ps.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
     public void setPlayerLootPoints(UUID uuid, long amount) {
@@ -387,26 +423,6 @@ public class SQLite implements Database {
                 }
             }
         }
-    }
-
-    public String getPlayerUUID(String name) throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            ps = connection.prepareStatement("SELECT * FROM ac_players WHERE NAME = '" + name + "';");
-            rs = ps.executeQuery();
-
-            if (rs.next()) {
-                return rs.getString("UUID");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if(ps != null) ps.close();
-            if(rs != null) rs.close();
-        }
-
-        return "";
     }
 
     @Override
@@ -678,24 +694,73 @@ public class SQLite implements Database {
         return result;
     }
 
-    public int getCubeletBalance(UUID uuid, String cubeletType) throws SQLException {
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try {
-            ps = connection.prepareStatement("SELECT COUNT(*) AS amount FROM ac_cubelets WHERE UUID = '" + uuid.toString() + "' AND type = '" + cubeletType + "';");
-            rs = ps.executeQuery();
+    public void getCubeletBalance(UUID uuid, String cubeletType, Callback<Long> callback) throws SQLException {
 
-            if (rs.next()) {
-                return rs.getInt("amount");
+        Bukkit.getScheduler().runTaskAsynchronously(main, (Runnable) () -> {
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            try {
+                ps = connection.prepareStatement("SELECT COUNT(*) AS amount FROM ac_cubelets WHERE UUID = '" + uuid.toString() + "' AND type = '" + cubeletType + "';");
+                rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    final Long ammount = Long.valueOf(rs.getInt("amount"));
+                    Bukkit.getScheduler().runTask(main, () -> callback.done(ammount));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if(ps != null) {
+                    try {
+                        ps.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(rs != null) {
+                    try {
+                        rs.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            if(ps != null) ps.close();
-            if(rs != null) rs.close();
-        }
 
-        return 0;
+        });
+
+    }
+
+    public void getPlayerUUID(String name, Callback<String> callback) throws SQLException {
+        Bukkit.getScheduler().runTaskAsynchronously(main, (Runnable) () -> {
+            PreparedStatement ps = null;
+            ResultSet rs = null;
+            try {
+                ps = connection.prepareStatement("SELECT * FROM ac_players WHERE NAME = '" + name + "';");
+                rs = ps.executeQuery();
+
+                if (rs.next()) {
+                    final String uuid = rs.getString("UUID");
+                    Bukkit.getScheduler().runTask(main, () -> callback.done(uuid));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (ps != null) {
+                    try {
+                        ps.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (rs != null) {
+                    try {
+                        rs.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
 }

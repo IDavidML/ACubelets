@@ -39,49 +39,72 @@ public class PlayerDataHandler {
 	}
 
 	public void loadPlayerData(Player p) {
+
 		Profile profile = new Profile(main, p.getUniqueId());
 		data.put(p.getUniqueId(), profile);
 
 		try {
-			if(!main.getDatabaseHandler().hasName(p.getName())) {
-				main.getDatabaseHandler().createPlayerData(p);
-				profile.setOrderBy("date");
-				profile.setLootPoints(0);
-				profile.setAnimation("animation2");
-			} else {
-				main.getDatabaseHandler().updatePlayerName(p);
 
-				main.getDatabaseHandler().getPlayerOrderSetting(p.getUniqueId(), profile::setOrderBy);
-				main.getDatabaseHandler().getPlayerLootPoints(p.getUniqueId(), profile::setLootPoints);
-				main.getDatabaseHandler().getPlayerAnimation(p.getUniqueId(), profile::setAnimation);
-			}
-		} catch (SQLException throwables) {
-			throwables.printStackTrace();
-		}
+			main.getDatabaseHandler().hasName(p.getName(), exists -> {
 
-		try {
-			main.getDatabaseHandler().removeExpiredCubelets(p.getUniqueId());
-		} catch (SQLException throwables) {
-			throwables.printStackTrace();
-		}
+				if(!exists) {
 
-		main.getDatabaseHandler().getCubelets(p.getUniqueId()).thenAccept(cubelets -> {
-			profile.setCubelets(cubelets);
+					main.getDatabaseHandler().createPlayerData(p);
+					profile.setOrderBy("date");
+					profile.setLootPoints(0);
+					profile.setAnimation("animation2");
 
-			Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramImplementation().reloadHolograms(p), 2L);
+				} else {
 
-			if(main.isLoginReminder()) {
-				Bukkit.getScheduler().runTaskLater(main, () -> {
-					if(cubelets.size() > 0) {
-						for (String line : main.getLanguageHandler().getMessageList("Cubelet.LoginReminder")) {
-							line = line.replaceAll("%amount%", Integer.toString(cubelets.size()));
-							line = line.replaceAll("%player%", p.getName());
-							p.sendMessage(line);
-						}
+					main.getDatabaseHandler().updatePlayerName(p);
+
+					try {
+
+						main.getDatabaseHandler().getPlayerOrderSetting(p.getUniqueId(), profile::setOrderBy);
+						main.getDatabaseHandler().getPlayerLootPoints(p.getUniqueId(), profile::setLootPoints);
+						main.getDatabaseHandler().getPlayerAnimation(p.getUniqueId(), profile::setAnimation);
+
+					} catch (SQLException e) {
+						e.printStackTrace();
 					}
-				}, 20L);
-			}
-		});
+
+
+				}
+
+				try {
+					main.getDatabaseHandler().removeExpiredCubelets(p.getUniqueId());
+				} catch (SQLException throwables) {
+					throwables.printStackTrace();
+				}
+
+				main.getDatabaseHandler().getCubelets(p.getUniqueId()).thenAccept(cubelets -> {
+
+					profile.setCubelets(cubelets);
+
+					Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramImplementation().reloadHolograms(p), 2L);
+
+					if(main.isLoginReminder()) {
+
+						Bukkit.getScheduler().runTaskLater(main, () -> {
+							if(cubelets.size() > 0) {
+								for (String line : main.getLanguageHandler().getMessageList("Cubelet.LoginReminder")) {
+									line = line.replaceAll("%amount%", Integer.toString(cubelets.size()));
+									line = line.replaceAll("%player%", p.getName());
+									p.sendMessage(line);
+								}
+							}
+						}, 20L);
+
+					}
+
+				});
+
+			});
+
+		} catch (SQLException throwables) {
+			throwables.printStackTrace();
+		}
+
 	}
 
 	public void loadAllPlayerData() {

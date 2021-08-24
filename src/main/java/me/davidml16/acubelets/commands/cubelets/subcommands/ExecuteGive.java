@@ -42,33 +42,54 @@ public class ExecuteGive {
             return false;
         }
 
-        int amount = 1;
+        final int[] amount = {1};
 
         if(player.equalsIgnoreCase("*") || player.equalsIgnoreCase("all")) {
-            if(args.length == 3) {
-                for(Player iterator : Bukkit.getOnlinePlayers()) {
-                    CubeletType typeGived = CubeletsAPI.giveCubelet(iterator.getName(), id, 1);
 
-                    String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Give");
-                    msg = msg.replaceAll("%amount%", Integer.toString(amount));
-                    msg = msg.replaceAll("%cubelet%",  typeGived.getName());
-                    msg = msg.replaceAll("%player%", iterator.getName());
-                    sender.sendMessage(Utils.translate(msg));
-                }
-                return true;
-            } else if(args.length == 4) {
-                amount = Integer.parseInt(args[3]);
-                if(amount > 0) {
-                    for(Player iterator : Bukkit.getOnlinePlayers()) {
-                        CubeletType typeGived = CubeletsAPI.giveCubelet(iterator.getName(), id, amount);
+            if(args.length == 3) {
+
+                for(Player iterator : Bukkit.getOnlinePlayers()) {
+
+                    int finalAmount = amount[0];
+
+                    CubeletsAPI.giveCubelet(iterator.getName(), id, 1, typeGived -> {
 
                         String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Give");
-                        msg = msg.replaceAll("%amount%", Integer.toString(amount));
-                        msg = msg.replaceAll("%cubelet%", typeGived.getName());
+                        msg = msg.replaceAll("%amount%", Integer.toString(finalAmount));
+                        msg = msg.replaceAll("%cubelet%",  typeGived.getName());
                         msg = msg.replaceAll("%player%", iterator.getName());
                         sender.sendMessage(Utils.translate(msg));
+
+                    });
+
+                }
+
+                return true;
+
+            } else if(args.length == 4) {
+
+                amount[0] = Integer.parseInt(args[3]);
+
+                if(amount[0] > 0) {
+
+                    for(Player iterator : Bukkit.getOnlinePlayers()) {
+
+                        int finalAmount = amount[0];
+
+                        CubeletsAPI.giveCubelet(iterator.getName(), id, finalAmount, typeGived -> {
+
+                            String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Give");
+                            msg = msg.replaceAll("%amount%", Integer.toString(finalAmount));
+                            msg = msg.replaceAll("%cubelet%",  typeGived.getName());
+                            msg = msg.replaceAll("%player%", iterator.getName());
+                            sender.sendMessage(Utils.translate(msg));
+
+                        });
+
                     }
+
                     return true;
+
                 } else {
                     sender.sendMessage(Utils.translate(
                             main.getLanguageHandler().getPrefix() + " &cAmount to give need to be more than 0!"));
@@ -76,46 +97,68 @@ public class ExecuteGive {
                 }
             }
         } else {
+
             try {
-                if(!main.getDatabaseHandler().hasName(player)) {
-                    sender.sendMessage(Utils.translate(
-                            main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
-                    return false;
-                }
+
+                main.getDatabaseHandler().hasName(player, exists -> {
+
+                    if(!exists) {
+
+                        sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
+
+                    } else {
+
+                        if(args.length == 3) {
+
+                            int finalAmount = amount[0];
+
+                            CubeletsAPI.giveCubelet(player, id, 1, typeGived -> {
+
+                                String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Give");
+                                msg = msg.replaceAll("%amount%", Integer.toString(finalAmount));
+                                msg = msg.replaceAll("%cubelet%",  typeGived.getName());
+                                msg = msg.replaceAll("%player%", player);
+                                sender.sendMessage(Utils.translate(msg));
+
+                            });
+
+                        } else if(args.length == 4) {
+
+                            amount[0] = Integer.parseInt(args[3]);
+
+                            if(amount[0] > 0) {
+
+                                int finalAmount = amount[0];
+
+                                CubeletsAPI.giveCubelet(player, id, finalAmount, typeGived -> {
+
+                                    String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Give");
+                                    msg = msg.replaceAll("%amount%", Integer.toString(finalAmount));
+                                    msg = msg.replaceAll("%cubelet%",  typeGived.getName());
+                                    msg = msg.replaceAll("%player%", player);
+                                    sender.sendMessage(Utils.translate(msg));
+
+                                });
+
+                            } else {
+
+                                sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cAmount to give need to be more than 0!"));
+
+                            }
+                        }
+
+                    }
+
+                });
+
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
             }
 
-            if(args.length == 3) {
-                CubeletType typeGived = CubeletsAPI.giveCubelet(player, id, 1);
-
-                String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Give");
-                msg = msg.replaceAll("%amount%", Integer.toString(amount));
-                msg = msg.replaceAll("%cubelet%",  typeGived.getName());
-                msg = msg.replaceAll("%player%", player);
-                sender.sendMessage(Utils.translate(msg));
-
-            } else if(args.length == 4) {
-                amount = Integer.parseInt(args[3]);
-                if(amount > 0) {
-                    CubeletType typeGived = CubeletsAPI.giveCubelet(player, id, amount);
-
-                    String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Give");
-                    msg = msg.replaceAll("%amount%", Integer.toString(amount));
-                    msg = msg.replaceAll("%cubelet%", typeGived.getName());
-                    msg = msg.replaceAll("%player%", player);
-                    sender.sendMessage(Utils.translate(msg));
-
-                    return true;
-                } else {
-                    sender.sendMessage(Utils.translate(
-                            main.getLanguageHandler().getPrefix() + " &cAmount to give need to be more than 0!"));
-                    return false;
-                }
-            }
         }
 
         return true;
+
     }
 
 }

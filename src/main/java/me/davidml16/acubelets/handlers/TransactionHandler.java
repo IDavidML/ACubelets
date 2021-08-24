@@ -2,6 +2,7 @@ package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.api.CubeletReceivedEvent;
+import me.davidml16.acubelets.database.types.Database;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Profile;
@@ -10,7 +11,6 @@ import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class TransactionHandler {
 
@@ -20,38 +20,38 @@ public class TransactionHandler {
         this.main = main;
     }
 
-    public long getCubeletBalance(String name, String type) throws SQLException {
-        if (main.getCubeletTypesHandler().getTypes().containsKey(type)) {
-            CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(type);
-            UUID uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(name));
+    public void giveCubelet(String player, String type, int amount, Database.Callback<CubeletType> callback) throws SQLException {
 
-            AtomicLong count = new AtomicLong();
+        if(Bukkit.getPlayer(player) != null) {
 
-            if(Bukkit.getPlayer(uuid) != null) {
-                Player player = Bukkit.getPlayer(uuid);
-                count.set(main.getPlayerDataHandler()
-                        .getData(Objects.requireNonNull(player))
-                        .getCubelets().stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(type)).count());
-            } else {
-                main.getDatabaseHandler().getCubelets(uuid).thenAccept(cubelets -> {
-                    count.set(cubelets.size());
+            UUID uuid = Bukkit.getPlayer(player).getUniqueId();
+
+            callback.done(giveCubelet(uuid, type, amount));
+
+        } else {
+
+            try {
+
+                main.getDatabaseHandler().getPlayerUUID(player, result -> {
+
+                    UUID uuid = UUID.fromString(result);
+
+                    try {
+
+                        callback.done(giveCubelet(uuid, type, amount));
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
                 });
+
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
             }
 
-            return count.get();
         }
-        return 0;
-    }
 
-    public CubeletType giveCubelet(String player, String type, int amount) throws SQLException {
-        UUID uuid;
-
-        if(Bukkit.getPlayer(player) != null)
-            uuid = Bukkit.getPlayer(player).getUniqueId();
-        else
-            uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
-
-        return giveCubelet(uuid, type, amount);
     }
 
     public CubeletType giveCubelet(UUID uuid, String type, int amount) throws SQLException {
@@ -76,6 +76,7 @@ public class TransactionHandler {
                 main.getDatabaseHandler().addCubelets(uuid, cubelets);
 
                 if(Bukkit.getPlayer(uuid) != null) {
+
                     Player target = Bukkit.getPlayer(uuid);
 
                     main.getPlayerDataHandler().getData(Objects.requireNonNull(target)).getCubelets().addAll(cubelets);
@@ -84,9 +85,15 @@ public class TransactionHandler {
                     if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(target);
                     if (main.getGiftGUI().getOpened().containsKey(uuid)) main.getGiftGUI().reloadGui(target);
                     if (main.getGiftAmountGUI().getOpened().containsKey(uuid)) main.getGiftAmountGUI().reloadGui(target);
-                    main.getHologramImplementation().reloadHolograms(target);
 
-                    Bukkit.getPluginManager().callEvent(new CubeletReceivedEvent(target, main.getCubeletTypesHandler().getTypeBydId(type), amount));
+                    Bukkit.getScheduler().runTask(main, () -> {
+
+                        main.getHologramImplementation().reloadHolograms(target);
+
+                        Bukkit.getPluginManager().callEvent(new CubeletReceivedEvent(target, main.getCubeletTypesHandler().getTypeBydId(type), amount));
+
+                    });
+
                 }
 
             }
@@ -98,14 +105,37 @@ public class TransactionHandler {
     }
 
     public void removeCubelet(String player, String type, int amount) throws SQLException {
-        UUID uuid;
 
-        if(Bukkit.getPlayer(player) != null)
-            uuid = Bukkit.getPlayer(player).getUniqueId();
-        else
-            uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
+        if(Bukkit.getPlayer(player) != null) {
 
-        removeCubelet(uuid, type, amount);
+            UUID uuid = Bukkit.getPlayer(player).getUniqueId();
+
+            removeCubelet(uuid, type, amount);
+
+        } else {
+
+            try {
+
+                main.getDatabaseHandler().getPlayerUUID(player, result -> {
+
+                    UUID uuid = UUID.fromString(result);
+
+                    try {
+
+                        removeCubelet(uuid, type, amount);
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                });
+
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+        }
+
     }
 
     public void removeCubelet(UUID uuid, String type, int amount) throws SQLException {
@@ -130,12 +160,19 @@ public class TransactionHandler {
                     if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(target);
                     if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(target);
                     if (main.getGiftGUI().getOpened().containsKey(uuid)) main.getGiftGUI().reloadGui(target);
-                    main.getHologramImplementation().reloadHolograms(target);
+
+                    Bukkit.getScheduler().runTask(main, () -> {
+
+                        main.getHologramImplementation().reloadHolograms(target);
+
+                    });
 
                     main.getDatabaseHandler().removeCubelets(uuid, cubelets);
 
                 } else {
+
                     main.getDatabaseHandler().removeCubelet(uuid, type, amount);
+
                 }
             }
         }
@@ -155,14 +192,37 @@ public class TransactionHandler {
     }
 
     public void givePoints(String player, int amount) throws SQLException {
-        UUID uuid;
 
-        if(Bukkit.getPlayer(player) != null)
-            uuid = Bukkit.getPlayer(player).getUniqueId();
-        else
-            uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
+        if(Bukkit.getPlayer(player) != null) {
 
-        givePoints(uuid, amount);
+            UUID uuid = Bukkit.getPlayer(player).getUniqueId();
+
+            givePoints(uuid, amount);
+
+        } else {
+
+            try {
+
+                main.getDatabaseHandler().getPlayerUUID(player, result -> {
+
+                    UUID uuid = UUID.fromString(result);
+
+                    try {
+
+                        givePoints(uuid, amount);
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                });
+
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+        }
+
     }
 
     public void givePoints(UUID uuid, int amount) throws SQLException {
@@ -186,14 +246,37 @@ public class TransactionHandler {
     }
 
     public void removePoints(String player, int amount) throws SQLException {
-        UUID uuid;
 
-        if(Bukkit.getPlayer(player) != null)
-            uuid = Bukkit.getPlayer(player).getUniqueId();
-        else
-            uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
+        if(Bukkit.getPlayer(player) != null) {
 
-        removePoints(uuid, amount);
+            UUID uuid = Bukkit.getPlayer(player).getUniqueId();
+
+            removePoints(uuid, amount);
+
+        } else {
+
+            try {
+
+                main.getDatabaseHandler().getPlayerUUID(player, result -> {
+
+                    UUID uuid = UUID.fromString(result);
+
+                    try {
+
+                        removePoints(uuid, amount);
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                });
+
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+        }
+
     }
 
     public void removePoints(UUID uuid, int amount) throws SQLException {
@@ -229,14 +312,37 @@ public class TransactionHandler {
     }
 
     public void setPoints(String player, int amount) throws SQLException {
-        UUID uuid;
 
-        if(Bukkit.getPlayer(player) != null)
-            uuid = Bukkit.getPlayer(player).getUniqueId();
-        else
-            uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
+        if(Bukkit.getPlayer(player) != null) {
 
-        setPoints(uuid, amount);
+            UUID uuid = Bukkit.getPlayer(player).getUniqueId();
+
+            setPoints(uuid, amount);
+
+        } else {
+
+            try {
+
+                main.getDatabaseHandler().getPlayerUUID(player, result -> {
+
+                    UUID uuid = UUID.fromString(result);
+
+                    try {
+
+                        setPoints(uuid, amount);
+
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+
+                });
+
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+
+        }
+
     }
 
     public void setPoints(UUID uuid, int amount) throws SQLException {

@@ -46,32 +46,70 @@ public class ExecuteRemove {
         int amount = 1;
 
         try {
-            if(!main.getDatabaseHandler().hasName(player)) {
-                sender.sendMessage(Utils.translate(
-                        main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
-                return false;
-            }
+
+            main.getDatabaseHandler().hasName(player, exists -> {
+
+                if(!exists) {
+
+                    sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
+
+                } else {
+
+                    if(Bukkit.getPlayer(player) != null) {
+
+                        Profile profile = main.getPlayerDataHandler().getData(Bukkit.getPlayer(player));
+                        long actualBalance = profile.getCubelets().stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(id)).count();
+
+                        execute(args, player, sender, id, actualBalance, amount);
+
+                    } else {
+
+                        try {
+
+                            main.getDatabaseHandler().getPlayerUUID(player, result -> {
+
+                                UUID uuid = UUID.fromString(result);
+
+                                try {
+
+                                    main.getDatabaseHandler().getCubeletBalance(uuid, id, balance -> {
+
+                                        execute(args, player, sender, id, balance, amount);
+
+                                    });
+
+                                } catch (SQLException e) {
+                                    e.printStackTrace();
+                                }
+
+                            });
+
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+
+                    }
+
+                }
+
+            });
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-        long actualBalance = 0;
-        if(Bukkit.getPlayer(player) != null) {
-            Profile profile = main.getPlayerDataHandler().getData(Bukkit.getPlayer(player));
-            actualBalance = profile.getCubelets().stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(id)).count();
-        } else {
-            try {
-                UUID uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
-                actualBalance = main.getDatabaseHandler().getCubeletBalance(uuid, id);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        }
+        return true;
+
+    }
+
+    private boolean execute(String[] args, String player, CommandSender sender, String id, long actualBalance, int amount) {
 
         String name = main.getCubeletTypesHandler().getTypeBydId(id).getName();
 
         if(args.length == 3) {
+
             if(actualBalance >= 1) {
+
                 CubeletsAPI.removeCubelet(player, id, 1);
 
                 String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Remove.Removed");
@@ -81,6 +119,7 @@ public class ExecuteRemove {
                 sender.sendMessage(Utils.translate(msg));
 
                 return true;
+
             } else {
 
                 String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Remove.NoBalance");
@@ -92,10 +131,15 @@ public class ExecuteRemove {
 
                 return false;
             }
+
         } else if(args.length == 4) {
+
             amount = Integer.parseInt(args[3]);
+
             if(amount > 0) {
+
                 if(actualBalance >= amount) {
+
                     CubeletsAPI.removeCubelet(player, id, amount);
 
                     String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Remove.Removed");
@@ -115,14 +159,20 @@ public class ExecuteRemove {
 
                     return false;
                 }
+
                 return true;
+
             } else {
+
                 sender.sendMessage(Utils.translate(
                         main.getLanguageHandler().getPrefix() + " &cAmount to remove need to be more than 0!"));
                 return false;
+
             }
         }
+
         return true;
+
     }
 
 }

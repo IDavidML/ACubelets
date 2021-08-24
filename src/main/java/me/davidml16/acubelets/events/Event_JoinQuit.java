@@ -22,7 +22,9 @@ public class Event_JoinQuit implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
+
         Player p = e.getPlayer();
+
         main.getHologramImplementation().loadHolograms(p);
         main.getPlayerDataHandler().loadPlayerData(p);
         main.setPlayerCount(main.getPlayerCount() + 1);
@@ -62,7 +64,14 @@ public class Event_JoinQuit implements Listener {
 
     @EventHandler
     public void worldChange(PlayerChangedWorldEvent e) {
-        main.getHologramImplementation().reloadHolograms(e.getPlayer());
+
+        Bukkit.getScheduler().runTaskLater(main, () -> {
+
+            main.getHologramImplementation().removeHolograms(e.getPlayer());
+            main.getHologramImplementation().loadHolograms(e.getPlayer());
+
+        }, 40L);
+
     }
 
 }

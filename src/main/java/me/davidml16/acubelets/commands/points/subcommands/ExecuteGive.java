@@ -34,36 +34,49 @@ public class ExecuteGive {
         String player = args[1];
 
         try {
-            if(!main.getDatabaseHandler().hasName(player)) {
-                sender.sendMessage(Utils.translate(
-                        main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
-                return false;
-            }
+
+            main.getDatabaseHandler().hasName(player, exists -> {
+
+                if(!exists) {
+
+                    sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
+
+                } else {
+
+                    if(args.length == 2) {
+
+                        sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " give [player] [amount]"));
+
+                    } else if(args.length == 3) {
+
+                        int amount = Integer.parseInt(args[2]);
+
+                        if(amount > 0) {
+
+                            PointsAPI.give(player, amount);
+
+                            String msg = main.getLanguageHandler().getMessage("Commands.Points.Give");
+                            msg = msg.replaceAll("%amount%", Integer.toString(amount));
+                            msg = msg.replaceAll("%player%", player);
+                            sender.sendMessage(Utils.translate(msg));
+
+                        } else {
+
+                            sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cAmount to give need to be more than 0!"));
+
+                        }
+                    }
+
+                }
+
+            });
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-        if(args.length == 2) {
-            sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " give [player] [amount]"));
-            return false;
-        } else if(args.length == 3) {
-            int amount = Integer.parseInt(args[2]);
-            if(amount > 0) {
-                PointsAPI.give(player, amount);
-
-                String msg = main.getLanguageHandler().getMessage("Commands.Points.Give");
-                msg = msg.replaceAll("%amount%", Integer.toString(amount));
-                msg = msg.replaceAll("%player%", player);
-                sender.sendMessage(Utils.translate(msg));
-
-                return true;
-            } else {
-                sender.sendMessage(Utils.translate(
-                        main.getLanguageHandler().getPrefix() + " &cAmount to give need to be more than 0!"));
-                return false;
-            }
-        }
         return false;
+
     }
 
 }

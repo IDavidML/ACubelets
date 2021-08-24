@@ -39,20 +39,35 @@ public class ExecuteGift {
         }
 
         try {
-            if(!main.getDatabaseHandler().hasName(player)) {
-                sender.sendMessage(Utils.translate(
-                        main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
-                return false;
-            }
+
+            main.getDatabaseHandler().hasName(player, exists -> {
+
+                if(!exists) {
+
+                    sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
+
+                } else {
+
+                    try {
+
+                        main.getDatabaseHandler().getPlayerUUID(player, result -> {
+
+                            UUID uuid = UUID.fromString(result);
+
+                            main.getGiftGUI().open(((Player) sender), uuid, player, true);
+
+                        });
+
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                }
+
+            });
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
-        }
-
-        try {
-            UUID uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
-            main.getGiftGUI().open(((Player) sender), uuid, player, true);
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
 
         return true;

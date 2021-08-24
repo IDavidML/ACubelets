@@ -11,7 +11,7 @@ public abstract class RepeatingTask implements Runnable {
         taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this, arg1, arg2);
     }
 
-    public void canncel() {
+    public void cancel() {
         Bukkit.getScheduler().cancelTask(taskId);
     }
 

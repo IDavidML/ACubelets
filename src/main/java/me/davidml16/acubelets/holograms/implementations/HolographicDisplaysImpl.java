@@ -30,43 +30,67 @@ public class HolographicDisplaysImpl implements HologramImplementation {
     private HashMap<CubeletBox, HashMap<UUID, Hologram>> holograms;
 
     public HolographicDisplaysImpl(Main main, HologramHandler hologramHandler) {
+
         this.main = main;
         this.hologramHandler = hologramHandler;
         this.holograms = new HashMap<>();
+
     }
 
     public void loadHolograms() {
+
         for(Player p : Bukkit.getOnlinePlayers()) {
+
             loadHolograms(p);
+
         }
+
     }
 
     public void loadHolograms(Player p) {
+
         for(CubeletBox box : main.getCubeletBoxHandler().getBoxes().values()) {
+
             loadHolograms(p, box);
+
         }
+
     }
 
     public void loadHolograms(CubeletBox box) {
+
         for(Player p : Bukkit.getOnlinePlayers()) {
+
             loadHolograms(p, box);
+
         }
+
     }
 
     public void removeHolograms() {
+
         for (Hologram hologram : HologramsAPI.getHolograms(main)) {
+
             hologram.delete();
+
         }
+
     }
 
     public void reloadHolograms() {
+
         hologramHandler.setActualColor(hologramHandler.getColorAnimation().nextColor());
+
         for(Player p : Bukkit.getOnlinePlayers()) {
+
             reloadHolograms(p);
+
         }
+
     }
 
     public void loadHolograms(Player p, CubeletBox box) {
+
         Hologram hologram = HologramsAPI.createHologram(main, box.getLocation().clone().add(0.5, 1.025 + (box.getBlockHeight() + 0.1875), 0.5));
         VisibilityManager visibilityManager = hologram.getVisibilityManager();
 
@@ -83,7 +107,9 @@ public class HolographicDisplaysImpl implements HologramImplementation {
             }
 
             hologram.teleport(box.getLocation().clone().add(0.5, (max * LINE_HEIGHT) + (box.getBlockHeight() + 0.1875), 0.5));
+
         } else if(box.getState() == CubeletBoxState.REWARD) {
+
             List<String> lines = hologramHandler.getLinesReward(p, box.getPlayerOpening(), box.getLastReward());
 
             hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + (box.getBlockHeight() + 0.1875), 0.5));
@@ -94,6 +120,7 @@ public class HolographicDisplaysImpl implements HologramImplementation {
                 else
                     hologram.appendItemLine(box.getLastReward().getIcon());
             }
+
         }
 
         if (!Objects.equals(box.getLocation().getWorld(), p.getLocation().getWorld()) ||
@@ -106,15 +133,21 @@ public class HolographicDisplaysImpl implements HologramImplementation {
             holograms.put(box, new HashMap<>());
 
         holograms.get(box).put(p.getUniqueId(), hologram);
+
     }
 
     public void reloadHolograms(Player p) {
-        for(CubeletBox box : main.getCubeletBoxHandler().getBoxes().values()) {
+
+        for (CubeletBox box : main.getCubeletBoxHandler().getBoxes().values()) {
+
             reloadHologram(p, box);
+
         }
+
     }
 
     public void reloadHologram(CubeletBox box) {
+
         for (Hologram hologram : holograms.get(box).values()) {
             hologram.clearLines();
         }
@@ -122,11 +155,16 @@ public class HolographicDisplaysImpl implements HologramImplementation {
         for(Player p : Bukkit.getOnlinePlayers()) {
             reloadHologram(p, box);
         }
+
     }
 
     public void reloadHologram(Player p, CubeletBox box) {
+
         if (!Objects.equals(box.getLocation().getWorld(), p.getLocation().getWorld()) ||
                 box.getLocation().distance(p.getLocation()) > hologramHandler.getVisibilityDistance()) {
+
+            if (holograms.get(box) == null || !holograms.get(box).containsKey(p.getUniqueId()))
+                return;
 
             if (holograms.get(box).containsKey(p.getUniqueId())) {
                 Hologram hologram = holograms.get(box).get(p.getUniqueId());
@@ -138,10 +176,17 @@ public class HolographicDisplaysImpl implements HologramImplementation {
         }
 
         if (box.getState() == CubeletBoxState.EMPTY) {
+
+            if (holograms.get(box) == null || !holograms.get(box).containsKey(p.getUniqueId()))
+                return;
+
             if (holograms.get(box).containsKey(p.getUniqueId())) {
 
                 List<String> lines = hologramHandler.getLines(p);
                 Hologram hologram = holograms.get(box).get(p.getUniqueId());
+
+                if (!hologram.getVisibilityManager().isVisibleTo(p))
+                    hologram.getVisibilityManager().showTo(p);
 
                 int max = Math.max(main.getLanguageHandler().getMessageList("Holograms.CubeletAvailable").size(), main.getLanguageHandler().getMessageList("Holograms.NoCubeletAvailable").size());
                 if (hologram.size() != lines.size())
@@ -161,11 +206,10 @@ public class HolographicDisplaysImpl implements HologramImplementation {
                         ((TextLine) hologram.getLine(i)).setText(lines.get(i));
                 }
 
-                if(!hologram.getVisibilityManager().isVisibleTo(p))
-                    hologram.getVisibilityManager().showTo(p);
-
             }
+
         }
+
     }
 
     @Override
@@ -181,15 +225,27 @@ public class HolographicDisplaysImpl implements HologramImplementation {
     }
 
     public void moveHologram(CubeletBox box) {
+
         int max = Math.max(main.getLanguageHandler().getMessageList("Holograms.CubeletAvailable").size(), main.getLanguageHandler().getMessageList("Holograms.NoCubeletAvailable").size());
+
+        if(holograms.get(box) == null)
+            return;
+
         for (Hologram hologram : holograms.get(box).values()) {
             hologram.teleport(box.getLocation().clone().add(0.5, (max * LINE_HEIGHT) + (box.getBlockHeight() + 0.1875), 0.5));
         }
+
     }
 
     public void rewardHologram(CubeletBox box, Reward reward) {
+
         for(Player p : Bukkit.getOnlinePlayers()) {
+
+            if(holograms.get(box) == null)
+                continue;
+
             if (holograms.get(box).containsKey(p.getUniqueId())) {
+
                 Hologram hologram = holograms.get(box).get(p.getUniqueId());
                 hologram.clearLines();
 
@@ -205,10 +261,13 @@ public class HolographicDisplaysImpl implements HologramImplementation {
                 }
 
             }
+
         }
+
     }
 
     public RepeatingTask duplicationRewardHologram(CubeletBox box, Reward reward) {
+
         int duplicationPoints = box.getLastDuplicationPoints();
 
         return new RepeatingTask(main, 0, 1) {
@@ -220,12 +279,17 @@ public class HolographicDisplaysImpl implements HologramImplementation {
             public void run() {
 
                 List<String> lines = hologramHandler.getLinesRewardDuplicated(reward, pointsToShow);
+
                 for (Player p : Bukkit.getOnlinePlayers()) {
 
                     if(!main.isDuplicationVisibleAllPlayers())
                         if(!box.getPlayerOpening().getUuid().equals(p.getUniqueId())) continue;
 
+                    if(holograms.get(box) == null)
+                        continue;
+
                     if (holograms.get(box).containsKey(p.getUniqueId())) {
+
                         Hologram hologram = holograms.get(box).get(p.getUniqueId());
                         hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + (box.getBlockHeight() + 0.1875), 0.5));
 
@@ -244,23 +308,43 @@ public class HolographicDisplaysImpl implements HologramImplementation {
                     pointsToShow = duplicationPoints;
 
             }
+
         };
+
     }
 
     public void removeHolograms(Player p) {
+
         for(CubeletBox box : main.getCubeletBoxHandler().getBoxes().values()) {
+
+            if(holograms.get(box) == null)
+                continue;
+
             if(holograms.get(box).containsKey(p.getUniqueId())) {
+
+                if(holograms.get(box).get(p.getUniqueId()) == null)
+                    continue;
+
                 holograms.get(box).get(p.getUniqueId()).delete();
+
                 holograms.get(box).remove(p.getUniqueId());
+
             }
+
         }
+
     }
 
     @Override
     public void removeHolograms(CubeletBox box) {
+
+        if(holograms.get(box) == null)
+            return;
+
         for(Hologram holo : holograms.get(box).values()) {
             holo.delete();
         }
+
     }
 
 }

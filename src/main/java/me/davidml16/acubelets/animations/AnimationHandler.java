@@ -1,25 +1,26 @@
 package me.davidml16.acubelets.animations;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.animations.normal.animation0.Animation0_Task;
-import me.davidml16.acubelets.animations.normal.animation1.Animation1_Task;
-import me.davidml16.acubelets.animations.normal.animation10.Animation10_Task;
-import me.davidml16.acubelets.animations.normal.animation12.Animation12_Task;
-import me.davidml16.acubelets.animations.normal.animation13.Animation13_Task;
-import me.davidml16.acubelets.animations.normal.animation14.Animation14_Task;
-import me.davidml16.acubelets.animations.normal.animation15.Animation15_Task;
-import me.davidml16.acubelets.animations.normal.animation16.Animation16_Task;
-import me.davidml16.acubelets.animations.normal.animation17.Animation17_Task;
-import me.davidml16.acubelets.animations.normal.animation18.Animation18_Task;
-import me.davidml16.acubelets.animations.normal.animation2.Animation2_Task;
-import me.davidml16.acubelets.animations.normal.animation3.Animation3_Task;
-import me.davidml16.acubelets.animations.normal.animation4.Animation4_Task;
-import me.davidml16.acubelets.animations.normal.animation9.Animation9_Task;
-import me.davidml16.acubelets.animations.seasonal.easter.AnimationEaster_Task;
-import me.davidml16.acubelets.animations.seasonal.galaxy.AnimationGalaxy_Task;
-import me.davidml16.acubelets.animations.seasonal.halloween.AnimationHalloween_Task;
-import me.davidml16.acubelets.animations.seasonal.summer.AnimationSummer_Task;
-import me.davidml16.acubelets.animations.seasonal.xmas.AnimationXmas_Task;
+import me.davidml16.acubelets.animations.animation.animation0.Animation0_Task;
+import me.davidml16.acubelets.animations.animation.animation1.Animation1_Task;
+import me.davidml16.acubelets.animations.animation.animation10.Animation10_Task;
+import me.davidml16.acubelets.animations.animation.animation12.Animation12_Task;
+import me.davidml16.acubelets.animations.animation.animation13.Animation13_Task;
+import me.davidml16.acubelets.animations.animation.animation14.Animation14_Task;
+import me.davidml16.acubelets.animations.animation.animation15.Animation15_Task;
+import me.davidml16.acubelets.animations.animation.animation16.Animation16_Task;
+import me.davidml16.acubelets.animations.animation.animation17.Animation17_Task;
+import me.davidml16.acubelets.animations.animation.animation18.Animation18_Task;
+import me.davidml16.acubelets.animations.animation.animation19.Animation19_Task;
+import me.davidml16.acubelets.animations.animation.animation2.Animation2_Task;
+import me.davidml16.acubelets.animations.animation.animation3.Animation3_Task;
+import me.davidml16.acubelets.animations.animation.animation4.Animation4_Task;
+import me.davidml16.acubelets.animations.animation.animation9.Animation9_Task;
+import me.davidml16.acubelets.animations.animation.animation6.AnimationEaster_Task;
+import me.davidml16.acubelets.animations.animation.animation11.AnimationGalaxy_Task;
+import me.davidml16.acubelets.animations.animation.animation7.AnimationHalloween_Task;
+import me.davidml16.acubelets.animations.animation.animation5.AnimationSummer_Task;
+import me.davidml16.acubelets.animations.animation.animation8.AnimationXmas_Task;
 import me.davidml16.acubelets.utils.ConfigUpdater;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -262,6 +263,16 @@ public class AnimationHandler {
         animation18.setNeedPermission(true);
         this.animations.put("animation18", animation18);
 
+        AnimationSettings animation19 = new AnimationSettings("animation19");
+        animation19.setDisplayName(getDisplayName("animation_19"));
+        animation19.setDisplayItem(XMaterial.ANVIL.parseItem());
+        animation19.setAnimationNumber(19);
+        animation19.setPreviewURL("");
+        animation19.setOutlineParticles(getOutlineParticles("animation_19"));
+        animation19.setFloorParticles(getFloorParticles("animation_19"));
+        animation19.setNeedPermission(true);
+        this.animations.put("animation19", animation19);
+
     }
 
     public AnimationSettings getAnimationSetting(String id) {
@@ -306,12 +317,15 @@ public class AnimationHandler {
                 return new Animation17_Task(main, getAnimationSetting(animation));
             case "animation18":
                 return new Animation18_Task(main, getAnimationSetting(animation));
+            case "animation19":
+                return new Animation19_Task(main, getAnimationSetting(animation));
             default:
                 return new Animation2_Task(main, getAnimationSetting(animation));
         }
     }
 
     public List<AnimationSettings> getAnimationsAvailable(Player player) {
+
         List<AnimationSettings> animations = new ArrayList<>();
 
         for(AnimationSettings animation : this.getAnimations().values()) {
@@ -323,6 +337,7 @@ public class AnimationHandler {
         }
 
         return animations;
+
     }
 
     public AnimationSettings getRandomAnimation(Player player) {

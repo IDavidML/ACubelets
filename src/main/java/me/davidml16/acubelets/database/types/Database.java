@@ -22,13 +22,13 @@ public interface Database {
 
     void loadTables();
 
-    boolean hasName(String name) throws SQLException;
+    void hasName(String name, Callback<Boolean> callback) throws SQLException;
 
     void createPlayerData(Player p);
 
     void updatePlayerName(Player p);
 
-    String getPlayerUUID(String name) throws SQLException;
+    void getPlayerUUID(String name, Callback<String> callback) throws SQLException;
 
     void getPlayerAnimation(UUID uuid, Callback<String> callback) throws SQLException;
 
@@ -66,6 +66,6 @@ public interface Database {
 
     CompletableFuture<List<Cubelet>> getCubelets(UUID uuid);
 
-    int getCubeletBalance(UUID uuid, String cubeletType) throws SQLException;
+    void getCubeletBalance(UUID uuid, String cubeletType, Callback<Long> callback) throws SQLException;
 
 }

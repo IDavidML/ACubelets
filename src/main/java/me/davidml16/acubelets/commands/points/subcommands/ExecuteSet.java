@@ -34,36 +34,48 @@ public class ExecuteSet {
         String player = args[1];
 
         try {
-            if(!main.getDatabaseHandler().hasName(player)) {
-                sender.sendMessage(Utils.translate(
-                        main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
-                return false;
-            }
+
+            main.getDatabaseHandler().hasName(player, exists -> {
+
+                if(!exists) {
+
+                    sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
+
+                } else {
+
+                    if(args.length == 2) {
+
+                        sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " set [player] [amount]"));
+
+                    } else if(args.length == 3) {
+
+                        int amount = Integer.parseInt(args[2]);
+
+                        if(amount >= 0) {
+                            PointsAPI.set(player, amount);
+
+                            String msg = main.getLanguageHandler().getMessage("Commands.Points.Set");
+                            msg = msg.replaceAll("%amount%", Integer.toString(amount));
+                            msg = msg.replaceAll("%player%", player);
+                            sender.sendMessage(Utils.translate(msg));
+
+                        } else {
+
+                            sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cAmount to set need to be more or equals to 0!"));
+
+                        }
+                    }
+
+                }
+
+            });
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-        if(args.length == 2) {
-            sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " set [player] [amount]"));
-            return false;
-        } else if(args.length == 3) {
-            int amount = Integer.parseInt(args[2]);
-            if(amount >= 0) {
-                PointsAPI.set(player, amount);
+        return true;
 
-                String msg = main.getLanguageHandler().getMessage("Commands.Points.Set");
-                msg = msg.replaceAll("%amount%", Integer.toString(amount));
-                msg = msg.replaceAll("%player%", player);
-                sender.sendMessage(Utils.translate(msg));
-
-                return true;
-            } else {
-                sender.sendMessage(Utils.translate(
-                        main.getLanguageHandler().getPrefix() + " &cAmount to set need to be more or equals to 0!"));
-                return false;
-            }
-        }
-        return false;
     }
 
 }

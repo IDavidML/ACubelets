@@ -34,36 +34,62 @@ public class ExecuteInfo {
         String player = args[1];
 
         try {
-            if(!main.getDatabaseHandler().hasName(player)) {
-                sender.sendMessage(Utils.translate(
-                        main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
-                return false;
-            }
+
+            main.getDatabaseHandler().hasName(player, exists -> {
+
+                if(!exists) {
+
+                    sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
+
+                } else {
+
+                    if(Bukkit.getPlayer(player) == null) {
+
+                        try {
+
+                            main.getDatabaseHandler().getPlayerUUID(player, result -> {
+
+                                UUID uuid = UUID.fromString(result);
+
+                                try {
+
+                                    main.getDatabaseHandler().getPlayerLootPoints(uuid, points -> {
+                                        sender.sendMessage("");
+                                        sender.sendMessage(Utils.translate(" &6&l" + player + " &ahas &6" + points + " &aPoints."));
+                                        sender.sendMessage("");
+                                    });
+
+                                } catch (SQLException e) {
+                                    e.printStackTrace();
+                                }
+
+                            });
+
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+
+                    } else {
+
+                        Player target = Bukkit.getPlayer(player);
+                        long points = main.getPlayerDataHandler().getData(target).getLootPoints();
+
+                        sender.sendMessage("");
+                        sender.sendMessage(Utils.translate(" &6&l" + player + " &ahas &6" + points + " &aPoints."));
+                        sender.sendMessage("");
+
+                    }
+
+                }
+
+            });
+
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
 
-        if(Bukkit.getPlayer(player) == null) {
-            try {
-                UUID uuid = UUID.fromString(main.getDatabaseHandler().getPlayerUUID(player));
-                main.getDatabaseHandler().getPlayerLootPoints(uuid, points -> {
-                    sender.sendMessage("");
-                    sender.sendMessage(Utils.translate(" &6&l" + player + " &ahas &6" + points + " &aPoints."));
-                    sender.sendMessage("");
-                });
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        } else {
-            Player target = Bukkit.getPlayer(player);
-            long points = main.getPlayerDataHandler().getData(target).getLootPoints();
-
-            sender.sendMessage("");
-            sender.sendMessage(Utils.translate(" &6&l" + player + " &ahas &6" + points + " &aPoints."));
-            sender.sendMessage("");
-        }
-
         return true;
+
     }
 
 }
