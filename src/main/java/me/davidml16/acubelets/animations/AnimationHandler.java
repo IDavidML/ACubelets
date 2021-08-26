@@ -13,6 +13,7 @@ import me.davidml16.acubelets.animations.animation.animation17.Animation17_Task;
 import me.davidml16.acubelets.animations.animation.animation18.Animation18_Task;
 import me.davidml16.acubelets.animations.animation.animation19.Animation19_Task;
 import me.davidml16.acubelets.animations.animation.animation2.Animation2_Task;
+import me.davidml16.acubelets.animations.animation.animation20.Animation20_Task;
 import me.davidml16.acubelets.animations.animation.animation3.Animation3_Task;
 import me.davidml16.acubelets.animations.animation.animation4.Animation4_Task;
 import me.davidml16.acubelets.animations.animation.animation9.Animation9_Task;
@@ -267,11 +268,21 @@ public class AnimationHandler {
         animation19.setDisplayName(getDisplayName("animation_19"));
         animation19.setDisplayItem(XMaterial.ANVIL.parseItem());
         animation19.setAnimationNumber(19);
-        animation19.setPreviewURL("");
+        animation19.setPreviewURL("https://www.youtube.com/watch?v=gBImFrOBbUk");
         animation19.setOutlineParticles(getOutlineParticles("animation_19"));
         animation19.setFloorParticles(getFloorParticles("animation_19"));
         animation19.setNeedPermission(true);
         this.animations.put("animation19", animation19);
+
+        AnimationSettings animation20 = new AnimationSettings("animation20");
+        animation20.setDisplayName(getDisplayName("animation_20"));
+        animation20.setDisplayItem(XMaterial.ENDER_PEARL.parseItem());
+        animation20.setAnimationNumber(20);
+        animation20.setPreviewURL("https://www.youtube.com/watch?v=JLSqXVhGOiA");
+        animation20.setOutlineParticles(getOutlineParticles("animation_20"));
+        animation20.setFloorParticles(getFloorParticles("animation_20"));
+        animation20.setNeedPermission(true);
+        this.animations.put("animation20", animation20);
 
     }
 
@@ -319,6 +330,8 @@ public class AnimationHandler {
                 return new Animation18_Task(main, getAnimationSetting(animation));
             case "animation19":
                 return new Animation19_Task(main, getAnimationSetting(animation));
+            case "animation20":
+                return new Animation20_Task(main, getAnimationSetting(animation));
             default:
                 return new Animation2_Task(main, getAnimationSetting(animation));
         }

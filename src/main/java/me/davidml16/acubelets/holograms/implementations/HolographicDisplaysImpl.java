@@ -123,12 +123,6 @@ public class HolographicDisplaysImpl implements HologramImplementation {
 
         }
 
-        if (!Objects.equals(box.getLocation().getWorld(), p.getLocation().getWorld()) ||
-            box.getLocation().distance(p.getLocation()) > hologramHandler.getVisibilityDistance()) {
-            if(visibilityManager.isVisibleTo(p))
-                visibilityManager.hideTo(p);
-        }
-
         if(holograms.get(box) == null)
             holograms.put(box, new HashMap<>());
 
@@ -161,19 +155,8 @@ public class HolographicDisplaysImpl implements HologramImplementation {
     public void reloadHologram(Player p, CubeletBox box) {
 
         if (!Objects.equals(box.getLocation().getWorld(), p.getLocation().getWorld()) ||
-                box.getLocation().distance(p.getLocation()) > hologramHandler.getVisibilityDistance()) {
-
-            if (holograms.get(box) == null || !holograms.get(box).containsKey(p.getUniqueId()))
-                return;
-
-            if (holograms.get(box).containsKey(p.getUniqueId())) {
-                Hologram hologram = holograms.get(box).get(p.getUniqueId());
-                if(hologram.getVisibilityManager().isVisibleTo(p))
-                    hologram.getVisibilityManager().hideTo(p);
-            }
-
+                box.getLocation().distance(p.getLocation()) > hologramHandler.getVisibilityDistance())
             return;
-        }
 
         if (box.getState() == CubeletBoxState.EMPTY) {
 
