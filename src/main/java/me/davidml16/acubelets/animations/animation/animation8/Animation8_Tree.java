@@ -13,17 +13,17 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AnimationXmas_Tree extends BukkitRunnable {
+public class Animation8_Tree extends BukkitRunnable {
 
     private Main main;
     private final Location location;
     private int step;
 
-    private AnimationXmas_PlaceSound placeSound;
+    private Animation8_PlaceSound placeSound;
 
     private final Set<ArmorStand> treeParts;
 
-    public AnimationXmas_Tree(Main main, AnimationXmas_PlaceSound placeSound, Location location) {
+    public Animation8_Tree(Main main, Animation8_PlaceSound placeSound, Location location) {
         this.main = main;
         this.location = location.clone().add(0, -0.65, 0);
         this.placeSound = placeSound;

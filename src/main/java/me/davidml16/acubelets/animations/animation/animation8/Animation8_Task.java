@@ -23,13 +23,13 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class AnimationXmas_Task implements Animation {
+public class Animation8_Task implements Animation {
 
 	private int id;
 
 	private Main main;
 	private AnimationSettings animationSettings;
-	public AnimationXmas_Task(Main main, AnimationSettings animationSettings) {
+	public Animation8_Task(Main main, AnimationSettings animationSettings) {
 		this.main = main;
 		this.animationSettings = animationSettings;
 	}
@@ -39,10 +39,10 @@ public class AnimationXmas_Task implements Animation {
 
 	private ArmorStand present;
 
-	private AnimationXmas_Blocks blocks;
-	private AnimationXmas_Tree tree;
-	private AnimationXmas_PlaceSound placeSound;
-	private AnimationXmas_Bell bell;
+	private Animation8_Blocks blocks;
+	private Animation8_Tree tree;
+	private Animation8_PlaceSound placeSound;
+	private Animation8_Bell bell;
 
 	private List<Color> colors;
 	private Utils.ColorSet<Integer, Integer, Integer> colorRarity;
@@ -136,16 +136,16 @@ public class AnimationXmas_Task implements Animation {
 	public int getId() { return id; }
 
 	public void start(CubeletBox box, CubeletType type) {
-		blocks = new AnimationXmas_Blocks(box.getLocation());
+		blocks = new Animation8_Blocks(box.getLocation());
 		blocks.runTaskTimer(main, 0L, 5L);
 
-		placeSound = new AnimationXmas_PlaceSound(box.getLocation().clone().add(0.5, 0, 0.5));
+		placeSound = new Animation8_PlaceSound(box.getLocation().clone().add(0.5, 0, 0.5));
 		placeSound.runTaskTimer(main, 0L, 5L);
 
-		bell = new AnimationXmas_Bell(box.getLocation().clone().add(0.5, 0, 0.5));
+		bell = new Animation8_Bell(box.getLocation().clone().add(0.5, 0, 0.5));
 		bell.runTaskTimer(main, 65L, 3L);
 
-		tree = new AnimationXmas_Tree(main, placeSound, box.getLocation().clone().add(0.5, 0, 0.5));
+		tree = new Animation8_Tree(main, placeSound, box.getLocation().clone().add(0.5, 0, 0.5));
 		tree.runTaskTimer(main, 18L, 5L);
 
 		this.cubeletType = type;

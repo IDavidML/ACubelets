@@ -15,12 +15,12 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class AnimationSummer_Ball extends BukkitRunnable {
+public class Animation5_Ball extends BukkitRunnable {
 
     private final Location spawnLoc;
     private ArmorStand armorStand;
 
-    public AnimationSummer_Ball(Main main, Location spawnLoc) {
+    public Animation5_Ball(Main main, Location spawnLoc) {
         this.spawnLoc = spawnLoc;
 
         ArmorStand armorStand = spawnLoc.getWorld().spawn(spawnLoc.clone().add(0, -1.5, 0), ArmorStand.class);

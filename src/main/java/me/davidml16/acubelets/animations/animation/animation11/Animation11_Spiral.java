@@ -5,14 +5,14 @@ import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class AnimationGalaxy_Spiral extends BukkitRunnable {
+public class Animation11_Spiral extends BukkitRunnable {
 
     private final ArmorStand armorStand;
     private int step = 16;
 
     private static final double yIncrement = 1;
 
-    public AnimationGalaxy_Spiral(ArmorStand armorStand) {
+    public Animation11_Spiral(ArmorStand armorStand) {
         this.armorStand = armorStand;
     }
 

@@ -15,7 +15,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.List;
 
-public class AnimationGalaxy_Planet extends BukkitRunnable {
+public class Animation11_Planet extends BukkitRunnable {
 
     private final ArmorStand armorStand;
 
@@ -24,7 +24,7 @@ public class AnimationGalaxy_Planet extends BukkitRunnable {
     private int step;
     private double rotSpeed;
 
-    public AnimationGalaxy_Planet(Main main, ItemStack planet, Location center, float radius, int points, boolean small, double rotSpeed, int step) {
+    public Animation11_Planet(Main main, ItemStack planet, Location center, float radius, int points, boolean small, double rotSpeed, int step) {
         this.locations = LocationUtils.getCircle(center, radius, points);
         this.rotSpeed = rotSpeed;
         this.step = step;

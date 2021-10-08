@@ -195,11 +195,8 @@ public class Animations_GUI implements Listener {
 
                     }
 
-                } else if(e.getClick() == ClickType.RIGHT || e.getClick() == ClickType.SHIFT_RIGHT) {
-
-                    sendPreviewMessage(p, animation);
-
                 }
+
             }
         }
     }
@@ -208,16 +205,6 @@ public class Animations_GUI implements Listener {
     public void InventoryCloseEvent(InventoryCloseEvent e) {
         Player p = (Player) e.getPlayer();
         opened.remove(p.getUniqueId());
-    }
-
-    private void sendPreviewMessage(Player player, String id) {
-        AnimationSettings animation = main.getAnimationHandler().getAnimationSetting(id);
-
-        player.sendMessage("");
-        player.sendMessage(MessageUtils.centeredMessage(Utils.translate("&e&l" + animation.getDisplayName())));
-        player.sendMessage("");
-        player.sendMessage(MessageUtils.centeredMessage(Utils.translate("&a" + animation.getPreviewURL())));
-        player.sendMessage("");
     }
 
     private ItemStack getAnimationItem(String selected, String animation) {
@@ -242,7 +229,6 @@ public class Animations_GUI implements Listener {
         List<String> lore = new ArrayList<>();
         lore.add("");
         lore.add(Utils.translate("&eLeft-Click » " + (status.equalsIgnoreCase("Unlocked") ? "&a" : "&c") + "Enable animation "));
-        lore.add(Utils.translate("&eRight-Click » &aPreview animation "));
 
         ItemStack item;
         if(status.equalsIgnoreCase("Selected"))

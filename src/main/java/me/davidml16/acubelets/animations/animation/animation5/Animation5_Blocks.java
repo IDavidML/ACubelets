@@ -14,14 +14,14 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AnimationSummer_Blocks extends BukkitRunnable {
+public class Animation5_Blocks extends BukkitRunnable {
 
     private final Location location;
     private int step;
 
     private final Set<BlockState> blockStates;
 
-    public AnimationSummer_Blocks(Location location) {
+    public Animation5_Blocks(Location location) {
         this.location = location;
         this.step = 1;
 

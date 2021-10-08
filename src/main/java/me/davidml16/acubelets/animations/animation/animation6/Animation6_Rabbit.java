@@ -16,7 +16,7 @@ import org.bukkit.util.Vector;
 
 import java.util.Random;
 
-public class AnimationEaster_Rabbit extends BukkitRunnable {
+public class Animation6_Rabbit extends BukkitRunnable {
 
     private final Location spawnLoc;
     private final float yaw;
@@ -24,7 +24,7 @@ public class AnimationEaster_Rabbit extends BukkitRunnable {
 
     private int tick;
 
-    public AnimationEaster_Rabbit(Main main, Location spawnLoc, float yaw) {
+    public Animation6_Rabbit(Main main, Location spawnLoc, float yaw) {
         this.spawnLoc = spawnLoc;
         this.yaw = yaw;
         this.tick = 0;

@@ -4,11 +4,11 @@ import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class AnimationXmas_PlaceSound extends BukkitRunnable {
+public class Animation8_PlaceSound extends BukkitRunnable {
 
     private final Location musicLoc;
 
-    public AnimationXmas_PlaceSound(Location musicLoc) {
+    public Animation8_PlaceSound(Location musicLoc) {
         this.musicLoc = musicLoc;
     }
 

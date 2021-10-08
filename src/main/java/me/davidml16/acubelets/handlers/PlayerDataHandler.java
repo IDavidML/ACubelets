@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.animations.AnimationHandler;
 import me.davidml16.acubelets.objects.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -62,7 +63,12 @@ public class PlayerDataHandler {
 
 						main.getDatabaseHandler().getPlayerOrderSetting(p.getUniqueId(), profile::setOrderBy);
 						main.getDatabaseHandler().getPlayerLootPoints(p.getUniqueId(), profile::setLootPoints);
-						main.getDatabaseHandler().getPlayerAnimation(p.getUniqueId(), profile::setAnimation);
+						main.getDatabaseHandler().getPlayerAnimation(p.getUniqueId(), animation -> {
+							if(animation.contains("animation"))
+								profile.setAnimation(animation);
+							else
+								profile.setAnimation(AnimationHandler.DEFAULT_ANIMATION);
+						});
 
 					} catch (SQLException e) {
 						e.printStackTrace();

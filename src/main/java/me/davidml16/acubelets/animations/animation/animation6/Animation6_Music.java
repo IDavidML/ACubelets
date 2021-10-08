@@ -4,7 +4,7 @@ import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class AnimationEaster_Music extends BukkitRunnable {
+public class Animation6_Music extends BukkitRunnable {
 
     private final Location musicLoc;
     private int noteValue;
@@ -12,7 +12,7 @@ public class AnimationEaster_Music extends BukkitRunnable {
     private int speed = 4;
     private int tick = 0;
 
-    public AnimationEaster_Music(Location musicLoc) {
+    public Animation6_Music(Location musicLoc) {
         this.musicLoc = musicLoc;
     }
 

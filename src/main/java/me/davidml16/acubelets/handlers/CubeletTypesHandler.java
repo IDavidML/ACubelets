@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.animations.AnimationHandler;
 import me.davidml16.acubelets.api.CubeletReceivedEvent;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.CubeletType;
@@ -197,6 +198,10 @@ public class CubeletTypesHandler {
 
                     if (!config.contains("type.rewards")) {
                         config.set("type.rewards", new ArrayList<>());
+                    }
+
+                    if(!config.getString("type.animation").contains("animation")) {
+                        config.set("type.animation", AnimationHandler.DEFAULT_ANIMATION);
                     }
 
                     saveConfig(id);

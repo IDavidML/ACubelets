@@ -17,13 +17,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.UUID;
 
-public class AnimationHalloween_Pumpkin extends BukkitRunnable {
+public class Animation7_Pumpkin extends BukkitRunnable {
 
     private final Location spawnLoc;
     private ArmorStand armorStand;
     private UUID playerUUID;
 
-    public AnimationHalloween_Pumpkin(Main main, Location spawnLoc, UUID playerUUID) {
+    public Animation7_Pumpkin(Main main, Location spawnLoc, UUID playerUUID) {
         this.spawnLoc = spawnLoc;
         this.playerUUID = playerUUID;
 

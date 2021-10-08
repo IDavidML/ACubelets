@@ -26,13 +26,13 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class AnimationGalaxy_Task implements Animation {
+public class Animation11_Task implements Animation {
 
 	private int id;
 
 	private Main main;
 	private AnimationSettings animationSettings;
-	public AnimationGalaxy_Task(Main main, AnimationSettings animationSettings) {
+	public Animation11_Task(Main main, AnimationSettings animationSettings) {
 		this.main = main;
 		this.animationSettings = animationSettings;
 	}
@@ -40,12 +40,12 @@ public class AnimationGalaxy_Task implements Animation {
 	private ArmorStand armorStand;
 	private CubeletBox cubeletBox;
 	private CubeletType cubeletType;
-	private AnimationGalaxy_Spiral spiral;
+	private Animation11_Spiral spiral;
 	private List<Color> colors;
 
 	private Utils.ColorSet<Integer, Integer, Integer> colorRarity;
 
-	private Set<AnimationGalaxy_Planet> planets = new HashSet<>();
+	private Set<Animation11_Planet> planets = new HashSet<>();
 
 	private Location corner1, corner2, corner3, corner4;
 
@@ -99,56 +99,56 @@ public class AnimationGalaxy_Task implements Animation {
 			if(time == 40) {
 				spiral.cancel();
 				int randomPoints = r_i(160, 360);
-				AnimationGalaxy_Planet mercury = new AnimationGalaxy_Planet(main, PLANET_MERCURY, armorStandLocation.clone().add(0, r_d(-1, 2), 0),
+				Animation11_Planet mercury = new Animation11_Planet(main, PLANET_MERCURY, armorStandLocation.clone().add(0, r_d(-1, 2), 0),
                         1.0f, randomPoints, true,  r_d(0.05, 0.2), r_i(0, randomPoints));
 				mercury.runTaskTimer(main, 0L, 1L);
 				planets.add(mercury);
 				removeLater(mercury, 115);
 			} else if(time == 42) {
 				int randomPoints = r_i(160, 360);
-				AnimationGalaxy_Planet venus = new AnimationGalaxy_Planet(main, PLANET_VENUS, armorStandLocation.clone().add(0, r_d(-1, 2), 0),
+				Animation11_Planet venus = new Animation11_Planet(main, PLANET_VENUS, armorStandLocation.clone().add(0, r_d(-1, 2), 0),
                         1.5f, randomPoints, true,  r_d(0.05, 0.2), r_i(0, randomPoints));
 				venus.runTaskTimer(main, 0L, 1L);
 				planets.add(venus);
 				removeLater(venus, 110);
 			} else if(time == 44) {
 				int randomPoints = r_i(160, 360);
-				AnimationGalaxy_Planet earth = new AnimationGalaxy_Planet(main, PLANET_EARTH, armorStandLocation.clone().add(0, r_d(-1, 2), 0),
+				Animation11_Planet earth = new Animation11_Planet(main, PLANET_EARTH, armorStandLocation.clone().add(0, r_d(-1, 2), 0),
                         2.0f, randomPoints, true,  r_d(0.05, 0.2), r_i(0, randomPoints));
 				earth.runTaskTimer(main, 0L, 1L);
 				planets.add(earth);
 				removeLater(earth, 105);
             } else if(time == 46) {
 				int randomPoints = r_i(160, 360);
-                AnimationGalaxy_Planet mars = new AnimationGalaxy_Planet(main, PLANET_MARS, armorStandLocation.clone().add(0, r_d(-1, 2), 0),
+                Animation11_Planet mars = new Animation11_Planet(main, PLANET_MARS, armorStandLocation.clone().add(0, r_d(-1, 2), 0),
                         2.5f, randomPoints, true,  r_d(0.05, 0.2), r_i(0, randomPoints));
                 mars.runTaskTimer(main, 0L, 1L);
                 planets.add(mars);
 				removeLater(mars, 100);
             } else if(time == 48) {
 				int randomPoints = r_i(160, 360);
-                AnimationGalaxy_Planet jupiter = new AnimationGalaxy_Planet(main, PLANET_JUPITER, armorStandLocation.clone().add(0, r_d(-1, 2), 0),
+                Animation11_Planet jupiter = new Animation11_Planet(main, PLANET_JUPITER, armorStandLocation.clone().add(0, r_d(-1, 2), 0),
                         3.0f, randomPoints, true,  r_d(0.05, 0.2), r_i(0, randomPoints));
                 jupiter.runTaskTimer(main, 0L, 1L);
                 planets.add(jupiter);
 				removeLater(jupiter, 95);
             } else if(time == 50) {
 				int randomPoints = r_i(160, 360);
-                AnimationGalaxy_Planet saturn = new AnimationGalaxy_Planet(main, PLANET_SATURN, armorStandLocation.clone().add(0, r_d(-1, 2), 0),
+                Animation11_Planet saturn = new Animation11_Planet(main, PLANET_SATURN, armorStandLocation.clone().add(0, r_d(-1, 2), 0),
                         3.5f, randomPoints, true,  r_d(0.05, 0.2), r_i(0, randomPoints));
                 saturn.runTaskTimer(main, 0L, 1L);
                 planets.add(saturn);
 				removeLater(saturn, 90);
             } else if(time == 52) {
 				int randomPoints = r_i(160, 360);
-                AnimationGalaxy_Planet uranus = new AnimationGalaxy_Planet(main, PLANET_URANUS, armorStandLocation.clone().add(0, r_d(-1, 2), 0),
+                Animation11_Planet uranus = new Animation11_Planet(main, PLANET_URANUS, armorStandLocation.clone().add(0, r_d(-1, 2), 0),
                         4.0f, randomPoints, true,  r_d(0.05, 0.2), r_i(0, randomPoints));
                 uranus.runTaskTimer(main, 0L, 1L);
                 planets.add(uranus);
 				removeLater(uranus, 85);
             } else if(time == 54) {
 				int randomPoints = r_i(160, 360);
-                AnimationGalaxy_Planet neptune = new AnimationGalaxy_Planet(main, PLANET_NEPTUNE, armorStandLocation.clone().add(0, r_d(-1, 2), 0),
+                Animation11_Planet neptune = new Animation11_Planet(main, PLANET_NEPTUNE, armorStandLocation.clone().add(0, r_d(-1, 2), 0),
                         4.5f, randomPoints, true, r_d(0.05, 0.2), r_i(0, randomPoints));
                 neptune.runTaskTimer(main, 0L, 1L);
                 planets.add(neptune);
@@ -227,7 +227,7 @@ public class AnimationGalaxy_Task implements Animation {
 		armorStandLocation = armorStand.getLocation();
 		Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.FIREWORK_LAUNCH, 0.5f, 0);
 
-		spiral = new AnimationGalaxy_Spiral(armorStand);
+		spiral = new Animation11_Spiral(armorStand);
 		spiral.runTaskTimer(main, 0L, 1L);
 
 		this.cubeletBox.setState(CubeletBoxState.ANIMATION);
@@ -258,7 +258,7 @@ public class AnimationGalaxy_Task implements Animation {
 		Bukkit.getServer().getScheduler().cancelTask(id);
 
 		try {
-			for(AnimationGalaxy_Planet planet : planets) {
+			for(Animation11_Planet planet : planets) {
 				planet.cancel();
 				if(main.getAnimationHandler().getEntities().contains(planet.getArmorStand())) {
 					ArmorStand armorStandPlanet = planet.getArmorStand();
@@ -284,7 +284,7 @@ public class AnimationGalaxy_Task implements Animation {
 		return ThreadLocalRandom.current().nextDouble(min, max);
 	}
 
-	public void removeLater(AnimationGalaxy_Planet planet, long delay) {
+	public void removeLater(Animation11_Planet planet, long delay) {
 		Bukkit.getScheduler().runTaskLater(main, () -> {
 			planet.cancel();
 			UtilParticles.display(Particles.SNOW_SHOVEL, planet.getArmorStand().getLocation().clone().add(0, 1, 0), 5);

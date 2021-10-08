@@ -1,5 +1,6 @@
 package me.davidml16.acubelets.animations;
 
+import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Comparator;
@@ -8,7 +9,6 @@ public class AnimationSettings implements Comparable<AnimationSettings> {
 
     private String id;
     private String displayName;
-    private String previewURL;
     private int animationNumber;
 
     private ItemStack displayItem;
@@ -20,6 +20,13 @@ public class AnimationSettings implements Comparable<AnimationSettings> {
 
     public AnimationSettings(String id) {
         this.id = id;
+        this.displayName = "";
+        this.animationNumber = 0;
+        this.displayItem = XMaterial.BARRIER.parseItem();
+        this.outlineParticles = false;
+        this.floorParticles = false;
+        this.aroundParticles = false;
+        this.needPermission = true;
     }
 
     public String getId() { return id; }
@@ -43,14 +50,6 @@ public class AnimationSettings implements Comparable<AnimationSettings> {
     public int getAnimationNumber() { return animationNumber; }
 
     public void setAnimationNumber(int animationNumber) { this.animationNumber = animationNumber; }
-
-    public String getPreviewURL() {
-        return previewURL;
-    }
-
-    public void setPreviewURL(String previewURL) {
-        this.previewURL = previewURL;
-    }
 
     public boolean isOutlineParticles() { return outlineParticles; }
 
