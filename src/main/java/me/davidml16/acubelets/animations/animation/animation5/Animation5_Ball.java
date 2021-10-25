@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.animations.animation.animation5;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.VersionUtil;
@@ -34,18 +35,7 @@ public class Animation5_Ball extends BukkitRunnable {
         armorStand.setCustomNameVisible(false);
         armorStand.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
 
-        if(!VersionUtil.supports(17)) {
-            Method getHandle = null;
-            try {
-                getHandle = armorStand.getClass().getMethod("getHandle");
-                Object armorS = getHandle.invoke(armorStand);
-                Field field = armorS.getClass().getField("noclip");
-                field.setAccessible(true);
-                field.setBoolean(armorS, true);
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
-                e.printStackTrace();
-            }
-        }
+        ASSpawner.setEntityNoclip(armorStand);
 
         armorStand.teleport(spawnLoc.clone().add(0, -2.5, 0));
 

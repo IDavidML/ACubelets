@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.animations.animation.animation16;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.utils.LocationUtils;
 import me.davidml16.acubelets.utils.NBTEditor;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
@@ -55,18 +56,7 @@ public class Animation16_Sheep extends BukkitRunnable {
         sheep.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
         sheep.teleport(locations.get(step));
 
-        if(!VersionUtil.supports(17)) {
-            Method getHandle = null;
-            try {
-                getHandle = sheep.getClass().getMethod("getHandle");
-                Object armorS = getHandle.invoke(sheep);
-                Field field = armorS.getClass().getField("noclip");
-                field.setAccessible(true);
-                field.setBoolean(armorS, true);
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
-                e.printStackTrace();
-            }
-        }
+        ASSpawner.setEntityNoclip(sheep);
 
         main.getAnimationHandler().getEntities().add(sheep);
 

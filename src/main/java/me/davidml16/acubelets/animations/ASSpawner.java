@@ -10,6 +10,7 @@ import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.EulerAngle;
@@ -101,18 +102,7 @@ public class ASSpawner {
         armorStand.setCustomNameVisible(false);
         armorStand.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
 
-        if(!VersionUtil.supports(17)) {
-            Method getHandle = null;
-            try {
-                getHandle = armorStand.getClass().getMethod("getHandle");
-                Object armorS = getHandle.invoke(armorStand);
-                Field field = armorS.getClass().getField("noclip");
-                field.setAccessible(true);
-                field.setBoolean(armorS, true);
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
-                e.printStackTrace();
-            }
-        }
+        setEntityNoclip(armorStand);
 
         armorStand.teleport(loc);
 
@@ -133,18 +123,7 @@ public class ASSpawner {
         armorStand.setCustomNameVisible(false);
         armorStand.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
 
-        if(!VersionUtil.supports(17)) {
-            Method getHandle = null;
-            try {
-                getHandle = armorStand.getClass().getMethod("getHandle");
-                Object armorS = getHandle.invoke(armorStand);
-                Field field = armorS.getClass().getField("noclip");
-                field.setAccessible(true);
-                field.setBoolean(armorS, true);
-            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
-                e.printStackTrace();
-            }
-        }
+        setEntityNoclip(armorStand);
 
         armorStand.teleport(loc);
 
@@ -161,6 +140,27 @@ public class ASSpawner {
         else if(box.getRotation() == Rotation.WEST)
             return opposite ? Rotation.EAST : Rotation.WEST;
         return null;
+    }
+
+    public static void setEntityNoclip(Entity entity) {
+
+        Method getHandle;
+
+        try {
+
+            getHandle = entity.getClass().getMethod("getHandle");
+            Object entityObject = getHandle.invoke(entity);
+
+            Field field = entityObject.getClass().getField(!VersionUtil.supports(17) ? "noclip" : "P");
+            field.setAccessible(true);
+            field.setBoolean(entityObject, true);
+
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
+
+            e.printStackTrace();
+
+        }
+
     }
 
 }

@@ -160,18 +160,7 @@ public class Animation11_Task implements Animation {
 				UtilParticles.display(Particles.EXPLOSION_LARGE, armorStand.getLocation().clone().add(0, 1.25, 0), 2);
 
 				armorStand.setGravity(true);
-				if(!VersionUtil.supports(17)) {
-					Method getHandle = null;
-					try {
-						getHandle = armorStand.getClass().getMethod("getHandle");
-						Object armorS = getHandle.invoke(armorStand);
-						Field field = armorS.getClass().getField("noclip");
-						field.setAccessible(true);
-						field.setBoolean(armorS, true);
-					} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | NoSuchFieldException e) {
-						e.printStackTrace();
-					}
-				}
+				ASSpawner.setEntityNoclip(armorStand);
 
 			} else if(time > 160 && time < 173) {
 				UtilParticles.display(Particles.FLAME, 0.10F, 0.25F, 0.15F, armorStand.getLocation().clone().add(0, 1.5, 0), 5);

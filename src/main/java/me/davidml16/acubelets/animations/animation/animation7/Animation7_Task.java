@@ -19,6 +19,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Bat;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
@@ -263,6 +264,7 @@ public class Animation7_Task implements Animation {
 		ghost.setHelmet(SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjhkMjE4MzY0MDIxOGFiMzMwYWM1NmQyYWFiN2UyOWE5NzkwYTU0NWY2OTE2MTllMzg1NzhlYTRhNjlhZTBiNiJ9fX0"));
 		ghost.setChestplate(chestplate);
 		ghost.setItemInHand(new ItemStack(XMaterial.GOLDEN_HOE.parseItem()));
+		ghost.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
 		bat.setPassenger(ghost);
 		bat.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 160, 1));
 
