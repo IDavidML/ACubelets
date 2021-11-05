@@ -162,7 +162,7 @@ public class EditBox_GUI implements Listener {
 
         p.openInventory(gui);
 
-        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
         Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> opened.put(p.getUniqueId(), box), 1L);
     }
 
@@ -182,7 +182,7 @@ public class EditBox_GUI implements Listener {
             if(slot == 10) {
                 box.setBlockHeight(box.getBlockHeight() + 0.015);
                 main.getHologramImplementation().moveHologram(box);
-                Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+                Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
                 reloadGUI(box);
             } else if(slot == 11) {
                 if(e.getClick() == ClickType.LEFT || e.getClick() == ClickType.RIGHT) {
@@ -200,7 +200,7 @@ public class EditBox_GUI implements Listener {
             } else if(slot == 12) {
                 box.setBlockHeight(box.getBlockHeight() - 0.015);
                 main.getHologramImplementation().moveHologram(box);
-                Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+                Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
                 reloadGUI(box);
             } else if(slot == 14) {
                 if(e.getClick() != ClickType.DOUBLE_CLICK) {
@@ -213,7 +213,7 @@ public class EditBox_GUI implements Listener {
                     else if (box.getRotation() == Rotation.WEST)
                         box.setRotation(Rotation.NORTH);
 
-                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
                     reloadGUI(box);
                 }
             } else if(slot == 16) {

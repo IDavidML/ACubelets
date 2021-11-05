@@ -155,7 +155,7 @@ public class TypeConfig_GUI implements Listener {
 
         p.openInventory(guis.get(id));
 
-        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
         Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> opened.put(p.getUniqueId(), id), 1L);
     }
 
@@ -176,7 +176,7 @@ public class TypeConfig_GUI implements Listener {
             CubeletType type = main.getCubeletTypesHandler().getTypeBydId(id);
 
             if (slot == 19) {
-                main.getAnimationsGUI().open(p, id);
+                main.getAnimationsGUI().open(p, type);
             } else if (slot == 21) {
                 main.getRaritiesGUI().open(p, id);
             } else if (slot == 23) {

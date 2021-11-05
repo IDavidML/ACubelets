@@ -134,3 +134,9 @@ animations:
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+
+  animation_21:
+    DisplayName: 'Animation 21'
+    OutlineParticles: true
+    FloorParticles: true
+    NeedPermission: true

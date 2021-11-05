@@ -62,7 +62,8 @@ public class AnimationHandler {
                 XMaterial.LADDER.parseItem(), XMaterial.FIRE_CHARGE.parseItem(), XMaterial.ENDER_EYE.parseItem(),
                 XMaterial.CAULDRON.parseItem(), XMaterial.PRISMARINE_SHARD.parseItem(), XMaterial.POPPY.parseItem(),
                 XMaterial.BLAZE_POWDER.parseItem(), XMaterial.PINK_WOOL.parseItem(), XMaterial.SNOWBALL.parseItem(),
-                XMaterial.DIAMOND.parseItem(), XMaterial.ANVIL.parseItem(), XMaterial.ENDER_PEARL.parseItem()
+                XMaterial.DIAMOND.parseItem(), XMaterial.ANVIL.parseItem(), XMaterial.ENDER_PEARL.parseItem(),
+                XMaterial.EMERALD.parseItem()
         );
 
         ANIMATION_COUNT = animationItems.size();
@@ -142,7 +143,7 @@ public class AnimationHandler {
 
         }
 
-        return animationObject != null ? animationObject : new Animation2_Task(main, animationSettings);
+        return animationObject != null ? animationObject : new Animation2_Task(main, getAnimationSetting("animation2"));
 
     }
 

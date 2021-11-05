@@ -1,9 +1,13 @@
 package me.davidml16.acubelets.gui;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.animations.AnimationHandler;
 import me.davidml16.acubelets.animations.AnimationSettings;
+import me.davidml16.acubelets.gui.rewards.Rewards_GUI;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.GUILayout;
+import me.davidml16.acubelets.objects.Profile;
+import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.utils.*;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
@@ -24,117 +28,113 @@ import java.util.*;
 
 public class Animations_GUI implements Listener {
 
-    private HashMap<UUID, String> opened;
-    private HashMap<String, Inventory> guis;
+    private HashMap<UUID, GUISession> opened;
     private List<Integer> borders;
 
     private Main main;
 
     public Animations_GUI(Main main) {
         this.main = main;
-        this.opened = new HashMap<UUID, String>();
-        this.guis = new HashMap<String, Inventory>();
+        this.opened = new HashMap<UUID, GUISession>();
         this.borders = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 37, 38, 39, 41, 42, 43, 44);
         this.main.getServer().getPluginManager().registerEvents(this, this.main);
     }
 
-    public HashMap<UUID, String> getOpened() {
+    public HashMap<UUID, GUISession> getOpened() {
         return opened;
     }
 
-    public HashMap<String, Inventory> getGuis() {
-        return guis;
-    }
+    public void openPage(Player p, CubeletType cubeletType, int page) {
 
-    public void loadGUI() {
-        for (File file : Objects.requireNonNull(new File(main.getDataFolder(), "types").listFiles())) {
-            loadGUI(file.getName().toLowerCase().replace(".yml", ""));
-        }
-    }
-
-    public void loadGUI(String id) {
-        if(guis.containsKey(id)) return;
-
-        Inventory gui = Bukkit.createInventory(null, 45, "%cubelet_type% | Animations".replaceAll("%cubelet_type%", id));
-        ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
-        ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(Utils.translate("&aBack to config")).toItemStack();
-
-        FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
-
-        String selectedAnimation = config.getString("type.animation");
-
-        gui.setItem(40, back);
-
-        for (Integer i : borders) {
-            gui.setItem(i, edge);
-        }
-
-        GUILayout guiLayout = main.getLayoutHandler().getLayout("animations");
-        ItemStack randomAnimation = getRandomAnimationItem(selectedAnimation, guiLayout);
-        randomAnimation = NBTEditor.set(randomAnimation, "random", "animation");
-        gui.setItem(38, randomAnimation);
-
-        List<AnimationSettings> animationSettings = new ArrayList<>(main.getAnimationHandler().getAnimations().values());
-        Collections.sort(animationSettings);
-
-        for(AnimationSettings animation : animationSettings)
-            gui.addItem(getAnimationItem(selectedAnimation, animation.getId()));
-
-        guis.put(id, gui);
-    }
-
-    public void reloadAllGUI() {
-        for(String id : main.getCubeletTypesHandler().getTypes().keySet()) {
-            loadGUI(id);
-            reloadGUI(id);
-        }
-    }
-
-    public void reloadGUI(String id) {
-        Inventory gui = guis.get(id);
-
-        FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
-
-        String selectedAnimation = config.getString("type.animation");
-
-        for (int i = 0; i < 44; i++) {
-            gui.setItem(i, null);
-        }
-
-        ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
-        ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(Utils.translate("&aBack to config")).toItemStack();
-
-        gui.setItem(40, back);
-
-        for (Integer i : borders) {
-            gui.setItem(i, edge);
-        }
-
-        GUILayout guiLayout = main.getLayoutHandler().getLayout("animations");
-        ItemStack randomAnimation = getRandomAnimationItem(selectedAnimation, guiLayout);
-        randomAnimation = NBTEditor.set(randomAnimation, "random", "animation");
-        gui.setItem(38, randomAnimation);
-
-        List<AnimationSettings> animationSettings = new ArrayList<>(main.getAnimationHandler().getAnimations().values());
-        Collections.sort(animationSettings);
-
-        for(AnimationSettings animation : animationSettings)
-            gui.addItem(getAnimationItem(selectedAnimation, animation.getId()));
-
-        for(HumanEntity pl : gui.getViewers()) {
-            pl.getOpenInventory().getTopInventory().setContents(gui.getContents());
-        }
-    }
-
-    public void open(Player p, String id) {
         p.updateInventory();
 
-        if(!guis.containsKey(id)) loadGUI(id);
+        Profile profile = main.getPlayerDataHandler().getData(p);
+        if(!profile.getAnimation().equalsIgnoreCase("random")) {
+            AnimationSettings animationSetting = main.getAnimationHandler().getAnimationSetting(profile.getAnimation());
+            if (animationSetting.isNeedPermission()) {
+                if (!main.getAnimationHandler().haveAnimationPermission(p, animationSetting))
+                    profile.setAnimation(AnimationHandler.DEFAULT_ANIMATION);
+            }
+        }
 
-        p.openInventory(guis.get(id));
+        List<AnimationSettings> animations = new ArrayList<>(main.getAnimationHandler().getAnimations().values());
+        Collections.sort(animations);
 
-        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
-        Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> opened.put(p.getUniqueId(), id), 1L);
+        if(page < 0) {
+            openPage(p, cubeletType, 0);
+            return;
+        }
+
+        if(page > 0 && animations.size() < (page * 21) + 1) {
+            openPage(p, cubeletType, page - 1);
+            return;
+        }
+
+        if (animations.size() > 21) animations = animations.subList(page * 21, Math.min(((page * 21) + 21), animations.size()));
+
+        GUILayout guiLayout = main.getLayoutHandler().getLayout("animations");
+
+        Inventory gui = Bukkit.createInventory(null, 45, "%cubelet_type% | Animations".replaceAll("%cubelet_type%", cubeletType.getId()));
+
+        ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(Utils.translate("&aBack to config")).toItemStack();
+        back = NBTEditor.set(back, "back", "action");
+
+        ItemStack filler = XMaterial.GRAY_STAINED_GLASS_PANE.parseItem();
+        for(int i : borders)
+            gui.setItem(i, filler);
+
+        if (page > 0) {
+
+            ItemStack item = new ItemBuilder(XMaterial.ENDER_PEARL.parseMaterial(), 1)
+                    .setName(Utils.translate("&aPrevious page"))
+                    .toItemStack();
+
+            item = NBTEditor.set(item, "previous", "action");
+
+            gui.setItem(18, item);
+
+        }
+
+        if (main.getAnimationHandler().getAnimations().values().size() > (page + 1) * 21) {
+
+            ItemStack item = new ItemBuilder(XMaterial.ENDER_PEARL.parseMaterial(), 1)
+                    .setName(Utils.translate("&aaNext page"))
+                    .toItemStack();
+
+            item = NBTEditor.set(item, "next", "action");
+
+            gui.setItem(26, item);
+
+        }
+
+        gui.setItem(40, back);
+
+        for(AnimationSettings animation : animations)
+            gui.addItem(getAnimationItem(cubeletType, animation.getId()));
+
+        ItemStack randomAnimation = getRandomAnimationItem(cubeletType, guiLayout);
+        randomAnimation = NBTEditor.set(randomAnimation, "animation", "action");
+        gui.setItem(38, randomAnimation);
+
+        p.openInventory(gui);
+
+        Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> opened.put(p.getUniqueId(), new GUISession(cubeletType, page)), 1L);
+
+    }
+
+    public void open(Player p, CubeletType cubeletType) {
+        p.updateInventory();
+        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
+        openPage(p, cubeletType, 0);
+    }
+
+    public void reloadGUI(CubeletType cubeletType) {
+        for(UUID uuid : opened.keySet()) {
+            if(opened.get(uuid).getCubeletType().getId().equals(cubeletType.getId())) {
+                Player p = Bukkit.getPlayer(uuid);
+                openPage(p, cubeletType, opened.get(uuid).getPage());
+            }
+        }
     }
 
     @EventHandler
@@ -147,57 +147,57 @@ public class Animations_GUI implements Listener {
 
             if (e.getCurrentItem() == null) return;
             if (e.getCurrentItem().getType() == Material.AIR) return;
+            if (e.getClick() == ClickType.DOUBLE_CLICK) return;
 
-            int slot = e.getRawSlot();
-            String id = opened.get(p.getUniqueId());
+            String action = NBTEditor.getString(e.getCurrentItem(), "action");
+            GUISession guiSession = opened.get(p.getUniqueId());
+            CubeletType cubeletType = guiSession.getCubeletType();
 
-            if (slot == 40) {
-                main.getTypeConfigGUI().open(p, id);
-            } else if (slot == 38) {
+            if(e.getClick() == ClickType.DOUBLE_CLICK) return;
 
-                String animation = NBTEditor.getString(e.getCurrentItem(), "animation");
-                String status = NBTEditor.getString(e.getCurrentItem(), "status");
+            if(action == null) {
+                e.setCancelled(true);
+                return;
+            }
 
-                if (status.equalsIgnoreCase("unlocked")) {
+            switch (action) {
 
-                    CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(id);
-                    FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
+                case "previous":
+                    openPage(p, opened.get(p.getUniqueId()).getCubeletType(), - 1);
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
+                    break;
 
-                    config.set("type.animation", animation);
-                    cubeletType.setAnimation(animation);
-                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+                case "next":
+                    openPage(p, opened.get(p.getUniqueId()).getCubeletType(), + 1);
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
+                    break;
 
-                    cubeletType.saveType();
-                    reloadGUI(id);
+                case "animation":
 
-                }
+                    String status = NBTEditor.getString(e.getCurrentItem(), "status");
+                    String animation = NBTEditor.getString(e.getCurrentItem(), "animation");
 
-            } else {
+                    if(status.equalsIgnoreCase("unlocked")) {
 
-                if(e.getCurrentItem().equals(new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack())) return;
-
-                String animation = NBTEditor.getString(e.getCurrentItem(), "animation");
-                String status = NBTEditor.getString(e.getCurrentItem(), "status");
-
-                if(e.getClick() == ClickType.LEFT || e.getClick() == ClickType.SHIFT_LEFT) {
-
-                    if (status.equalsIgnoreCase("unlocked")) {
-
-                        CubeletType cubeletType = main.getCubeletTypesHandler().getTypeBydId(id);
-                        FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
+                        FileConfiguration config = main.getCubeletTypesHandler().getConfig(cubeletType.getId());
 
                         config.set("type.animation", animation);
                         cubeletType.setAnimation(animation);
-                        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+                        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
 
                         cubeletType.saveType();
-                        reloadGUI(id);
+                        reloadGUI(cubeletType);
 
                     }
 
-                }
+                    break;
+
+                case "back":
+                    main.getTypeConfigGUI().open(p, cubeletType.getId());
+                    break;
 
             }
+
         }
     }
 
@@ -207,18 +207,20 @@ public class Animations_GUI implements Listener {
         opened.remove(p.getUniqueId());
     }
 
-    private ItemStack getAnimationItem(String selected, String animation) {
+    private ItemStack getAnimationItem(CubeletType cubeletType, String animation) {
 
         AnimationSettings animationSettings = main.getAnimationHandler().getAnimationSetting(animation);
 
         ItemStack item = animationSettings.getDisplayItem().clone();
 
-        if(!selected.equalsIgnoreCase(animation))
+        if(!cubeletType.getAnimation().equalsIgnoreCase(animation))
             item = getItem(animationSettings, "Unlocked", item);
         else
             item = getItem(animationSettings, "Selected", item);
 
         item = NBTEditor.set(item, animation, "animation");
+        item = NBTEditor.set(item, "animation", "action");
+
         return item;
 
     }
@@ -240,13 +242,13 @@ public class Animations_GUI implements Listener {
 
     }
 
-    private ItemStack getRandomAnimationItem(String animation, GUILayout guiLayout) {
+    private ItemStack getRandomAnimationItem(CubeletType cubeletType, GUILayout guiLayout) {
 
         ItemStack item = new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).toItemStack();
 
         String status;
 
-        if(!animation.equalsIgnoreCase("random")) {
+        if(!cubeletType.getAnimation().equalsIgnoreCase("random")) {
             String name = guiLayout.getMessage("Items.RandomAnimation.NoSelected.Name");
             List<String> lore = guiLayout.getMessageList("Items.RandomAnimation.NoSelected.Lore");
             item = new ItemBuilder(item).setName(name).setLore(lore).toItemStack();
@@ -258,7 +260,38 @@ public class Animations_GUI implements Listener {
             status = "Selected";
         }
 
-        return NBTEditor.set(item, status.toLowerCase(), "status");
+        item = NBTEditor.set(item, "random", "animation");
+        item = NBTEditor.set(item, status.toLowerCase(), "status");
+
+        return item;
+
+    }
+
+    class GUISession {
+
+        private CubeletType cubeletType;
+        private int page;
+
+        public GUISession(CubeletType cubeletType, int page) {
+            this.cubeletType = cubeletType;
+            this.page = page;
+        }
+
+        public CubeletType getCubeletType() {
+            return cubeletType;
+        }
+
+        public void setCubeletType(CubeletType cubeletType) {
+            this.cubeletType = cubeletType;
+        }
+
+        public int getPage() {
+            return page;
+        }
+
+        public void setPage(int page) {
+            this.page = page;
+        }
 
     }
 

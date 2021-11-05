@@ -122,7 +122,6 @@ public class ExecuteType {
                     main.getTypeConfigGUI().getGuis().remove(id);
                     main.getRaritiesGUI().getGuis().remove(id);
                     main.getRewardsGUI().getGuis().remove(id);
-                    main.getAnimationsGUI().getGuis().remove(id);
                     main.getCubeletTypesHandler().getTypes().remove(id);
 
                     try {

@@ -254,7 +254,6 @@ public class Main extends JavaPlugin {
         raritiesGUI.loadGUI();
 
         animationsGUI = new Animations_GUI(this);
-        animationsGUI.loadGUI();
 
         editBoxGUI = new EditBox_GUI(this);
 

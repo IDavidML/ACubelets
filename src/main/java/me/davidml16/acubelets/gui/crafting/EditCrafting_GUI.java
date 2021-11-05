@@ -184,7 +184,7 @@ public class EditCrafting_GUI implements Listener {
 
         p.openInventory(gui);
 
-        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
         Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> opened.add(p.getUniqueId()), 1L);
     }
 
@@ -204,7 +204,7 @@ public class EditCrafting_GUI implements Listener {
                 if (slot == 11) {
                     if (main.getCubeletCraftingHandler().getInventoryRows() < 6) {
                         main.getCubeletCraftingHandler().setInventorySize(main.getCubeletCraftingHandler().getInventoryRows() + 1);
-                        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+                        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
                         reloadGUI();
                     }
                 } else if (slot == 12) {
@@ -214,7 +214,7 @@ public class EditCrafting_GUI implements Listener {
                 } else if (slot == 13) {
                     if (main.getCubeletCraftingHandler().getInventoryRows() > 2) {
                         main.getCubeletCraftingHandler().setInventorySize(main.getCubeletCraftingHandler().getInventoryRows() - 1);
-                        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+                        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
                         reloadGUI();
                     }
                 } else if (slot == 15) {

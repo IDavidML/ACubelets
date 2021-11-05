@@ -22,6 +22,7 @@ public class CoreCommand extends Command {
     private final ExecuteType executeType = new ExecuteType(main);
     private final ExecuteReload executeReload = new ExecuteReload(main);
     private final ExecuteSetup executeSetup = new ExecuteSetup(main);
+    private final ExecuteOptions executeOptions = new ExecuteOptions(main);
     private final ExecuteInfo executeInfo = new ExecuteInfo(main);
     private final ExecuteClear executeClear = new ExecuteClear(main);
     private final ExecuteGift executeGift = new ExecuteGift(main);
@@ -64,6 +65,8 @@ public class CoreCommand extends Command {
                 return executeType.executeCommand(sender, label, args);
             case "setup":
                 return executeSetup.executeCommand(sender, label, args);
+            case "options":
+                return executeOptions.executeCommand(sender, label, args);
             case "reload":
                 return executeReload.executeCommand(sender, label, args);
             case "info":
@@ -110,6 +113,7 @@ public class CoreCommand extends Command {
                 sender.sendMessage("");
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " type"));
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " setup [typeID]"));
+                //sender.sendMessage(Utils.translate("&7 - &a/" + label + " options"));
                 sender.sendMessage("");
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " reload"));
                 sender.sendMessage("");
@@ -125,11 +129,6 @@ public class CoreCommand extends Command {
             if(main.isKeysEnabled())
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " givekey [player] [typeID] [amount]"));
 
-            sender.sendMessage("");
-            sender.sendMessage(Utils.translate("&7 - &a/" + label + " machine [create/remove/edit]"));
-            sender.sendMessage("");
-            sender.sendMessage(Utils.translate("&7 - &a/" + label + " type"));
-            sender.sendMessage(Utils.translate("&7 - &a/" + label + " setup [typeID]"));
             sender.sendMessage("");
             sender.sendMessage(Utils.translate("&7 - &a/" + label + " reload"));
             sender.sendMessage("");
@@ -167,6 +166,7 @@ public class CoreCommand extends Command {
                 list.add("machine");
                 list.add("type");
                 list.add("setup");
+                //list.add("options");
                 list.add("reload");
             }
         }

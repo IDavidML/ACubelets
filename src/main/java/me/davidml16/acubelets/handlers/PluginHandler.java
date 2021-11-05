@@ -85,7 +85,6 @@ public class PluginHandler {
         main.getLayoutHandler().loadLayouts();
         main.getAnimationHandler().loadAnimations();
         main.getTypeConfigGUI().reloadAllGUI();
-        main.getAnimationsGUI().reloadAllGUI();
         main.getRewardsGUI().reloadAllGUI();
         main.getRaritiesGUI().reloadAllGUI();
         main.getHologramHandler().getColorAnimation().setColors(main.getConfig().getStringList("Holograms.ColorAnimation"));

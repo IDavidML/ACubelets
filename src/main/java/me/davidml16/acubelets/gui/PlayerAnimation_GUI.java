@@ -23,7 +23,6 @@ import java.util.*;
 public class PlayerAnimation_GUI implements Listener {
 
     private Map<UUID, Integer> opened;
-    private HashMap<String, Inventory> guis;
 
     private static List<Integer> panels = Arrays.asList(0,1,2,3,4,5,6,7,8,9,17,18,26);
 
@@ -153,7 +152,7 @@ public class PlayerAnimation_GUI implements Listener {
                     String status = NBTEditor.getString(e.getCurrentItem(), "status");
                     if(status.equalsIgnoreCase("disabled")) {
                         main.getPlayerDataHandler().getData(p).setAnimation("random");
-                        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+                        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
                         openPage(p, opened.get(p.getUniqueId()));
                     }
                     break;
@@ -162,7 +161,7 @@ public class PlayerAnimation_GUI implements Listener {
                     status = NBTEditor.getString(e.getCurrentItem(), "status");
                     if(status.equalsIgnoreCase("unlocked")) {
                         main.getPlayerDataHandler().getData(p).setAnimation(animation);
-                        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 100, 3);
+                        Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
                         openPage(p, opened.get(p.getUniqueId()));
                     }
                     break;
