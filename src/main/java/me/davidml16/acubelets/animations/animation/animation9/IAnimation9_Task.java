@@ -1,8 +1,7 @@
-package me.davidml16.acubelets.animations.animation.animation18;
+package me.davidml16.acubelets.animations.animation.animation9;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
-import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.enums.CubeletBoxState;
@@ -13,61 +12,57 @@ import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.utils.*;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Entity;
-import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
-public class Animation18_Task implements Animation {
+public class IAnimation9_Task implements IAnimation {
 
 	private int id;
 
 	private Main main;
 	private AnimationSettings animationSettings;
-	public Animation18_Task(Main main, AnimationSettings animationSettings) {
+	public IAnimation9_Task(Main main, AnimationSettings animationSettings) {
 		this.main = main;
 		this.animationSettings = animationSettings;
 	}
 
 	private ArmorStand armorStand;
-
 	private CubeletBox cubeletBox;
 	private CubeletType cubeletType;
-
+	private Animation9_Music music;
+	private Animation9_Charge charge;
 	private List<Color> colors;
+
 	private Utils.ColorSet<Integer, Integer, Integer> colorRarity;
-	private Location boxLocation, armorStandLocation;
 
 	private Location corner1, corner2, corner3, corner4;
 
-	private List<Animation18_Item> items = new ArrayList<>();
+	private Location boxLocation;
 
 	private Reward reward;
-
-	private BukkitTask spawnItemsRunnable, removeItemsRunnable;
 
 	private RepeatingTask hologramAnimation;
 
 	class Task implements Runnable {
 
 		int time = 0;
-		private double boxLocIncrease = -1.50;
+		private double boxLocIncrease = -1.25;
 		private double circleSize = 0.0D;
 		private int circleStep = 0;
 		float rotation = ASSpawner.getRotation(cubeletBox, false).value;
 
 		@Override
 		public void run() {
+			time++;
 
 			if (time <= 25) {
 				Location newBoxLoc = boxLocation.clone();
-				this.boxLocIncrease += 0.060D;
+				this.boxLocIncrease += 0.050D;
 				newBoxLoc.add(0.0D, this.boxLocIncrease, 0.0D);
 				newBoxLoc.setYaw(rotation);
 
@@ -85,7 +80,7 @@ public class Animation18_Task implements Animation {
 				if (this.circleSize < 0.0D) this.circleSize = 0.0D;
 
 				List<Location> teleportLocs = LocationUtils.getCircle(newBoxLoc, this.circleSize, 50);
-				Location teleportLoc = teleportLocs.get(this.circleStep).clone();
+				Location teleportLoc = ((Location)teleportLocs.get(this.circleStep)).clone();
 
 				teleportLoc.setYaw(rotation);
 
@@ -98,50 +93,24 @@ public class Animation18_Task implements Animation {
 				if (this.circleStep == teleportLocs.size()) this.circleStep = 0;
 			}
 
-			if(time == 150) spawnItemsRunnable.cancel();
+			if(time == 65) chargeParticles();
 
-			if(time == 283) {
+			if(time == 100) music.cancel();
+
+			if(time == 105) {
 				colorRarity = Utils.getRGBbyColor(Utils.getColorByText(reward.getRarity().getName()));
+				main.getFireworkUtil().spawn(armorStand.getLocation().clone().add(0, 1.75, 0), FireworkEffect.Type.BALL, colors.get(0), colors.get(1));
 				Sounds.playSound(armorStand.getLocation(), Sounds.MySound.EXPLODE, 0.5F, 1F);
-				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 1.50, 0.5), FireworkEffect.Type.BALL_LARGE, colors.toArray(new Color[colors.size()]));
-			}
-
-			if(time == 285) {
+			} else if(time == 125) {
 				cubeletBox.setLastReward(reward);
 				main.getHologramImplementation().rewardHologram(cubeletBox, reward);
 				cubeletBox.setState(CubeletBoxState.REWARD);
-				armorStand.remove();
-				armorStand = null;
-
-				spawnItemsRunnable.cancel();
-				removeItemsRunnable.cancel();
-
-				try {
-					for(Animation18_Item item : items) {
-						item.cancel();
-						if(main.getAnimationHandler().getEntities().contains(item.getArmorStandItem())) {
-							Entity entity = item.getArmorStandItem();
-							if(entity != null) entity.remove();
-							main.getAnimationHandler().getEntities().remove(entity);
-						}
-						if(main.getAnimationHandler().getEntities().contains(item.getArmorStandName())) {
-							Entity entity = item.getArmorStandName();
-							if(entity != null) entity.remove();
-							main.getAnimationHandler().getEntities().remove(entity);
-						}
-					}
-				} catch(IllegalStateException | NullPointerException ignored) {}
-			}
-
-			if(time == 305) Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.LEVEL_UP, 0.5F, 1F);
-
-			if(time == 325) {
+				Sounds.playSound(armorStand.getLocation(), Sounds.MySound.LEVEL_UP, 0.5F, 1F);
+			} else if(time == 165) {
 				if(main.isDuplicationEnabled())
 					if(reward instanceof PermissionReward)
 						hologramAnimation = main.getCubeletRewardHandler().permissionReward(cubeletBox, reward);
-			}
-
-			if(time > 285 && time < 425) {
+			} else if (time > 125 && time < 245) {
 				if(animationSettings.isOutlineParticles()) {
 					UtilParticles.drawParticleLine(corner1, corner2, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 					UtilParticles.drawParticleLine(corner2, corner3, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
@@ -151,9 +120,7 @@ public class Animation18_Task implements Animation {
 
 				if(animationSettings.isFloorParticles())
 					UtilParticles.display(Particles.FLAME, 1f, 0f, 1f, boxLocation, 2);
-			}
-
-			if(time == 425) {
+			} else if(time >= 245) {
 				stop();
 
 				main.getCubeletRewardHandler().giveReward(cubeletBox, reward);
@@ -164,75 +131,51 @@ public class Animation18_Task implements Animation {
 				main.getHologramImplementation().reloadHologram(cubeletBox);
 			}
 
-			time++;
 		}
 	}
-
+	
 	public int getId() { return id; }
 
 	public void start(CubeletBox box, CubeletType type) {
 		this.cubeletType = type;
 		this.cubeletBox = box;
-		this.cubeletBox.setState(CubeletBoxState.ANIMATION);
-		this.colors = Arrays.asList(Color.RED, Color.YELLOW, Color.BLUE, Color.GREEN, Color.ORANGE, Color.FUCHSIA, Color.AQUA, Color.WHITE);
+		boxLocation = cubeletBox.getLocation().clone().add(0.5, 0, 0.5);
 
-		armorStand = ASSpawner.spawn(main, cubeletBox.getLocation().clone().add(0.5, -1.5, 0.5),
-				XMaterial.CHEST.parseItem(), false, false, false);
-		armorStandLocation = armorStand.getLocation();
-		main.getAnimationHandler().getEntities().add(armorStand);
+		armorStand = ASSpawner.spawn(main, box, type, false, false, boxLocation.clone().add(0, -1.25, 0));
+
+		music = new Animation9_Music(box.getLocation());
+		music.runTaskTimer(main, 5L, 3L);
+
+		charge = new Animation9_Charge(box.getLocation());
+		charge.runTaskTimer(main, 65L, 3L);
+
+		this.cubeletBox.setState(CubeletBoxState.ANIMATION);
+		this.colors = Arrays.asList(Color.BLACK, Color.ORANGE);
 
 		corner1 = cubeletBox.getLocation().clone().add(0.05, box.getPermanentBlockHeight() - 0.325, 0.05);
 		corner2 = cubeletBox.getLocation().clone().add(0.95, box.getPermanentBlockHeight() - 0.325, 0.05);
 		corner3 = cubeletBox.getLocation().clone().add(0.95, box.getPermanentBlockHeight() - 0.325, 0.95);
 		corner4 = cubeletBox.getLocation().clone().add(0.05, box.getPermanentBlockHeight() - 0.325, 0.95);
-		boxLocation = cubeletBox.getLocation().clone().add(0.5, 0, 0.5);
-
-		spawnItemsRunnable = Bukkit.getScheduler().runTaskTimer(main, () -> {
-			if(items.size() < 9) {
-				Animation18_Item item = new Animation18_Item(main, main.getCubeletRewardHandler().processReward(cubeletType),
-						armorStand.getLocation().clone().add(0, 0.75, 0));
-				item.runTaskTimer(main, 0L, 1L);
-				items.add(item);
-			}
-		}, 65, 8);
-
-		removeItemsRunnable = Bukkit.getScheduler().runTaskTimer(main, () -> {
-			if(items.size() > 1) {
-				removeRandomItem();
-			} else {
-				reward = items.get(0).getReward();
-			}
-		}, 200, 5);
 
 		id = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, new Task(), 0L, 1);
 
 		main.getAnimationHandler().getTasks().add(this);
-	}
+		main.getAnimationHandler().getEntities().add(armorStand);
 
+		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+			reward = main.getCubeletRewardHandler().processReward(cubeletType);
+		});
+	}
+	
 	public void stop() {
-		if(hologramAnimation != null) hologramAnimation.cancel();
-		if(spawnItemsRunnable != null) spawnItemsRunnable.cancel();
-		if(removeItemsRunnable != null) removeItemsRunnable.cancel();
+		music.cancel();
+		charge.cancel();
 
 		main.getAnimationHandler().getTasks().remove(this);
 
-		Bukkit.getServer().getScheduler().cancelTask(id);
+		if(hologramAnimation != null) hologramAnimation.cancel();
 
-		try {
-			for(Animation18_Item item : items) {
-				item.cancel();
-				if(main.getAnimationHandler().getEntities().contains(item.getArmorStandItem())) {
-					Entity entity = item.getArmorStandItem();
-					if(entity != null) entity.remove();
-					main.getAnimationHandler().getEntities().remove(entity);
-				}
-				if(main.getAnimationHandler().getEntities().contains(item.getArmorStandName())) {
-					Entity entity = item.getArmorStandName();
-					if(entity != null) entity.remove();
-					main.getAnimationHandler().getEntities().remove(entity);
-				}
-			}
-		} catch(IllegalStateException | NullPointerException ignored) {}
+		Bukkit.getServer().getScheduler().cancelTask(id);
 
 		if(main.getAnimationHandler().getEntities().contains(armorStand)) {
 			if(armorStand != null) armorStand.remove();
@@ -242,20 +185,20 @@ public class Animation18_Task implements Animation {
 		Bukkit.getPluginManager().callEvent(new CubeletOpenEvent(cubeletBox.getPlayerOpening(), cubeletType));
 	}
 
-	public void removeRandomItem() {
-		Animation18_Item item = items.get((int) (Math.random() * items.size()));
-		item.cancel();
-		if(main.getAnimationHandler().getEntities().contains(item.getArmorStandItem())) {
-			Entity entity = item.getArmorStandItem();
-			if(entity != null) entity.remove();
-			main.getAnimationHandler().getEntities().remove(entity);
+	private void chargeParticles() {
+		Random random = new Random();
+		Location loc = armorStand.getLocation().clone().add(0, 3, 0);
+		for (int i = 0; i < 500; i++) {
+			Location randomLoc = loc.clone();
+			randomLoc.add((random.nextDouble() - 0.5D) / 2.0D, (new Random().nextDouble() - 0.5D) / 2.0D, (random.nextDouble() - 0.5D) / 2.0D);
+
+			Vector vector = randomLoc.toVector().subtract(loc.toVector()).normalize();
+			Vector direction = vector.multiply(1.5D + new Random().nextDouble() * 5.0D);
+
+			for(int j = 0; j < 3; j++)
+				UtilParticles.display(Particles.ENCHANTMENT_TABLE, direction, loc, 5);
+
 		}
-		if(main.getAnimationHandler().getEntities().contains(item.getArmorStandName())) {
-			Entity entity = item.getArmorStandName();
-			if(entity != null) entity.remove();
-			main.getAnimationHandler().getEntities().remove(entity);
-		}
-		items.remove(item);
 	}
 	
 }

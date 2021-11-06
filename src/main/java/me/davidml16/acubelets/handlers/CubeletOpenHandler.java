@@ -63,9 +63,10 @@ public class CubeletOpenHandler {
                 }
 
             }
-                
-            animation.start(box, type);
-            Bukkit.getPluginManager().callEvent(new CubeletOpenEvent(cubeletOpener, type));
+
+            animation.setCubeletBox(box);
+            animation.setCubeletType(type);
+            animation.start();
 
         } else {
             if(box.getPlayerOpening().getUuid() == p.getUniqueId()) {

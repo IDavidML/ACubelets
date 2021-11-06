@@ -2,7 +2,6 @@ package me.davidml16.acubelets.animations.animation.animation14;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
-import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.enums.CubeletBoxState;
@@ -22,13 +21,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Animation14_Task implements Animation {
+public class IAnimation14_Task implements IAnimation {
 
 	private int id;
 
 	private Main main;
 	private AnimationSettings animationSettings;
-	public Animation14_Task(Main main, AnimationSettings animationSettings) {
+	public IAnimation14_Task(Main main, AnimationSettings animationSettings) {
 		this.main = main;
 		this.animationSettings = animationSettings;
 	}

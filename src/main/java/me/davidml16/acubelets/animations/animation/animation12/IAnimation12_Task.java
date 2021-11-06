@@ -2,7 +2,6 @@ package me.davidml16.acubelets.animations.animation.animation12;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
-import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.enums.CubeletBoxState;
@@ -27,13 +26,13 @@ import org.bukkit.util.Vector;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Animation12_Task implements Animation {
+public class IAnimation12_Task implements IAnimation {
 
 	private int id;
 
 	private Main main;
 	private AnimationSettings animationSettings;
-	public Animation12_Task(Main main, AnimationSettings animationSettings) {
+	public IAnimation12_Task(Main main, AnimationSettings animationSettings) {
 		this.main = main;
 		this.animationSettings = animationSettings;
 	}

@@ -2,7 +2,6 @@ package me.davidml16.acubelets.animations.animation.animation15;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
-import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.enums.CubeletBoxState;
@@ -20,18 +19,15 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.*;
 
-public class Animation15_Task implements Animation {
+public class IAnimation15_Task implements IAnimation {
 
 	private int id;
 
 	private Main main;
 	private AnimationSettings animationSettings;
-	public Animation15_Task(Main main, AnimationSettings animationSettings) {
+	public IAnimation15_Task(Main main, AnimationSettings animationSettings) {
 		this.main = main;
 		this.animationSettings = animationSettings;
 	}

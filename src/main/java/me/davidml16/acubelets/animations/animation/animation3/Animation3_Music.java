@@ -15,13 +15,20 @@ public class Animation3_Music extends BukkitRunnable {
     }
 
     public void run() {
-        if(tick > 40) speed = 2;
-        else if(tick > 35) speed = 3;
-        else if(tick > 25) speed = 4;
-        else speed = 6;
+
+        if(tick > 40)
+            speed = 2;
+        else if(tick > 35)
+            speed = 3;
+        else if(tick > 25)
+            speed = 4;
+        else
+            speed = 6;
 
         if(tick % speed == 0) Sounds.playSound(musicLoc, Sounds.MySound.CLICK, 0.5F, 0);
 
         tick++;
+
     }
+
 }

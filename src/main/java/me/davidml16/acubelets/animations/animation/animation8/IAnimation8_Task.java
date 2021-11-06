@@ -2,7 +2,6 @@ package me.davidml16.acubelets.animations.animation.animation8;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
-import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.enums.CubeletBoxState;
@@ -23,13 +22,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Animation8_Task implements Animation {
+public class IAnimation8_Task implements IAnimation {
+
+	//TODO Seguir animaciones
 
 	private int id;
 
 	private Main main;
 	private AnimationSettings animationSettings;
-	public Animation8_Task(Main main, AnimationSettings animationSettings) {
+	public IAnimation8_Task(Main main, AnimationSettings animationSettings) {
 		this.main = main;
 		this.animationSettings = animationSettings;
 	}

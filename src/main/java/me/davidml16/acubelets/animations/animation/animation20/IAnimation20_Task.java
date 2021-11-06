@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.animations.animation.animation21;
+package me.davidml16.acubelets.animations.animation.animation20;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
@@ -6,7 +6,6 @@ import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.BlockPosition;
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.enums.CubeletBoxState;
@@ -35,13 +34,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 
-public class Animation21_Task implements Animation {
+public class IAnimation20_Task implements IAnimation {
 
 	private int id;
 
 	private Main main;
 	private AnimationSettings animationSettings;
-	public Animation21_Task(Main main, AnimationSettings animationSettings) {
+	public IAnimation20_Task(Main main, AnimationSettings animationSettings) {
 		this.main = main;
 		this.animationSettings = animationSettings;
 	}
@@ -50,7 +49,7 @@ public class Animation21_Task implements Animation {
 	private CubeletBox cubeletBox;
 	private CubeletType cubeletType;
 
-	private Animation21_Blocks blocks;
+	private Animation20_Blocks blocks;
 
 	private List<Color> colors;
 	private Utils.ColorSet<Integer, Integer, Integer> colorRarity;
@@ -199,7 +198,7 @@ public class Animation21_Task implements Animation {
 
 	public void start(CubeletBox box, CubeletType type) {
 
-		blocks = new Animation21_Blocks(box.getLocation());
+		blocks = new Animation20_Blocks(box.getLocation());
 		blocks.runTaskTimer(main, 6L, 6L);
 
 		this.cubeletType = type;

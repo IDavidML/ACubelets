@@ -1,8 +1,7 @@
-package me.davidml16.acubelets.animations.animation.animation9;
+package me.davidml16.acubelets.animations.animation.animation10;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
-import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.enums.CubeletBoxState;
@@ -19,15 +18,15 @@ import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
+import java.util.Objects;
 
-public class Animation9_Task implements Animation {
+public class IAnimation10_Task implements IAnimation {
 
 	private int id;
 
 	private Main main;
 	private AnimationSettings animationSettings;
-	public Animation9_Task(Main main, AnimationSettings animationSettings) {
+	public IAnimation10_Task(Main main, AnimationSettings animationSettings) {
 		this.main = main;
 		this.animationSettings = animationSettings;
 	}
@@ -35,15 +34,14 @@ public class Animation9_Task implements Animation {
 	private ArmorStand armorStand;
 	private CubeletBox cubeletBox;
 	private CubeletType cubeletType;
-	private Animation9_Music music;
-	private Animation9_Charge charge;
+	private Animation10_Spiral spiral;
 	private List<Color> colors;
 
 	private Utils.ColorSet<Integer, Integer, Integer> colorRarity;
 
 	private Location corner1, corner2, corner3, corner4;
 
-	private Location boxLocation;
+	private Location boxLocation, armorStandLocation;
 
 	private Reward reward;
 
@@ -52,66 +50,53 @@ public class Animation9_Task implements Animation {
 	class Task implements Runnable {
 
 		int time = 0;
-		private double boxLocIncrease = -1.25;
-		private double circleSize = 0.0D;
-		private int circleStep = 0;
-		float rotation = ASSpawner.getRotation(cubeletBox, false).value;
-
 		@Override
 		public void run() {
-			time++;
 
-			if (time <= 25) {
-				Location newBoxLoc = boxLocation.clone();
-				this.boxLocIncrease += 0.050D;
-				newBoxLoc.add(0.0D, this.boxLocIncrease, 0.0D);
-				newBoxLoc.setYaw(rotation);
-
-				UtilParticles.display(Particles.FIREWORKS_SPARK, armorStand.getLocation().clone().add(0, 1.25, 0), 1);
-
-				armorStand.teleport(newBoxLoc);
-			} else if (time <= 60) {
-				this.boxLocIncrease += 0.040D;
-
-				Location newBoxLoc = boxLocation.clone();
-				newBoxLoc.add(0.0D, this.boxLocIncrease, 0.0D);
-
-				if (this.time <= 40) { this.circleSize += 0.07D; }
-				else { this.circleSize -= 0.075D; }
-				if (this.circleSize < 0.0D) this.circleSize = 0.0D;
-
-				List<Location> teleportLocs = LocationUtils.getCircle(newBoxLoc, this.circleSize, 50);
-				Location teleportLoc = ((Location)teleportLocs.get(this.circleStep)).clone();
-
-				teleportLoc.setYaw(rotation);
-
-				Sounds.playSound(armorStand.getLocation(), Sounds.MySound.NOTE_PLING, 0.5F, 3F);
-
-				UtilParticles.display(Particles.FIREWORKS_SPARK, armorStand.getLocation().clone().add(0, 1.25, 0), 1);
-				armorStand.teleport(teleportLoc);
-
-				this.circleStep++;
-				if (this.circleStep == teleportLocs.size()) this.circleStep = 0;
+			if(time > 0 && time < 83) {
+				Objects.requireNonNull(armorStand).setHeadPose(armorStand.getHeadPose().add(0, 0.26, 0));
 			}
 
-			if(time == 65) chargeParticles();
+			if(time > 0 && time < 20)
+				Objects.requireNonNull(armorStandLocation).add(0, 0.35, 0);
+			else if(time > 20 && time < 30)
+				Objects.requireNonNull(armorStandLocation).add(0, 0.25, 0);
+			else if(time > 30 && time < 40)
+				Objects.requireNonNull(armorStandLocation).add(0, 0.15, 0);
+			else if(time > 40 && time < 50)
+				Objects.requireNonNull(armorStandLocation).add(0, 0.05, 0);
 
-			if(time == 100) music.cancel();
+			if(time > 0 && time < 70) armorStand.teleport(armorStandLocation);
 
-			if(time == 105) {
-				colorRarity = Utils.getRGBbyColor(Utils.getColorByText(reward.getRarity().getName()));
-				main.getFireworkUtil().spawn(armorStand.getLocation().clone().add(0, 1.75, 0), FireworkEffect.Type.BALL, colors.get(0), colors.get(1));
-				Sounds.playSound(armorStand.getLocation(), Sounds.MySound.EXPLODE, 0.5F, 1F);
-			} else if(time == 125) {
+			if(time == 50) {
+				Location eye = armorStand.getEyeLocation().add(0.0D, 0.4D, 0.0D);
+				for (Location location2 : LocationUtils.getCircle(armorStand.getLocation().clone().add(0, 0.75,0), 0.25D, 50)) {
+					Vector direction = location2.toVector().subtract(armorStand.getLocation().clone().add(0, 0.75,0).toVector()).normalize();
+					UtilParticles.display(Particles.CLOUD, direction, eye, 0.3F);
+				}
+				Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.FIREWORK_BLAST, 0.5f, 0);
+			} else if(time == 70) {
+				Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.IRONGOLEM_DEATH, 0.5f, 0);
+				spiral.cancel();
+			} else if(time > 70 && time < 83) {
+				Objects.requireNonNull(armorStandLocation).add(0, -0.85, 0);
+				armorStand.teleport(armorStandLocation);
+				main.getFireworkUtil().spawn(armorStandLocation.clone().add(0, 1.75, 0), FireworkEffect.Type.BURST, colors.get(0), colors.get(1));
+			} else if(time == 83) {
+				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 2, 0.5), FireworkEffect.Type.STAR, colors.get(0), colors.get(1));
+				Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.EXPLODE, 0.5f, 0);
+			} else if(time == 85) {
 				cubeletBox.setLastReward(reward);
+				colorRarity = Utils.getRGBbyColor(Utils.getColorByText(reward.getRarity().getName()));
 				main.getHologramImplementation().rewardHologram(cubeletBox, reward);
 				cubeletBox.setState(CubeletBoxState.REWARD);
-				Sounds.playSound(armorStand.getLocation(), Sounds.MySound.LEVEL_UP, 0.5F, 1F);
-			} else if(time == 165) {
+				armorStand.remove();
+				armorStand = null;
+			} else if(time == 125) {
 				if(main.isDuplicationEnabled())
 					if(reward instanceof PermissionReward)
 						hologramAnimation = main.getCubeletRewardHandler().permissionReward(cubeletBox, reward);
-			} else if (time > 125 && time < 245) {
+			} else if (time > 85 && time < 205) {
 				if(animationSettings.isOutlineParticles()) {
 					UtilParticles.drawParticleLine(corner1, corner2, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
 					UtilParticles.drawParticleLine(corner2, corner3, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
@@ -121,7 +106,7 @@ public class Animation9_Task implements Animation {
 
 				if(animationSettings.isFloorParticles())
 					UtilParticles.display(Particles.FLAME, 1f, 0f, 1f, boxLocation, 2);
-			} else if(time >= 245) {
+			} else if(time >= 205) {
 				stop();
 
 				main.getCubeletRewardHandler().giveReward(cubeletBox, reward);
@@ -132,6 +117,7 @@ public class Animation9_Task implements Animation {
 				main.getHologramImplementation().reloadHologram(cubeletBox);
 			}
 
+			time++;
 		}
 	}
 	
@@ -143,15 +129,14 @@ public class Animation9_Task implements Animation {
 		boxLocation = cubeletBox.getLocation().clone().add(0.5, 0, 0.5);
 
 		armorStand = ASSpawner.spawn(main, box, type, false, false, boxLocation.clone().add(0, -1.25, 0));
+		armorStandLocation = armorStand.getLocation();
+		Sounds.playSound(cubeletBox.getLocation(), Sounds.MySound.FIREWORK_LAUNCH, 0.5f, 0);
 
-		music = new Animation9_Music(box.getLocation());
-		music.runTaskTimer(main, 5L, 3L);
-
-		charge = new Animation9_Charge(box.getLocation());
-		charge.runTaskTimer(main, 65L, 3L);
+		spiral = new Animation10_Spiral(armorStand);
+		spiral.runTaskTimer(main, 0L, 1L);
 
 		this.cubeletBox.setState(CubeletBoxState.ANIMATION);
-		this.colors = Arrays.asList(Color.BLACK, Color.ORANGE);
+		this.colors = Arrays.asList(Color.ORANGE, Color.WHITE);
 
 		corner1 = cubeletBox.getLocation().clone().add(0.05, box.getPermanentBlockHeight() - 0.325, 0.05);
 		corner2 = cubeletBox.getLocation().clone().add(0.95, box.getPermanentBlockHeight() - 0.325, 0.05);
@@ -169,8 +154,7 @@ public class Animation9_Task implements Animation {
 	}
 	
 	public void stop() {
-		music.cancel();
-		charge.cancel();
+		spiral.cancel();
 
 		main.getAnimationHandler().getTasks().remove(this);
 
@@ -184,22 +168,6 @@ public class Animation9_Task implements Animation {
 		}
 
 		Bukkit.getPluginManager().callEvent(new CubeletOpenEvent(cubeletBox.getPlayerOpening(), cubeletType));
-	}
-
-	private void chargeParticles() {
-		Random random = new Random();
-		Location loc = armorStand.getLocation().clone().add(0, 3, 0);
-		for (int i = 0; i < 500; i++) {
-			Location randomLoc = loc.clone();
-			randomLoc.add((random.nextDouble() - 0.5D) / 2.0D, (new Random().nextDouble() - 0.5D) / 2.0D, (random.nextDouble() - 0.5D) / 2.0D);
-
-			Vector vector = randomLoc.toVector().subtract(loc.toVector()).normalize();
-			Vector direction = vector.multiply(1.5D + new Random().nextDouble() * 5.0D);
-
-			for(int j = 0; j < 3; j++)
-				UtilParticles.display(Particles.ENCHANTMENT_TABLE, direction, loc, 5);
-
-		}
 	}
 	
 }

@@ -3,103 +3,78 @@ package me.davidml16.acubelets.animations.animation.animation1;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
-import me.davidml16.acubelets.api.CubeletOpenEvent;
-import me.davidml16.acubelets.objects.rewards.Reward;
-import me.davidml16.acubelets.objects.CubeletBox;
-import me.davidml16.acubelets.enums.CubeletBoxState;
-import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.objects.rewards.PermissionReward;
-import me.davidml16.acubelets.utils.MessageUtils;
-import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
-import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
-import me.davidml16.acubelets.utils.RepeatingTask;
 import org.bukkit.*;
 
-import java.util.List;
+public class Animation1_Task extends Animation {
 
-public class Animation1_Task implements Animation {
-
-	private int id;
-
-	private Main main;
-	private AnimationSettings animationSettings;
 	public Animation1_Task(Main main, AnimationSettings animationSettings) {
-		this.main = main;
-		this.animationSettings = animationSettings;
+		super(main, animationSettings);
 	}
 
-	private CubeletBox cubeletBox;
-	private CubeletType cubeletType;
 	private Location startLocation;
-	private List<Color> colors;
 
-	private Reward reward;
+	@Override
+	public void onTick(int time) {
 
-	private Location boxLocation;
+		if(time >= 0 && time < 70) {
 
-	private RepeatingTask hologramAnimation;
+			if(time % 2 == 0) {
 
-	class Task implements Runnable {
-		int time = 0;
-		@Override
-		public void run() {
-			if(time >= 0 && time < 70) {
-				if(time % 2 == 0) {
-					main.getFireworkUtil().spawn(startLocation, FireworkEffect.Type.BURST, colors.get(0), colors.get(1));
-					startLocation.add(0, -0.75, 0);
-				}
-			} else if(time == 70) {
-				cubeletBox.setLastReward(reward);
-				main.getHologramImplementation().rewardHologram(cubeletBox, reward);
-				main.getFireworkUtil().spawn(cubeletBox.getLocation().clone().add(0.5, 2, 0.5), FireworkEffect.Type.BALL_LARGE, colors.get(0), colors.get(1));
-				cubeletBox.setState(CubeletBoxState.REWARD);
-			} else if(time == 110) {
-				if(main.isDuplicationEnabled())
-					if(reward instanceof PermissionReward)
-						hologramAnimation = main.getCubeletRewardHandler().permissionReward(cubeletBox, reward);
-			} else if(time > 70 && time < 210) {
-				if(animationSettings.isAroundParticles())
-					UtilParticles.display(Particles.FLAME, 0.45f, 0.25f, 0.45f, boxLocation, 10);
-			} else if(time >= 210) {
-				stop();
+				getMain().getFireworkUtil().spawn(
+						startLocation,
+						FireworkEffect.Type.BURST,
+						getColors().get(0),
+						getColors().get(1)
+				);
 
-				main.getCubeletRewardHandler().giveReward(cubeletBox, reward);
-				MessageUtils.sendLootMessage(cubeletBox, cubeletType, reward);
+				startLocation.add(0, -0.75, 0);
 
-				cubeletBox.setState(CubeletBoxState.EMPTY);
-				cubeletBox.setPlayerOpening(null);
-				main.getHologramImplementation().reloadHologram(cubeletBox);
 			}
-			time++;
+
+		} else if(time == 70) {
+
+			doPreRewardReveal();
+			doRewardReveal();
+
+		} else if(time == 110) {
+
+			doRewardDuplication();
+
+		} else if(time > 70 && time < 210) {
+
+			doShowBoxParticles();
+
+		} else if(time >= 210) {
+
+			stop();
+
 		}
+
 	}
-	
-	public int getId() { return id; }
 
-	public void start(CubeletBox box, CubeletType type) {
-		this.cubeletType = type;
-		this.cubeletBox = box;
-		this.cubeletBox.setState(CubeletBoxState.ANIMATION);
-		this.startLocation = box.getLocation().clone().add(0.5, 26, 0.5);
-		this.colors = main.getFireworkUtil().getRandomColors();
+	@Override
+	public void onStart() {
 
-		boxLocation = cubeletBox.getLocation().clone().add(0.5, 0, 0.5);
+		this.startLocation = getCubeletBox().getLocation().clone().add(0.5, 26, 0.5);
 
-		id = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, new Task(), 0L, 1);
-		main.getAnimationHandler().getTasks().add(this);
-
-		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
-			reward = main.getCubeletRewardHandler().processReward(cubeletType);
-		});
 	}
-	
-	public void stop() {
-		if(hologramAnimation != null) hologramAnimation.cancel();
 
-		main.getAnimationHandler().getTasks().remove(this);
-		Bukkit.getServer().getScheduler().cancelTask(id);
+	@Override
+	public void onStop() { }
 
-		Bukkit.getPluginManager().callEvent(new CubeletOpenEvent(cubeletBox.getPlayerOpening(), cubeletType));
+	@Override
+	public void onPreRewardHologram() {
+
+		getMain().getFireworkUtil().spawn(
+				getCubeletBox().getLocation().clone().add(0.5, 2, 0.5),
+				FireworkEffect.Type.BALL_LARGE,
+				getColors().get(0),
+				getColors().get(1)
+		);
+
 	}
-	
+
+	@Override
+	public void onRewardReveal() { }
+
 }
