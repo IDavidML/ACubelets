@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.animations.Animation;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -22,7 +23,7 @@ public class PluginHandler {
 
         main.getPlayerDataHandler().saveAllPlayerDataAsync();
 
-        for(IAnimation task : new ArrayList<>(main.getAnimationHandler().getTasks())) {
+        for(Animation task : new ArrayList<>(main.getAnimationHandler().getTasks())) {
             task.stop();
         }
         main.getAnimationHandler().getTasks().clear();

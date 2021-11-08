@@ -69,7 +69,7 @@ public class Animation4_Task extends Animation {
 		} else if(time == 145) {
 
 			music.cancel();
-			pigman = (LivingEntity) getCubeletBox().getLocation().getWorld().spawnEntity(getLocationRotation(), EntityType.PIG_ZOMBIE);
+			pigman = (LivingEntity) getCubeletBox().getLocation().getWorld().spawnEntity(getLocationRotation(3), EntityType.PIG_ZOMBIE);
 
 			if(XMaterial.supports(9)) pigman.setCollidable(false);
 			((PigZombie )pigman).setBaby(false);
@@ -100,22 +100,6 @@ public class Animation4_Task extends Animation {
 		} else if(time == 293) {
 
 			doPreRewardReveal();
-
-		} else if(time == 295) {
-
-			doRewardReveal();
-
-		} else if(time == 335) {
-
-			doRewardDuplication();
-
-		} else if(time > 295 && time < 435) {
-
-			doShowBoxParticles();
-
-		} else if(time == 435) {
-
-			stop();
 
 		}
 
@@ -174,7 +158,7 @@ public class Animation4_Task extends Animation {
 	}
 
 	@Override
-	public void onPreRewardHologram() {
+	public void onPreRewardReveal() {
 
 		getMain().getFireworkUtil().spawn(
 				getCubeletBox().getLocation().clone().add(0.5, 1.50, 0.5),

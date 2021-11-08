@@ -4,6 +4,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.gmail.filoghost.holographicdisplays.api.Hologram;
 import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationHandler;
 import me.davidml16.acubelets.api.CubeletsAPI;
 import me.davidml16.acubelets.api.PointsAPI;
@@ -314,7 +315,7 @@ public class Main extends JavaPlugin {
 
         main.getPlayerDataHandler().saveAllPlayerDataSync();
 
-        for(IAnimation task : new ArrayList<>(main.getAnimationHandler().getTasks())) {
+        for(Animation task : new ArrayList<>(main.getAnimationHandler().getTasks())) {
             task.stop();
         }
         main.getAnimationHandler().getTasks().clear();

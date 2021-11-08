@@ -18,7 +18,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Animation {
@@ -38,6 +37,8 @@ public abstract class Animation {
     private Location boxLocation;
 
     private int animationTick;
+    private int animationRevealTick;
+
     private int animationId;
 
     private boolean rewardRevealed;
@@ -50,6 +51,8 @@ public abstract class Animation {
         this.animationSettings = animationSettings;
 
         this.animationTick = 0;
+        this.animationRevealTick = 0;
+
         this.rewardRevealed = false;
 
         this.colors = main.getFireworkUtil().getRandomColors();
@@ -72,11 +75,8 @@ public abstract class Animation {
     public void setCubeletType(CubeletType cubeletType) {
 
         this.cubeletType = cubeletType;
-        this.reward = main.getCubeletRewardHandler().processReward(cubeletType);
 
-        this.cubeletBox.setLastReward(reward);
-
-        setColorRarity(Utils.getRGBbyColor(Utils.getColorByText(reward.getRarity().getName())));
+        setReward(main.getCubeletRewardHandler().processReward(cubeletType));
 
     }
 
@@ -86,34 +86,32 @@ public abstract class Animation {
 
         this.animationId = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, () -> {
 
-            if(!rewardRevealed) {
+            onTick(animationTick);
+            animationTick++;
 
-                onTick(animationTick);
+            if(rewardRevealed) {
 
-
-            } else {
-
-                if(animationTick == 2) {
+                if(animationRevealTick == 2) {
 
                     doRewardReveal();
 
-                } else if(animationTick == 42) {
+                } else if(animationRevealTick == 42) {
 
                     doRewardDuplication();
 
-                } else if (animationTick > 2 && animationTick < 142) {
+                } else if (animationRevealTick > 2 && animationRevealTick < 142) {
 
                     doShowBoxParticles();
 
-                } else if(animationTick >= 142) {
+                } else if(animationRevealTick >= 142) {
 
                     stop();
 
                 }
 
-            }
+                animationRevealTick++;
 
-            animationTick++;
+            }
 
         }, 0L, 1);
 
@@ -147,9 +145,9 @@ public abstract class Animation {
 
     public void doPreRewardReveal() {
 
-        animationTick = 0;
+        rewardRevealed = true;
 
-        onPreRewardHologram();
+        onPreRewardReveal();
 
     }
 
@@ -157,6 +155,8 @@ public abstract class Animation {
 
         main.getHologramImplementation().rewardHologram(cubeletBox, reward);
         cubeletBox.setState(CubeletBoxState.REWARD);
+
+        onRewardReveal();
 
     }
 
@@ -195,7 +195,7 @@ public abstract class Animation {
 
     public abstract void onStop();
 
-    public abstract void onPreRewardHologram();
+    public abstract void onPreRewardReveal();
 
     public abstract void onRewardReveal();
 
@@ -236,7 +236,13 @@ public abstract class Animation {
     }
 
     public void setReward(Reward reward) {
+
         this.reward = reward;
+
+        this.cubeletBox.setLastReward(reward);
+
+        setColorRarity(Utils.getRGBbyColor(Utils.getColorByText(reward.getRarity().getName())));
+
     }
 
     public List<Color> getColors() {
@@ -311,31 +317,47 @@ public abstract class Animation {
         this.hologramAnimation = hologramAnimation;
     }
 
-    public Location getLocationRotation() {
+    public int getAnimationRevealTick() {
+        return animationRevealTick;
+    }
+
+    public void setAnimationRevealTick(int animationRevealTick) {
+        this.animationRevealTick = animationRevealTick;
+    }
+
+    public boolean isRewardRevealed() {
+        return rewardRevealed;
+    }
+
+    public void setRewardRevealed(boolean rewardRevealed) {
+        this.rewardRevealed = rewardRevealed;
+    }
+
+    public Location getLocationRotation(double y) {
 
         switch (cubeletBox.getRotation()) {
 
             case SOUTH:
 
-                Location s = cubeletBox.getLocation().clone().add(0.5, 3, -0.5);
+                Location s = cubeletBox.getLocation().clone().add(0.5, y, -0.5);
                 s.setYaw(Rotation.SOUTH.value);
                 return s;
 
             case NORTH:
 
-                Location n = cubeletBox.getLocation().clone().add(0.5, 3, 1.5);
+                Location n = cubeletBox.getLocation().clone().add(0.5, y, 1.5);
                 n.setYaw(Rotation.NORTH.value);
                 return n;
 
             case EAST:
 
-                Location e = cubeletBox.getLocation().clone().add(-0.5, 3, 0.5);
+                Location e = cubeletBox.getLocation().clone().add(-0.5, y, 0.5);
                 e.setYaw(Rotation.EAST.value);
                 return e;
 
             case WEST:
 
-                Location w = cubeletBox.getLocation().clone().add(1.5, 3, 0.5);
+                Location w = cubeletBox.getLocation().clone().add(1.5, y, 0.5);
                 w.setYaw(Rotation.WEST.value);
                 return w;
 
@@ -343,6 +365,18 @@ public abstract class Animation {
 
         return null;
 
+    }
+
+    public Rotation getRotation(boolean opposite) {
+        if(getCubeletBox().getRotation() == Rotation.NORTH)
+            return opposite ? Rotation.SOUTH : Rotation.NORTH;
+        else if(getCubeletBox().getRotation() == Rotation.SOUTH)
+            return opposite ? Rotation.NORTH : Rotation.SOUTH;
+        else if(getCubeletBox().getRotation() == Rotation.EAST)
+            return opposite ? Rotation.WEST : Rotation.EAST;
+        else if(getCubeletBox().getRotation() == Rotation.WEST)
+            return opposite ? Rotation.EAST : Rotation.WEST;
+        return null;
     }
 
 }

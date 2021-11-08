@@ -76,21 +76,11 @@ public class Animation3_Task extends Animation {
 			armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.26, 0));
 			UtilParticles.display(Particles.SMOKE_LARGE, 0.15F, 0, 0.15F, armorStandLocation.clone().add(0, 0.75, 0), 4);
 
-		} else if(time == 150) {
+		}
 
-			doRewardReveal();
+		if(time == 148) {
 
-		} else if(time == 190) {
-
-			doRewardDuplication();
-
-		} else if (time > 150 && time < 290) {
-
-			doShowBoxParticles();
-
-		} else if(time >= 290) {
-
-			stop();
+			doPreRewardReveal();
 
 		}
 
@@ -121,7 +111,7 @@ public class Animation3_Task extends Animation {
 	}
 
 	@Override
-	public void onPreRewardHologram() { }
+	public void onPreRewardReveal() { }
 
 	@Override
 	public void onRewardReveal() {

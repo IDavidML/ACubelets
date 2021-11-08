@@ -83,22 +83,6 @@ public class Animation5_Task extends Animation {
 
 			doPreRewardReveal();
 
-		} else if(time == 175) {
-
-			doRewardReveal();
-
-		} else if(time == 215) {
-
-			doRewardDuplication();
-
-		} else if (time > 175 && time < 315) {
-
-			doShowBoxParticles();
-
-		} else if(time >= 315) {
-
-			stop();
-
 		}
 
 	}
@@ -145,7 +129,7 @@ public class Animation5_Task extends Animation {
 	}
 
 	@Override
-	public void onPreRewardHologram() {
+	public void onPreRewardReveal() {
 
 		getMain().getFireworkUtil().spawn(
 				getCubeletBox().getLocation().clone().add(0.5, 1.50, 0.5),

@@ -16,7 +16,7 @@ public class Animation1_Task extends Animation {
 	@Override
 	public void onTick(int time) {
 
-		if(time >= 0 && time < 70) {
+		if(!isRewardRevealed() && (time >= 0 && time < 70)) {
 
 			if(time % 2 == 0) {
 
@@ -31,22 +31,11 @@ public class Animation1_Task extends Animation {
 
 			}
 
-		} else if(time == 70) {
+		}
+
+		if(time == 68) {
 
 			doPreRewardReveal();
-			doRewardReveal();
-
-		} else if(time == 110) {
-
-			doRewardDuplication();
-
-		} else if(time > 70 && time < 210) {
-
-			doShowBoxParticles();
-
-		} else if(time >= 210) {
-
-			stop();
 
 		}
 
@@ -63,7 +52,7 @@ public class Animation1_Task extends Animation {
 	public void onStop() { }
 
 	@Override
-	public void onPreRewardHologram() {
+	public void onPreRewardReveal() {
 
 		getMain().getFireworkUtil().spawn(
 				getCubeletBox().getLocation().clone().add(0.5, 2, 0.5),
