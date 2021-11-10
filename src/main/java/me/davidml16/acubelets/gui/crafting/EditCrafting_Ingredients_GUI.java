@@ -73,7 +73,7 @@ public class EditCrafting_Ingredients_GUI implements Listener {
             return;
         }
 
-        Inventory gui = Bukkit.createInventory(null, 36, "Crafting editor » Ingredients");
+        Inventory gui = Bukkit.createInventory(null, 36, "Crafting editor | Ingredients");
 
         ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
         ItemStack newReward = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(Utils.translate("&aCreate new ingredient")).setLore(

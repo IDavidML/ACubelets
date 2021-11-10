@@ -24,7 +24,7 @@ public class ExecuteOptions {
             return false;
         }
 
-
+        main.getOptionsMainGUI().open((Player) sender);
 
         return true;
 

@@ -113,7 +113,7 @@ public class CoreCommand extends Command {
                 sender.sendMessage("");
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " type"));
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " setup [typeID]"));
-                //sender.sendMessage(Utils.translate("&7 - &a/" + label + " options"));
+                sender.sendMessage(Utils.translate("&7 - &a/" + label + " options"));
                 sender.sendMessage("");
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " reload"));
                 sender.sendMessage("");
@@ -166,7 +166,7 @@ public class CoreCommand extends Command {
                 list.add("machine");
                 list.add("type");
                 list.add("setup");
-                //list.add("options");
+                list.add("options");
                 list.add("reload");
             }
         }
@@ -209,7 +209,6 @@ public class CoreCommand extends Command {
         } else if (args[0].equalsIgnoreCase("setup")) {
             if(args.length == 2) {
                 if (main.playerHasPermission(p, "acubelets.admin")) {
-                    list.add("crafting");
                     for (File file : Objects.requireNonNull(new File(main.getDataFolder(), "types").listFiles())) {
                         list.add(file.getName().replace(".yml", ""));
                     }

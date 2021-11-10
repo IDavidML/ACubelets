@@ -83,7 +83,7 @@ public class XItemStack {
      * @param config the config section to write this item to.
      * @since 1.0.0
      */
-    public static void serializeIcon(ItemStack item, FileConfiguration config, String path, boolean lore) {
+    public static void serializeIcon(ItemStack item, FileConfiguration config, String path, boolean extra) {
         Objects.requireNonNull(item, "Cannot serialize a null item");
         Objects.requireNonNull(config, "Cannot serialize item from a null configuration section.");
         ItemMeta meta = item.getItemMeta();
@@ -101,7 +101,7 @@ public class XItemStack {
             if (damage > 0) config.set(path + "." + "damage", damage);
         }
 
-        if(lore) {
+        if(extra) {
             if (meta.hasLore()) {
                 List<String> lines = new ArrayList<>();
                 for (String line : meta.getLore()) lines.add(line.replace('§', '&'));
@@ -109,11 +109,19 @@ public class XItemStack {
             }
         }
 
-        if (XMaterial.supports(11)) config.set(path + "." + "unbreakable", meta.isUnbreakable());
-        if (XMaterial.supports(14)) if (meta.hasCustomModelData()) config.set(path + "." + "custom-model", meta.getCustomModelData());
+        if (extra && XMaterial.supports(11))
+            config.set(path + "." + "unbreakable", meta.isUnbreakable());
 
-        if (meta.getEnchants().size() > 0) config.set(path + "." + "enchanted", true);
-        else config.set(path + "." + "enchanted", false);
+        if (XMaterial.supports(14))
+            if (meta.hasCustomModelData())
+                config.set(path + "." + "custom-model", meta.getCustomModelData());
+
+        if(extra) {
+            if (meta.getEnchants().size() > 0)
+                config.set(path + "." + "enchanted", true);
+            else
+                config.set(path + "." + "enchanted", false);
+        }
 
         // Flags
         if (meta.getItemFlags().size() > 0) {
@@ -182,7 +190,7 @@ public class XItemStack {
      * @since 1.0.0
      */
     @SuppressWarnings("deprecation")
-    public static ItemStack deserializeIcon(FileConfiguration config, String path, boolean lore) {
+    public static ItemStack deserializeIcon(FileConfiguration config, String path, boolean extra) {
         Objects.requireNonNull(config, "Cannot deserialize item to a null configuration section.");
 
         // Material
@@ -260,7 +268,7 @@ public class XItemStack {
         }
 
         // Unbreakable
-        if (XMaterial.supports(11)) {
+        if (extra && XMaterial.supports(11)) {
             if(config.contains(path + "." + "unbreakable")) {
                 meta.setUnbreakable(config.getBoolean(path + "." + "unbreakable", false));
             }
@@ -286,14 +294,14 @@ public class XItemStack {
         }
 
         // Enchantments
-        if(config.contains(path + "." + "enchanted")) {
+        if(extra && config.contains(path + "." + "enchanted")) {
             if (config.getBoolean(path + "." + "enchanted")) {
                 meta.addEnchant(Enchantment.DURABILITY, 1, false);
                 meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
             }
         }
 
-        if(lore) {
+        if(extra) {
             if(config.contains(path + "." + "lore")) {
                 List<String> lores = config.getStringList(path + "." + "lore");
                 if (!lores.isEmpty()) {

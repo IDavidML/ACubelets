@@ -87,6 +87,8 @@ public class PluginHandler {
         main.getTypeConfigGUI().reloadAllGUI();
         main.getRewardsGUI().reloadAllGUI();
         main.getRaritiesGUI().reloadAllGUI();
+        main.getOptionsMainGUI().reloadGUI();
+        main.getOptionsAnimationsGUI().reloadGUI();
         main.getHologramHandler().getColorAnimation().setColors(main.getConfig().getStringList("Holograms.ColorAnimation"));
         main.getHologramHandler().setVisibilityDistance(main.getConfig().getInt("Holograms.VisibilityDistance"));
         main.getHologramImplementation().loadHolograms();

@@ -2,10 +2,7 @@ package me.davidml16.acubelets.gui.crafting;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.GUILayout;
-import me.davidml16.acubelets.utils.Utils;
-import me.davidml16.acubelets.utils.ItemBuilder;
-import me.davidml16.acubelets.utils.SkullCreator;
-import me.davidml16.acubelets.utils.Sounds;
+import me.davidml16.acubelets.utils.*;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -36,7 +33,7 @@ public class EditCrafting_GUI implements Listener {
     }
 
     public void reloadGUI() {
-        Inventory gui = Bukkit.createInventory(null, 36, "Crafting editor » Main");
+        Inventory gui = Bukkit.createInventory(null, 36, "Crafting editor | Main");
         ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
 
         ItemStack upArrow = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTk5YWFmMjQ1NmE2MTIyZGU4ZjZiNjI2ODNmMmJjMmVlZDlhYmI4MWZkNWJlYTFiNGMyM2E1ODE1NmI2NjkifX19");
@@ -113,7 +110,7 @@ public class EditCrafting_GUI implements Listener {
     public void open(Player p) {
         p.updateInventory();
 
-        Inventory gui = Bukkit.createInventory(null, 36, "Crafting editor » Main");
+        Inventory gui = Bukkit.createInventory(null, 36, "Crafting editor | Main");
         ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
 
         ItemStack upArrow = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTk5YWFmMjQ1NmE2MTIyZGU4ZjZiNjI2ODNmMmJjMmVlZDlhYmI4MWZkNWJlYTFiNGMyM2E1ODE1NmI2NjkifX19");
@@ -175,11 +172,7 @@ public class EditCrafting_GUI implements Listener {
             }
         }
 
-        GUILayout guiLayout = main.getLayoutHandler().getLayout("opencubelet");
-        ItemStack back = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Close.Material")).get().parseItem())
-                .setName(guiLayout.getMessage("Items.Close.Name"))
-                .setLore(guiLayout.getMessageList("Items.Close.Lore"))
-                .toItemStack();
+        ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(Utils.translate("&aBack to options")).toItemStack();
         gui.setItem(31, back);
 
         p.openInventory(gui);
@@ -220,7 +213,7 @@ public class EditCrafting_GUI implements Listener {
                 } else if (slot == 15) {
                     main.getEditCraftingCraftsGUI().open(p);
                 } else if (slot == 31) {
-                    p.closeInventory();
+                    main.getOptionsMainGUI().open(p);
                 }
             }
 

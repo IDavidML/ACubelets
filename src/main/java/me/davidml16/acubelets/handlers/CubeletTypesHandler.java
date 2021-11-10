@@ -116,7 +116,7 @@ public class CubeletTypesHandler {
         for (File file : allFiles) {
             String id = file.getName().toLowerCase().replace(".yml", "");
 
-            if(id.equalsIgnoreCase("crafting") || id.equalsIgnoreCase("random")) continue;
+            if(id.equalsIgnoreCase("random")) continue;
 
             YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
 

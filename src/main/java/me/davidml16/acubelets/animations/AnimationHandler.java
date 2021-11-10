@@ -3,7 +3,9 @@ package me.davidml16.acubelets.animations;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.animation.animation2.Animation2_Task;
 import me.davidml16.acubelets.utils.ConfigUpdater;
+import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -29,7 +31,7 @@ public class AnimationHandler {
     private YamlConfiguration config;
 
     public static String DEFAULT_ANIMATION = "animation2";
-    public static int ANIMATION_COUNT;
+    public static int ANIMATION_COUNT = 21;
 
     private static List<ItemStack> animationItems;
     static {
@@ -43,8 +45,6 @@ public class AnimationHandler {
                 XMaterial.BLAZE_POWDER.parseItem(), XMaterial.PINK_WOOL.parseItem(), XMaterial.SNOWBALL.parseItem(),
                 XMaterial.DIAMOND.parseItem(), XMaterial.ANVIL.parseItem(), XMaterial.ENDER_PEARL.parseItem()
         );
-
-        ANIMATION_COUNT = animationItems.size();
 
     }
 
@@ -79,18 +79,83 @@ public class AnimationHandler {
         for(int index = 0; index < ANIMATION_COUNT; index++) {
 
             AnimationSettings animation = new AnimationSettings("animation" + index);
-            animation.setDisplayName(getDisplayName("animation_" + index));
-            animation.setDisplayItem(animationItems.get(index));
+
+            String animationId = "animation_" + index;
+
             animation.setAnimationNumber(index);
-            animation.setOutlineParticles(getOutlineParticles("animation_" + index));
-            animation.setFloorParticles(getFloorParticles("animation_" + index));
-            animation.setAroundParticles(getAroundParticles("animation_" + index));
-            animation.setNeedPermission(getNeedPermission("animation_" + index));
+
+            animation.setEnabled(config.getBoolean("animations." + animationId + ".Enabled", true));
+
+            animation.setDisplayName(config.getString("animations." + animationId + ".DisplayName", "Unknown"));
+
+            animation.setOutlineParticles(config.getBoolean("animations." + animationId + ".OutlineParticles", true));
+
+            animation.setFloorParticles(config.getBoolean("animations." + animationId + ".FloorParticles", true));
+
+            animation.setAroundParticles(config.getBoolean("animations." + animation + ".AroundParticles", true));
+
+            animation.setNeedPermission(config.getBoolean("animations." + animation + ".NeedPermission", true));
+
+            if(config.contains("animations." + animationId + ".Icon")
+                    && config.getConfigurationSection("animations." + animationId + ".Icon") != null) {
+
+                ItemStack item = XItemStack.deserializeIcon(config, "animations." + animationId + ".Icon", false);
+
+                if(item != null)
+                    animation.setDisplayItem(item);
+
+            } else {
+
+                animation.setDisplayItem(animationItems.get(index));
+
+            }
+
             this.animations.put("animation" + index, animation);
 
         }
 
-        DEFAULT_ANIMATION = getDefaultAnimation();
+        DEFAULT_ANIMATION = config.getString("default_animation", "animation2");
+
+        saveAnimations();
+
+    }
+
+    public void saveAnimations() {
+
+        config.set("default_animation", DEFAULT_ANIMATION);
+
+        for(AnimationSettings animationSettings : animations.values()) {
+
+            String animationId = "animation_" + animationSettings.getAnimationNumber();
+
+            config.set("animations." + animationId, null);
+
+            config.set("animations." + animationId + ".Enabled", animationSettings.isEnabled());
+
+            config.set("animations." + animationId + ".DisplayName", animationSettings.getDisplayName());
+
+            config.set("animations." + animationId + ".OutlineParticles", animationSettings.isOutlineParticles());
+
+            config.set("animations." + animationId + ".FloorParticles", animationSettings.isFloorParticles());
+
+            config.set("animations." + animationId + ".AroundParticles", animationSettings.isAroundParticles());
+
+            config.set("animations." + animationId + ".NeedPermission", animationSettings.isNeedPermission());
+
+            XItemStack.serializeIcon(animationSettings.getDisplayItem(), config, "animations." + animationId + ".Icon", false);
+        }
+
+        try {
+            config.save(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            ConfigUpdater.update(main, "animations.yml", new File(main.getDataFolder(), "animations.yml"), Collections.emptyList());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -171,30 +236,6 @@ public class AnimationHandler {
 
     public void setEntities(List<Entity> entities) {
         this.entities = entities;
-    }
-
-    private String getDefaultAnimation() {
-        return this.config.getString("default_animation");
-    }
-
-    private String getDisplayName(String animation) {
-        return this.config.getString("animations." + animation + ".DisplayName", "Unknown");
-    }
-
-    private boolean getOutlineParticles(String animation) {
-        return this.config.getBoolean("animations." + animation + ".OutlineParticles", true);
-    }
-
-    private boolean getFloorParticles(String animation) {
-        return this.config.getBoolean("animations." + animation + ".FloorParticles", true);
-    }
-
-    private boolean getAroundParticles(String animation) {
-        return this.config.getBoolean("animations." + animation + ".AroundParticles", true);
-    }
-
-    private boolean getNeedPermission(String animation) {
-        return this.config.getBoolean("animations." + animation + ".NeedPermission", true);
     }
 
     public Map<String, AnimationSettings> getAnimations() { return animations; }

@@ -37,6 +37,8 @@ public class GUIHandler {
         if(main.getPlayerAnimationGUI().getOpened().containsKey(player.getUniqueId())) return true;
         if(main.getGiftGUI().getOpened().containsKey(player.getUniqueId())) return true;
         if(main.getGiftAmountGUI().getOpened().containsKey(player.getUniqueId())) return true;
+        if(main.getOptionsMainGUI().getOpened().contains(player.getUniqueId())) return true;
+        if(main.getOptionsAnimationsGUI().getOpened().containsKey(player.getUniqueId())) return true;
         
         return false;
     }
@@ -65,6 +67,8 @@ public class GUIHandler {
         main.getPlayerAnimationGUI().getOpened().remove(player.getUniqueId());
         main.getGiftGUI().getOpened().remove(player.getUniqueId());
         main.getGiftAmountGUI().getOpened().remove(player.getUniqueId());
+        main.getOptionsMainGUI().getOpened().remove(player.getUniqueId());
+        main.getOptionsAnimationsGUI().getOpened().remove(player.getUniqueId());
     }
 
     public void addConversation(Player player) {

@@ -19,6 +19,8 @@ import me.davidml16.acubelets.gui.crafting.*;
 import me.davidml16.acubelets.gui.gifts.GiftCubelet_GUI;
 import me.davidml16.acubelets.gui.gifts.GiftPlayer_GUI;
 import me.davidml16.acubelets.gui.gifts.Gift_GUI;
+import me.davidml16.acubelets.gui.options.OptionsAnimations_GUI;
+import me.davidml16.acubelets.gui.options.OptionsMain_GUI;
 import me.davidml16.acubelets.gui.rewards.EditRewardCommands_GUI;
 import me.davidml16.acubelets.gui.rewards.EditRewardItems_GUI;
 import me.davidml16.acubelets.gui.rewards.RewardsPreview_GUI;
@@ -101,6 +103,8 @@ public class Main extends JavaPlugin {
     private Gift_GUI giftGUI;
     private GiftCubelet_GUI giftCubeletGUI;
     private GiftPlayer_GUI giftPlayerGUI;
+    private OptionsMain_GUI optionsMainGUI;
+    private OptionsAnimations_GUI optionsAnimationsGUI;
 
     private int playerCount;
 
@@ -271,6 +275,9 @@ public class Main extends JavaPlugin {
 
         typeListGUI = new TypeList_GUI(this);
 
+        optionsMainGUI = new OptionsMain_GUI(this);
+        optionsAnimationsGUI = new OptionsAnimations_GUI(this);
+
         guiHandler = new GUIHandler(this);
 
         fireworkUtil = new FireworkUtil(this);
@@ -415,6 +422,14 @@ public class Main extends JavaPlugin {
     public EditRewardItems_GUI getEditRewardItemsGUI() { return editRewardItemsGUI; }
 
     public EditRewardCommands_GUI getEditRewardCommandsGUI() { return editRewardCommandsGUI; }
+
+    public OptionsMain_GUI getOptionsMainGUI() {
+        return optionsMainGUI;
+    }
+
+    public OptionsAnimations_GUI getOptionsAnimationsGUI() {
+        return optionsAnimationsGUI;
+    }
 
     public PluginHandler getPluginHandler() { return pluginHandler; }
 

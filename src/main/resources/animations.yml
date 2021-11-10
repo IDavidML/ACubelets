@@ -11,126 +11,189 @@ default_animation: animation2
 animations:
 
   animation_0:
+    Enabled: true
     DisplayName: 'No animation'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: false
+    Icon:
+      material: BARRIER
 
   animation_1:
+    Enabled: true
     DisplayName: 'Animation 1'
     AroundParticles: true
     NeedPermission: true
+    Icon:
+      material: FIREWORK_STAR
 
   animation_2:
+    Enabled: true
     DisplayName: 'Animation 2 (Default)'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: false
+    Icon:
+      material: CRAFTING_TABLE
 
   animation_3:
+    Enabled: true
     DisplayName: 'Animation 3'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    Icon:
+      material: FIREWORK_ROCKET
 
   animation_4:
+    Enabled: true
     DisplayName: 'Animation 4'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    Icon:
+      material: NETHERRACK
 
   animation_5:
+    Enabled: true
     DisplayName: 'Animation 5 (Summer)'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    Icon:
+      material: SANDSTONE
 
   animation_6:
+    Enabled: true
     DisplayName: 'Animation 6 (Easter)'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    Icon:
+      material: LIME_WOOL
 
   animation_7:
+    Enabled: true
     DisplayName: 'Animation 7 (Halloween)'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    Icon:
+      material: PUMPKIN
 
   animation_8:
+    Enabled: true
     DisplayName: 'Animation 8 (Christmas)'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    Icon:
+      material: RED_WOOL
 
   animation_9:
+    Enabled: true
     DisplayName: 'Animation 9'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    Icon:
+      material: LADDER
 
   animation_10:
+    Enabled: true
     DisplayName: 'Animation 10'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    Icon:
+      material: FIRE_CHARGE
 
   animation_11:
+    Enabled: true
     DisplayName: 'Animation 11 (Galaxy)'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    Icon:
+      material: ENDER_EYE
 
   animation_12:
+    Enabled: true
     DisplayName: 'Animation 12'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    Icon:
+      material: CAULDRON
 
   animation_13:
+    Enabled: true
     DisplayName: 'Animation 13'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    Icon:
+      material: PRISMARINE_SHARD
 
   animation_14:
+    Enabled: true
     DisplayName: 'Animation 14'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    Icon:
+      material: POPPY
 
   animation_15:
+    Enabled: true
     DisplayName: 'Animation 15'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    Icon:
+      material: BLAZE_POWDER
 
   animation_16:
+    Enabled: true
     DisplayName: 'Animation 16'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    Icon:
+      material: PINK_WOOL
 
   animation_17:
+    Enabled: true
     DisplayName: 'Animation 17'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    Icon:
+      material: SNOWBALL
 
   animation_18:
+    Enabled: true
     DisplayName: 'Animation 18'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    Icon:
+      material: DIAMOND
 
   animation_19:
+    Enabled: true
     DisplayName: 'Animation 19'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    Icon:
+      material: ANVIL
 
   animation_20:
+    Enabled: true
     DisplayName: 'Animation 20'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    Icon:
+      material: ENDER_PEARL
