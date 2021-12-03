@@ -103,15 +103,17 @@ public class OptionsAnimations_GUI implements Listener {
         for(AnimationSettings animation : animations) {
 
             ItemStack item = new ItemBuilder(animation.getDisplayItem())
+                    .hideAttributes()
                     .setName(Utils.translate((animation.isEnabled() ? "&a" : "&c") + "Animation " + animation.getAnimationNumber()))
                     .setLore(
                             "",
                             Utils.translate(" &7ID: &6" + animation.getId() + " "),
-                            Utils.translate(" &7Display Name: &6" + animation.getDisplayName() + " "),
+                            Utils.translate(" &7Display Name: &6" + animation.getFormatedDisplayName() + " "),
                             Utils.translate(" &7Status: " + (animation.isEnabled() ? "&aEnabled" : "&cDisabled") + " "),
+                            Utils.translate(" &7Default: " + (main.getAnimationHandler().DEFAULT_ANIMATION.equalsIgnoreCase(animation.getId())
+                                    ? "&atrue" : "&cfalse") + " "),
                             "",
-                            Utils.translate("&eLeft-Click » &aEnable/Disable "),
-                            Utils.translate("&eRight-Click » &aEdit animation "))
+                            Utils.translate("&eClick to edit settings "))
                     .toItemStack();
 
             item = NBTEditor.set(item, animation.getId(), "animation");
@@ -155,8 +157,6 @@ public class OptionsAnimations_GUI implements Listener {
             String action = NBTEditor.getString(e.getCurrentItem(), "action");
             int actualPage = opened.get(p.getUniqueId());
 
-            if(e.getClick() == ClickType.DOUBLE_CLICK) return;
-
             if(action == null) {
                 e.setCancelled(true);
                 return;
@@ -178,7 +178,12 @@ public class OptionsAnimations_GUI implements Listener {
 
                     String animation = NBTEditor.getString(e.getCurrentItem(), "animation");
 
-                    p.sendMessage(animation);
+                    AnimationSettings animationSettings = main.getAnimationHandler().getAnimationSetting(animation);
+
+                    if(animationSettings == null)
+                        return;
+
+                    main.getOptionsAnimationGUI().open(p, animationSettings);
 
                     break;
 
@@ -195,48 +200,6 @@ public class OptionsAnimations_GUI implements Listener {
     public void InventoryCloseEvent(InventoryCloseEvent e) {
         Player p = (Player) e.getPlayer();
         opened.remove(p.getUniqueId());
-    }
-
-    private ItemStack getItem(AnimationSettings animationSettings, String status, ItemStack itemStack) {
-
-        String name = Utils.translate((status.equalsIgnoreCase("Selected") ? "&a" : "&c") + animationSettings.getDisplayName());
-        List<String> lore = new ArrayList<>();
-        lore.add("");
-        lore.add(Utils.translate("&eLeft-Click » " + (status.equalsIgnoreCase("Unlocked") ? "&a" : "&c") + "Enable animation "));
-
-        ItemStack item;
-        if(status.equalsIgnoreCase("Selected"))
-            item = new ItemBuilder(itemStack).setName(name).setLore(lore).addGlow().toItemStack();
-        else
-            item = new ItemBuilder(itemStack).setName(name).setLore(lore).toItemStack();
-
-        return NBTEditor.set(item, status.toLowerCase(), "status");
-
-    }
-
-    private ItemStack getRandomAnimationItem(CubeletType cubeletType, GUILayout guiLayout) {
-
-        ItemStack item = new ItemBuilder(XMaterial.ENDER_PEARL.parseItem()).toItemStack();
-
-        String status;
-
-        if(!cubeletType.getAnimation().equalsIgnoreCase("random")) {
-            String name = guiLayout.getMessage("Items.RandomAnimation.NoSelected.Name");
-            List<String> lore = guiLayout.getMessageList("Items.RandomAnimation.NoSelected.Lore");
-            item = new ItemBuilder(item).setName(name).setLore(lore).toItemStack();
-            status = "Unlocked";
-        } else {
-            String name = guiLayout.getMessage("Items.RandomAnimation.Selected.Name");
-            List<String> lore = guiLayout.getMessageList("Items.RandomAnimation.Selected.Lore");
-            item = new ItemBuilder(item).setName(name).setLore(lore).addGlow().toItemStack();
-            status = "Selected";
-        }
-
-        item = NBTEditor.set(item, "random", "animation");
-        item = NBTEditor.set(item, status.toLowerCase(), "status");
-
-        return item;
-
     }
 
 }

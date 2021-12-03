@@ -46,9 +46,9 @@ public class PlayerDataHandler {
 
 		try {
 
-			main.getDatabaseHandler().hasName(p.getName(), exists -> {
+			main.getDatabaseHandler().hasName(p.getName(), name -> {
 
-				if(!exists) {
+				if(name == null) {
 
 					main.getDatabaseHandler().createPlayerData(p);
 					profile.setOrderBy("date");
@@ -59,29 +59,18 @@ public class PlayerDataHandler {
 
 					main.getDatabaseHandler().updatePlayerName(p);
 
-					try {
-
-						main.getDatabaseHandler().getPlayerOrderSetting(p.getUniqueId(), profile::setOrderBy);
-						main.getDatabaseHandler().getPlayerLootPoints(p.getUniqueId(), profile::setLootPoints);
-						main.getDatabaseHandler().getPlayerAnimation(p.getUniqueId(), animation -> {
-							if(animation.contains("animation"))
-								profile.setAnimation(animation);
-							else
-								profile.setAnimation(AnimationHandler.DEFAULT_ANIMATION);
-						});
-
-					} catch (SQLException e) {
-						e.printStackTrace();
-					}
-
+					main.getDatabaseHandler().getPlayerOrderSetting(p.getUniqueId(), profile::setOrderBy);
+					main.getDatabaseHandler().getPlayerLootPoints(p.getUniqueId(), profile::setLootPoints);
+					main.getDatabaseHandler().getPlayerAnimation(p.getUniqueId(), animation -> {
+						if(animation.contains("animation"))
+							profile.setAnimation(animation);
+						else
+							profile.setAnimation(AnimationHandler.DEFAULT_ANIMATION);
+					});
 
 				}
 
-				try {
-					main.getDatabaseHandler().removeExpiredCubelets(p.getUniqueId());
-				} catch (SQLException throwables) {
-					throwables.printStackTrace();
-				}
+				main.getDatabaseHandler().removeExpiredCubelets(p.getUniqueId());
 
 				main.getDatabaseHandler().getCubelets(p.getUniqueId()).thenAccept(cubelets -> {
 

@@ -8,7 +8,7 @@ public interface DatabaseConnection {
 
     Connection getConnection();
 
-    void close();
+    void close(Connection connection);
 
     void stop();
 

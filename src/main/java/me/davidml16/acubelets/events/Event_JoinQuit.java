@@ -53,11 +53,7 @@ public class Event_JoinQuit implements Listener {
 
         main.getPlayerDataHandler().getPlayersData().remove(p.getUniqueId());
 
-        try {
-            main.getDatabaseHandler().removeExpiredCubelets(p.getUniqueId());
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
+        main.getDatabaseHandler().removeExpiredCubelets(p.getUniqueId());
 
         Bukkit.getScheduler().runTaskLater(main, () -> main.getGiftPlayerGUI().reloadAll(), 1);
     }

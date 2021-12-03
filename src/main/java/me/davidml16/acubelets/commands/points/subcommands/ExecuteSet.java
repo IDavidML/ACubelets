@@ -35,9 +35,9 @@ public class ExecuteSet {
 
         try {
 
-            main.getDatabaseHandler().hasName(player, exists -> {
+            main.getDatabaseHandler().hasName(player, name -> {
 
-                if(!exists) {
+                if(name == null) {
 
                     sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
 
@@ -56,7 +56,7 @@ public class ExecuteSet {
 
                             String msg = main.getLanguageHandler().getMessage("Commands.Points.Set");
                             msg = msg.replaceAll("%amount%", Integer.toString(amount));
-                            msg = msg.replaceAll("%player%", player);
+                            msg = msg.replaceAll("%player%", name);
                             sender.sendMessage(Utils.translate(msg));
 
                         } else {

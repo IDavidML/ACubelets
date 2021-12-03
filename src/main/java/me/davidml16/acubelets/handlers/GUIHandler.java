@@ -30,7 +30,6 @@ public class GUIHandler {
         if(main.getCraftingConfirmationGUI().getOpened().containsKey(player.getUniqueId())) return true;
         if(main.getEditBoxGUI().getOpened().containsKey(player.getUniqueId())) return true;
         if(main.getRewardsPreviewGUI().getOpened().containsKey(player.getUniqueId())) return true;
-        if(main.getEditCraftingGUI().getOpened().contains(player.getUniqueId())) return true;
         if(main.getEditCraftingCraftsGUI().getOpened().containsKey(player.getUniqueId())) return true;
         if(main.getEditCraftingIngredientsGUI().getOpened().containsKey(player.getUniqueId())) return true;
         if(main.getEditRewardItemsGUI().getOpened().containsKey(player.getUniqueId())) return true;
@@ -39,6 +38,7 @@ public class GUIHandler {
         if(main.getGiftAmountGUI().getOpened().containsKey(player.getUniqueId())) return true;
         if(main.getOptionsMainGUI().getOpened().contains(player.getUniqueId())) return true;
         if(main.getOptionsAnimationsGUI().getOpened().containsKey(player.getUniqueId())) return true;
+        if(main.getOptionsAnimationGUI().getOpened().containsKey(player.getUniqueId())) return true;
         
         return false;
     }
@@ -60,7 +60,6 @@ public class GUIHandler {
         main.getCraftingConfirmationGUI().getOpened().remove(player.getUniqueId());
         main.getRewardsPreviewGUI().getOpened().remove(player.getUniqueId());
         main.getTypeListGUI().getOpened().remove(player.getUniqueId());
-        main.getEditCraftingGUI().getOpened().remove(player.getUniqueId());
         main.getEditCraftingCraftsGUI().getOpened().remove(player.getUniqueId());
         main.getEditCraftingIngredientsGUI().getOpened().remove(player.getUniqueId());
         main.getEditRewardItemsGUI().getOpened().remove(player.getUniqueId());
@@ -69,6 +68,7 @@ public class GUIHandler {
         main.getGiftAmountGUI().getOpened().remove(player.getUniqueId());
         main.getOptionsMainGUI().getOpened().remove(player.getUniqueId());
         main.getOptionsAnimationsGUI().getOpened().remove(player.getUniqueId());
+        main.getOptionsAnimationGUI().getOpened().remove(player.getUniqueId());
     }
 
     public void addConversation(Player player) {

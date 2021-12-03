@@ -100,9 +100,9 @@ public class ExecuteGive {
 
             try {
 
-                main.getDatabaseHandler().hasName(player, exists -> {
+                main.getDatabaseHandler().hasName(player, name -> {
 
-                    if(!exists) {
+                    if(name == null) {
 
                         sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
 
@@ -117,7 +117,7 @@ public class ExecuteGive {
                                 String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Give");
                                 msg = msg.replaceAll("%amount%", Integer.toString(finalAmount));
                                 msg = msg.replaceAll("%cubelet%",  typeGived.getName());
-                                msg = msg.replaceAll("%player%", player);
+                                msg = msg.replaceAll("%player%", name);
                                 sender.sendMessage(Utils.translate(msg));
 
                             });
@@ -135,7 +135,7 @@ public class ExecuteGive {
                                     String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Give");
                                     msg = msg.replaceAll("%amount%", Integer.toString(finalAmount));
                                     msg = msg.replaceAll("%cubelet%",  typeGived.getName());
-                                    msg = msg.replaceAll("%player%", player);
+                                    msg = msg.replaceAll("%player%", name);
                                     sender.sendMessage(Utils.translate(msg));
 
                                 });

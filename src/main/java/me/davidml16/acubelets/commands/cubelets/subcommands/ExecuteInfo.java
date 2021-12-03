@@ -38,9 +38,9 @@ public class ExecuteInfo {
 
         try {
 
-            main.getDatabaseHandler().hasName(player, exists -> {
+            main.getDatabaseHandler().hasName(player, name -> {
 
-                if(!exists) {
+                if(name == null) {
 
                     sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
 
@@ -55,14 +55,27 @@ public class ExecuteInfo {
                                 UUID uuid = UUID.fromString(result);
 
                                 sender.sendMessage("");
-                                sender.sendMessage(Utils.translate(" &6&l" + player + " &ahas the following cubelets:"));
+
                                 main.getDatabaseHandler().getCubelets(uuid).thenAccept(list -> {
-                                    for (CubeletType type : main.getCubeletTypesHandler().getTypes().values()) {
-                                        long amount = list.stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(type.getId())).count();
-                                        if (amount > 0)
-                                            sender.sendMessage(Utils.translate("  &7- " + type.getName() + " &7x" + amount));
+
+                                    if (list.size() == 0) {
+
+                                        sender.sendMessage(Utils.translate(" &6&l" + name + " &cnot have any cubelets:"));
+
+                                    } else {
+
+                                        sender.sendMessage(Utils.translate(" &6&l" + name + " &ahas the following cubelets:"));
+
+                                        for (CubeletType type : main.getCubeletTypesHandler().getTypes().values()) {
+                                            long amount = list.stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(type.getId())).count();
+                                            if (amount > 0)
+                                                sender.sendMessage(Utils.translate("  &7- " + type.getName() + " &7x" + amount));
+                                        }
+
+                                        sender.sendMessage("");
+
                                     }
-                                    sender.sendMessage("");
+
                                 });
 
                             });
@@ -74,18 +87,29 @@ public class ExecuteInfo {
                     } else {
 
                         Player target = Bukkit.getPlayer(player);
+
                         sender.sendMessage("");
-                        sender.sendMessage(Utils.translate(" &6&l" + player + " &ahas the following cubelets:"));
 
                         List<Cubelet> list = main.getPlayerDataHandler().getData(target).getCubelets();
 
-                        for (CubeletType type : main.getCubeletTypesHandler().getTypes().values()) {
-                            long amount = list.stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(type.getId())).count();
-                            if (amount > 0)
-                                sender.sendMessage(Utils.translate("  &7- " + type.getName() + " &7x" + amount));
+                        if (list.size() == 0) {
+
+                            sender.sendMessage(Utils.translate(" &6&l" + name + " &cnot have any cubelets:"));
+
+                        } else {
+
+                            sender.sendMessage(Utils.translate(" &6&l" + name + " &ahas the following cubelets:"));
+
+                            for (CubeletType type : main.getCubeletTypesHandler().getTypes().values()) {
+                                long amount = list.stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(type.getId())).count();
+                                if (amount > 0)
+                                    sender.sendMessage(Utils.translate("  &7- " + type.getName() + " &7x" + amount));
+                            }
+
+                            sender.sendMessage("");
+
                         }
 
-                        sender.sendMessage("");
 
                     }
 

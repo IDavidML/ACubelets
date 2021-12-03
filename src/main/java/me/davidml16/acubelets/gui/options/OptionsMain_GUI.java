@@ -61,12 +61,15 @@ public class OptionsMain_GUI implements Listener {
                         Utils.translate("&eClick to config animations! ")
                 ).toItemStack());
 
+        int available = main.getCubeletCraftingHandler().getCrafts().size();
         gui.setItem(21, new ItemBuilder(XMaterial.ITEM_FRAME.parseItem())
                 .setName(Utils.translate("&aCrafting"))
                 .setLore(
                         "",
                         Utils.translate(" &7Open crafting gui to "),
                         Utils.translate(" &7crafting settings. "),
+                        "",
+                        Utils.translate(" &7Crafts created: " + (available > 0 ? "&6" : "&c") + available),
                         "",
                         Utils.translate("&eClick to config crafting! ")
                 ).toItemStack());
@@ -122,7 +125,7 @@ public class OptionsMain_GUI implements Listener {
             if (slot == 19) {
                 main.getOptionsAnimationsGUI().open(p);
             } else if (slot == 21) {
-                main.getEditCraftingGUI().open(p);
+                main.getEditCraftingCraftsGUI().open(p);
             } else if (slot == 40) {
                 p.closeInventory();
             }

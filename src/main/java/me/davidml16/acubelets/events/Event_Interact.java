@@ -83,11 +83,7 @@ public class Event_Interact implements Listener {
 
                                         main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), type, false);
 
-                                        try {
-                                            main.getDatabaseHandler().removeCubelet(p.getUniqueId(), cubelet.getUuid());
-                                        } catch (SQLException throwables) {
-                                            throwables.printStackTrace();
-                                        }
+                                        main.getDatabaseHandler().removeCubelet(p.getUniqueId(), cubelet.getUuid());
 
                                         profile.getCubelets().remove(cubelet);
                                         main.getHologramImplementation().reloadHolograms(p);

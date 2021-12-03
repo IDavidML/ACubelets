@@ -9,7 +9,6 @@ import me.davidml16.acubelets.animations.AnimationHandler;
 import me.davidml16.acubelets.api.CubeletsAPI;
 import me.davidml16.acubelets.api.PointsAPI;
 import me.davidml16.acubelets.database.DatabaseHandler;
-import me.davidml16.acubelets.database.types.Database;
 import me.davidml16.acubelets.events.Event_Block;
 import me.davidml16.acubelets.events.Event_Damage;
 import me.davidml16.acubelets.events.Event_Interact;
@@ -19,6 +18,7 @@ import me.davidml16.acubelets.gui.crafting.*;
 import me.davidml16.acubelets.gui.gifts.GiftCubelet_GUI;
 import me.davidml16.acubelets.gui.gifts.GiftPlayer_GUI;
 import me.davidml16.acubelets.gui.gifts.Gift_GUI;
+import me.davidml16.acubelets.gui.options.OptionsAnimation_GUI;
 import me.davidml16.acubelets.gui.options.OptionsAnimations_GUI;
 import me.davidml16.acubelets.gui.options.OptionsMain_GUI;
 import me.davidml16.acubelets.gui.rewards.EditRewardCommands_GUI;
@@ -95,7 +95,6 @@ public class Main extends JavaPlugin {
     private CraftingConfirmation_GUI craftingConfirmationGUI;
     private RewardsPreview_GUI rewardsPreviewGUI;
     private TypeList_GUI typeListGUI;
-    private EditCrafting_GUI editCraftingGUI;
     private EditCrafting_Crafts_GUI editCraftingCraftsGUI;
     private EditCrafting_Ingredients_GUI editCraftingIngredientsGUI;
     private EditRewardItems_GUI editRewardItemsGUI;
@@ -105,6 +104,7 @@ public class Main extends JavaPlugin {
     private GiftPlayer_GUI giftPlayerGUI;
     private OptionsMain_GUI optionsMainGUI;
     private OptionsAnimations_GUI optionsAnimationsGUI;
+    private OptionsAnimation_GUI optionsAnimationGUI;
 
     private int playerCount;
 
@@ -164,7 +164,7 @@ public class Main extends JavaPlugin {
 
         databaseHandler = new DatabaseHandler(this);
         databaseHandler.openConnection();
-        databaseHandler.getDatabase().loadTables();
+        databaseHandler.loadTables();
 
         animationHandler = new AnimationHandler(this);
         animationHandler.loadAnimations();
@@ -200,7 +200,6 @@ public class Main extends JavaPlugin {
         cubeletCraftingHandler = new CubeletCraftingHandler(this);
         cubeletCraftingHandler.loadCrafting();
 
-        editCraftingGUI = new EditCrafting_GUI(this);
         editCraftingCraftsGUI = new EditCrafting_Crafts_GUI(this);
         editCraftingIngredientsGUI = new EditCrafting_Ingredients_GUI(this);
 
@@ -277,6 +276,7 @@ public class Main extends JavaPlugin {
 
         optionsMainGUI = new OptionsMain_GUI(this);
         optionsAnimationsGUI = new OptionsAnimations_GUI(this);
+        optionsAnimationGUI = new OptionsAnimation_GUI(this);
 
         guiHandler = new GUIHandler(this);
 
@@ -334,7 +334,7 @@ public class Main extends JavaPlugin {
 
         if(hologramTask != null) hologramTask.stop();
         if(dataSaveTask != null) dataSaveTask.stop();
-        if(databaseHandler != null) databaseHandler.getDatabase().close();
+        if(databaseHandler != null) databaseHandler.getDatabaseConnection().stop();
     }
 
     public static Main get() { return main; }
@@ -349,8 +349,8 @@ public class Main extends JavaPlugin {
         return languageHandler;
     }
 
-    public Database getDatabaseHandler() {
-        return databaseHandler.getDatabase();
+    public DatabaseHandler getDatabaseHandler() {
+        return databaseHandler;
     }
 
     public DatabaseHandler getDatabase() { return databaseHandler; }
@@ -413,8 +413,6 @@ public class Main extends JavaPlugin {
 
     public TypeList_GUI getTypeListGUI() { return typeListGUI; }
 
-    public EditCrafting_GUI getEditCraftingGUI() { return editCraftingGUI; }
-
     public EditCrafting_Crafts_GUI getEditCraftingCraftsGUI() { return editCraftingCraftsGUI; }
 
     public EditCrafting_Ingredients_GUI getEditCraftingIngredientsGUI() { return editCraftingIngredientsGUI; }
@@ -429,6 +427,10 @@ public class Main extends JavaPlugin {
 
     public OptionsAnimations_GUI getOptionsAnimationsGUI() {
         return optionsAnimationsGUI;
+    }
+
+    public OptionsAnimation_GUI getOptionsAnimationGUI() {
+        return optionsAnimationGUI;
     }
 
     public PluginHandler getPluginHandler() { return pluginHandler; }

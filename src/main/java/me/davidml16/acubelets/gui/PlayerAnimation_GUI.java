@@ -49,7 +49,7 @@ public class PlayerAnimation_GUI implements Listener {
         }
 
 
-        List<AnimationSettings> animations = new ArrayList<>(main.getAnimationHandler().getAnimations().values());
+        List<AnimationSettings> animations = new ArrayList<>(main.getAnimationHandler().getAnimationSettings());
         Collections.sort(animations);
 
         if(page < 0) {
@@ -78,7 +78,7 @@ public class PlayerAnimation_GUI implements Listener {
                 gui.setItem(((45 - 10) + guiLayout.getSlot("PreviousPage")), item);
         }
 
-        if (main.getAnimationHandler().getAnimations().values().size() > (page + 1) * 14) {
+        if (main.getAnimationHandler().getAnimationSettings().size() > (page + 1) * 14) {
             int amount = guiLayout.getBoolean("Items.NextPage.ShowPageNumber") ? (page + 2) : 1;
             ItemStack item = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NextPage.Material")).get().parseMaterial(), amount)
                     .setName(guiLayout.getMessage("Items.NextPage.Name"))
@@ -207,14 +207,14 @@ public class PlayerAnimation_GUI implements Listener {
 
     private ItemStack getItem(GUILayout guiLayout, AnimationSettings animationSettings, String status, ItemStack itemStack) {
 
-        String name = guiLayout.getMessage("Items.Animation." + status + ".Name").replaceAll("%animation%", animationSettings.getDisplayName());
+        String name = guiLayout.getMessage("Items.Animation." + status + ".Name").replaceAll("%animation%", animationSettings.getFormatedDisplayName());
         List<String> lore = guiLayout.getMessageList("Items.Animation." + status + ".Lore");
 
         ItemStack item;
         if(status.equalsIgnoreCase("Selected"))
-            item = new ItemBuilder(itemStack).setName(name).setLore(lore).addGlow().toItemStack();
+            item = new ItemBuilder(itemStack).setName(name).setLore(lore).addGlow().hideAttributes().toItemStack();
         else
-            item = new ItemBuilder(itemStack).setName(name).setLore(lore).toItemStack();
+            item = new ItemBuilder(itemStack).setName(name).setLore(lore).hideAttributes().toItemStack();
 
         return NBTEditor.set(item, status.toLowerCase(), "status");
 

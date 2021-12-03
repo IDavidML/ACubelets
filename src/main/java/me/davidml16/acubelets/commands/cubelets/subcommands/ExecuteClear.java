@@ -35,9 +35,9 @@ public class ExecuteClear {
 
         try {
 
-            main.getDatabaseHandler().hasName(player, exists -> {
+            main.getDatabaseHandler().hasName(player, name -> {
 
-                if(!exists) {
+                if(name == null) {
 
                     sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
 
@@ -51,17 +51,11 @@ public class ExecuteClear {
 
                                 UUID uuid = UUID.fromString(result);
 
-                                try {
+                                main.getDatabaseHandler().removeCubelets(uuid);
 
-                                    main.getDatabaseHandler().removeCubelets(uuid);
-
-                                    String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Clear");
-                                    msg = msg.replaceAll("%player%", player);
-                                    sender.sendMessage(Utils.translate(msg));
-
-                                } catch (SQLException e) {
-                                    e.printStackTrace();
-                                }
+                                String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Clear");
+                                msg = msg.replaceAll("%player%", name);
+                                sender.sendMessage(Utils.translate(msg));
 
                             });
 
@@ -70,23 +64,20 @@ public class ExecuteClear {
                         }
 
                     } else {
+
                         Player target = Bukkit.getPlayer(player);
 
-                        try {
-                            main.getPlayerDataHandler().getData(target).getCubelets().clear();
+                        main.getPlayerDataHandler().getData(target).getCubelets().clear();
 
-                            String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Clear");
-                            msg = msg.replaceAll("%player%", player);
-                            sender.sendMessage(Utils.translate(msg));
+                        String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Clear");
+                        msg = msg.replaceAll("%player%", name);
+                        sender.sendMessage(Utils.translate(msg));
 
-                            if (main.getCubeletsGUI().getOpened().containsKey(target.getUniqueId())) main.getCubeletsGUI().reloadPage(target);
-                            if (main.getCraftingGUI().getOpened().contains(target.getUniqueId())) main.getCraftingGUI().open(target);
-                            main.getHologramImplementation().reloadHolograms(target);
+                        if (main.getCubeletsGUI().getOpened().containsKey(target.getUniqueId())) main.getCubeletsGUI().reloadPage(target);
+                        if (main.getCraftingGUI().getOpened().contains(target.getUniqueId())) main.getCraftingGUI().open(target);
+                        main.getHologramImplementation().reloadHolograms(target);
 
-                            main.getDatabaseHandler().removeCubelets(target.getUniqueId());
-                        } catch (SQLException throwables) {
-                            throwables.printStackTrace();
-                        }
+                        main.getDatabaseHandler().removeCubelets(target.getUniqueId());
 
                     }
 

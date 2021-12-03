@@ -9,6 +9,9 @@ public class Animation1_Task extends Animation {
 
 	public Animation1_Task(Main main, AnimationSettings animationSettings) {
 		super(main, animationSettings);
+		setShowAroundParticles(true);
+		setShowOutlineParticles(false);
+		setShowFloorParticles(false);
 	}
 
 	private Location startLocation;

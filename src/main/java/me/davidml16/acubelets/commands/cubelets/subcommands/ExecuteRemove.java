@@ -47,9 +47,9 @@ public class ExecuteRemove {
 
         try {
 
-            main.getDatabaseHandler().hasName(player, exists -> {
+            main.getDatabaseHandler().hasName(player, name -> {
 
-                if(!exists) {
+                if(name == null) {
 
                     sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
 
@@ -60,7 +60,7 @@ public class ExecuteRemove {
                         Profile profile = main.getPlayerDataHandler().getData(Bukkit.getPlayer(player));
                         long actualBalance = profile.getCubelets().stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(id)).count();
 
-                        execute(args, player, sender, id, actualBalance, amount);
+                        execute(args, name, sender, id, actualBalance, amount);
 
                     } else {
 
@@ -70,17 +70,11 @@ public class ExecuteRemove {
 
                                 UUID uuid = UUID.fromString(result);
 
-                                try {
+                                main.getDatabaseHandler().getCubeletBalance(uuid, id, balance -> {
 
-                                    main.getDatabaseHandler().getCubeletBalance(uuid, id, balance -> {
+                                    execute(args, name, sender, id, balance, amount);
 
-                                        execute(args, player, sender, id, balance, amount);
-
-                                    });
-
-                                } catch (SQLException e) {
-                                    e.printStackTrace();
-                                }
+                                });
 
                             });
 

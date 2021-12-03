@@ -206,6 +206,23 @@ public class AnimationHandler {
 
     }
 
+    public List<AnimationSettings> getAnimationSettings() {
+
+        List<AnimationSettings> animationSettings = new ArrayList<>();
+
+        for(AnimationSettings animation : animations.values()) {
+
+            if(!animation.getId().equalsIgnoreCase(DEFAULT_ANIMATION) && !animation.isEnabled())
+                continue;
+
+            animationSettings.add(animation);
+
+        }
+
+        return animationSettings;
+
+    }
+
     public AnimationSettings getRandomAnimation(Player player) {
         List<AnimationSettings> animations = getAnimationsAvailable(player);
         return animations.get(ThreadLocalRandom.current().nextInt(animations.size()) % animations.size());

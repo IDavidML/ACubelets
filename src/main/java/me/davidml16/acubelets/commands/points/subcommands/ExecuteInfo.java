@@ -35,9 +35,9 @@ public class ExecuteInfo {
 
         try {
 
-            main.getDatabaseHandler().hasName(player, exists -> {
+            main.getDatabaseHandler().hasName(player, name -> {
 
-                if(!exists) {
+                if(name == null) {
 
                     sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
 
@@ -51,17 +51,11 @@ public class ExecuteInfo {
 
                                 UUID uuid = UUID.fromString(result);
 
-                                try {
-
-                                    main.getDatabaseHandler().getPlayerLootPoints(uuid, points -> {
-                                        sender.sendMessage("");
-                                        sender.sendMessage(Utils.translate(" &6&l" + player + " &ahas &6" + points + " &aPoints."));
-                                        sender.sendMessage("");
-                                    });
-
-                                } catch (SQLException e) {
-                                    e.printStackTrace();
-                                }
+                                main.getDatabaseHandler().getPlayerLootPoints(uuid, points -> {
+                                    sender.sendMessage("");
+                                    sender.sendMessage(Utils.translate(" &6&l" + name + " &ahas &6" + points + " &aPoints."));
+                                    sender.sendMessage("");
+                                });
 
                             });
 
@@ -75,7 +69,7 @@ public class ExecuteInfo {
                         long points = main.getPlayerDataHandler().getData(target).getLootPoints();
 
                         sender.sendMessage("");
-                        sender.sendMessage(Utils.translate(" &6&l" + player + " &ahas &6" + points + " &aPoints."));
+                        sender.sendMessage(Utils.translate(" &6&l" + name + " &ahas &6" + points + " &aPoints."));
                         sender.sendMessage("");
 
                     }

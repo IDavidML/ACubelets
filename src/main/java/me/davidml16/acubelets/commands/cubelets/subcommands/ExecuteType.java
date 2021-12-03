@@ -124,16 +124,10 @@ public class ExecuteType {
                     main.getRewardsGUI().getGuis().remove(id);
                     main.getCubeletTypesHandler().getTypes().remove(id);
 
-                    try {
-                        main.getDatabaseHandler().removeCubelet(id);
-                    } catch (SQLException throwables) {
-                        throwables.printStackTrace();
-                    }
+                    main.getDatabaseHandler().removeCubelet(id);
 
                     for(Player p : Bukkit.getServer().getOnlinePlayers()) {
-                        main.getPlayerDataHandler().getData(p).getCubelets().removeIf(cubelet -> {
-                            return cubelet.getType().equalsIgnoreCase(id);
-                        });
+                        main.getPlayerDataHandler().getData(p).getCubelets().removeIf(cubelet -> cubelet.getType().equalsIgnoreCase(id));
                         if(main.getCubeletsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
                         if(main.getTypeConfigGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
                         if(main.getRewardsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();

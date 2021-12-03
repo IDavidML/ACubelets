@@ -1,7 +1,9 @@
 package me.davidml16.acubelets.animations;
 
 import me.davidml16.acubelets.utils.ItemBuilder;
+import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
+import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Comparator;
@@ -40,6 +42,12 @@ public class AnimationSettings implements Comparable<AnimationSettings> {
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public String getFormatedDisplayName() {
+        if(!displayName.startsWith("&") && !displayName.startsWith("§"))
+            return Utils.translate(displayName);
+        return Utils.translate("&r" + displayName);
     }
 
     public void setDisplayName(String displayName) {

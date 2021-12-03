@@ -38,9 +38,9 @@ public class ExecuteRemove {
 
         try {
 
-            main.getDatabaseHandler().hasName(player, exists -> {
+            main.getDatabaseHandler().hasName(player, name -> {
 
-                if(!exists) {
+                if(name == null) {
 
                     sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
 
@@ -66,7 +66,7 @@ public class ExecuteRemove {
 
                                     String msg = main.getLanguageHandler().getMessage("Commands.Points.Remove.Removed");
                                     msg = msg.replaceAll("%amount%", Integer.toString(amount));
-                                    msg = msg.replaceAll("%player%", player);
+                                    msg = msg.replaceAll("%player%", name);
                                     sender.sendMessage(Utils.translate(msg));
 
                                 } else {
@@ -74,7 +74,7 @@ public class ExecuteRemove {
                                     String msg = main.getLanguageHandler().getMessage("Commands.Points.Remove.NoBalance");
                                     msg = msg.replaceAll("%amount%", Integer.toString(amount));
                                     msg = msg.replaceAll("%balance%", Long.toString(actualBalance));
-                                    msg = msg.replaceAll("%player%", player);
+                                    msg = msg.replaceAll("%player%", name);
                                     sender.sendMessage(Utils.translate(msg));
 
                                 }
@@ -93,51 +93,45 @@ public class ExecuteRemove {
 
                                 UUID uuid = UUID.fromString(result);
 
-                                try {
+                                main.getDatabaseHandler().getPlayerLootPoints(uuid, actualBalance -> {
 
-                                    main.getDatabaseHandler().getPlayerLootPoints(uuid, actualBalance -> {
+                                    if(args.length == 2) {
 
-                                        if(args.length == 2) {
+                                        sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " remove [player] [amount]"));
 
-                                            sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cUsage: /" + label + " remove [player] [amount]"));
+                                    } else if(args.length == 3) {
 
-                                        } else if(args.length == 3) {
+                                        int amount = Integer.parseInt(args[2]);
 
-                                            int amount = Integer.parseInt(args[2]);
+                                        if(amount > 0) {
 
-                                            if(amount > 0) {
+                                            if(actualBalance >= amount) {
 
-                                                if(actualBalance >= amount) {
+                                                PointsAPI.remove(player, amount);
 
-                                                    PointsAPI.remove(player, amount);
+                                                String msg = main.getLanguageHandler().getMessage("Commands.Points.Remove.Removed");
+                                                msg = msg.replaceAll("%amount%", Integer.toString(amount));
+                                                msg = msg.replaceAll("%player%", name);
+                                                sender.sendMessage(Utils.translate(msg));
 
-                                                    String msg = main.getLanguageHandler().getMessage("Commands.Points.Remove.Removed");
-                                                    msg = msg.replaceAll("%amount%", Integer.toString(amount));
-                                                    msg = msg.replaceAll("%player%", player);
-                                                    sender.sendMessage(Utils.translate(msg));
-
-                                                } else {
-
-                                                    String msg = main.getLanguageHandler().getMessage("Commands.Points.Remove.NoBalance");
-                                                    msg = msg.replaceAll("%amount%", Integer.toString(amount));
-                                                    msg = msg.replaceAll("%balance%", Long.toString(actualBalance));
-                                                    msg = msg.replaceAll("%player%", player);
-                                                    sender.sendMessage(Utils.translate(msg));
-
-                                                }
                                             } else {
 
-                                                sender.sendMessage(Utils.translate(
-                                                        main.getLanguageHandler().getPrefix() + " &cAmount to give need to be more than 0!"));
+                                                String msg = main.getLanguageHandler().getMessage("Commands.Points.Remove.NoBalance");
+                                                msg = msg.replaceAll("%amount%", Integer.toString(amount));
+                                                msg = msg.replaceAll("%balance%", Long.toString(actualBalance));
+                                                msg = msg.replaceAll("%player%", name);
+                                                sender.sendMessage(Utils.translate(msg));
 
                                             }
+                                        } else {
+
+                                            sender.sendMessage(Utils.translate(
+                                                    main.getLanguageHandler().getPrefix() + " &cAmount to give need to be more than 0!"));
+
                                         }
+                                    }
 
-                                    });
-
-                                } catch (SQLException e) {
-                                    e.printStackTrace();
-                                }
+                                });
 
                             });
 

@@ -234,9 +234,9 @@ public class Animations_GUI implements Listener {
 
         ItemStack item;
         if(status.equalsIgnoreCase("Selected"))
-            item = new ItemBuilder(itemStack).setName(name).setLore(lore).addGlow().toItemStack();
+            item = new ItemBuilder(itemStack).setName(name).setLore(lore).addGlow().hideAttributes().toItemStack();
         else
-            item = new ItemBuilder(itemStack).setName(name).setLore(lore).toItemStack();
+            item = new ItemBuilder(itemStack).setName(name).setLore(lore).hideAttributes().toItemStack();
 
         return NBTEditor.set(item, status.toLowerCase(), "status");
 

@@ -43,6 +43,8 @@ public abstract class Animation {
 
     private boolean rewardRevealed;
 
+    private boolean showOutlineParticles, showFloorParticles, showAroundParticles;
+
     private RepeatingTask hologramAnimation;
 
     public Animation(Main main, AnimationSettings animationSettings) {
@@ -54,6 +56,10 @@ public abstract class Animation {
         this.animationRevealTick = 0;
 
         this.rewardRevealed = false;
+
+        this.showOutlineParticles = true;
+        this.showFloorParticles = true;
+        this.showAroundParticles = false;
 
         this.colors = main.getFireworkUtil().getRandomColors();
 
@@ -174,17 +180,17 @@ public abstract class Animation {
 
     public void doShowBoxParticles() {
 
-        if(animationSettings.isOutlineParticles()) {
+        if(showOutlineParticles && animationSettings.isOutlineParticles()) {
             UtilParticles.drawParticleLine(corner1, corner2, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
             UtilParticles.drawParticleLine(corner2, corner3, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
             UtilParticles.drawParticleLine(corner3, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
             UtilParticles.drawParticleLine(corner1, corner4, Particles.REDSTONE, 10, colorRarity.getRed(), colorRarity.getGreen(), colorRarity.getBlue());
         }
 
-        if(animationSettings.isFloorParticles())
+        if(showFloorParticles && animationSettings.isFloorParticles())
             UtilParticles.display(Particles.FLAME, 1f, 0f, 1f, boxLocation, 2);
 
-        if(animationSettings.isAroundParticles())
+        if(showAroundParticles && animationSettings.isAroundParticles())
             UtilParticles.display(Particles.FLAME, 0.45f, 0.25f, 0.45f, boxLocation, 10);
 
     }
@@ -331,6 +337,30 @@ public abstract class Animation {
 
     public void setRewardRevealed(boolean rewardRevealed) {
         this.rewardRevealed = rewardRevealed;
+    }
+
+    public boolean isShowOutlineParticles() {
+        return showOutlineParticles;
+    }
+
+    public void setShowOutlineParticles(boolean showOutlineParticles) {
+        this.showOutlineParticles = showOutlineParticles;
+    }
+
+    public boolean isShowFloorParticles() {
+        return showFloorParticles;
+    }
+
+    public void setShowFloorParticles(boolean showFloorParticles) {
+        this.showFloorParticles = showFloorParticles;
+    }
+
+    public boolean isShowAroundParticles() {
+        return showAroundParticles;
+    }
+
+    public void setShowAroundParticles(boolean showAroundParticles) {
+        this.showAroundParticles = showAroundParticles;
     }
 
     public Location getLocationRotation(double y) {

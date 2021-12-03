@@ -40,9 +40,9 @@ public class ExecuteGift {
 
         try {
 
-            main.getDatabaseHandler().hasName(player, exists -> {
+            main.getDatabaseHandler().hasName(player, name -> {
 
-                if(!exists) {
+                if(name == null) {
 
                     sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis player not exists in the database!"));
 
@@ -54,7 +54,7 @@ public class ExecuteGift {
 
                             UUID uuid = UUID.fromString(result);
 
-                            main.getGiftGUI().open(((Player) sender), uuid, player, true);
+                            main.getGiftGUI().open(((Player) sender), uuid, name, true);
 
                         });
 

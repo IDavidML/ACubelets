@@ -2,7 +2,7 @@ package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.api.CubeletReceivedEvent;
-import me.davidml16.acubelets.database.types.Database;
+import me.davidml16.acubelets.database.DatabaseHandler;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Profile;
@@ -20,7 +20,7 @@ public class TransactionHandler {
         this.main = main;
     }
 
-    public void giveCubelet(String player, String type, int amount, Database.Callback<CubeletType> callback) throws SQLException {
+    public void giveCubelet(String player, String type, int amount, DatabaseHandler.Callback<CubeletType> callback) throws SQLException {
 
         if(Bukkit.getPlayer(player) != null) {
 
@@ -236,11 +236,7 @@ public class TransactionHandler {
         }
 
         main.getDatabaseHandler().getPlayerLootPoints(uuid, done -> {
-            try {
-                main.getDatabaseHandler().setPlayerLootPoints(uuid, done + amount);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            main.getDatabaseHandler().setPlayerLootPoints(uuid, done + amount);
         });
 
     }
@@ -294,18 +290,10 @@ public class TransactionHandler {
 
         main.getDatabaseHandler().getPlayerLootPoints(uuid, done -> {
             if((done - amount) < 0) {
-                try {
-                    main.getDatabaseHandler().setPlayerLootPoints(uuid, 0);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+                main.getDatabaseHandler().setPlayerLootPoints(uuid, 0);
             }
             else {
-                try {
-                    main.getDatabaseHandler().setPlayerLootPoints(uuid, done - amount);
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
+                main.getDatabaseHandler().setPlayerLootPoints(uuid, done - amount);
             }
         });
 
