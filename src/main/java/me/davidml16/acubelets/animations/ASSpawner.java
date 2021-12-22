@@ -146,12 +146,19 @@ public class ASSpawner {
 
         Method getHandle;
 
+        String fieldName = "noclip";
+
+        if(VersionUtil.supports(18))
+            fieldName = "Q";
+        else if(VersionUtil.supports(17))
+            fieldName = "P";
+
         try {
 
             getHandle = entity.getClass().getMethod("getHandle");
             Object entityObject = getHandle.invoke(entity);
 
-            Field field = entityObject.getClass().getField(!VersionUtil.supports(17) ? "noclip" : "P");
+            Field field = entityObject.getClass().getField(fieldName);
             field.setAccessible(true);
             field.setBoolean(entityObject, true);
 

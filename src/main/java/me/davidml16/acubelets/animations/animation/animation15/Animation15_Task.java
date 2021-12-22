@@ -74,7 +74,7 @@ public class Animation15_Task extends Animation {
 			Sounds.playSound(getCubeletBox().getLocation(), Sounds.MySound.FIREWORK_BLAST, 0.5f, 0);
 
 			try {
-				blackHole = XParticle.blackhole(getMain(), 8, 4, 200, 2, 999999, new ParticleDisplay(Particle.SMOKE_LARGE, getCubeletBox().getLocation().clone().add(0.5, 7, 0.5), 1));
+				blackHole = XParticle.blackhole(getMain(), 8, 4, 200, 2, 999999, ParticleDisplay.display(getCubeletBox().getLocation().clone().add(0.5, 7, 0.5), Particle.SMOKE_LARGE).withCount(1));
 			} catch (NoClassDefFoundError ignore) {}
 
 			Animation15_RotatingFlame orbit1 = new Animation15_RotatingFlame(getMain(), getCubeletBox().getLocation().clone().add(0.5, 6, 0.5), 5f, 120, true, 0);

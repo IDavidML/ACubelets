@@ -545,7 +545,7 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new Event_Interact(this), this);
         Bukkit.getPluginManager().registerEvents(new Event_JoinQuit(this), this);
         Bukkit.getPluginManager().registerEvents(new Event_Damage(), this);
-        Bukkit.getPluginManager().registerEvents(new Event_Block(), this);
+        Bukkit.getPluginManager().registerEvents(new Event_Block(this), this);
     }
 
 }

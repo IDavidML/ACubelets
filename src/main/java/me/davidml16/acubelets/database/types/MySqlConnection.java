@@ -68,11 +68,9 @@ public class MySqlConnection implements DatabaseConnection{
     @Override
     public Connection getConnection() {
 
-        if(hikari != null)
-            return null;
-
         try {
-            return hikari.getConnection();
+            if(hikari != null)
+                return hikari.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }

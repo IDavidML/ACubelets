@@ -282,6 +282,7 @@ public enum XPotion {
         ItemStack potion = Material.getMaterial("SPLASH_POTION") == null ?
                 new ItemStack(Material.POTION, 1, (short) 16398) : // or 16384?
                 new ItemStack(Material.SPLASH_POTION);
+        // TODO check why the fuck Lingering potion isn't supported.
 
         PotionMeta meta = (PotionMeta) potion.getItemMeta();
         meta.setColor(color);
@@ -403,7 +404,7 @@ public enum XPotion {
     }
 
     /**
-     * In most cases your should be using {@link #name()} instead.
+     * In most cases you should be using {@link #name()} instead.
      *
      * @return a friendly readable string name.
      */
@@ -413,7 +414,7 @@ public enum XPotion {
     }
 
     /**
-     * Used for datas that need to be accessed during enum initilization.
+     * Used for data that need to be accessed during enum initialization.
      *
      * @since 2.0.0
      */

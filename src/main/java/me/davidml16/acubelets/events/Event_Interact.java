@@ -131,9 +131,13 @@ public class Event_Interact implements Listener {
 
                                 main.getCubeletOpenHandler().openAnimation(p, box, type, true);
 
-                                if (item.getAmount() > 0) {
+                                if (item.getAmount() > 1) {
                                     item.setAmount(item.getAmount() - 1);
+                                } else {
+                                    p.getInventory().remove(item);
                                 }
+
+                                Bukkit.getScheduler().runTaskLater(main, () -> p.updateInventory(), 20L);
 
                                 main.getHologramImplementation().reloadHolograms(p);
 

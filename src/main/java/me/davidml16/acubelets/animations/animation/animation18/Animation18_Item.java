@@ -55,7 +55,7 @@ public class Animation18_Item extends BukkitRunnable {
         armorStandName.setSmall(true);
         armorStandName.setMarker(false);
         armorStandName.setRemoveWhenFarAway(false);
-        armorStandName.setCustomName(Utils.getColorByText(reward.getRarity().getName()) + reward.getName());
+        armorStandName.setCustomName(Utils.translate(reward.getName()));
         armorStandName.setCustomNameVisible(true);
         armorStandName.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
         armorStandName.teleport(center.clone().add(0, 0.45, 0));
