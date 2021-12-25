@@ -2,9 +2,8 @@ package me.davidml16.acubelets.conversation.rewards;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.CommonPrompts;
-import me.davidml16.acubelets.objects.CommandObject;
+import me.davidml16.acubelets.objects.rewards.CommandObject;
 import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.objects.rewards.CommandReward;
 import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.Utils;

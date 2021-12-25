@@ -6,7 +6,10 @@ import me.davidml16.acubelets.database.types.MySqlConnection;
 import me.davidml16.acubelets.database.types.SQLiteConnection;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.Profile;
+import me.davidml16.acubelets.objects.loothistory.LootHistory;
+import me.davidml16.acubelets.objects.loothistory.RewardHistory;
 import me.davidml16.acubelets.utils.Utils;
+import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -55,14 +58,14 @@ public class DatabaseHandler {
 
 	public DatabaseConnection getDatabaseConnection() { return databaseConnection; }
 
-	public void loadTables() {
+	public void executeQuery(String sql) {
 
 		PreparedStatement statement = null;
 		Connection connection = null;
 
 		try {
 			connection = databaseConnection.getConnection();
-			statement = connection.prepareStatement("CREATE TABLE IF NOT EXISTS ac_cubelets (`UUID` varchar(40) NOT NULL, `cubeletUUID` varchar(40) NOT NULL, `type` VARCHAR(15) NOT NULL, `received` bigint NOT NULL DEFAULT 0, `expire` bigint NOT NULL DEFAULT 0, PRIMARY KEY (`UUID`, `cubeletUUID`));");
+			statement = connection.prepareStatement(sql);
 			statement.execute();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -77,43 +80,15 @@ public class DatabaseHandler {
 			databaseConnection.close(connection);
 		}
 
-		PreparedStatement statement2 = null;
-		Connection connection2 = null;
-		try {
-			connection2 = databaseConnection.getConnection();
-			statement2 = connection2.prepareStatement("CREATE TABLE IF NOT EXISTS ac_players (`UUID` varchar(40) NOT NULL, `NAME` varchar(40), `LOOT_POINTS` integer(25), `ORDER_BY` varchar(10), `ANIMATION` varchar(25), PRIMARY KEY (`UUID`));");
-			statement2.execute();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			if(statement2 != null) {
-				try {
-					statement2.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			databaseConnection.close(connection2);
-		}
+	}
 
-		PreparedStatement statement3 = null;
-		Connection connection3 = null;
-		try {
-			connection3 = databaseConnection.getConnection();
-			statement3 = connection3.prepareStatement("ALTER TABLE ac_players ADD `ANIMATION` varchar(25) NOT NULL DEFAULT 'animation2'");
-			statement3.execute();
-		} catch (SQLException ignored) {
-		} finally {
-			if(statement3 != null) {
-				try {
-					statement3.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-			}
-			databaseConnection.close(connection3);
-		}
+	public void loadTables() {
 
+		executeQuery("CREATE TABLE IF NOT EXISTS ac_cubelets (`UUID` varchar(40) NOT NULL, `cubeletUUID` varchar(40) NOT NULL, `type` VARCHAR(15) NOT NULL, `received` bigint NOT NULL DEFAULT 0, `expire` bigint NOT NULL DEFAULT 0, PRIMARY KEY (`UUID`, `cubeletUUID`));");
+
+		executeQuery("CREATE TABLE IF NOT EXISTS ac_players (`UUID` varchar(40) NOT NULL, `NAME` varchar(40), `LOOT_POINTS` integer(25), `ORDER_BY` varchar(10), `ANIMATION` varchar(25), PRIMARY KEY (`UUID`));");
+
+		executeQuery("CREATE TABLE IF NOT EXISTS ac_loothistory (`ID` int(25) NOT NULL AUTO_INCREMENT, `UUID` varchar(40) NOT NULL, `cubeletName` varchar(50) NOT NULL, `rewardID` varchar(50) NOT NULL, `rewardName` varchar(20) NOT NULL, `rewardIcon` LONGTEXT NOT NULL, `received` bigint NOT NULL DEFAULT 0, PRIMARY KEY (`ID`));");
 
 	}
 
@@ -750,51 +725,6 @@ public class DatabaseHandler {
 		});
 	}
 
-	public CompletableFuture<List<Cubelet>> getCubelets(UUID uuid) {
-		CompletableFuture<List<Cubelet>> result = new CompletableFuture<>();
-
-		long actualTime = System.currentTimeMillis();
-
-		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
-			List<Cubelet> cubelets = new ArrayList<>();
-			PreparedStatement ps = null;
-			ResultSet rs = null;
-			Connection connection = null;
-
-			try {
-				connection = databaseConnection.getConnection();
-				ps = connection.prepareStatement("SELECT * FROM ac_cubelets WHERE UUID = '" + uuid.toString() + "' AND expire > '" + actualTime + "';");
-
-				rs = ps.executeQuery();
-				while (rs.next()) {
-					if(main.getCubeletTypesHandler().getTypes().containsKey(rs.getString("type")))
-						cubelets.add(new Cubelet(UUID.fromString(rs.getString("cubeletUUID")), rs.getString("type"), rs.getLong("received"), rs.getLong("expire")));
-				}
-
-				result.complete(cubelets);
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				if(ps != null) {
-					try {
-						ps.close();
-					} catch (SQLException throwables) {
-						throwables.printStackTrace();
-					}
-				}
-				if(rs != null) {
-					try {
-						rs.close();
-					} catch (SQLException throwables) {
-						throwables.printStackTrace();
-					}
-				}
-				databaseConnection.close(connection);
-			}
-		});
-		return result;
-	}
-
 	public void getCubeletBalance(UUID uuid, String cubeletType, Callback<Long> callback) {
 
 		Bukkit.getScheduler().runTaskAsynchronously(main, (Runnable) () -> {
@@ -830,6 +760,224 @@ public class DatabaseHandler {
 					}
 				}
 				databaseConnection.close(connection);
+			}
+
+		});
+
+	}
+
+	public CompletableFuture<List<Cubelet>> getCubelets(UUID uuid) {
+
+		CompletableFuture<List<Cubelet>> result = new CompletableFuture<>();
+
+		long actualTime = System.currentTimeMillis();
+
+		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+
+			List<Cubelet> cubelets = new ArrayList<>();
+
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			Connection connection = null;
+
+			try {
+
+				connection = databaseConnection.getConnection();
+				ps = connection.prepareStatement("SELECT * FROM ac_cubelets WHERE UUID = '" + uuid.toString() + "' AND expire > '" + actualTime + "';");
+
+				rs = ps.executeQuery();
+				while (rs.next()) {
+					if(main.getCubeletTypesHandler().getTypes().containsKey(rs.getString("type")))
+						cubelets.add(new Cubelet(UUID.fromString(rs.getString("cubeletUUID")), rs.getString("type"), rs.getLong("received"), rs.getLong("expire")));
+				}
+
+				result.complete(cubelets);
+
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+
+			} finally {
+
+				if(ps != null) {
+					try {
+						ps.close();
+					} catch (SQLException throwables) {
+						throwables.printStackTrace();
+					}
+				}
+
+				if(rs != null) {
+					try {
+						rs.close();
+					} catch (SQLException throwables) {
+						throwables.printStackTrace();
+					}
+				}
+
+				databaseConnection.close(connection);
+
+			}
+		});
+
+		return result;
+
+	}
+
+	public CompletableFuture<List<LootHistory>> getLootHistory(UUID uuid) {
+
+		CompletableFuture<List<LootHistory>> result = new CompletableFuture<>();
+
+		long actualTime = System.currentTimeMillis();
+
+		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+
+			List<LootHistory> lootHistory = new ArrayList<>();
+
+			PreparedStatement ps = null;
+			ResultSet rs = null;
+			Connection connection = null;
+
+			try {
+
+				connection = databaseConnection.getConnection();
+				ps = connection.prepareStatement("SELECT * FROM ac_loothistory WHERE UUID = '" + uuid.toString() + "';");
+
+				rs = ps.executeQuery();
+
+				while (rs.next()) {
+
+					int id = rs.getInt("ID");
+					String playerUUID = rs.getString("UUID");
+					String cubeletName = rs.getString("cubeletName");
+
+					long received = rs.getLong("received");
+
+					String rewardID = rs.getString("rewardID");
+					String rewardName = rs.getString("rewardName");
+					String rewardIcon = rs.getString("rewardIcon");
+
+					RewardHistory rewardHistory = new RewardHistory(UUID.fromString(rewardID), rewardName, rewardIcon);
+
+					lootHistory.add(new LootHistory(id, UUID.fromString(playerUUID), cubeletName, received, rewardHistory));
+
+				}
+
+				result.complete(lootHistory);
+
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+
+			} finally {
+
+				if(ps != null) {
+					try {
+						ps.close();
+					} catch (SQLException throwables) {
+						throwables.printStackTrace();
+					}
+				}
+
+				if(rs != null) {
+					try {
+						rs.close();
+					} catch (SQLException throwables) {
+						throwables.printStackTrace();
+					}
+				}
+
+				databaseConnection.close(connection);
+
+			}
+
+		});
+
+		return result;
+
+	}
+
+	public void addLootHistory(UUID uuid, LootHistory lootHistory) {
+
+		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+
+			PreparedStatement ps = null;
+			Connection connection = null;
+
+			try {
+
+				String iconBase64 = XItemStack.itemStackToBase64(lootHistory.getRewardHistory().getItemStack());
+
+				String value =
+						"('"
+						+ uuid.toString()
+						+ "','"
+						+ lootHistory.getCubeletName()
+						+ "','"
+						+ lootHistory.getRewardHistory().getUUID()
+						+ "','"
+						+ lootHistory.getRewardHistory().getName()
+						+ "','"
+						+ iconBase64
+						+ "',"
+						+ lootHistory.getReceived()
+						+ ")";
+
+				connection = databaseConnection.getConnection();
+				ps = connection.prepareStatement("INSERT INTO ac_loothistory (UUID,cubeletName,rewardID,rewardName,rewardIcon,received) VALUES " + value);
+				ps.executeUpdate();
+
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+
+			} finally {
+
+				if (ps != null) {
+					try {
+						ps.close();
+					} catch (SQLException throwables) {
+						throwables.printStackTrace();
+					}
+				}
+
+				databaseConnection.close(connection);
+
+			}
+
+		});
+
+	}
+
+	public void removeLootHistory(UUID uuid) {
+
+		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+
+			PreparedStatement ps = null;
+			Connection connection = null;
+
+			try {
+
+				connection = databaseConnection.getConnection();
+				ps = connection.prepareStatement("DELETE FROM ac_loothistory WHERE UUID = '" + uuid.toString() + "';");
+				ps.execute();
+
+			} catch (SQLException e) {
+
+				e.printStackTrace();
+
+			} finally {
+
+				if (ps != null) {
+					try {
+						ps.close();
+					} catch (SQLException throwables) {
+						throwables.printStackTrace();
+					}
+				}
+
+				databaseConnection.close(connection);
+
 			}
 
 		});

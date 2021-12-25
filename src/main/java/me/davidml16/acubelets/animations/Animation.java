@@ -7,7 +7,6 @@ import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.enums.Rotation;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.objects.rewards.PermissionReward;
 import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.utils.MessageUtils;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
@@ -19,6 +18,7 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Animation {
 
@@ -138,8 +138,7 @@ public abstract class Animation {
 
         Bukkit.getPluginManager().callEvent(new CubeletEndEvent(cubeletBox.getPlayerOpening(), cubeletType));
 
-        main.getCubeletRewardHandler().giveReward(cubeletBox, reward);
-        MessageUtils.sendLootMessage(cubeletBox, cubeletType, reward);
+        main.getCubeletRewardHandler().giveReward(cubeletBox, cubeletType, reward);
 
         cubeletBox.setState(CubeletBoxState.EMPTY);
         cubeletBox.setPlayerOpening(null);
@@ -171,10 +170,7 @@ public abstract class Animation {
         if(!main.isDuplicationEnabled())
             return;
 
-        if(!(reward instanceof PermissionReward))
-            return;
-
-        hologramAnimation = main.getCubeletRewardHandler().permissionReward(cubeletBox, reward);
+        hologramAnimation = main.getCubeletRewardHandler().duplicationTask(cubeletBox, reward);
 
     }
 
@@ -246,6 +242,15 @@ public abstract class Animation {
         this.reward = reward;
 
         this.cubeletBox.setLastReward(reward);
+
+        int min = Math.min(Integer.parseInt(reward.getRarity().getDuplicatePointsRange().split("-")[0]),
+                Integer.parseInt(reward.getRarity().getDuplicatePointsRange().split("-")[1]));
+        int max = Math.max(Integer.parseInt(reward.getRarity().getDuplicatePointsRange().split("-")[0]),
+                Integer.parseInt(reward.getRarity().getDuplicatePointsRange().split("-")[1]));
+
+        int randomPoints = ThreadLocalRandom.current().nextInt(min, max);
+
+        this.cubeletBox.setLastDuplicationPoints(randomPoints);
 
         setColorRarity(Utils.getRGBbyColor(Utils.getColorByText(reward.getRarity().getName())));
 

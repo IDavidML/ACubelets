@@ -21,10 +21,7 @@ import me.davidml16.acubelets.gui.gifts.Gift_GUI;
 import me.davidml16.acubelets.gui.options.OptionsAnimation_GUI;
 import me.davidml16.acubelets.gui.options.OptionsAnimations_GUI;
 import me.davidml16.acubelets.gui.options.OptionsMain_GUI;
-import me.davidml16.acubelets.gui.rewards.EditRewardCommands_GUI;
-import me.davidml16.acubelets.gui.rewards.EditRewardItems_GUI;
-import me.davidml16.acubelets.gui.rewards.RewardsPreview_GUI;
-import me.davidml16.acubelets.gui.rewards.Rewards_GUI;
+import me.davidml16.acubelets.gui.rewards.*;
 import me.davidml16.acubelets.handlers.*;
 import me.davidml16.acubelets.handlers.PluginHandler;
 import me.davidml16.acubelets.holograms.HologramHandler;
@@ -98,6 +95,7 @@ public class Main extends JavaPlugin {
     private EditCrafting_Crafts_GUI editCraftingCraftsGUI;
     private EditCrafting_Ingredients_GUI editCraftingIngredientsGUI;
     private EditRewardItems_GUI editRewardItemsGUI;
+    private EditRewardPermissions_GUI editRewardPermissionsGUI;
     private EditRewardCommands_GUI editRewardCommandsGUI;
     private Gift_GUI giftGUI;
     private GiftCubelet_GUI giftCubeletGUI;
@@ -250,7 +248,7 @@ public class Main extends JavaPlugin {
         rewardsGUI.loadGUI();
 
         editRewardItemsGUI = new EditRewardItems_GUI(this);
-
+        editRewardPermissionsGUI = new EditRewardPermissions_GUI(this);
         editRewardCommandsGUI = new EditRewardCommands_GUI(this);
 
         raritiesGUI = new Rarities_GUI(this);
@@ -418,6 +416,10 @@ public class Main extends JavaPlugin {
     public EditCrafting_Ingredients_GUI getEditCraftingIngredientsGUI() { return editCraftingIngredientsGUI; }
 
     public EditRewardItems_GUI getEditRewardItemsGUI() { return editRewardItemsGUI; }
+
+    public EditRewardPermissions_GUI getEditRewardPermissionsGUI() {
+        return editRewardPermissionsGUI;
+    }
 
     public EditRewardCommands_GUI getEditRewardCommandsGUI() { return editRewardCommandsGUI; }
 

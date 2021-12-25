@@ -3,12 +3,8 @@ package me.davidml16.acubelets.gui.rewards;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.rewards.CommandObjectRewardMenu;
 import me.davidml16.acubelets.conversation.rewards.EditCommandObjectRewardMenu;
-import me.davidml16.acubelets.conversation.rewards.ItemRewardMenu;
-import me.davidml16.acubelets.objects.CommandObject;
+import me.davidml16.acubelets.objects.rewards.CommandObject;
 import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.objects.rewards.CommandReward;
-import me.davidml16.acubelets.objects.rewards.Item;
-import me.davidml16.acubelets.objects.rewards.ItemReward;
 import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.Sounds;
@@ -59,7 +55,8 @@ public class EditRewardCommands_GUI implements Listener {
     }
 
     private void openPage(Player p, Reward reward, int page) {
-        List<CommandObject> commands = ((CommandReward) reward).getCommands();
+
+        List<CommandObject> commands = reward.getCommands();
 
         if(page > 0 && commands.size() < (page * 21) + 1) {
             openPage(p, reward, page - 1);
@@ -129,6 +126,7 @@ public class EditRewardCommands_GUI implements Listener {
 
         Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
         Bukkit.getScheduler().runTaskLaterAsynchronously(main, () -> opened.put(p.getUniqueId(), new GUISession(reward, page)), 1L);
+
     }
 
     public void open(Player p, Reward reward) {
@@ -164,15 +162,15 @@ public class EditRewardCommands_GUI implements Listener {
                 main.getRewardsGUI().open(p, cubeletType.getId());
             } else if ((slot >= 10 && slot <= 16) || (slot >= 19 && slot <= 25) || (slot >= 28 && slot <= 34)) {
 
-                if (((CommandReward) reward).getCommands().size() == 0) return;
+                if (reward.getCommands().size() == 0) return;
 
                 String commandID = ChatColor.stripColor(e.getCurrentItem().getItemMeta().getDisplayName());
-                CommandObject commandObject = ((CommandReward) reward).getCommand(commandID);
+                CommandObject commandObject = reward.getCommand(commandID);
 
                 if(e.getClick() == ClickType.LEFT || e.getClick() == ClickType.SHIFT_LEFT) {
 
-                    ((CommandReward) reward).getCommands().remove(commandObject);
-                    ((CommandReward) reward).recreateCommands();
+                    reward.getCommands().remove(commandObject);
+                    reward.recreateCommands();
 
                     p.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix()
                             + " &aYou removed &e" + commandObject.getId() + " &afrom commands of reward &e" + reward.getId()));

@@ -6,7 +6,7 @@
 
     <groupId>me.davidml16</groupId>
     <artifactId>acubelets</artifactId>
-    <version>1.9.5</version>
+    <version>1.9.6</version>
     <packaging>jar</packaging>
 
     <name>ACubelets</name>

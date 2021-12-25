@@ -1,4 +1,4 @@
-package me.davidml16.acubelets.objects;
+package me.davidml16.acubelets.objects.rewards;
 
 public class CommandObject {
 

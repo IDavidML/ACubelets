@@ -4,19 +4,18 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.CommonPrompts;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.rewards.CommandObject;
+import me.davidml16.acubelets.objects.rewards.PermissionObject;
 import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
-public class CommandObjectRewardMenu implements ConversationAbandonedListener, CommonPrompts {
+public class PermissionObjectRewardMenu implements ConversationAbandonedListener, CommonPrompts {
 
     private Main main;
-    public CommandObjectRewardMenu(Main main) {
+    public PermissionObjectRewardMenu(Main main) {
         this.main = main;
     }
 
@@ -42,28 +41,28 @@ public class CommandObjectRewardMenu implements ConversationAbandonedListener, C
             CubeletType cubeletType = (CubeletType) param1ConversationContext.getSessionData("cubeletType");
             switch (param1String) {
                 case "1":
-                    return new CommonStringPrompt(main,this, true,ChatColor.YELLOW + "  Enter reward command, \"cancel\" to return.\n  Available variables: %player%\n\n ", "rewardCommand");
+                    return new CommonStringPrompt(main,this, true,ChatColor.YELLOW + "  Enter reward permission, \"cancel\" to return.\n\n ", "rewardPermission");
                 case "2":
-                    if(param1ConversationContext.getSessionData("rewardCommand") != null) {
-                        String rewardCommand = (String) param1ConversationContext.getSessionData("rewardCommand");
+                    if(param1ConversationContext.getSessionData("rewardPermission") != null) {
+                        String rewardPermission = (String) param1ConversationContext.getSessionData("rewardPermission");
 
                         Reward reward = (Reward) param1ConversationContext.getSessionData("reward");
-                        reward.getCommands().add(new CommandObject("command-" + reward.getCommands().size(), rewardCommand));
+                        reward.getPermissions().add(new PermissionObject("permission-" + reward.getPermissions().size(), rewardPermission));
 
                         cubeletType.saveType();
 
                         param1ConversationContext.getForWhom().sendRawMessage("\n" + Utils.translate(main.getLanguageHandler().getPrefix()
-                                + " &aYou added &e" + reward.getId() + " &ato commands of cubelet type &e" + cubeletType.getId()));
+                                + " &aYou added &e" + reward.getId() + " &ato permissions of cubelet type &e" + cubeletType.getId()));
 
                         Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
                                 ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
 
-                        main.getEditRewardCommandsGUI().reloadGUI(reward);
-                        main.getEditRewardCommandsGUI().open((Player) param1ConversationContext.getSessionData("player"), reward);
+                        main.getEditRewardPermissionsGUI().reloadGUI(reward);
+                        main.getEditRewardPermissionsGUI().open((Player) param1ConversationContext.getSessionData("player"), reward);
                         main.getGuiHandler().removeConversation((Player) param1ConversationContext.getSessionData("player"));
                         return Prompt.END_OF_CONVERSATION;
                     } else {
-                        return new ErrorPrompt(main, this, "\n" + ChatColor.RED + "  You need to setup COMMAND to save command reward!\n  Write anything to continue\n ");
+                        return new ErrorPrompt(main, this, "\n" + ChatColor.RED + "  You need to setup PERMISSION to save command reward!\n  Write anything to continue\n ");
                     }
                 case "3":
                     return new ConfirmExitPrompt(main, this);
@@ -74,13 +73,13 @@ public class CommandObjectRewardMenu implements ConversationAbandonedListener, C
 
         public String getPromptText(ConversationContext param1ConversationContext) {
             String cadena = "";
-            cadena += ChatColor.GOLD + "" + ChatColor.BOLD + "\n  CUBELET COMMAND REWARD CREATION MENU\n";
+            cadena += ChatColor.GOLD + "" + ChatColor.BOLD + "\n  CUBELET PERMISSION REWARD CREATION MENU\n";
             cadena += ChatColor.GREEN + " \n";
 
-            if (param1ConversationContext.getSessionData("rewardCommand") == null) {
-                cadena += ChatColor.RED + "    1 " + ChatColor.GRAY + "- Set reward command (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
+            if (param1ConversationContext.getSessionData("rewardPermission") == null) {
+                cadena += ChatColor.RED + "    1 " + ChatColor.GRAY + "- Set reward permission (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
             } else {
-                cadena += ChatColor.GREEN + "    1 " + ChatColor.GRAY + "- Set reward command (" + ChatColor.YELLOW + param1ConversationContext.getSessionData("rewardCommand") + ChatColor.GRAY + ")\n";
+                cadena += ChatColor.GREEN + "    1 " + ChatColor.GRAY + "- Set reward permission (" + ChatColor.YELLOW + param1ConversationContext.getSessionData("rewardPermission") + ChatColor.GRAY + ")\n";
             }
 
             cadena += ChatColor.GREEN + "    2 " + ChatColor.GRAY + "- Save\n";

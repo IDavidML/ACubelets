@@ -182,6 +182,7 @@ public class CubeletType {
     }
 
     public void saveType() {
+
         FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
 
         config.set("type.key", null);
@@ -191,50 +192,65 @@ public class CubeletType {
             config.set("type.key", XItemStack.itemStackToBase64(key));
 
         config.set("type.rarities", new ArrayList<>());
+
         if (config.contains("type.rarities")) {
+
             List<Rarity> rts = new ArrayList<>(rarities.values());
             rts.sort(new RarityComparator());
+
             for (Rarity rarity : rts) {
                 config.set("type.rarities." + rarity.getId() + ".name", rarity.getName());
                 config.set("type.rarities." + rarity.getId() + ".chance", rarity.getChance());
                 config.set("type.rarities." + rarity.getId() + ".duplicatePointsRange", rarity.getDuplicatePointsRange());
             }
+
         }
 
         config.set("type.rewards", new ArrayList<>());
-        if (config.contains("type.rewards")) {
-            List<Reward> rewards = getAllRewards();
-            for (int i = 0; i < rewards.size(); i++) {
-                Reward reward = rewards.get(i);
-                config.set("type.rewards.reward_" + String.valueOf(i) + ".name", reward.getName());
-                config.set("type.rewards.reward_" + String.valueOf(i) + ".rarity", reward.getRarity().getId());
 
-                if(reward instanceof CommandReward) {
-                    List<String> commands = new ArrayList<>();
-                    for(CommandObject command : ((CommandReward) reward).getCommands())
-                        commands.add(command.getCommand());
-                    config.set("type.rewards.reward_" + String.valueOf(i) + ".command", commands);
-                } else if(reward instanceof PermissionReward)
-                    config.set("type.rewards.reward_" + String.valueOf(i) + ".permission", ((PermissionReward) reward).getPermission());
-                else if(reward instanceof ItemReward) {
-                    List<Item> items = ((ItemReward) reward).getItems();
-                    config.set("type.rewards.reward_" + String.valueOf(i) + ".item", new ArrayList<>());
-                    for (int j = 0; j < items.size(); j++) {
-                        if(!main.isSerializeBase64())
-                            XItemStack.serializeItem(items.get(j).getItemStack(), config, "type.rewards.reward_" + i + ".item.item_" + j);
-                        else
-                            config.set("type.rewards.reward_" + i + ".item.item_" + j, XItemStack.itemStackToBase64(items.get(j).getItemStack()));
-                    }
+        if (config.contains("type.rewards")) {
+
+            List<Reward> rewards = getAllRewards();
+
+            for (int i = 0; i < rewards.size(); i++) {
+
+                Reward reward = rewards.get(i);
+                config.set("type.rewards.reward_" + i + ".name", reward.getName());
+                config.set("type.rewards.reward_" + i + ".rarity", reward.getRarity().getId());
+
+                config.set("type.rewards.reward_" + i + ".rewardUUID", reward.getRewardUUID().toString());
+
+                List<String> commands = new ArrayList<>();
+                for(CommandObject command : reward.getCommands())
+                    commands.add(command.getCommand());
+                config.set("type.rewards.reward_" + i + ".command", commands);
+
+                List<String> permissions = new ArrayList<>();
+                for(PermissionObject permission : reward.getPermissions())
+                    permissions.add(permission.getPermission());
+                config.set("type.rewards.reward_" + i + ".permission", permissions);
+
+
+                List<ItemObject> itemObjects = reward.getItems();
+                config.set("type.rewards.reward_" + i + ".item", new ArrayList<>());
+                for (int j = 0; j < itemObjects.size(); j++) {
+                    if(!main.isSerializeBase64())
+                        XItemStack.serializeItem(itemObjects.get(j).getItemStack(), config, "type.rewards.reward_" + i + ".item.item_" + j);
+                    else
+                        config.set("type.rewards.reward_" + i + ".item.item_" + j, XItemStack.itemStackToBase64(itemObjects.get(j).getItemStack()));
                 }
 
                 if(!main.isSerializeBase64())
                     XItemStack.serializeIcon(reward.getIcon(), config, "type.rewards.reward_" + i + ".icon", true);
                 else
                     config.set("type.rewards.reward_" + i + ".icon", XItemStack.itemStackToBase64(reward.getIcon()));
+
             }
+
         }
 
         main.getCubeletTypesHandler().saveConfig(id);
+
     }
 
 }

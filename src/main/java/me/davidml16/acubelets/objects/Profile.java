@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.objects;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.objects.loothistory.LootHistory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,8 @@ public class Profile {
 
 	private List<Cubelet> cubelets;
 
+	private List<LootHistory> lootHistory;
+
 	private long lootPoints;
 
 	private String orderBy;
@@ -26,6 +29,7 @@ public class Profile {
 		this.main = main;
 		this.uuid = uuid;
 		this.cubelets = new ArrayList<>();
+		this.lootHistory = new ArrayList<>();
 		this.boxOpened = null;
 		this.orderBy = "date";
 		this.lootPoints = 0;
@@ -43,6 +47,14 @@ public class Profile {
 	public List<Cubelet> getCubelets() { return cubelets; }
 
 	public void setCubelets(List<Cubelet> cubelets) { this.cubelets = cubelets; }
+
+	public List<LootHistory> getLootHistory() {
+		return lootHistory;
+	}
+
+	public void setLootHistory(List<LootHistory> lootHistory) {
+		this.lootHistory = lootHistory;
+	}
 
 	public CubeletBox getBoxOpened() { return boxOpened; }
 

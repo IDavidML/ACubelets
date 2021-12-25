@@ -9,7 +9,7 @@ import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.enums.Rotation;
 import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.objects.rewards.PermissionReward;
+
 import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.utils.*;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;

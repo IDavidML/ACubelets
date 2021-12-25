@@ -17,6 +17,7 @@ public class ExecuteClear {
     }
 
     public boolean executeCommand(CommandSender sender, String label, String[] args) {
+
         if(sender instanceof Player) {
             if (!main.playerHasPermission((Player) sender, "acubelets.admin")) {
                 sender.sendMessage(main.getLanguageHandler().getMessage("Commands.NoPerms"));
@@ -52,6 +53,7 @@ public class ExecuteClear {
                                 UUID uuid = UUID.fromString(result);
 
                                 main.getDatabaseHandler().removeCubelets(uuid);
+                                main.getDatabaseHandler().removeLootHistory(uuid);
 
                                 String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Clear");
                                 msg = msg.replaceAll("%player%", name);
@@ -68,6 +70,7 @@ public class ExecuteClear {
                         Player target = Bukkit.getPlayer(player);
 
                         main.getPlayerDataHandler().getData(target).getCubelets().clear();
+                        main.getPlayerDataHandler().getData(target).getLootHistory().clear();
 
                         String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Clear");
                         msg = msg.replaceAll("%player%", name);
@@ -78,6 +81,7 @@ public class ExecuteClear {
                         main.getHologramImplementation().reloadHolograms(target);
 
                         main.getDatabaseHandler().removeCubelets(target.getUniqueId());
+                        main.getDatabaseHandler().removeLootHistory(target.getUniqueId());
 
                     }
 

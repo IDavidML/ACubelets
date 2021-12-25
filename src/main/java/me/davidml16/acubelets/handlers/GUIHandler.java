@@ -33,6 +33,8 @@ public class GUIHandler {
         if(main.getEditCraftingCraftsGUI().getOpened().containsKey(player.getUniqueId())) return true;
         if(main.getEditCraftingIngredientsGUI().getOpened().containsKey(player.getUniqueId())) return true;
         if(main.getEditRewardItemsGUI().getOpened().containsKey(player.getUniqueId())) return true;
+        if(main.getEditRewardCommandsGUI().getOpened().containsKey(player.getUniqueId())) return true;
+        if(main.getEditRewardPermissionsGUI().getOpened().containsKey(player.getUniqueId())) return true;
         if(main.getPlayerAnimationGUI().getOpened().containsKey(player.getUniqueId())) return true;
         if(main.getGiftGUI().getOpened().containsKey(player.getUniqueId())) return true;
         if(main.getGiftAmountGUI().getOpened().containsKey(player.getUniqueId())) return true;
@@ -63,6 +65,8 @@ public class GUIHandler {
         main.getEditCraftingCraftsGUI().getOpened().remove(player.getUniqueId());
         main.getEditCraftingIngredientsGUI().getOpened().remove(player.getUniqueId());
         main.getEditRewardItemsGUI().getOpened().remove(player.getUniqueId());
+        main.getEditRewardCommandsGUI().getOpened().remove(player.getUniqueId());
+        main.getEditRewardPermissionsGUI().getOpened().remove(player.getUniqueId());
         main.getPlayerAnimationGUI().getOpened().remove(player.getUniqueId());
         main.getGiftGUI().getOpened().remove(player.getUniqueId());
         main.getGiftAmountGUI().getOpened().remove(player.getUniqueId());

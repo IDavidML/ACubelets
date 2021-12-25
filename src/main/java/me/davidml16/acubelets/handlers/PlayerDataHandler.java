@@ -94,6 +94,8 @@ public class PlayerDataHandler {
 
 				});
 
+				main.getDatabaseHandler().getLootHistory(p.getUniqueId()).thenAccept(lootHistory -> profile.setLootHistory(lootHistory));
+
 			});
 
 		} catch (SQLException throwables) {

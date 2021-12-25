@@ -2,12 +2,12 @@ package me.davidml16.acubelets.objects.rewards;
 
 import org.bukkit.inventory.ItemStack;
 
-public class Item {
+public class ItemObject {
 
     private String id;
     private ItemStack itemStack;
 
-    public Item(String id, ItemStack itemStack) {
+    public ItemObject(String id, ItemStack itemStack) {
         this.id = id;
         this.itemStack = itemStack;
     }

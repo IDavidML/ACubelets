@@ -5,8 +5,6 @@ import me.davidml16.acubelets.animations.AnimationHandler;
 import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.GUILayout;
-import me.davidml16.acubelets.objects.Profile;
-import me.davidml16.acubelets.objects.rewards.CommandReward;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.NBTEditor;
 import me.davidml16.acubelets.utils.Sounds;
