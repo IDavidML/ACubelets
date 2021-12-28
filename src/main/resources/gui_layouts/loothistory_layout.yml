@@ -1,0 +1,72 @@
+#
+# This is the gui layout file.
+# You can change any messages that are in this file
+#
+# If you want to reset a message back to the default,
+# delete the entire line the message is on and restart the server.
+#
+# IMPORTANT: Slots numbers between 1-9, if not, the plugin will crash
+#
+
+Layout:
+
+  # GUI Title
+  Title: 'Loot History'
+
+  # GUI rows options
+  Size:
+    # Max rows of loot items, (1 to 5) 1 row reserved to navigation buttons
+    Max-History-Rows: 3
+    # If gui size is resizable or fixed size
+    Dynamic: true
+
+  # GUI items
+  Items:
+
+    # Each loot item
+    LootItem:
+      Name: '&e&l%reward_name%'
+      Lore:
+        - '&5Found in: &a%cubelet_name%'
+        - '&5Received: &a%received% ago'
+
+    # Item when you dont have any loot history
+    # Slot only works if you have dinamic gui size disabled, with this enabled, slot is always 0
+    NoHistory:
+      Name: '&4You have no loot history'
+      Material: 'BARRIER'
+      Slot: 0
+      Lore:
+        - '&7You can get loot by opening cubelets.'
+
+    # Back item
+    Back:
+      Name: '&9Back'
+      Material: 'BOOK'
+      Slot: 5
+      Lore:
+        - '&7Go back to the previous'
+        - '&7menu.'
+
+    # Close item
+    Close:
+      Name: '&9Close'
+      Material: 'BOOK'
+      Slot: 5
+      Lore:
+        - '&7Click to close'
+        - '&7this menu'
+
+    # Next page item
+    NextPage:
+      Name: '&6Next page'
+      Material: 'SUGAR_CANE'
+      Slot: 9
+      ShowPageNumber: false
+
+    # Previous page item
+    PreviousPage:
+      Name: '&6Previous page'
+      Material: 'SUGAR_CANE'
+      Slot: 1
+      ShowPageNumber: false

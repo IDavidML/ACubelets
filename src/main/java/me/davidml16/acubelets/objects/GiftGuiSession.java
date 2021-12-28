@@ -1,5 +1,7 @@
 package me.davidml16.acubelets.objects;
 
+import me.davidml16.acubelets.Main;
+
 import java.util.UUID;
 
 public class GiftGuiSession {
@@ -9,16 +11,19 @@ public class GiftGuiSession {
 
     private String targetName;
 
-    private int page;
+    private CubeletType cubeletType;
+    private int cubeletAmount;
+
+    private long available;
 
     private boolean openedByCommand;
 
-    public GiftGuiSession(UUID player, UUID target, String targetName, int page, boolean openedByCommand) {
+    public GiftGuiSession(UUID player, UUID target, String targetName, boolean openedByCommand) {
         this.player = player;
         this.target = target;
-        this.page = page;
         this.openedByCommand = openedByCommand;
         this.targetName = targetName;
+        this.cubeletAmount = 1;
     }
 
     public UUID getPlayer() {
@@ -37,13 +42,30 @@ public class GiftGuiSession {
         this.target = target;
     }
 
-    public int getPage() {
-        return page;
+    public CubeletType getCubeletType() {
+        return cubeletType;
     }
 
-    public void setPage(int page) {
-        this.page = page;
+    public void setCubeletType(CubeletType cubeletType) {
+
+        this.cubeletType = cubeletType;
+
+        Profile profile = Main.get().getPlayerDataHandler().getData(player);
+        this.available = profile.getCubelets().stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(cubeletType.getId())).count();
+
     }
+
+    public int getCubeletAmount() {
+        return cubeletAmount;
+    }
+
+    public void setCubeletAmount(int cubeletAmount) {
+        this.cubeletAmount = cubeletAmount;
+    }
+
+    public long getAvailable() { return available; }
+
+    public void setAvailable(long available) { this.available = available; }
 
     public boolean isOpenedByCommand() {
         return openedByCommand;

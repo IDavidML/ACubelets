@@ -9,19 +9,7 @@ import me.davidml16.acubelets.animations.AnimationHandler;
 import me.davidml16.acubelets.api.CubeletsAPI;
 import me.davidml16.acubelets.api.PointsAPI;
 import me.davidml16.acubelets.database.DatabaseHandler;
-import me.davidml16.acubelets.events.Event_Block;
-import me.davidml16.acubelets.events.Event_Damage;
-import me.davidml16.acubelets.events.Event_Interact;
-import me.davidml16.acubelets.events.Event_JoinQuit;
-import me.davidml16.acubelets.gui.*;
-import me.davidml16.acubelets.gui.crafting.*;
-import me.davidml16.acubelets.gui.gifts.GiftCubelet_GUI;
-import me.davidml16.acubelets.gui.gifts.GiftPlayer_GUI;
-import me.davidml16.acubelets.gui.gifts.Gift_GUI;
-import me.davidml16.acubelets.gui.options.OptionsAnimation_GUI;
-import me.davidml16.acubelets.gui.options.OptionsAnimations_GUI;
-import me.davidml16.acubelets.gui.options.OptionsMain_GUI;
-import me.davidml16.acubelets.gui.rewards.*;
+import me.davidml16.acubelets.events.*;
 import me.davidml16.acubelets.handlers.*;
 import me.davidml16.acubelets.handlers.PluginHandler;
 import me.davidml16.acubelets.holograms.HologramHandler;
@@ -73,36 +61,14 @@ public class Main extends JavaPlugin {
     private CubeletCraftingHandler cubeletCraftingHandler;
     private EconomyHandler economyHandler;
     private LayoutHandler layoutHandler;
-    private GUIHandler guiHandler;
+    private ConversationHandler conversationHandler;
     private TransactionHandler transactionHandler;
+
+    private MenuHandler menuHandler;
 
     private FireworkUtil fireworkUtil;
 
     private PluginHandler pluginHandler;
-
-    private Cubelets_GUI cubeletsGUI;
-    private PlayerAnimation_GUI playerAnimationGUI;
-    private EditBox_GUI editBoxGUI;
-    private TypeConfig_GUI typeConfigGUI;
-    private TypeSettings_GUI typeSettingsGUI;
-    private Rewards_GUI rewardsGUI;
-    private Rarities_GUI raritiesGUI;
-    private Animations_GUI animationsGUI;
-    private Crafting_GUI craftingGUI;
-    private CraftingConfirmation_GUI craftingConfirmationGUI;
-    private RewardsPreview_GUI rewardsPreviewGUI;
-    private TypeList_GUI typeListGUI;
-    private EditCrafting_Crafts_GUI editCraftingCraftsGUI;
-    private EditCrafting_Ingredients_GUI editCraftingIngredientsGUI;
-    private EditRewardItems_GUI editRewardItemsGUI;
-    private EditRewardPermissions_GUI editRewardPermissionsGUI;
-    private EditRewardCommands_GUI editRewardCommandsGUI;
-    private Gift_GUI giftGUI;
-    private GiftCubelet_GUI giftCubeletGUI;
-    private GiftPlayer_GUI giftPlayerGUI;
-    private OptionsMain_GUI optionsMainGUI;
-    private OptionsAnimations_GUI optionsAnimationsGUI;
-    private OptionsAnimation_GUI optionsAnimationGUI;
 
     private int playerCount;
 
@@ -168,7 +134,6 @@ public class Main extends JavaPlugin {
         animationHandler.loadAnimations();
 
         settings.put("AnimationsByPlayer", getConfig().getBoolean("AnimationsByPlayer"));
-        playerAnimationGUI = new PlayerAnimation_GUI(this);
 
         cubeletBoxHandler = new CubeletBoxHandler(this);
         cubeletBoxHandler.loadBoxes();
@@ -197,9 +162,6 @@ public class Main extends JavaPlugin {
 
         cubeletCraftingHandler = new CubeletCraftingHandler(this);
         cubeletCraftingHandler.loadCrafting();
-
-        editCraftingCraftsGUI = new EditCrafting_Crafts_GUI(this);
-        editCraftingIngredientsGUI = new EditCrafting_Ingredients_GUI(this);
 
         playerDataHandler = new PlayerDataHandler(this);
 
@@ -236,47 +198,15 @@ public class Main extends JavaPlugin {
 
         layoutHandler = new LayoutHandler(this);
 
-        cubeletsGUI = new Cubelets_GUI(this);
-
-        typeConfigGUI = new TypeConfig_GUI(this);
-        typeConfigGUI.loadGUI();
-
-        typeSettingsGUI = new TypeSettings_GUI(this);
-        typeSettingsGUI.loadGUI();
-
-        rewardsGUI = new Rewards_GUI(this);
-        rewardsGUI.loadGUI();
-
-        editRewardItemsGUI = new EditRewardItems_GUI(this);
-        editRewardPermissionsGUI = new EditRewardPermissions_GUI(this);
-        editRewardCommandsGUI = new EditRewardCommands_GUI(this);
-
-        raritiesGUI = new Rarities_GUI(this);
-        raritiesGUI.loadGUI();
-
-        animationsGUI = new Animations_GUI(this);
-
-        editBoxGUI = new EditBox_GUI(this);
-
-        craftingGUI = new Crafting_GUI(this);
-        craftingConfirmationGUI = new CraftingConfirmation_GUI(this);
+        menuHandler = new MenuHandler(this);
 
         settings.put("RewardsPreview", getConfig().getBoolean("RewardsPreview.Enabled"));
-        rewardsPreviewGUI = new RewardsPreview_GUI(this);
-        cubeletsGUI.setClickType(getConfig().getString("RewardsPreview.ClickType"));
+
+        menuHandler.setClickType(getConfig().getString("RewardsPreview.ClickType"));
 
         settings.put("GiftCubeletsCommand", getConfig().getBoolean("GiftCubeletsCommand"));
-        giftGUI = new Gift_GUI(this);
-        giftCubeletGUI = new GiftCubelet_GUI(this);
-        giftPlayerGUI = new GiftPlayer_GUI(this);
 
-        typeListGUI = new TypeList_GUI(this);
-
-        optionsMainGUI = new OptionsMain_GUI(this);
-        optionsAnimationsGUI = new OptionsAnimations_GUI(this);
-        optionsAnimationGUI = new OptionsAnimation_GUI(this);
-
-        guiHandler = new GUIHandler(this);
+        conversationHandler = new ConversationHandler(this);
 
         fireworkUtil = new FireworkUtil(this);
 
@@ -379,61 +309,11 @@ public class Main extends JavaPlugin {
 
     public LayoutHandler getLayoutHandler() { return layoutHandler; }
 
-    public GUIHandler getGuiHandler() { return guiHandler; }
-
-    public Cubelets_GUI getCubeletsGUI() { return cubeletsGUI; }
-
-    public PlayerAnimation_GUI getPlayerAnimationGUI() { return playerAnimationGUI; }
-
-    public TypeConfig_GUI getTypeConfigGUI() { return typeConfigGUI; }
-
-    public TypeSettings_GUI getTypeSettingsGUI() { return typeSettingsGUI; }
-
-    public Rewards_GUI getRewardsGUI() { return rewardsGUI; }
-
-    public Rarities_GUI getRaritiesGUI() { return raritiesGUI; }
-
-    public Animations_GUI getAnimationsGUI() { return animationsGUI; }
-
-    public EditBox_GUI getEditBoxGUI() { return editBoxGUI; }
-
-    public Crafting_GUI getCraftingGUI() { return craftingGUI; }
-
-    public Gift_GUI getGiftGUI() { return giftGUI; }
-
-    public GiftCubelet_GUI getGiftAmountGUI() { return giftCubeletGUI; }
-
-    public GiftPlayer_GUI getGiftPlayerGUI() { return giftPlayerGUI; }
-
-    public CraftingConfirmation_GUI getCraftingConfirmationGUI() { return craftingConfirmationGUI; }
-
-    public RewardsPreview_GUI getRewardsPreviewGUI() { return rewardsPreviewGUI; }
-
-    public TypeList_GUI getTypeListGUI() { return typeListGUI; }
-
-    public EditCrafting_Crafts_GUI getEditCraftingCraftsGUI() { return editCraftingCraftsGUI; }
-
-    public EditCrafting_Ingredients_GUI getEditCraftingIngredientsGUI() { return editCraftingIngredientsGUI; }
-
-    public EditRewardItems_GUI getEditRewardItemsGUI() { return editRewardItemsGUI; }
-
-    public EditRewardPermissions_GUI getEditRewardPermissionsGUI() {
-        return editRewardPermissionsGUI;
+    public MenuHandler getMenuHandler() {
+        return menuHandler;
     }
 
-    public EditRewardCommands_GUI getEditRewardCommandsGUI() { return editRewardCommandsGUI; }
-
-    public OptionsMain_GUI getOptionsMainGUI() {
-        return optionsMainGUI;
-    }
-
-    public OptionsAnimations_GUI getOptionsAnimationsGUI() {
-        return optionsAnimationsGUI;
-    }
-
-    public OptionsAnimation_GUI getOptionsAnimationGUI() {
-        return optionsAnimationGUI;
-    }
+    public ConversationHandler getConversationHandler() { return conversationHandler; }
 
     public PluginHandler getPluginHandler() { return pluginHandler; }
 
@@ -547,6 +427,7 @@ public class Main extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new Event_Interact(this), this);
         Bukkit.getPluginManager().registerEvents(new Event_JoinQuit(this), this);
         Bukkit.getPluginManager().registerEvents(new Event_Damage(), this);
+        Bukkit.getPluginManager().registerEvents(new Event_Menus(this), this);
         Bukkit.getPluginManager().registerEvents(new Event_Block(this), this);
     }
 

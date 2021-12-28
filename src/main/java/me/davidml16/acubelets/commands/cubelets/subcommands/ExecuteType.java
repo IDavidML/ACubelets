@@ -1,6 +1,8 @@
 package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.menus.*;
+import me.davidml16.acubelets.menus.rewards.RewardsMenu;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -45,7 +47,7 @@ public class ExecuteType {
 
         if(args[1].equalsIgnoreCase("list")) {
             if(sender instanceof Player)
-                main.getTypeListGUI().open((Player) sender);
+                new TypeListMenu(main, (Player) sender).open();
             return true;
         } else if(args[1].equalsIgnoreCase("create")) {
 
@@ -118,25 +120,32 @@ public class ExecuteType {
             }
 
             if (!Character.isDigit(id.charAt(0))) {
+
                 if (main.getCubeletTypesHandler().removeType(id)) {
-                    main.getTypeConfigGUI().getGuis().remove(id);
-                    main.getRaritiesGUI().getGuis().remove(id);
-                    main.getRewardsGUI().getGuis().remove(id);
+
+                    for(Player p : Bukkit.getServer().getOnlinePlayers()) {
+
+                        if(main.getMenuHandler().hasOpenedMenu(p, CubeletsMenu.class)) p.closeInventory();
+                        if(main.getMenuHandler().hasOpenedMenu(p, TypeConfigMenu.class)) p.closeInventory();
+                        if(main.getMenuHandler().hasOpenedMenu(p, RewardsMenu.class)) p.closeInventory();
+                        if(main.getMenuHandler().hasOpenedMenu(p, RaritiesMenu.class)) p.closeInventory();
+                        if(main.getMenuHandler().hasOpenedMenu(p, AnimationsMenu.class)) p.closeInventory();
+
+                    }
+
                     main.getCubeletTypesHandler().getTypes().remove(id);
 
                     main.getDatabaseHandler().removeCubelet(id);
 
                     for(Player p : Bukkit.getServer().getOnlinePlayers()) {
+
                         main.getPlayerDataHandler().getData(p).getCubelets().removeIf(cubelet -> cubelet.getType().equalsIgnoreCase(id));
-                        if(main.getCubeletsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
-                        if(main.getTypeConfigGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
-                        if(main.getRewardsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
-                        if(main.getRaritiesGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
-                        if(main.getAnimationsGUI().getOpened().containsKey(p.getUniqueId())) p.closeInventory();
+
                     }
 
                     sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &aSuccesfully removed " + label + " type &e" + id + "&a!"));
                     return true;
+
                 }
             } else {
                 sender.sendMessage(Utils.translate(

@@ -1,6 +1,9 @@
 package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.menus.gifts.GiftMenu;
+import me.davidml16.acubelets.objects.GiftGuiSession;
+import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -54,7 +57,11 @@ public class ExecuteGift {
 
                             UUID uuid = UUID.fromString(result);
 
-                            main.getGiftGUI().open(((Player) sender), uuid, name, true);
+                            GiftGuiSession giftGuiSession = new GiftGuiSession(((Player) sender).getUniqueId(), uuid, name, true);
+
+                            GiftMenu giftMenu = new GiftMenu(main, (Player) sender);
+                            giftMenu.setAttribute(Menu.AttrType.GIFT_GUISESSION_ATTR, giftGuiSession);
+                            giftMenu.open();
 
                         });
 

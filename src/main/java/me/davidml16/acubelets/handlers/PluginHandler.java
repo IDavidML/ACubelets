@@ -17,8 +17,9 @@ public class PluginHandler {
 
     public void reloadAll() {
 
-        for(Player p : Bukkit.getServer().getOnlinePlayers()) {
-            main.getGuiHandler().closeIfOpened(p);
+        for(Player player : Bukkit.getServer().getOnlinePlayers()) {
+            if(main.getMenuHandler().hasOpenedMenu(player))
+                player.closeInventory();
         }
 
         main.getPlayerDataHandler().saveAllPlayerDataAsync();
@@ -38,7 +39,7 @@ public class PluginHandler {
 
         main.setCraftingEnabled(main.getConfig().getBoolean("Crafting"));
         main.setPreviewEnabled(main.getConfig().getBoolean("RewardsPreview.Enabled"));
-        main.getCubeletsGUI().setClickType(main.getConfig().getString("RewardsPreview.ClickType"));
+        main.getMenuHandler().setClickType(main.getConfig().getString("RewardsPreview.ClickType"));
 
         main.setCubeletsCommandEnabled(main.getConfig().getBoolean("NoCubelets.ExecuteCommand"));
         main.setNoCubeletsCommand(main.getConfig().getString("NoCubelets.Command"));
@@ -84,11 +85,6 @@ public class PluginHandler {
         main.getCubeletCraftingHandler().loadCrafting();
         main.getLayoutHandler().loadLayouts();
         main.getAnimationHandler().loadAnimations();
-        main.getTypeConfigGUI().reloadAllGUI();
-        main.getRewardsGUI().reloadAllGUI();
-        main.getRaritiesGUI().reloadAllGUI();
-        main.getOptionsMainGUI().reloadGUI();
-        main.getOptionsAnimationsGUI().reloadGUI();
         main.getHologramHandler().getColorAnimation().setColors(main.getConfig().getStringList("Holograms.ColorAnimation"));
         main.getHologramHandler().setVisibilityDistance(main.getConfig().getInt("Holograms.VisibilityDistance"));
         main.getHologramImplementation().loadHolograms();

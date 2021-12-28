@@ -2,10 +2,9 @@ package me.davidml16.acubelets.events;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.interfaces.CubeletDateComparator;
-import me.davidml16.acubelets.objects.Cubelet;
-import me.davidml16.acubelets.objects.CubeletBox;
-import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.objects.Profile;
+import me.davidml16.acubelets.menus.CubeletsMenu;
+import me.davidml16.acubelets.menus.rewards.RewardsPreviewMenu;
+import me.davidml16.acubelets.objects.*;
 import me.davidml16.acubelets.utils.NBTEditor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
@@ -31,23 +30,29 @@ public class Event_Interact implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        Player p = e.getPlayer();
+
+        Player player = e.getPlayer();
         Action action = e.getAction();
 
         ItemStack item = e.getItem();
 
-        if(action == Action.RIGHT_CLICK_AIR || action == Action.LEFT_CLICK_AIR ||
-                action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
+        if(action == Action.RIGHT_CLICK_AIR || action == Action.LEFT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
+
             if(item != null) {
-                if (NBTEditor.contains(item, "keyType")) {
+
+                if (NBTEditor.contains(item, "keyType"))
                     e.setCancelled(true);
-                }
+
             }
+
         }
 
         if(item == null || !NBTEditor.contains(item, "keyType") || !main.isKeysEnabled()) {
+
             if(action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
+
                 if (main.getCubeletBoxHandler().getBoxes().containsKey(e.getClickedBlock().getLocation())) {
+
                     e.setCancelled(true);
 
                     if (!Bukkit.getVersion().contains("1.8")) {
@@ -57,15 +62,15 @@ public class Event_Interact implements Listener {
                     CubeletBox box = main.getCubeletBoxHandler().getBoxByLocation(e.getClickedBlock().getLocation());
 
                     if (box.isWaiting()) {
-                        main.getPlayerDataHandler().getData(p).setBoxOpened(box);
+                        main.getPlayerDataHandler().getData(player).setBoxOpened(box);
 
                         if (!main.isNoGuiMode()) {
 
-                            main.getCubeletsGUI().open(p);
+                            new CubeletsMenu(main, player).open();
 
                         } else {
 
-                            Profile profile = main.getPlayerDataHandler().getData(p.getUniqueId());
+                            Profile profile = main.getPlayerDataHandler().getData(player.getUniqueId());
                             List<Cubelet> cubelets = profile.getCubelets();
                             cubelets.sort(new CubeletDateComparator());
 
@@ -81,12 +86,12 @@ public class Event_Interact implements Listener {
 
                                     if (type.getAllRewards().size() > 0) {
 
-                                        main.getCubeletOpenHandler().openAnimation(p, profile.getBoxOpened(), type, false);
+                                        main.getCubeletOpenHandler().openAnimation(player, profile.getBoxOpened(), type, false);
 
-                                        main.getDatabaseHandler().removeCubelet(p.getUniqueId(), cubelet.getUuid());
+                                        main.getDatabaseHandler().removeCubelet(player.getUniqueId(), cubelet.getUuid());
 
                                         profile.getCubelets().remove(cubelet);
-                                        main.getHologramImplementation().reloadHolograms(p);
+                                        main.getHologramImplementation().reloadHolograms(player);
 
                                     }
 
@@ -97,18 +102,22 @@ public class Event_Interact implements Listener {
                         }
 
                     } else {
-                        if (box.getPlayerOpening().getUuid() == p.getUniqueId()) {
-                            p.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));
-                        } else {
-                            p.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Other").replaceAll("%player%", box.getPlayerOpening().getName()));
-                        }
+
+                        if (box.getPlayerOpening().getUuid() == player.getUniqueId())
+                            player.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));
+                        else
+                            player.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Other").replaceAll("%player%", box.getPlayerOpening().getName()));
+
                     }
 
                 }
+
             }
+
         } else {
 
             if(action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
+
                 if (main.getCubeletBoxHandler().getBoxes().containsKey(e.getClickedBlock().getLocation())) {
 
                     e.setCancelled(true);
@@ -117,7 +126,16 @@ public class Event_Interact implements Listener {
 
                     if(action == Action.LEFT_CLICK_BLOCK) {
 
-                        if(main.isPreviewEnabled()) main.getRewardsPreviewGUI().open(p, typeID, true);
+                        if(main.isPreviewEnabled()) {
+
+                            RewardsPreviewMenu rewardsPreviewMenu = new RewardsPreviewMenu(Main.get(), player);
+                            rewardsPreviewMenu.setAttribute(Menu.AttrType.CUSTOM_ID_ATTR, typeID);
+                            rewardsPreviewMenu.setAttribute(Menu.AttrType.OPENED_EXTERNALLY_ATTR, new Boolean(true));
+                            rewardsPreviewMenu.open();
+
+                            return;
+
+                        }
 
                     } else {
 
@@ -129,42 +147,48 @@ public class Event_Interact implements Listener {
 
                             if (type.getAllRewards().size() > 0) {
 
-                                main.getCubeletOpenHandler().openAnimation(p, box, type, true);
+                                main.getCubeletOpenHandler().openAnimation(player, box, type, true);
 
                                 if (item.getAmount() > 1) {
                                     item.setAmount(item.getAmount() - 1);
                                 } else {
-                                    p.getInventory().remove(item);
+                                    player.getInventory().remove(item);
                                 }
 
-                                Bukkit.getScheduler().runTaskLater(main, () -> p.updateInventory(), 20L);
+                                Bukkit.getScheduler().runTaskLater(main, () -> player.updateInventory(), 20L);
 
-                                main.getHologramImplementation().reloadHolograms(p);
+                                main.getHologramImplementation().reloadHolograms(player);
 
                             }
 
                         } else {
 
-                            if (box.getPlayerOpening().getUuid() == p.getUniqueId()) {
-                                p.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));
-                            } else {
-                                p.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Other").replaceAll("%player%", box.getPlayerOpening().getName()));
-                            }
+                            if (box.getPlayerOpening().getUuid() == player.getUniqueId())
+                                player.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));
+                            else
+                                player.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Other").replaceAll("%player%", box.getPlayerOpening().getName()));
 
                         }
 
                     }
 
                 }
+
             }
+
         }
+
     }
 
     @EventHandler
     public void onArmorStand(PlayerArmorStandManipulateEvent e) {
+
         ArmorStand armorStand = e.getRightClicked();
+
         if(!armorStand.hasMetadata("ACUBELETS")) return;
+
         e.setCancelled(true);
+
     }
 
 }

@@ -25,6 +25,7 @@ Layout:
 
     # Close item
     Close:
+      Enabled: true
       Name: '&9Close'
       Material: 'BOOK'
       Slot: 5
@@ -65,6 +66,7 @@ Layout:
 
     # Item to open crafting GUI
     Crafting:
+      Enabled: true
       Name: '&e&lCubelet Crafting'
       Material: 'CRAFTING_TABLE'
       Slot: 3
@@ -77,6 +79,7 @@ Layout:
 
     # Item to select your cubelet opening animation
     Animations:
+      Enabled: true
       Name: '&a&lAnimations'
       Material: 'REDSTONE'
       Slot: 6
@@ -87,12 +90,24 @@ Layout:
 
     # Item to gift cubelets, only shown if gift command is enabled
     Gift:
+      Enabled: true
       Name: '&b&lGift Cubelet'
       Slot: 4
       Lore:
         - '&7Gift cubelet to'
         - '&7searched player.'
         - '&6Click to search player.'
+
+    # Item to view your cubelets loot history
+    LootHistory:
+      Enabled: true
+      Name: '&d&lLoot History'
+      Material: 'CHEST'
+      Slot: 5
+      Lore:
+        - '&7View your past'
+        - '&7loot history.'
+        - '&6Click to open.'
 
     # Next page item
     NextPage:

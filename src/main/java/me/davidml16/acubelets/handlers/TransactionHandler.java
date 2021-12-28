@@ -3,6 +3,10 @@ package me.davidml16.acubelets.handlers;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.api.CubeletReceivedEvent;
 import me.davidml16.acubelets.database.DatabaseHandler;
+import me.davidml16.acubelets.menus.CubeletsMenu;
+import me.davidml16.acubelets.menus.crafting.CraftingMenu;
+import me.davidml16.acubelets.menus.gifts.GiftCubeletMenu;
+import me.davidml16.acubelets.menus.gifts.GiftMenu;
 import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Profile;
@@ -81,12 +85,12 @@ public class TransactionHandler {
 
                     main.getPlayerDataHandler().getData(Objects.requireNonNull(target)).getCubelets().addAll(cubelets);
 
-                    if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(target);
-                    if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(target);
-                    if (main.getGiftGUI().getOpened().containsKey(uuid)) main.getGiftGUI().reloadGui(target);
-                    if (main.getGiftAmountGUI().getOpened().containsKey(uuid)) main.getGiftAmountGUI().reloadGui(target);
-
                     Bukkit.getScheduler().runTask(main, () -> {
+
+                        main.getMenuHandler().reloadAllMenus(target, CubeletsMenu.class);
+                        main.getMenuHandler().reloadAllMenus(target, CraftingMenu.class);
+                        main.getMenuHandler().reloadAllMenus(target, GiftMenu.class);
+                        main.getMenuHandler().reloadAllMenus(target, GiftCubeletMenu.class);
 
                         main.getHologramImplementation().reloadHolograms(target);
 
@@ -157,11 +161,11 @@ public class TransactionHandler {
                         }
                     }
 
-                    if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(target);
-                    if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(target);
-                    if (main.getGiftGUI().getOpened().containsKey(uuid)) main.getGiftGUI().reloadGui(target);
-
                     Bukkit.getScheduler().runTask(main, () -> {
+
+                        main.getMenuHandler().reloadAllMenus(target, CubeletsMenu.class);
+                        main.getMenuHandler().reloadAllMenus(target, CraftingMenu.class);
+                        main.getMenuHandler().reloadAllMenus(target, GiftMenu.class);
 
                         main.getHologramImplementation().reloadHolograms(target);
 
@@ -228,10 +232,18 @@ public class TransactionHandler {
     public void givePoints(UUID uuid, int amount) throws SQLException {
 
         if(Bukkit.getPlayer(uuid) != null) {
+
             main.getPlayerDataHandler().getData(uuid).setLootPoints(main.getPlayerDataHandler().getData(uuid).getLootPoints() + amount);
-            if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(Bukkit.getPlayer(uuid));
-            if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(Bukkit.getPlayer(uuid));
-            if (main.getGiftGUI().getOpened().containsKey(uuid)) main.getGiftGUI().reloadGui(Bukkit.getPlayer(uuid));
+
+            Bukkit.getScheduler().runTask(main, () -> {
+
+                Player target = Bukkit.getPlayer(uuid);
+                main.getMenuHandler().reloadAllMenus(target, CubeletsMenu.class);
+                main.getMenuHandler().reloadAllMenus(target, CraftingMenu.class);
+                main.getMenuHandler().reloadAllMenus(target, GiftMenu.class);
+                main.getMenuHandler().reloadAllMenus(target, GiftCubeletMenu.class);
+
+            });
 
         }
 
@@ -283,9 +295,16 @@ public class TransactionHandler {
             else
                 main.getPlayerDataHandler().getData(uuid).setLootPoints(main.getPlayerDataHandler().getData(uuid).getLootPoints() - amount);
 
-            if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(Bukkit.getPlayer(uuid));
-            if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(Bukkit.getPlayer(uuid));
-            if (main.getGiftGUI().getOpened().containsKey(uuid)) main.getGiftGUI().reloadGui(Bukkit.getPlayer(uuid));
+            Bukkit.getScheduler().runTask(main, () -> {
+
+                Player target = Bukkit.getPlayer(uuid);
+                main.getMenuHandler().reloadAllMenus(target, CubeletsMenu.class);
+                main.getMenuHandler().reloadAllMenus(target, CraftingMenu.class);
+                main.getMenuHandler().reloadAllMenus(target, GiftMenu.class);
+                main.getMenuHandler().reloadAllMenus(target, GiftCubeletMenu.class);
+
+            });
+
         }
 
         main.getDatabaseHandler().getPlayerLootPoints(uuid, done -> {
@@ -336,10 +355,19 @@ public class TransactionHandler {
     public void setPoints(UUID uuid, int amount) throws SQLException {
 
         if(Bukkit.getPlayer(uuid) != null) {
+
             main.getPlayerDataHandler().getData(uuid).setLootPoints(amount);
-            if (main.getCubeletsGUI().getOpened().containsKey(uuid)) main.getCubeletsGUI().reloadPage(Bukkit.getPlayer(uuid));
-            if (main.getCraftingGUI().getOpened().contains(uuid)) main.getCraftingGUI().open(Bukkit.getPlayer(uuid));
-            if (main.getGiftGUI().getOpened().containsKey(uuid)) main.getGiftGUI().reloadGui(Bukkit.getPlayer(uuid));
+
+            Bukkit.getScheduler().runTask(main, () -> {
+
+                Player target = Bukkit.getPlayer(uuid);
+                main.getMenuHandler().reloadAllMenus(target, CubeletsMenu.class);
+                main.getMenuHandler().reloadAllMenus(target, CraftingMenu.class);
+                main.getMenuHandler().reloadAllMenus(target, GiftMenu.class);
+                main.getMenuHandler().reloadAllMenus(target, GiftCubeletMenu.class);
+
+            });
+
         }
 
         main.getDatabaseHandler().setPlayerLootPoints(uuid, amount);

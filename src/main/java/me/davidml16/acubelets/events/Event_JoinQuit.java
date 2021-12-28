@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.events;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.menus.gifts.GiftPlayerMenu;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -23,18 +24,18 @@ public class Event_JoinQuit implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {
 
-        Player p = e.getPlayer();
+        Player player = e.getPlayer();
 
-        main.getHologramImplementation().loadHolograms(p);
-        main.getPlayerDataHandler().loadPlayerData(p);
+        main.getHologramImplementation().loadHolograms(player);
+        main.getPlayerDataHandler().loadPlayerData(player);
         main.setPlayerCount(main.getPlayerCount() + 1);
 
-        main.getGiftPlayerGUI().reloadAll();
+        main.getMenuHandler().reloadAllMenus(GiftPlayerMenu.class);
 
-        if(p.getName().equalsIgnoreCase("DavidML16")) {
+        if(player.getName().equalsIgnoreCase("DavidML16")) {
             Bukkit.getScheduler().runTaskLater(main, () -> {
                 PluginDescriptionFile pdf = main.getDescription();
-                p.sendMessage(Utils.translate("&aServer using ACubelets. Version: &e" + pdf.getVersion()));
+                player.sendMessage(Utils.translate("&aServer using ACubelets. Version: &e" + pdf.getVersion()));
             }, 40L);
         }
 
@@ -42,20 +43,22 @@ public class Event_JoinQuit implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
-        Player p = e.getPlayer();
 
-        main.getGuiHandler().removeOpened(p);
-        main.getHologramImplementation().removeHolograms(p);
+        Player player = e.getPlayer();
 
-        main.getDatabaseHandler().saveProfileAsync(main.getPlayerDataHandler().getData(p));
+        main.getMenuHandler().getOpenedMenus().remove(player);
+        main.getHologramImplementation().removeHolograms(player);
+
+        main.getDatabaseHandler().saveProfileAsync(main.getPlayerDataHandler().getData(player));
 
         main.setPlayerCount(main.getPlayerCount() - 1);
 
-        main.getPlayerDataHandler().getPlayersData().remove(p.getUniqueId());
+        main.getPlayerDataHandler().getPlayersData().remove(player.getUniqueId());
 
-        main.getDatabaseHandler().removeExpiredCubelets(p.getUniqueId());
+        main.getDatabaseHandler().removeExpiredCubelets(player.getUniqueId());
 
-        Bukkit.getScheduler().runTaskLater(main, () -> main.getGiftPlayerGUI().reloadAll(), 1);
+        main.getMenuHandler().reloadAllMenus(GiftPlayerMenu.class);
+
     }
 
     @EventHandler

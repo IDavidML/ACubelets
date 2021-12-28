@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.menus.LootHistoryMenu;
 import me.davidml16.acubelets.objects.loothistory.LootHistory;
 import me.davidml16.acubelets.objects.loothistory.RewardHistory;
 import me.davidml16.acubelets.objects.rewards.*;
@@ -266,6 +267,7 @@ public class CubeletRewardHandler {
 		if(target != null) {
 			Profile profile = main.getPlayerDataHandler().getData(target);
 			profile.getLootHistory().add(lootHistory);
+			main.getMenuHandler().reloadAllMenus(target, LootHistoryMenu.class);
 		}
 
 	}

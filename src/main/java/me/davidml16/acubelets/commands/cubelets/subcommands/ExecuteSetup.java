@@ -1,6 +1,9 @@
 package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.menus.TypeConfigMenu;
+import me.davidml16.acubelets.menus.rewards.RewardsMenu;
+import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -36,7 +39,9 @@ public class ExecuteSetup {
             return true;
         }
 
-        main.getTypeConfigGUI().open((Player) sender, id);
+        TypeConfigMenu typeConfigMenu = new TypeConfigMenu(main, (Player) sender);
+        typeConfigMenu.setAttribute(Menu.AttrType.CUSTOM_ID_ATTR, id);
+        typeConfigMenu.open();
 
         return true;
     }

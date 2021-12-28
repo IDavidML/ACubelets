@@ -1,6 +1,8 @@
 package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.menus.EditBoxMenu;
+import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.Bukkit;
@@ -19,6 +21,7 @@ public class ExecuteBox {
     }
 
     public boolean executeCommand(CommandSender sender, String label, String[] args) {
+
         if (!(sender instanceof Player)) {
             sender.sendMessage(Utils.translate("&cThe commands only can be use by players!"));
             return true;
@@ -37,9 +40,11 @@ public class ExecuteBox {
         }
 
         if (args[1].equalsIgnoreCase("create")) {
+
             Block block = ((Player)sender).getTargetBlock(null, 5);
 
             if(block.getType().isBlock() && block.getType() != Material.AIR) {
+
                 if (!main.getCubeletBoxHandler().getBoxes().containsKey(block.getLocation())) {
 
                     ArmorStand armorStand = block.getLocation().getWorld().spawn(block.getLocation().clone().add(0.5, 1.5, 0.5), ArmorStand.class);
@@ -63,24 +68,34 @@ public class ExecuteBox {
                         main.getCubeletBoxHandler().createBox(block.getLocation(), blockHeight);
                         armorStand.remove();
                     }, 10);
+
                     return true;
+
                 } else {
-                    sender.sendMessage(Utils.translate(
-                            main.getLanguageHandler().getPrefix() + " &cThis " + label + " machine location already exists!"));
+
+                    sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis " + label + " machine location already exists!"));
+
                     return false;
+
                 }
+
             } else {
-                sender.sendMessage(Utils.translate(
-                        main.getLanguageHandler().getPrefix() + " &cA " + label + " machine needs to be a block!"));
+
+                sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cA " + label + " machine needs to be a block!"));
+
                 return false;
+
             }
         }
 
         if (args[1].equalsIgnoreCase("remove")) {
+
             Block block = ((Player) sender).getTargetBlock(null, 5);
 
             if(block.getType().isBlock() && block.getType() != Material.AIR) {
+
                 if (main.getCubeletBoxHandler().getBoxes().containsKey(block.getLocation())) {
+
                     main.getCubeletBoxHandler().removeBox(block.getLocation());
 
                     Sounds.playSound(((Player)sender), ((Player)sender).getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
@@ -90,36 +105,57 @@ public class ExecuteBox {
                             " &aX: &e" + block.getLocation().getBlockX() +
                             ", &aY: &e" + block.getLocation().getBlockY() +
                             ", &aZ: &e" + block.getLocation().getBlockZ()));
+
                     return true;
+
                 } else {
-                    sender.sendMessage(Utils.translate(
-                            main.getLanguageHandler().getPrefix() + " &cThis " + label + " machine location no exists!"));
+
+                    sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis " + label + " machine location no exists!"));
+
                     return false;
+
                 }
+
             } else {
-                sender.sendMessage(Utils.translate(
-                        main.getLanguageHandler().getPrefix() + " &cA " + label + " machine needs to be a block!"));
+
+                sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cA " + label + " machine needs to be a block!"));
+
                 return false;
+
             }
+
         }
 
         if (args[1].equalsIgnoreCase("edit")) {
+
             Block block = ((Player) sender).getTargetBlock(null, 5);
 
             if(block.getType().isBlock() && block.getType() != Material.AIR) {
+
                 if (main.getCubeletBoxHandler().getBoxes().containsKey(block.getLocation())) {
-                    main.getEditBoxGUI().open(((Player) sender), main.getCubeletBoxHandler().getBoxByLocation(block.getLocation()));
+
+                    EditBoxMenu editBoxMenu = new EditBoxMenu(main, (Player) sender);
+                    editBoxMenu.setAttribute(Menu.AttrType.CUBELET_BOX_ATTR, main.getCubeletBoxHandler().getBoxByLocation(block.getLocation()));
+                    editBoxMenu.open();
+
                     return true;
+
                 } else {
-                    sender.sendMessage(Utils.translate(
-                            main.getLanguageHandler().getPrefix() + " &cThis " + label + " machine location no exists!"));
+
+                    sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cThis " + label + " machine location no exists!"));
+
                     return false;
+
                 }
+
             } else {
-                sender.sendMessage(Utils.translate(
-                        main.getLanguageHandler().getPrefix() + " &cA " + label + " machine needs to be a block!"));
+
+                sender.sendMessage(Utils.translate(main.getLanguageHandler().getPrefix() + " &cA " + label + " machine needs to be a block!"));
+
                 return false;
+
             }
+
         }
 
         return true;

@@ -1,6 +1,8 @@
 package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.menus.rewards.RewardsPreviewMenu;
+import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -31,7 +33,10 @@ public class ExecutePreview {
             return true;
         }
 
-        main.getRewardsPreviewGUI().open((Player) sender, id, true);
+        RewardsPreviewMenu rewardsPreviewMenu = new RewardsPreviewMenu(Main.get(), (Player) sender);
+        rewardsPreviewMenu.setAttribute(Menu.AttrType.CUSTOM_ID_ATTR, id);
+        rewardsPreviewMenu.setAttribute(Menu.AttrType.OPENED_EXTERNALLY_ATTR, new Boolean(true));
+        rewardsPreviewMenu.open();
 
         return true;
     }

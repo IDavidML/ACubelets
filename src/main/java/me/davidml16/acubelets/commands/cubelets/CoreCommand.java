@@ -28,6 +28,7 @@ public class CoreCommand extends Command {
     private final ExecuteGift executeGift = new ExecuteGift(main);
     private final ExecuteGiveKey executeGiveKey = new ExecuteGiveKey(main);
     private final ExecutePreview executePreview = new ExecutePreview(main);
+    private final ExecuteLootHistory executeLootHistory = new ExecuteLootHistory(main);
 
     public CoreCommand(String name) {
         super(name);
@@ -47,7 +48,7 @@ public class CoreCommand extends Command {
         }
 
         if(sender instanceof Player) {
-            if(main.getGuiHandler().haveConversation((Player) sender)) return true;
+            if(main.getConversationHandler().haveConversation((Player) sender)) return true;
         }
 
         switch (args[0]) {
@@ -77,6 +78,8 @@ public class CoreCommand extends Command {
                 return executeGift.executeCommand(sender, label, args);
             case "preview":
                 return executePreview.executeCommand(sender, label, args);
+            case "history":
+                return executeLootHistory.executeCommand(sender, label, args);
         }
 
         sender.sendMessage("");
@@ -99,6 +102,8 @@ public class CoreCommand extends Command {
             if(main.isPreviewEnabled()) {
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " preview [typeID]"));
             }
+
+            sender.sendMessage(Utils.translate("&7 - &a/" + label + " history"));
 
             if (main.playerHasPermission((Player) sender, "acubelets.admin")) {
                 sender.sendMessage("");
@@ -153,6 +158,7 @@ public class CoreCommand extends Command {
                 list.add("gift");
             if(main.isPreviewEnabled())
                 list.add("preview");
+            list.add("history");
             if (main.playerHasPermission(p, "acubelets.admin")) {
                 list.add("help");
                 list.add("give");

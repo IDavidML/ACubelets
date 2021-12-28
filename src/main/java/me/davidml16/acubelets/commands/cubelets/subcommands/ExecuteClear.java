@@ -1,6 +1,9 @@
 package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.menus.CubeletsMenu;
+import me.davidml16.acubelets.menus.LootHistoryMenu;
+import me.davidml16.acubelets.menus.crafting.CraftingMenu;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -76,12 +79,18 @@ public class ExecuteClear {
                         msg = msg.replaceAll("%player%", name);
                         sender.sendMessage(Utils.translate(msg));
 
-                        if (main.getCubeletsGUI().getOpened().containsKey(target.getUniqueId())) main.getCubeletsGUI().reloadPage(target);
-                        if (main.getCraftingGUI().getOpened().contains(target.getUniqueId())) main.getCraftingGUI().open(target);
-                        main.getHologramImplementation().reloadHolograms(target);
+                        Bukkit.getScheduler().runTaskLater(main, () -> {
 
-                        main.getDatabaseHandler().removeCubelets(target.getUniqueId());
-                        main.getDatabaseHandler().removeLootHistory(target.getUniqueId());
+                            main.getMenuHandler().reloadAllMenus(target, CubeletsMenu.class);
+                            main.getMenuHandler().reloadAllMenus(target, CraftingMenu.class);
+                            main.getMenuHandler().reloadAllMenus(target, LootHistoryMenu.class);
+
+                            main.getHologramImplementation().reloadHolograms(target);
+
+                            main.getDatabaseHandler().removeCubelets(target.getUniqueId());
+                            main.getDatabaseHandler().removeLootHistory(target.getUniqueId());
+
+                        }, 1L);
 
                     }
 

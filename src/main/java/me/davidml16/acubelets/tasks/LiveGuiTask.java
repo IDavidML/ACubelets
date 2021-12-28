@@ -1,19 +1,19 @@
 package me.davidml16.acubelets.tasks;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.gui.Cubelets_GUI;
+import me.davidml16.acubelets.menus.CubeletsMenu;
 import me.davidml16.acubelets.objects.Cubelet;
-import me.davidml16.acubelets.objects.CubeletType;
+import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.TimeAPI.TimeUtils;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class LiveGuiTask {
 
@@ -30,16 +30,27 @@ public class LiveGuiTask {
 
 			if(main.getPlayerCount() == 0) return;
 
-			for(Cubelets_GUI.GuiSession guiSession : main.getCubeletsGUI().getOpened().values()) {
+			for(Menu menu : main.getMenuHandler().getOpenedMenus().values()) {
 
-				if(guiSession.getCubeletsDisplayed().size() == 0) continue;
+				if(!menu.getClass().equals(CubeletsMenu.class)) continue;
+
+				List<Cubelet> cubelets = (List<Cubelet>) menu.getAttribute(Menu.AttrType.CUBELET_DISPLAYED_LIST_ATTR);
+				List<ItemStack> items = (List<ItemStack>) menu.getAttribute(Menu.AttrType.CUBELET_DISPLAYED_ITEMS_ATTR);
+
+				if(cubelets == null) continue;
+				if(items == null) continue;
+
+				if(cubelets.size() == 0) continue;
 
 				List<ItemStack> updatedItems = new ArrayList<>();
 
-				for(int i = 0; i < guiSession.getCubeletsDisplayed().size(); i++) {
+				for(int i = 0; i < cubelets.size(); i++) {
 
-					Cubelet cubelet = guiSession.getCubeletsDisplayed().get(i);
-					ItemStack item = guiSession.getItemsDisplayed().get(i);
+					Cubelet cubelet = cubelets.get(i);
+
+					if(i >= items.size()) continue;
+
+					ItemStack item = items.get(i);
 
 					List<String> lore = new ArrayList<>();
 					if (cubelet.getExpire() > System.currentTimeMillis()) {
@@ -61,11 +72,11 @@ public class LiveGuiTask {
 
 				Bukkit.getScheduler().runTask(main, () -> {
 
-					Player target = Bukkit.getPlayer(guiSession.getUuid());
+					Player target = menu.getOwner();
 
 					if(target == null) return;
 
-					if(!main.getCubeletsGUI().getOpened().containsKey(guiSession.getUuid())) return;
+					if(!main.getMenuHandler().hasOpenedMenu(target, CubeletsMenu.class)) return;
 
 					for(int i = 0; i < updatedItems.size(); i++) target.getOpenInventory().getTopInventory().setItem(i, updatedItems.get(i));
 
