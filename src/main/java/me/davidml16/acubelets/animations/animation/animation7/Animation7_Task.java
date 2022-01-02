@@ -28,9 +28,6 @@ public class Animation7_Task extends Animation {
 	private ArmorStand armorStand;
 	private Location armorStandLocation;
 
-	private Animation7_Music music;
-	private Animation7_Blocks blocks;
-
 	private Set<Animation7_Pumpkin> pumpkins = new HashSet<>();
 	private Set<Entity> ghosts = new HashSet<>();
 
@@ -65,7 +62,7 @@ public class Animation7_Task extends Animation {
 
 		} else if(time == 75) {
 
-			music.runTaskTimer(getMain(), 0L, 4L);
+			startRunnable("music", 0L, 4L);
 
 			armorStand = ASSpawner.spawn(getMain(), getCubeletBox(), getCubeletType(), false);
 			armorStandLocation = armorStand.getLocation();
@@ -120,10 +117,10 @@ public class Animation7_Task extends Animation {
 	@Override
 	public void onStart() {
 
-		blocks = new Animation7_Blocks(getCubeletBox().getLocation());
-		blocks.runTaskTimer(getMain(), 0L, 6L);
+		setAnimationBlocks(new Animation7_Blocks(getCubeletBox().getLocation()));
+		startAnimationBlocks(0L);
 
-		music = new Animation7_Music(getCubeletBox().getLocation());
+		addRunnable("music", new Animation7_Music(getCubeletBox().getLocation()));
 
 		setColors(Arrays.asList(Color.ORANGE, Color.BLACK));
 
@@ -132,11 +129,7 @@ public class Animation7_Task extends Animation {
 	@Override
 	public void onStop() {
 
-		blocks.cancel();
-
-		try {
-			music.cancel();
-		} catch(IllegalStateException | NullPointerException ignored) {}
+		cancelRunnables();
 
 		try {
 			for(Animation7_Pumpkin pumpkin : pumpkins) {
@@ -156,7 +149,7 @@ public class Animation7_Task extends Animation {
 			}
 		} catch(IllegalStateException | NullPointerException ignored) {}
 
-		if(blocks != null) blocks.restore();
+		stopAnimationBlocks();
 
 		if(getMain().getAnimationHandler().getEntities().contains(armorStand)) {
 			if(armorStand != null) armorStand.remove();
@@ -185,7 +178,7 @@ public class Animation7_Task extends Animation {
 	@Override
 	public void onRewardReveal() {
 
-		music.cancel();
+		cancelRunnable("music");
 
 		armorStand.remove();
 		armorStand = null;
@@ -193,8 +186,11 @@ public class Animation7_Task extends Animation {
 	}
 
 	public void removeRandomGhost() {
+
 		for(Entity bat : ghosts) {
+
 			if(bat instanceof Bat) {
+
 				Entity passenger = bat.getPassenger();
 
 				UtilParticles.display(Particles.SNOW_SHOVEL, bat.getLocation(), 5);
@@ -208,11 +204,15 @@ public class Animation7_Task extends Animation {
 				ghosts.remove(bat);
 
 				break;
+
 			}
+
 		}
+
 	}
 
 	public void spawnGhost(ItemStack chestplate) {
+
 		Bat bat = getCubeletBox().getLocation().getWorld().spawn(getCubeletBox().getLocation().clone().add(0.5, 1, 0.5), Bat.class);
 		ArmorStand ghost = bat.getWorld().spawn(bat.getLocation(), ArmorStand.class);
 		ghost.setSmall(true);
@@ -232,6 +232,7 @@ public class Animation7_Task extends Animation {
 
 		ghosts.add(bat);
 		ghosts.add(ghost);
+
 	}
 	
 }

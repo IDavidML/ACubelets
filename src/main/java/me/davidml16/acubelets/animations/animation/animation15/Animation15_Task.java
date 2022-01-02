@@ -31,10 +31,6 @@ public class Animation15_Task extends Animation {
 	private ArmorStand armorStand;
 	private Location armorStandLocation;
 
-	private Animation15_Serpent serpent;
-	private Animation15_Blocks blocks;
-	private Animation15_Spiral spiral;
-
 	private Set<Animation15_RotatingFlame> orbits = new HashSet<>();
 
 	private BukkitTask blackHole;
@@ -62,8 +58,8 @@ public class Animation15_Task extends Animation {
 
 		if(time == 45) {
 
-			serpent = new Animation15_Serpent(getCubeletBox().getLocation().clone().add(0, 1, 0).setDirection(new Vector(-1, 0, -1)), false);
-			serpent.runTaskTimer(getMain(), 0, 1);
+			addRunnable("serpent", new Animation15_Serpent(getCubeletBox().getLocation().clone().add(0, 1, 0).setDirection(new Vector(-1, 0, -1)), false));
+			startRunnable("serpent", 0, 1);
 
 			Location eye = armorStand.getEyeLocation().add(0.0D, 0.4D, 0.0D);
 			for (Location location2 : LocationUtils.getCircle(armorStand.getLocation().clone().add(0, 0.75,0), 0.25D, 50)) {
@@ -89,7 +85,7 @@ public class Animation15_Task extends Animation {
 			orbit3.runTaskTimer(getMain(), 0L, 1L);
 			orbits.add(orbit3);
 
-			spiral.cancel();
+			cancelRunnable("spiral");
 
 		}
 
@@ -135,8 +131,8 @@ public class Animation15_Task extends Animation {
 	@Override
 	public void onStart() {
 
-		blocks = new Animation15_Blocks(getCubeletBox().getLocation());
-		blocks.runTaskTimer(getMain(), 0L, 6L);
+		setAnimationBlocks(new Animation15_Blocks(getCubeletBox().getLocation()));
+		startAnimationBlocks(0L);
 
 		setColors(Arrays.asList(Color.BLACK, Color.ORANGE));
 
@@ -153,15 +149,16 @@ public class Animation15_Task extends Animation {
 		armorStandLocation = armorStand.getLocation();
 		Sounds.playSound(getCubeletBox().getLocation(), Sounds.MySound.FIREWORK_LAUNCH, 0.5f, 0);
 
-		spiral = new Animation15_Spiral(armorStand);
-		spiral.runTaskTimer(getMain(), 0L, 1L);
+		addRunnable("spiral", new Animation15_Spiral(armorStand));
+		startRunnable("spiral", 0L, 1L);
 
 	}
 
 	@Override
 	public void onStop() {
 
-		if(serpent != null) serpent.cancel();
+		cancelRunnables();
+
 		if(blackHole != null) blackHole.cancel();
 
 		try {
@@ -175,10 +172,7 @@ public class Animation15_Task extends Animation {
 			}
 		} catch(IllegalStateException | NullPointerException ignored) {}
 
-		spiral.cancel();
-
-		blocks.cancel();
-		if(blocks != null) blocks.restore();
+		stopAnimationBlocks();
 
 		if(getMain().getAnimationHandler().getEntities().contains(armorStand)) {
 			if(armorStand != null) armorStand.remove();

@@ -18,6 +18,7 @@ import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,11 +31,6 @@ public class Animation8_Task extends Animation {
 	}
 
 	private ArmorStand present;
-
-	private Animation8_Blocks blocks;
-	private Animation8_Tree tree;
-	private Animation8_PlaceSound placeSound;
-	private Animation8_Bell bell;
 
 	private Location pc1, pc2;
 
@@ -50,12 +46,11 @@ public class Animation8_Task extends Animation {
 
 		if(time == 120) {
 
+			BukkitRunnable tree = getRunnable("tree");
 			if (tree != null)
-				tree.restore();
+				((Animation8_Tree) tree).restore();
 
-			try {
-				bell.cancel();
-			} catch (IllegalStateException | NullPointerException ignored) { }
+			cancelRunnable("bell");
 
 			present = ASSpawner.spawn(getMain(), getCubeletBox().getLocation().clone().add(0.5, 3, 0.5), getCubeletType().getIcon(), false, true);
 			getMain().getAnimationHandler().getEntities().add(present);
@@ -83,17 +78,17 @@ public class Animation8_Task extends Animation {
 	@Override
 	public void onStart() {
 
-		blocks = new Animation8_Blocks(getCubeletBox().getLocation());
-		blocks.runTaskTimer(getMain(), 0L, 5L);
+		setAnimationBlocks(new Animation8_Blocks(getCubeletBox().getLocation()));
+		startAnimationBlocks(0L);
 
-		placeSound = new Animation8_PlaceSound(getCubeletBox().getLocation().clone().add(0.5, 0, 0.5));
-		placeSound.runTaskTimer(getMain(), 0L, 5L);
+		addRunnable("placeSound", new Animation8_PlaceSound(getCubeletBox().getLocation().clone().add(0.5, 0, 0.5)));
+		startRunnable("placeSound", 0L, 5L);
 
-		bell = new Animation8_Bell(getCubeletBox().getLocation().clone().add(0.5, 0, 0.5));
-		bell.runTaskTimer(getMain(), 65L, 3L);
+		addRunnable("bell", new Animation8_Bell(getCubeletBox().getLocation().clone().add(0.5, 0, 0.5)));
+		startRunnable("bell", 65L, 3L);
 
-		tree = new Animation8_Tree(getMain(), placeSound, getCubeletBox().getLocation().clone().add(0.5, 0, 0.5));
-		tree.runTaskTimer(getMain(), 18L, 5L);
+		addRunnable("tree", new Animation8_Tree(getMain(), (Animation8_PlaceSound) getRunnable("placeSound"), getCubeletBox().getLocation().clone().add(0.5, 0, 0.5)));
+		startRunnable("tree", 18L, 5L);
 
 		setColors(Arrays.asList(Color.RED, Color.WHITE));
 
@@ -105,19 +100,13 @@ public class Animation8_Task extends Animation {
 	@Override
 	public void onStop() {
 
-		blocks.cancel();
-		tree.cancel();
+		cancelRunnables();
 
-		try {
-			placeSound.cancel();
-		} catch(IllegalStateException | NullPointerException ignored) {}
+		stopAnimationBlocks();
 
-		try {
-			bell.cancel();
-		} catch(IllegalStateException | NullPointerException ignored) {}
-
-		if(blocks != null) blocks.restore();
-		if(tree != null) tree.restore();
+		BukkitRunnable tree = getRunnable("tree");
+		if (tree != null)
+			((Animation8_Tree) tree).restore();
 
 		if(getMain().getAnimationHandler().getEntities().contains(present)) {
 			if(present != null) present.remove();

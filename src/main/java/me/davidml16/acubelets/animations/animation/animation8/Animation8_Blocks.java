@@ -1,5 +1,7 @@
 package me.davidml16.acubelets.animations.animation.animation8;
 
+import me.davidml16.acubelets.animations.AnimationBlocks;
+import me.davidml16.acubelets.animations.FakeBlock;
 import me.davidml16.acubelets.utils.CuboidRegion;
 import me.davidml16.acubelets.utils.MultiVersion.AB_12;
 import me.davidml16.acubelets.utils.MultiVersion.AB_13;
@@ -13,114 +15,65 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Animation8_Blocks extends BukkitRunnable {
-
-    private final Location location;
-    private int step;
-
-    private final Set<BlockState> blockStates;
+public class Animation8_Blocks extends AnimationBlocks {
 
     public Animation8_Blocks(Location location) {
-        this.location = location;
-        this.step = 1;
 
-        this.blockStates = new HashSet<>();
+        super(location);
 
-        CuboidRegion cr = new CuboidRegion(this.location.clone().add(-2, -1, -2), this.location.clone().add(2, -1, 2));
-        for(Block block : cr.getSideBlocks()) blockStates.add(block.getState());
-        CuboidRegion cr2 = new CuboidRegion(this.location.clone().add(-1, -1, -1), this.location.clone().add(1, -1, 1));
-        for(Block block : cr2.getSideBlocks()) blockStates.add(block.getState());
-        blockStates.add(this.location.clone().add(0, -1, 0).getBlock().getState());
-        blockStates.add(this.location.clone().add(-2, 0, -2).getBlock().getState());
-        blockStates.add(this.location.clone().add(2, 0, 2).getBlock().getState());
-        blockStates.add(this.location.clone().add(-2, 0, 2).getBlock().getState());
-        blockStates.add(this.location.clone().add(2, 0, -2).getBlock().getState());
-    }
+        // FIRST CROSS
+        setStepFakeBlocks(1, new FakeBlock[] {
+                new FakeBlock(getLocation(0), XMaterial.GREEN_WOOL),
+                new FakeBlock(getLocation(1), XMaterial.GREEN_WOOL),
+                new FakeBlock(getLocation(2), XMaterial.GREEN_WOOL),
+                new FakeBlock(getLocation(3), XMaterial.GREEN_WOOL),
+                new FakeBlock(getLocation(4), XMaterial.GREEN_WOOL)
+        });
 
-    public void run() {
-        if(step == 1) {
-            placeGreenWool(this.location.clone().add(0, -1, 0));
-            placeGreenWool(this.location.clone().add(1, -1, 0));
-            placeGreenWool(this.location.clone().add(-1, -1, 0));
-            placeGreenWool(this.location.clone().add(0, -1, 1));
-            placeGreenWool(this.location.clone().add(0, -1, -1));
-        } else if(step == 2) {
-            placeRedWool(this.location.clone().add(1, -1, 1));
-            placeRedWool(this.location.clone().add(1, -1, -1));
-            placeRedWool(this.location.clone().add(-1, -1, 1));
-            placeRedWool(this.location.clone().add(-1, -1, -1));
-        } else if(step == 3) {
-            placeOrientedStair(this.location.clone().add(2, -1, 0), BlockFace.WEST);
-            placeOrientedStair(this.location.clone().add(-2, -1, 0), BlockFace.EAST);
-            placeOrientedStair(this.location.clone().add(0, -1, 2), BlockFace.NORTH);
-            placeOrientedStair(this.location.clone().add(0, -1,-2), BlockFace.SOUTH);
-        } else if(step == 4) {
-            placeSlab(this.location.clone().add(2, -1, 1));
-            placeSlab(this.location.clone().add(2, -1, -1));
-            placeSlab(this.location.clone().add(-2, -1, 1));
-            placeSlab(this.location.clone().add(-2, -1, -1));
-            placeSlab(this.location.clone().add(1, -1, 2));
-            placeSlab(this.location.clone().add(-1, -1, 2));
-            placeSlab(this.location.clone().add(1, -1, -2));
-            placeSlab(this.location.clone().add(-1, -1, -2));
-        } else if(step == 5) {
-            placeWood(this.location.clone().add(2, -1, 2));
-            placeWood(this.location.clone().add(2, -1, -2));
-            placeWood(this.location.clone().add(-2, -1, 2));
-            placeWood(this.location.clone().add(-2, -1, -2));
-        } else if(step == 6) {
-            placeSlab(this.location.clone().add(2, 0, 2));
-            placeSlab(this.location.clone().add(2, 0, -2));
-            placeSlab(this.location.clone().add(-2, 0, 2));
-            placeSlab(this.location.clone().add(-2, 0, -2));
-        } else if(step == 7) {
-            cancel();
-        }
-        step++;
-    }
+        // CORNERS
+        setStepFakeBlocks(2, new FakeBlock[] {
+                new FakeBlock(getLocation(5), XMaterial.RED_WOOL),
+                new FakeBlock(getLocation(6), XMaterial.RED_WOOL),
+                new FakeBlock(getLocation(7), XMaterial.RED_WOOL),
+                new FakeBlock(getLocation(8), XMaterial.RED_WOOL)
+        });
 
-    public void restore() {
-        for(BlockState state : blockStates) state.update(true);
-    }
+        // STAIRS
+        setStepFakeBlocks(3, new FakeBlock[] {
+                new FakeBlock(getLocation(9), XMaterial.SPRUCE_STAIRS, BlockFace.WEST),
+                new FakeBlock(getLocation(10), XMaterial.SPRUCE_STAIRS, BlockFace.EAST),
+                new FakeBlock(getLocation(11), XMaterial.SPRUCE_STAIRS, BlockFace.NORTH),
+                new FakeBlock(getLocation(12), XMaterial.SPRUCE_STAIRS, BlockFace.SOUTH)
+        });
 
-    public void placeOrientedStair(Location loc, BlockFace facing) {
-        if(XMaterial.supports(13)) {
-            AB_13.placeOrientedStair(loc, XMaterial.SPRUCE_STAIRS.parseMaterial(), facing);
-        } else {
-            AB_12.placeOrientedStair(loc, XMaterial.SPRUCE_STAIRS.parseMaterial(), facing);
-        }
-    }
+        // SIDES OF STAIRS
+        setStepFakeBlocks(4, new FakeBlock[] {
+                new FakeBlock(getLocation(13), XMaterial.SPRUCE_SLAB),
+                new FakeBlock(getLocation(14), XMaterial.SPRUCE_SLAB),
+                new FakeBlock(getLocation(15), XMaterial.SPRUCE_SLAB),
+                new FakeBlock(getLocation(16), XMaterial.SPRUCE_SLAB),
+                new FakeBlock(getLocation(17), XMaterial.SPRUCE_SLAB),
+                new FakeBlock(getLocation(18), XMaterial.SPRUCE_SLAB),
+                new FakeBlock(getLocation(19), XMaterial.SPRUCE_SLAB),
+                new FakeBlock(getLocation(20), XMaterial.SPRUCE_SLAB)
+        });
 
-    public void placeSlab(Location loc) {
-        if(XMaterial.supports(13)) {
-            AB_13.placeBlock(loc, XMaterial.SPRUCE_SLAB.parseMaterial());
-        } else {
-            AB_12.placeBlock(loc, XMaterial.SPRUCE_SLAB.parseMaterial(), Byte.parseByte("1"));
-        }
-    }
+        // CORNER PILLARS 0
+        setStepFakeBlocks(5, new FakeBlock[] {
+                new FakeBlock(getLocation(21), XMaterial.SPRUCE_LOG),
+                new FakeBlock(getLocation(22), XMaterial.SPRUCE_LOG),
+                new FakeBlock(getLocation(23), XMaterial.SPRUCE_LOG),
+                new FakeBlock(getLocation(24), XMaterial.SPRUCE_LOG)
+        });
 
-    public void placeWood(Location loc) {
-        if(XMaterial.supports(13)) {
-            AB_13.placeBlock(loc, XMaterial.SPRUCE_LOG.parseMaterial());
-        } else {
-            AB_12.placeBlock(loc, XMaterial.SPRUCE_LOG.parseMaterial(), Byte.parseByte("1"));
-        }
-    }
+        // CORNER PILLARS 1
+        setStepFakeBlocks(6, new FakeBlock[] {
+                new FakeBlock(getLocation(25), XMaterial.SPRUCE_SLAB),
+                new FakeBlock(getLocation(26), XMaterial.SPRUCE_SLAB),
+                new FakeBlock(getLocation(27), XMaterial.SPRUCE_SLAB),
+                new FakeBlock(getLocation(28), XMaterial.SPRUCE_SLAB)
+        });
 
-    public void placeGreenWool(Location loc) {
-        if(XMaterial.supports(13)) {
-            AB_13.placeBlock(loc, XMaterial.GREEN_WOOL.parseMaterial());
-        } else {
-            AB_12.placeBlock(loc, XMaterial.GREEN_WOOL.parseMaterial(), Byte.parseByte("13"));
-        }
-    }
-
-    public void placeRedWool(Location loc) {
-        if(XMaterial.supports(13)) {
-            AB_13.placeBlock(loc, XMaterial.RED_WOOL.parseMaterial());
-        } else {
-            AB_12.placeBlock(loc, XMaterial.RED_WOOL.parseMaterial(), Byte.parseByte("14"));
-        }
     }
 
 }

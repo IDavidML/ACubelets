@@ -82,13 +82,43 @@ public class DatabaseHandler {
 
 	}
 
+	public void executeQueryError(String sql) throws SQLException {
+
+		PreparedStatement statement = null;
+		Connection connection = null;
+
+		try {
+			connection = databaseConnection.getConnection();
+			statement = connection.prepareStatement(sql);
+			statement.execute();
+		} finally {
+			if(statement != null) {
+				try {
+					statement.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+			databaseConnection.close(connection);
+		}
+
+	}
+
 	public void loadTables() {
 
 		executeQuery("CREATE TABLE IF NOT EXISTS ac_cubelets (`UUID` varchar(40) NOT NULL, `cubeletUUID` varchar(40) NOT NULL, `type` VARCHAR(15) NOT NULL, `received` bigint NOT NULL DEFAULT 0, `expire` bigint NOT NULL DEFAULT 0, PRIMARY KEY (`UUID`, `cubeletUUID`));");
 
 		executeQuery("CREATE TABLE IF NOT EXISTS ac_players (`UUID` varchar(40) NOT NULL, `NAME` varchar(40), `LOOT_POINTS` integer(25), `ORDER_BY` varchar(10), `ANIMATION` varchar(25), PRIMARY KEY (`UUID`));");
 
-		executeQuery("CREATE TABLE IF NOT EXISTS ac_loothistory (`ID` int(25) NOT NULL AUTO_INCREMENT, `UUID` varchar(40) NOT NULL, `cubeletName` varchar(50) NOT NULL, `rewardID` varchar(50) NOT NULL, `rewardName` varchar(20) NOT NULL, `rewardIcon` LONGTEXT NOT NULL, `received` bigint NOT NULL DEFAULT 0, PRIMARY KEY (`ID`));");
+		try {
+			executeQueryError("CREATE TABLE IF NOT EXISTS ac_loothistory (`ID` INTEGER PRIMARY KEY AUTO_INCREMENT, `UUID` varchar(40) NOT NULL, `cubeletName` varchar(50) NOT NULL, `rewardID` varchar(50) NOT NULL, `rewardName` varchar(20) NOT NULL, `rewardIcon` LONGTEXT NOT NULL, `received` bigint NOT NULL DEFAULT 0);");
+		} catch (SQLException e) {
+			try {
+				executeQueryError("CREATE TABLE IF NOT EXISTS ac_loothistory (`ID` INTEGER PRIMARY KEY AUTOINCREMENT, `UUID` varchar(40) NOT NULL, `cubeletName` varchar(50) NOT NULL, `rewardID` varchar(50) NOT NULL, `rewardName` varchar(20) NOT NULL, `rewardIcon` LONGTEXT NOT NULL, `received` bigint NOT NULL DEFAULT 0);");
+			} catch (SQLException throwables) {
+				throwables.printStackTrace();
+			}
+		}
 
 	}
 

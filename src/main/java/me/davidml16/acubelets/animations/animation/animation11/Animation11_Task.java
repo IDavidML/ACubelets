@@ -32,8 +32,6 @@ public class Animation11_Task extends Animation {
 	private ArmorStand armorStand;
 	private Location armorStandLocation;
 
-	private Animation11_Spiral spiral;
-
 	private Set<Animation11_Planet> planets = new HashSet<>();
 
     private final static Random RANDOM = new Random();
@@ -89,7 +87,7 @@ public class Animation11_Task extends Animation {
 
 		if(time == 40) {
 
-			spiral.cancel();
+			cancelRunnable("spiral");
 
 			int randomPoints = r_i(160, 360);
 
@@ -210,8 +208,8 @@ public class Animation11_Task extends Animation {
 		armorStandLocation = armorStand.getLocation();
 		Sounds.playSound(getCubeletBox().getLocation(), Sounds.MySound.FIREWORK_LAUNCH, 0.5f, 0);
 
-		spiral = new Animation11_Spiral(armorStand);
-		spiral.runTaskTimer(getMain(), 0L, 1L);
+		addRunnable("spiral", new Animation11_Spiral(armorStand));
+		startRunnable("spiral", 0L, 1L);
 
 		setColors(Arrays.asList(Color.PURPLE, Color.FUCHSIA));
 
@@ -220,7 +218,7 @@ public class Animation11_Task extends Animation {
 	@Override
 	public void onStop() {
 
-		spiral.cancel();
+		cancelRunnables();
 
 		try {
 			for(Animation11_Planet planet : planets) {

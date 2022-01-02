@@ -31,9 +31,6 @@ public class Animation14_Task extends Animation {
 	private ArmorStand armorStand;
 	private Location armorStandLocation;
 
-	private Animation14_Blocks blocks;
-	private Animation14_Music music;
-
 	private Set<Animation14_Bee> bees = new HashSet<>();
 
 	private double rotSpeed = 0.001;
@@ -133,11 +130,11 @@ public class Animation14_Task extends Animation {
 	@Override
 	public void onStart() {
 
-		blocks = new Animation14_Blocks(getCubeletBox().getLocation());
-		blocks.runTaskTimer(getMain(), 0L, 6L);
+		setAnimationBlocks(new Animation14_Blocks(getCubeletBox().getLocation()));
+		startAnimationBlocks(0L);
 
-		music = new Animation14_Music(getCubeletBox().getLocation());
-		music.runTaskTimer(getMain(), 45L, 3L);
+		addRunnable("music", new Animation14_Music(getCubeletBox().getLocation()));
+		startRunnable("music", 45L, 3L);
 
 		setColors(Arrays.asList(Color.YELLOW, Color.WHITE));
 
@@ -146,10 +143,9 @@ public class Animation14_Task extends Animation {
 	@Override
 	public void onStop() {
 
-		blocks.cancel();
-		music.cancel();
+		cancelRunnables();
 
-		if(blocks != null) blocks.restore();
+		stopAnimationBlocks();
 
 		try {
 			for(Animation14_Bee bee : bees) {
@@ -172,7 +168,7 @@ public class Animation14_Task extends Animation {
 	@Override
 	public void onPreRewardReveal() {
 
-		music.cancel();
+		cancelRunnable("music");
 
 		Sounds.playSound(armorStand.getLocation(), Sounds.MySound.EXPLODE, 0.5F, 1F);
 

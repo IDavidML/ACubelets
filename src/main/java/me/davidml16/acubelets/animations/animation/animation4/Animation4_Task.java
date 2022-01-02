@@ -14,6 +14,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.PigZombie;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
 
@@ -26,13 +27,6 @@ public class Animation4_Task extends Animation {
 	private ArmorStand armorStand;
 	private Location armorStandLocation;
 
-	private Animation4_Music music;
-	private Animation4_Blocks blocks;
-	private Animation4_Arch arch;
-	private Animation4_ArchSounds archSounds;
-	private Animation4_EntityPackets entityPackets;
-	private Animation4_3x3Particles particles;
-
 	private LivingEntity pigman;
 	private Location pigmanLocation;
 
@@ -41,16 +35,16 @@ public class Animation4_Task extends Animation {
 
 		if(time == 45) {
 
-			arch.runTaskTimer(getMain(), 0L, 1L);
-			archSounds.runTaskTimer(getMain(), 0L, 5L);
+			startRunnable("arch", 0L, 1L);
+			startRunnable("archSounds", 0L, 5L);
 
 		} else if(time == 95) {
 
-			archSounds.cancel();
+			cancelRunnable("archSounds");
 
 		} else if(time == 100) {
 
-			music.runTaskTimer(getMain(), 0L, 5L);
+			startRunnable("music", 0L, 5L);
 
 			armorStand = ASSpawner.spawn(getMain(), getCubeletBox(), getCubeletType(), false);
 			armorStandLocation = armorStand.getLocation();
@@ -68,7 +62,8 @@ public class Animation4_Task extends Animation {
 
 		} else if(time == 145) {
 
-			music.cancel();
+			cancelRunnable("music");
+
 			pigman = (LivingEntity) getCubeletBox().getLocation().getWorld().spawnEntity(getLocationRotation(3), EntityType.PIG_ZOMBIE);
 
 			if(XMaterial.supports(9)) pigman.setCollidable(false);
@@ -80,8 +75,8 @@ public class Animation4_Task extends Animation {
 			NBTEditor.set( pigman, ( byte ) 1, "Silent" );
 			NBTEditor.set( pigman, ( byte ) 1, "Invulnerable" );
 
-			particles = new Animation4_3x3Particles(pigman);
-			particles.runTaskTimer(getMain(), 0L, 1L);
+			addRunnable("particles", new Animation4_3x3Particles(pigman));
+			startRunnable("particles", 0L, 1L);
 
 		} else if(time == 155) {
 
@@ -94,8 +89,8 @@ public class Animation4_Task extends Animation {
 
 		} else if(time == 195) {
 
-			entityPackets = new Animation4_EntityPackets(pigman, armorStand, getCubeletBox());
-			entityPackets.runTaskTimer(getMain(), 0L, 5L);
+			addRunnable("entityPackets", new Animation4_EntityPackets(pigman, armorStand, getCubeletBox()));
+			startRunnable("entityPackets", 0L, 5L);
 
 		} else if(time == 293) {
 
@@ -108,14 +103,14 @@ public class Animation4_Task extends Animation {
 	@Override
 	public void onStart() {
 
-		music = new Animation4_Music(getCubeletBox().getLocation());
+		addRunnable("music", new Animation4_Music(getCubeletBox().getLocation()));
 
-		blocks = new Animation4_Blocks(getCubeletBox().getLocation());
-		blocks.runTaskTimer(getMain(), 0L, 6L);
+		setAnimationBlocks(new Animation4_Blocks(getCubeletBox().getLocation()));
+		startAnimationBlocks(0L);
 
-		arch = new Animation4_Arch(getCubeletBox().getLocation());
+		addRunnable("arch", new Animation4_Arch(getCubeletBox().getLocation()));
 
-		archSounds = new Animation4_ArchSounds(getCubeletBox().getLocation());
+		addRunnable("archSounds", new Animation4_ArchSounds(getCubeletBox().getLocation()));
 
 		setColors(Arrays.asList(Color.RED, Color.RED));
 
@@ -124,29 +119,9 @@ public class Animation4_Task extends Animation {
 	@Override
 	public void onStop() {
 
-		blocks.cancel();
+		stopAnimationBlocks();
 
-		try {
-			music.cancel();
-		} catch(IllegalStateException | NullPointerException ignored) {}
-
-		try {
-			arch.cancel();
-		} catch(IllegalStateException | NullPointerException ignored) {}
-
-		try {
-			archSounds.cancel();
-		} catch(IllegalStateException | NullPointerException ignored) {}
-
-		try {
-			entityPackets.cancel();
-		} catch(IllegalStateException | NullPointerException ignored) {}
-
-		try {
-			particles.cancel();
-		} catch(IllegalStateException | NullPointerException ignored) {}
-
-		if(blocks != null) blocks.restore();
+		cancelRunnables();
 
 		if(pigman != null) pigman.remove();
 
@@ -173,9 +148,10 @@ public class Animation4_Task extends Animation {
 	public void onRewardReveal() {
 
 		pigman.remove();
-		music.cancel();
-		particles.cancel();
-		entityPackets.cancel();
+
+		cancelRunnable("music");
+		cancelRunnable("particles");
+		cancelRunnable("entityPackets");
 
 		Sounds.playSound(getCubeletBox().getLocation(), Sounds.MySound.ZOMBIE_WOODBREAK, 0.5F, 1F);
 

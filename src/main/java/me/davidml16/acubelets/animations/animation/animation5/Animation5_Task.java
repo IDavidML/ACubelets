@@ -22,9 +22,6 @@ public class Animation5_Task extends Animation {
 	private ArmorStand armorStand;
 	private Location armorStandLocation;
 
-	private Animation5_Music music;
-	private Animation5_Blocks blocks;
-
 	private Set<Animation5_Ball> balls = new HashSet<>();
 
 	private double rotSpeed = 0.1;
@@ -58,7 +55,7 @@ public class Animation5_Task extends Animation {
 
 		} else if(time == 75) {
 
-			music.runTaskTimer(getMain(), 0L, 4L);
+			startRunnable("music", 0L, 4L);
 
 			armorStand = ASSpawner.spawn(getMain(), getCubeletBox(), getCubeletType(), false);
 			armorStandLocation = armorStand.getLocation();
@@ -90,10 +87,10 @@ public class Animation5_Task extends Animation {
 	@Override
 	public void onStart() {
 
-		blocks = new Animation5_Blocks(getCubeletBox().getLocation());
-		blocks.runTaskTimer(getMain(), 0L, 6L);
+		setAnimationBlocks(new Animation5_Blocks(getCubeletBox().getLocation()));
+		startAnimationBlocks(0L);
 
-		music = new Animation5_Music(getCubeletBox().getLocation());
+		addRunnable("music", new Animation5_Music(getCubeletBox().getLocation()));
 
 		setColors(Arrays.asList(Color.YELLOW, Color.WHITE));
 		
@@ -102,11 +99,7 @@ public class Animation5_Task extends Animation {
 	@Override
 	public void onStop() {
 
-		blocks.cancel();
-
-		try {
-			music.cancel();
-		} catch(IllegalStateException | NullPointerException ignored) {}
+		cancelRunnables();
 
 		try {
 			for(Animation5_Ball ball : balls) {
@@ -119,7 +112,7 @@ public class Animation5_Task extends Animation {
 			}
 		} catch(IllegalStateException | NullPointerException ignored) {}
 
-		if(blocks != null) blocks.restore();
+		stopAnimationBlocks();
 
 		if(getMain().getAnimationHandler().getEntities().contains(armorStand)) {
 			if(armorStand != null) armorStand.remove();
@@ -143,7 +136,7 @@ public class Animation5_Task extends Animation {
 	@Override
 	public void onRewardReveal() {
 
-		music.cancel();
+		cancelRunnable("music");
 
 		armorStand.remove();
 		armorStand = null;

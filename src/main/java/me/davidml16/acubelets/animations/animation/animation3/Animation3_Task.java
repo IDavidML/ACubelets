@@ -22,8 +22,6 @@ public class Animation3_Task extends Animation {
 	private ArmorStand armorStand;
 	private Location armorStandLocation;
 
-	private Animation3_Music music;
-
 	@Override
 	public void onTick(int time) {
 
@@ -39,7 +37,7 @@ public class Animation3_Task extends Animation {
 
 		if(time == 60) {
 
-			music.cancel();
+			cancelRunnable("music");
 			Sounds.playSound(getCubeletBox().getLocation(), Sounds.MySound.FIREWORK_LAUNCH, 0.5f, 0);
 
 		}
@@ -93,15 +91,15 @@ public class Animation3_Task extends Animation {
 		armorStandLocation = armorStand.getLocation();
 		getMain().getAnimationHandler().getEntities().add(armorStand);
 
-		music = new Animation3_Music(getCubeletBox().getLocation());
-		music.runTaskTimer(getMain(), 5L, 1L);
+		addRunnable("music", new Animation3_Music(getCubeletBox().getLocation()));
+		startRunnable("music", 5L, 1L);
 
 	}
 
 	@Override
 	public void onStop() {
 
-		music.cancel();
+		cancelRunnable("music");
 
 		if(getMain().getAnimationHandler().getEntities().contains(armorStand)) {
 			if(armorStand != null) armorStand.remove();

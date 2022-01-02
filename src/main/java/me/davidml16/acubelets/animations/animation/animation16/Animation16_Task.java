@@ -39,8 +39,6 @@ public class Animation16_Task extends Animation {
 
 	private Set<Animation16_Sheep> sheeps = new HashSet<>();
 
-	private Animation16_Charge charge;
-
 	private double rotSpeed = 0.001;
 
 	@Override
@@ -119,8 +117,8 @@ public class Animation16_Task extends Animation {
 
 		setColors(Arrays.asList(Color.RED, Color.YELLOW, Color.BLUE, Color.GREEN, Color.ORANGE, Color.FUCHSIA, Color.AQUA, Color.WHITE));
 
-		charge = new Animation16_Charge(getCubeletBox().getLocation());
-		charge.runTaskTimer(getMain(), 50L, 3L);
+		addRunnable("charge", new Animation16_Charge(getCubeletBox().getLocation()));
+		startRunnable("charge", 50L, 3L);
 
 		armorStand = ASSpawner.spawn(
 				getMain(),
@@ -153,7 +151,7 @@ public class Animation16_Task extends Animation {
 	@Override
 	public void onStop() {
 
-		charge.cancel();
+		cancelRunnables();
 
 		try {
 			for(Animation16_Sheep sheep : sheeps) {
@@ -176,7 +174,7 @@ public class Animation16_Task extends Animation {
 	@Override
 	public void onPreRewardReveal() {
 
-		charge.cancel();
+		cancelRunnable("charge");
 
 		Sounds.playSound(armorStand.getLocation(), Sounds.MySound.EXPLODE, 0.5F, 1F);
 

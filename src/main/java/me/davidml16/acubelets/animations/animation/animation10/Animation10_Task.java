@@ -30,8 +30,6 @@ public class Animation10_Task extends Animation {
 	private ArmorStand armorStand;
 	private Location armorStandLocation;
 
-	private Animation10_Spiral spiral;
-
 	@Override
 	public void onTick(int time) {
 
@@ -66,7 +64,7 @@ public class Animation10_Task extends Animation {
 		} else if(time == 70) {
 
 			Sounds.playSound(getCubeletBox().getLocation(), Sounds.MySound.IRONGOLEM_DEATH, 0.5f, 0);
-			spiral.cancel();
+			cancelRunnable("spiral");
 
 		} else if(time > 70 && time < 83) {
 
@@ -97,8 +95,8 @@ public class Animation10_Task extends Animation {
 		armorStandLocation = armorStand.getLocation();
 		Sounds.playSound(getCubeletBox().getLocation(), Sounds.MySound.FIREWORK_LAUNCH, 0.5f, 0);
 
-		spiral = new Animation10_Spiral(armorStand);
-		spiral.runTaskTimer(getMain(), 0L, 1L);
+		addRunnable("spiral", new Animation10_Spiral(armorStand));
+		startRunnable("spiral", 0L, 1L);
 
 		setColors(Arrays.asList(Color.ORANGE, Color.WHITE));
 
@@ -107,7 +105,7 @@ public class Animation10_Task extends Animation {
 	@Override
 	public void onStop() {
 
-		spiral.cancel();
+		cancelRunnables();
 
 		if(getMain().getAnimationHandler().getEntities().contains(armorStand)) {
 			if(armorStand != null) armorStand.remove();

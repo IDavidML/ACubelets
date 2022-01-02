@@ -36,9 +36,6 @@ public class Animation12_Task extends Animation {
 	private ArmorStand glassStand, liquidStand;
 	private Location glassLocation, liquidLocation;
 
-	private Animation12_Blocks blocks;
-	private Animation12_Charge charge;
-
 	private List<ItemStack> wools = new ArrayList<>();
 	private int actualWool = 0;
 
@@ -148,8 +145,8 @@ public class Animation12_Task extends Animation {
 	@Override
 	public void onStart() {
 
-		blocks = new Animation12_Blocks(getCubeletBox().getLocation());
-		blocks.runTaskTimer(getMain(), 0L, 6L);
+		setAnimationBlocks(new Animation12_Blocks(getCubeletBox().getLocation()));
+		startAnimationBlocks(0L);
 
 		setColors(Arrays.asList(Color.PURPLE, Color.FUCHSIA));
 
@@ -167,17 +164,15 @@ public class Animation12_Task extends Animation {
 		wools.add(XMaterial.PURPLE_WOOL.parseItem());
 		wools.add(XMaterial.YELLOW_WOOL.parseItem());
 
-		charge = new Animation12_Charge(getCubeletBox().getLocation());
-		charge.runTaskTimer(getMain(), 105L, 3L);
+		addRunnable("charge", new Animation12_Charge(getCubeletBox().getLocation()));
+		startRunnable("charge", 105L, 3L);
 
 	}
 
 	@Override
 	public void onStop() {
 
-		blocks.cancel();
-
-		if(blocks != null) blocks.restore();
+		stopAnimationBlocks();
 
 		if(getMain().getAnimationHandler().getEntities().contains(glassStand)) {
 			if(glassStand != null) glassStand.remove();

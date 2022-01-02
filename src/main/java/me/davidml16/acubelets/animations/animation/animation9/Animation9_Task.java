@@ -29,9 +29,6 @@ public class Animation9_Task extends Animation {
 
 	private ArmorStand armorStand;
 
-	private Animation9_Music music;
-	private Animation9_Charge charge;
-
 	private double boxLocIncrease = -1.25;
 	private double circleSize = 0.0D;
 	private int circleStep = 0;
@@ -88,7 +85,7 @@ public class Animation9_Task extends Animation {
 			chargeParticles();
 
 		if(time == 100)
-			music.cancel();
+			cancelRunnable("music");
 
 		if(time == 105) {
 
@@ -106,11 +103,11 @@ public class Animation9_Task extends Animation {
 		armorStand = ASSpawner.spawn(getMain(), getCubeletBox(), getCubeletType(), false, false, getBoxLocation().clone().add(0, -1.25, 0));
 		getMain().getAnimationHandler().getEntities().add(armorStand);
 
-		music = new Animation9_Music(getCubeletBox().getLocation());
-		music.runTaskTimer(getMain(), 5L, 3L);
+		addRunnable("music", new Animation9_Music(getCubeletBox().getLocation()));
+		startRunnable("music", 5L, 3L);
 
-		charge = new Animation9_Charge(getCubeletBox().getLocation());
-		charge.runTaskTimer(getMain(), 65L, 3L);
+		addRunnable("charge", new Animation9_Charge(getCubeletBox().getLocation()));
+		startRunnable("charge", 65L, 3L);
 
 		setColors(Arrays.asList(Color.BLACK, Color.ORANGE));
 
@@ -119,8 +116,7 @@ public class Animation9_Task extends Animation {
 	@Override
 	public void onStop() {
 
-		music.cancel();
-		charge.cancel();
+		cancelRunnables();
 
 		if(getMain().getAnimationHandler().getEntities().contains(armorStand)) {
 			if(armorStand != null) armorStand.remove();
@@ -151,9 +147,12 @@ public class Animation9_Task extends Animation {
 	}
 
 	private void chargeParticles() {
+
 		Random random = new Random();
 		Location loc = armorStand.getLocation().clone().add(0, 3, 0);
+
 		for (int i = 0; i < 500; i++) {
+
 			Location randomLoc = loc.clone();
 			randomLoc.add((random.nextDouble() - 0.5D) / 2.0D, (new Random().nextDouble() - 0.5D) / 2.0D, (random.nextDouble() - 0.5D) / 2.0D);
 
@@ -164,6 +163,7 @@ public class Animation9_Task extends Animation {
 				UtilParticles.display(Particles.ENCHANTMENT_TABLE, direction, loc, 5);
 
 		}
+
 	}
 	
 }

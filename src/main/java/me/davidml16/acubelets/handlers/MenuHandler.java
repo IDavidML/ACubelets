@@ -2,10 +2,12 @@ package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.Menu;
+import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -19,10 +21,18 @@ public class MenuHandler {
 
     private ClickType rewardPreviewClickType;
 
+    private boolean menuDecorationEnabled;
+    private ItemStack menuDecorationItem;
+
     public MenuHandler(Main main) {
+
         this.main = main;
         this.openedMenus = new HashMap<>();
         this.rewardPreviewClickType = ClickType.SHIFT_LEFT;
+
+        this.menuDecorationEnabled = main.getConfig().getBoolean("MenuDecoration.Enabled");
+        this.menuDecorationItem = XItemStack.deserializeItem(main.getConfig(), "MenuDecoration.Item");
+
     }
 
     public Map<Player, Menu> getOpenedMenus() {
@@ -64,6 +74,22 @@ public class MenuHandler {
             this.rewardPreviewClickType = ClickType.valueOf(clickType.toUpperCase());
         else
             this.rewardPreviewClickType = ClickType.SHIFT_LEFT;
+    }
+
+    public boolean isMenuDecorationEnabled() {
+        return menuDecorationEnabled;
+    }
+
+    public void setMenuDecorationEnabled(boolean menuDecorationEnabled) {
+        this.menuDecorationEnabled = menuDecorationEnabled;
+    }
+
+    public ItemStack getMenuDecorationItem() {
+        return menuDecorationItem;
+    }
+
+    public void setMenuDecorationItem(ItemStack menuDecorationItem) {
+        this.menuDecorationItem = menuDecorationItem;
     }
 
     public void handleMenuClick(Player player, InventoryClickEvent event) {

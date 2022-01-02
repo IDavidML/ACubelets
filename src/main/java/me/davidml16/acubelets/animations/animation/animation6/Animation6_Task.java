@@ -25,8 +25,6 @@ public class Animation6_Task extends Animation {
 
 	private Location pc1, pc2;
 
-	private Animation6_Music music;
-
 	private Set<Animation6_Rabbit> rabbits = new HashSet<>();
 
 	private double rotSpeed = 0.1;
@@ -40,7 +38,7 @@ public class Animation6_Task extends Animation {
 			ball.runTaskTimer(getMain(), 0L, 1L);
 			rabbits.add(ball);
 
-			music.runTaskTimer(getMain(), 0L, 1L);
+			startRunnable("music", 0L, 1L);
 
 			armorStand = ASSpawner.spawn(getMain(), getCubeletBox(), getCubeletType(), false);
 			armorStandLocation = armorStand.getLocation();
@@ -99,7 +97,7 @@ public class Animation6_Task extends Animation {
 	@Override
 	public void onStart() {
 
-		music = new Animation6_Music(getCubeletBox().getLocation());
+		addRunnable("music", new Animation6_Music(getCubeletBox().getLocation()));
 
 		setColors(Arrays.asList(Color.YELLOW, Color.YELLOW));
 
@@ -111,9 +109,7 @@ public class Animation6_Task extends Animation {
 	@Override
 	public void onStop() {
 
-		try {
-			music.cancel();
-		} catch(IllegalStateException | NullPointerException ignored) {}
+		cancelRunnables();
 
 		try {
 			for(Animation6_Rabbit rabbit : rabbits) {
@@ -148,7 +144,7 @@ public class Animation6_Task extends Animation {
 	@Override
 	public void onRewardReveal() {
 
-		music.cancel();
+		cancelRunnable("music");
 
 		armorStand.remove();
 		armorStand = null;

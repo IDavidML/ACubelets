@@ -16,8 +16,11 @@ import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Animation {
@@ -47,6 +50,9 @@ public abstract class Animation {
 
     private RepeatingTask hologramAnimation;
 
+    private Map<String, BukkitRunnable> bukkitRunnables;
+    private AnimationBlocks animationBlocks;
+
     public Animation(Main main, AnimationSettings animationSettings) {
 
         this.main = main;
@@ -60,6 +66,8 @@ public abstract class Animation {
         this.showOutlineParticles = true;
         this.showFloorParticles = true;
         this.showAroundParticles = false;
+
+        this.bukkitRunnables = new HashMap<>();
 
         this.colors = main.getFireworkUtil().getRandomColors();
 
@@ -366,6 +374,77 @@ public abstract class Animation {
 
     public void setShowAroundParticles(boolean showAroundParticles) {
         this.showAroundParticles = showAroundParticles;
+    }
+
+    public void addRunnable(String key, BukkitRunnable bukkitRunnable) {
+        this.bukkitRunnables.put(key, bukkitRunnable);
+    }
+
+    public BukkitRunnable getRunnable(String key) {
+        return this.bukkitRunnables.get(key);
+    }
+
+    public void startRunnable(String key, long delay, long period) {
+
+        if(!bukkitRunnables.containsKey(key))
+            return;
+
+        BukkitRunnable bukkitRunnable = bukkitRunnables.get(key);
+
+        bukkitRunnable.runTaskTimer(main, delay, period);
+
+    }
+
+    public void cancelRunnable(String key) {
+
+        if(!bukkitRunnables.containsKey(key))
+            return;
+
+        BukkitRunnable bukkitRunnable = bukkitRunnables.get(key);
+
+        try {
+            bukkitRunnable.cancel();
+        } catch(IllegalStateException | NullPointerException ignored) {}
+
+    }
+
+    public void cancelRunnables() {
+
+        for(BukkitRunnable bukkitRunnable : bukkitRunnables.values()) {
+
+            try {
+                bukkitRunnable.cancel();
+            } catch(IllegalStateException | NullPointerException ignored) {}
+
+        }
+
+    }
+
+    public void setAnimationBlocks(AnimationBlocks animationBlocks) {
+        this.animationBlocks = animationBlocks;
+    }
+
+    public AnimationBlocks getAnimationBlocks() {
+        return animationBlocks;
+    }
+
+    public void startAnimationBlocks(long delay) {
+
+        if(animationBlocks == null)
+            return;
+
+        animationBlocks.runTaskTimer(main, delay, 1L);
+
+    }
+
+    public void stopAnimationBlocks() {
+
+        if(animationBlocks == null)
+            return;
+
+        animationBlocks.cancel();
+        animationBlocks.restore();
+
     }
 
     public Location getLocationRotation(double y) {

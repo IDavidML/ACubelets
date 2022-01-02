@@ -1,5 +1,7 @@
 package me.davidml16.acubelets.animations.animation.animation7;
 
+import me.davidml16.acubelets.animations.AnimationBlocks;
+import me.davidml16.acubelets.animations.FakeBlock;
 import me.davidml16.acubelets.utils.CuboidRegion;
 import me.davidml16.acubelets.utils.MultiVersion.AB_12;
 import me.davidml16.acubelets.utils.MultiVersion.AB_13;
@@ -13,90 +15,65 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Animation7_Blocks extends BukkitRunnable {
-
-    private final Location location;
-    private int step;
-
-    private final Set<BlockState> blockStates;
+public class Animation7_Blocks extends AnimationBlocks {
 
     public Animation7_Blocks(Location location) {
-        this.location = location;
-        this.step = 1;
 
-        this.blockStates = new HashSet<>();
+        super(location);
 
-        CuboidRegion cr = new CuboidRegion(this.location.clone().add(-2, -1, -2), this.location.clone().add(2, -1, 2));
-        for(Block block : cr.getSideBlocks()) blockStates.add(block.getState());
-        CuboidRegion cr2 = new CuboidRegion(this.location.clone().add(-1, -1, -1), this.location.clone().add(1, -1, 1));
-        for(Block block : cr2.getSideBlocks()) blockStates.add(block.getState());
-        blockStates.add(this.location.clone().add(0, -1, 0).getBlock().getState());
-        blockStates.add(this.location.clone().add(-2, 0, -2).getBlock().getState());
-        blockStates.add(this.location.clone().add(2, 0, 2).getBlock().getState());
-        blockStates.add(this.location.clone().add(-2, 0, 2).getBlock().getState());
-        blockStates.add(this.location.clone().add(2, 0, -2).getBlock().getState());
-    }
+        // FIRST CROSS
+        setStepFakeBlocks(1, new FakeBlock[] {
+                new FakeBlock(getLocation(0), XMaterial.BEDROCK),
+                new FakeBlock(getLocation(1), XMaterial.BEDROCK),
+                new FakeBlock(getLocation(2), XMaterial.BEDROCK),
+                new FakeBlock(getLocation(3), XMaterial.BEDROCK),
+                new FakeBlock(getLocation(4), XMaterial.BEDROCK)
+        });
 
-    public void run() {
-        if(step == 1) {
-            this.location.clone().add(0, -1, 0).getBlock().setType(XMaterial.BEDROCK.parseMaterial());
-            this.location.clone().add(1, -1, 0).getBlock().setType(XMaterial.BEDROCK.parseMaterial());
-            this.location.clone().add(-1, -1, 0).getBlock().setType(XMaterial.BEDROCK.parseMaterial());
-            this.location.clone().add(0, -1, 1).getBlock().setType(XMaterial.BEDROCK.parseMaterial());
-            this.location.clone().add(0, -1, -1).getBlock().setType(XMaterial.BEDROCK.parseMaterial());
-        } else if(step == 2) {
-            this.location.clone().add(1, -1, 1).getBlock().setType(XMaterial.BEDROCK.parseMaterial());
-            this.location.clone().add(1, -1, -1).getBlock().setType(XMaterial.BEDROCK.parseMaterial());
-            this.location.clone().add(-1, -1, 1).getBlock().setType(XMaterial.BEDROCK.parseMaterial());
-            this.location.clone().add(-1, -1, -1).getBlock().setType(XMaterial.BEDROCK.parseMaterial());
-        } else if(step == 3) {
-            placeOrientedStair(this.location.clone().add(2, -1, 0), BlockFace.WEST);
-            placeOrientedStair(this.location.clone().add(-2, -1, 0), BlockFace.EAST);
-            placeOrientedStair(this.location.clone().add(0, -1, 2), BlockFace.NORTH);
-            placeOrientedStair(this.location.clone().add(0, -1,-2), BlockFace.SOUTH);
-        } else if(step == 4) {
-            place(this.location.clone().add(2, -1, 1));
-            place(this.location.clone().add(2, -1, -1));
-            place(this.location.clone().add(-2, -1, 1));
-            place(this.location.clone().add(-2, -1, -1));
-            place(this.location.clone().add(1, -1, 2));
-            place(this.location.clone().add(-1, -1, 2));
-            place(this.location.clone().add(1, -1, -2));
-            place(this.location.clone().add(-1, -1, -2));
-        } else if(step == 5) {
-            this.location.clone().add(2, -1, 2).getBlock().setType(XMaterial.OBSIDIAN.parseMaterial());
-            this.location.clone().add(2, -1, -2).getBlock().setType(XMaterial.OBSIDIAN.parseMaterial());
-            this.location.clone().add(-2, -1, 2).getBlock().setType(XMaterial.OBSIDIAN.parseMaterial());
-            this.location.clone().add(-2, -1, -2).getBlock().setType(XMaterial.OBSIDIAN.parseMaterial());
-        } else if(step == 6) {
-            place(this.location.clone().add(2, 0, 2));
-            place(this.location.clone().add(2, 0, -2));
-            place(this.location.clone().add(-2, 0, 2));
-            place(this.location.clone().add(-2, 0, -2));
-        } else if(step == 7) {
-            cancel();
-        }
-        step++;
-    }
+        // CORNERS
+        setStepFakeBlocks(2, new FakeBlock[] {
+                new FakeBlock(getLocation(5), XMaterial.BEDROCK),
+                new FakeBlock(getLocation(6), XMaterial.BEDROCK),
+                new FakeBlock(getLocation(7), XMaterial.BEDROCK),
+                new FakeBlock(getLocation(8), XMaterial.BEDROCK)
+        });
 
-    public void restore() {
-        for(BlockState state : blockStates) state.update(true);
-    }
+        // STAIRS
+        setStepFakeBlocks(3, new FakeBlock[] {
+                new FakeBlock(getLocation(9), XMaterial.NETHER_BRICK_STAIRS, BlockFace.WEST),
+                new FakeBlock(getLocation(10), XMaterial.NETHER_BRICK_STAIRS, BlockFace.EAST),
+                new FakeBlock(getLocation(11), XMaterial.NETHER_BRICK_STAIRS, BlockFace.NORTH),
+                new FakeBlock(getLocation(12), XMaterial.NETHER_BRICK_STAIRS, BlockFace.SOUTH)
+        });
 
-    public void placeOrientedStair(Location loc, BlockFace facing) {
-        if(XMaterial.supports(13)) {
-            AB_13.placeOrientedStair(loc, XMaterial.NETHER_BRICK_STAIRS.parseMaterial(), facing);
-        } else {
-            AB_12.placeOrientedStair(loc, XMaterial.NETHER_BRICK_STAIRS.parseMaterial(), facing);
-        }
-    }
+        // SIDES OF STAIRS
+        setStepFakeBlocks(4, new FakeBlock[] {
+                new FakeBlock(getLocation(13), XMaterial.NETHER_BRICK_SLAB),
+                new FakeBlock(getLocation(14), XMaterial.NETHER_BRICK_SLAB),
+                new FakeBlock(getLocation(15), XMaterial.NETHER_BRICK_SLAB),
+                new FakeBlock(getLocation(16), XMaterial.NETHER_BRICK_SLAB),
+                new FakeBlock(getLocation(17), XMaterial.NETHER_BRICK_SLAB),
+                new FakeBlock(getLocation(18), XMaterial.NETHER_BRICK_SLAB),
+                new FakeBlock(getLocation(19), XMaterial.NETHER_BRICK_SLAB),
+                new FakeBlock(getLocation(20), XMaterial.NETHER_BRICK_SLAB)
+        });
 
-    public void place(Location loc) {
-        if(XMaterial.supports(13)) {
-            AB_13.placeBlock(loc, XMaterial.NETHER_BRICK_SLAB.parseMaterial());
-        } else {
-            AB_12.placeBlock(loc, XMaterial.NETHER_BRICK_SLAB.parseMaterial(), Byte.parseByte("6"));
-        }
+        // CORNER PILLARS 0
+        setStepFakeBlocks(5, new FakeBlock[] {
+                new FakeBlock(getLocation(21), XMaterial.OBSIDIAN),
+                new FakeBlock(getLocation(22), XMaterial.OBSIDIAN),
+                new FakeBlock(getLocation(23), XMaterial.OBSIDIAN),
+                new FakeBlock(getLocation(24), XMaterial.OBSIDIAN)
+        });
+
+        // CORNER PILLARS 1
+        setStepFakeBlocks(6, new FakeBlock[] {
+                new FakeBlock(getLocation(25), XMaterial.NETHER_BRICK_SLAB),
+                new FakeBlock(getLocation(26), XMaterial.NETHER_BRICK_SLAB),
+                new FakeBlock(getLocation(27), XMaterial.NETHER_BRICK_SLAB),
+                new FakeBlock(getLocation(28), XMaterial.NETHER_BRICK_SLAB)
+        });
+
     }
 
 }

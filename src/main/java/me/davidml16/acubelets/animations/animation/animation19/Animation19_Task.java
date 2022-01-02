@@ -35,8 +35,6 @@ public class Animation19_Task extends Animation {
 	private ArmorStand armorStand;
 	private Location armorStandLocation;
 
-	private Animation19_Blocks blocks;
-
 	private List<Animation19_Sword> swords = new ArrayList<>();
 	private BukkitTask spawnSwordsRunnable;
 
@@ -91,8 +89,8 @@ public class Animation19_Task extends Animation {
 	@Override
 	public void onStart() {
 
-		blocks = new Animation19_Blocks(getCubeletBox().getLocation());
-		blocks.runTaskTimer(getMain(), 0L, 6L);
+		setAnimationBlocks(new Animation19_Blocks(getCubeletBox().getLocation()));
+		startAnimationBlocks(0L);
 
 		setColors(Arrays.asList(Color.WHITE, Color.PURPLE));
 
@@ -109,9 +107,7 @@ public class Animation19_Task extends Animation {
 	@Override
 	public void onStop() {
 
-		blocks.cancel();
-
-		if(blocks != null) blocks.restore();
+		stopAnimationBlocks();
 
 		if(spawnSwordsRunnable != null) spawnSwordsRunnable.cancel();
 

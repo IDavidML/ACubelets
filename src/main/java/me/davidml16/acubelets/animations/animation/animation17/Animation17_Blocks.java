@@ -1,5 +1,7 @@
 package me.davidml16.acubelets.animations.animation.animation17;
 
+import me.davidml16.acubelets.animations.AnimationBlocks;
+import me.davidml16.acubelets.animations.FakeBlock;
 import me.davidml16.acubelets.utils.CuboidRegion;
 import me.davidml16.acubelets.utils.MultiVersion.AB_12;
 import me.davidml16.acubelets.utils.MultiVersion.AB_13;
@@ -13,136 +15,73 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Animation17_Blocks extends BukkitRunnable {
-
-    private final Location location;
-    private int step;
-
-    private final Set<BlockState> blockStates;
+public class Animation17_Blocks extends AnimationBlocks {
 
     public Animation17_Blocks(Location location) {
-        this.location = location;
-        this.step = 0;
 
-        this.blockStates = new HashSet<>();
+        super(location);
 
-        CuboidRegion cr = new CuboidRegion(this.location.clone().add(-2, -1, -2), this.location.clone().add(2, -1, 2));
-        for(Block block : cr.getSideBlocks()) blockStates.add(block.getState());
-        CuboidRegion cr2 = new CuboidRegion(this.location.clone().add(-1, -1, -1), this.location.clone().add(1, -1, 1));
-        for(Block block : cr2.getSideBlocks()) blockStates.add(block.getState());
-        CuboidRegion cr3 = new CuboidRegion(this.location.clone().add(-1, 0, -1), this.location.clone().add(1, 0, 1));
-        for(Block block : cr3.getSideBlocks()) blockStates.add(block.getState());
-        blockStates.add(this.location.clone().add(0, 0, 0).getBlock().getState());
-        blockStates.add(this.location.clone().add(0, -1, 0).getBlock().getState());
+        // FIRST CROSS
+        setStepFakeBlocks(1, new FakeBlock[] {
+                new FakeBlock(getLocation(0), XMaterial.SNOW_BLOCK),
+                new FakeBlock(getLocation(1), XMaterial.SNOW_BLOCK),
+                new FakeBlock(getLocation(2), XMaterial.SNOW_BLOCK),
+                new FakeBlock(getLocation(3), XMaterial.SNOW_BLOCK),
+                new FakeBlock(getLocation(4), XMaterial.SNOW_BLOCK)
+        });
 
-        blockStates.add(this.location.clone().add(-2, 0, -2).getBlock().getState());
-        blockStates.add(this.location.clone().add(2, 0, 2).getBlock().getState());
-        blockStates.add(this.location.clone().add(-2, 0, 2).getBlock().getState());
-        blockStates.add(this.location.clone().add(2, 0, -2).getBlock().getState());
+        // CORNERS
+        setStepFakeBlocks(2, new FakeBlock[] {
+                new FakeBlock(getLocation(5), XMaterial.PACKED_ICE),
+                new FakeBlock(getLocation(6), XMaterial.PACKED_ICE),
+                new FakeBlock(getLocation(7), XMaterial.PACKED_ICE),
+                new FakeBlock(getLocation(8), XMaterial.PACKED_ICE)
+        });
 
-        blockStates.add(this.location.clone().add(-2, 1, -2).getBlock().getState());
-        blockStates.add(this.location.clone().add(2, 1, 2).getBlock().getState());
-        blockStates.add(this.location.clone().add(-2, 1, 2).getBlock().getState());
-        blockStates.add(this.location.clone().add(2, 1, -2).getBlock().getState());
-    }
+        // STAIRS
+        setStepFakeBlocks(3, new FakeBlock[] {
+                new FakeBlock(getLocation(9), XMaterial.QUARTZ_STAIRS, BlockFace.WEST),
+                new FakeBlock(getLocation(10), XMaterial.QUARTZ_STAIRS, BlockFace.EAST),
+                new FakeBlock(getLocation(11), XMaterial.QUARTZ_STAIRS, BlockFace.NORTH),
+                new FakeBlock(getLocation(12), XMaterial.QUARTZ_STAIRS, BlockFace.SOUTH)
+        });
 
-    public void run() {
-        if(step == 0) {
-            placeSnowBlock(this.location.clone().add(0, -1, 0));
-            placeSnowBlock(this.location.clone().add(1, -1, 0));
-            placeSnowBlock(this.location.clone().add(-1, -1, 0));
-            placeSnowBlock(this.location.clone().add(0, -1, 1));
-            placeSnowBlock(this.location.clone().add(0, -1, -1));
-        } else if(step == 1) {
-            placePackedIce(this.location.clone().add(1, -1, 1));
-            placePackedIce(this.location.clone().add(1, -1, -1));
-            placePackedIce(this.location.clone().add(-1, -1, 1));
-            placePackedIce(this.location.clone().add(-1, -1, -1));
-        } else if(step == 2) {
-            placeOrientedStair(this.location.clone().add(2, -1, 0), BlockFace.WEST);
-            placeOrientedStair(this.location.clone().add(-2, -1, 0), BlockFace.EAST);
-            placeOrientedStair(this.location.clone().add(0, -1, 2), BlockFace.NORTH);
-            placeOrientedStair(this.location.clone().add(0, -1,-2), BlockFace.SOUTH);
-        } else if(step == 3) {
-            placeSlab(this.location.clone().add(2, -1, 1));
-            placeSlab(this.location.clone().add(2, -1, -1));
-            placeSlab(this.location.clone().add(-2, -1, 1));
-            placeSlab(this.location.clone().add(-2, -1, -1));
-            placeSlab(this.location.clone().add(1, -1, 2));
-            placeSlab(this.location.clone().add(-1, -1, 2));
-            placeSlab(this.location.clone().add(1, -1, -2));
-            placeSlab(this.location.clone().add(-1, -1, -2));
-        } else if(step == 4) {
-            placeSnowBlock(this.location.clone().add(2, -1, 2));
-            placeSnowBlock(this.location.clone().add(2, -1, -2));
-            placeSnowBlock(this.location.clone().add(-2, -1, 2));
-            placeSnowBlock(this.location.clone().add(-2, -1, -2));
-        } else if(step == 5) {
-            placeFence(this.location.clone().add(2, 0, 2));
-            placeFence(this.location.clone().add(2, 0, -2));
-            placeFence(this.location.clone().add(-2, 0, 2));
-            placeFence(this.location.clone().add(-2, 0, -2));
-        } else if(step == 6) {
-            placeSlabWood(this.location.clone().add(2, 1, 2));
-            placeSlabWood(this.location.clone().add(2, 1, -2));
-            placeSlabWood(this.location.clone().add(-2, 1, 2));
-            placeSlabWood(this.location.clone().add(-2, 1, -2));
-        } else if(step == 7) {
-            cancel();
-        }
-        step++;
-    }
+        // SIDES OF STAIRS
+        setStepFakeBlocks(4, new FakeBlock[] {
+                new FakeBlock(getLocation(13), XMaterial.QUARTZ_SLAB),
+                new FakeBlock(getLocation(14), XMaterial.QUARTZ_SLAB),
+                new FakeBlock(getLocation(15), XMaterial.QUARTZ_SLAB),
+                new FakeBlock(getLocation(16), XMaterial.QUARTZ_SLAB),
+                new FakeBlock(getLocation(17), XMaterial.QUARTZ_SLAB),
+                new FakeBlock(getLocation(18), XMaterial.QUARTZ_SLAB),
+                new FakeBlock(getLocation(19), XMaterial.QUARTZ_SLAB),
+                new FakeBlock(getLocation(20), XMaterial.QUARTZ_SLAB)
+        });
 
-    public void restore() {
-        for(BlockState state : blockStates) state.update(true);
-    }
+        // CORNER PILLARS 0
+        setStepFakeBlocks(5, new FakeBlock[] {
+                new FakeBlock(getLocation(21), XMaterial.SNOW_BLOCK),
+                new FakeBlock(getLocation(22), XMaterial.SNOW_BLOCK),
+                new FakeBlock(getLocation(23), XMaterial.SNOW_BLOCK),
+                new FakeBlock(getLocation(24), XMaterial.SNOW_BLOCK)
+        });
 
-    public void placeOrientedStair(Location loc, BlockFace facing) {
-        if(XMaterial.supports(13)) {
-            AB_13.placeOrientedStair(loc, XMaterial.QUARTZ_STAIRS.parseMaterial(), facing);
-        } else {
-            AB_12.placeOrientedStair(loc, XMaterial.QUARTZ_STAIRS.parseMaterial(), facing);
-        }
-    }
+        // CORNER PILLARS 1
+        setStepFakeBlocks(6, new FakeBlock[] {
+                new FakeBlock(getLocation(25), XMaterial.OAK_FENCE),
+                new FakeBlock(getLocation(26), XMaterial.OAK_FENCE),
+                new FakeBlock(getLocation(27), XMaterial.OAK_FENCE),
+                new FakeBlock(getLocation(28), XMaterial.OAK_FENCE)
+        });
 
-    public void placeFence(Location loc) {
-        if(XMaterial.supports(13)) {
-            AB_13.placeBlock(loc, XMaterial.OAK_FENCE.parseMaterial());
-        } else {
-            AB_12.placeBlock(loc, XMaterial.OAK_FENCE.parseMaterial(), Byte.parseByte("0"));
-        }
-    }
+        // CORNER PILLARS 2
+        setStepFakeBlocks(7, new FakeBlock[] {
+                new FakeBlock(getLocation(29), XMaterial.OAK_SLAB),
+                new FakeBlock(getLocation(30), XMaterial.OAK_SLAB),
+                new FakeBlock(getLocation(31), XMaterial.OAK_SLAB),
+                new FakeBlock(getLocation(32), XMaterial.OAK_SLAB)
+        });
 
-    public void placeSlab(Location loc) {
-        if(XMaterial.supports(13)) {
-            AB_13.placeBlock(loc, XMaterial.QUARTZ_SLAB.parseMaterial());
-        } else {
-            AB_12.placeBlock(loc, XMaterial.QUARTZ_SLAB.parseMaterial(), Byte.parseByte("7"));
-        }
-    }
-
-    public void placeSlabWood(Location loc) {
-        if(XMaterial.supports(13)) {
-            AB_13.placeBlock(loc, XMaterial.OAK_SLAB.parseMaterial());
-        } else {
-            AB_12.placeBlock(loc, XMaterial.OAK_SLAB.parseMaterial(), Byte.parseByte("0"));
-        }
-    }
-
-    public void placeSnowBlock(Location loc) {
-        if(XMaterial.supports(13)) {
-            AB_13.placeBlock(loc, XMaterial.SNOW_BLOCK.parseMaterial());
-        } else {
-            AB_12.placeBlock(loc, XMaterial.SNOW_BLOCK.parseMaterial(), Byte.parseByte("0"));
-        }
-    }
-
-    public void placePackedIce(Location loc) {
-        if(XMaterial.supports(13)) {
-            AB_13.placeBlock(loc, XMaterial.PACKED_ICE.parseMaterial());
-        } else {
-            AB_12.placeBlock(loc, XMaterial.PACKED_ICE.parseMaterial(), Byte.parseByte("0"));
-        }
     }
 
 }

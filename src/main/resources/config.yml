@@ -107,3 +107,12 @@ Holograms:
         - '&c'
     Duplication:
         VisibleToAllPlayers: false
+
+
+# Enable/disable reward duplication system
+# Change the command to execute to the one of the plugin you are using
+# Change the command to give duplicated points
+MenuDecoration:
+    Enabled: false
+    Item:
+        material: GRAY_STAINED_GLASS_PANE

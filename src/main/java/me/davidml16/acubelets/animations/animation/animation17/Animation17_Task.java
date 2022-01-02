@@ -34,9 +34,6 @@ public class Animation17_Task extends Animation {
 	private ArmorStand armorStand;
 	private Location armorStandLocation;
 
-	private Animation17_Blocks blocks;
-	private Animation17_Music music;
-
 	private Set<Animation17_Snowball> snowballs = new HashSet<>();
 
 	private LivingEntity snowman;
@@ -169,11 +166,11 @@ public class Animation17_Task extends Animation {
 
 		rotation = getRotation(false).value;
 
-		blocks = new Animation17_Blocks(getCubeletBox().getLocation());
-		blocks.runTaskTimer(getMain(), 0L, 6L);
+		setAnimationBlocks(new Animation17_Blocks(getCubeletBox().getLocation()));
+		startAnimationBlocks(0L);
 
-		music = new Animation17_Music(getCubeletBox().getLocation());
-		music.runTaskTimer(getMain(), 25L, 3L);
+		addRunnable("music", new Animation17_Music(getCubeletBox().getLocation()));
+		startRunnable("music", 25L, 3L);
 
 		setColors(Arrays.asList(Color.WHITE, Color.AQUA));
 
@@ -182,12 +179,11 @@ public class Animation17_Task extends Animation {
 	@Override
 	public void onStop() {
 
-		blocks.cancel();
-		music.cancel();
+		cancelRunnables();
 
 		if(snowman != null) snowman.remove();
 
-		if(blocks != null) blocks.restore();
+		stopAnimationBlocks();
 
 		if(getMain().getAnimationHandler().getEntities().contains(armorStand)) {
 			if(armorStand != null) armorStand.remove();
@@ -210,7 +206,7 @@ public class Animation17_Task extends Animation {
 	@Override
 	public void onPreRewardReveal() {
 
-		music.cancel();
+		cancelRunnable("music");
 
 		Sounds.playSound(armorStand.getLocation(), Sounds.MySound.EXPLODE, 0.5F, 1F);
 

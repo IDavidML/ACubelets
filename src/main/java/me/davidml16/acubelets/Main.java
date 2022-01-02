@@ -154,6 +154,7 @@ public class Main extends JavaPlugin {
         cubeletTypesHandler.printLog();
 
         settings.put("RewardsDuplication", getConfig().getBoolean("RewardsDuplication.Enabled"));
+        settings.put("duplicationPermissionCommand", getConfig().getBoolean("RewardsDuplication.Enabled"));
         duplicationPermissionCommand = getConfig().getString("RewardsDuplication.PermissionCommand");
         duplicationPointsCommand = getConfig().getString("RewardsDuplication.PointsCommand");
 
@@ -235,6 +236,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onDisable() {
+
         PluginDescriptionFile pdf = getDescription();
         log.sendMessage("");
         log.sendMessage(Utils.translate("  &eACubelets Disabled!"));
@@ -263,6 +265,7 @@ public class Main extends JavaPlugin {
         if(hologramTask != null) hologramTask.stop();
         if(dataSaveTask != null) dataSaveTask.stop();
         if(databaseHandler != null) databaseHandler.getDatabaseConnection().stop();
+
     }
 
     public static Main get() { return main; }

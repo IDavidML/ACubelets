@@ -16,8 +16,6 @@ public class Animation2_Task extends Animation {
 	private ArmorStand armorStand;
 	private Location armorStandLocation;
 
-	private Animation2_Music music;
-
 	@Override
 	public void onTick(int time) {
 
@@ -46,15 +44,15 @@ public class Animation2_Task extends Animation {
 		armorStandLocation = armorStand.getLocation();
 		getMain().getAnimationHandler().getEntities().add(armorStand);
 
-		music = new Animation2_Music(getCubeletBox().getLocation());
-		music.runTaskTimer(getMain(), 0L, 4L);
+		addRunnable("music", new Animation2_Music(getCubeletBox().getLocation()));
+		startRunnable("music", 0L, 4L);
 
 	}
 
 	@Override
 	public void onStop() {
 
-		music.cancel();
+		cancelRunnable("music");
 
 		if(getMain().getAnimationHandler().getEntities().contains(armorStand)) {
 			if(armorStand != null) armorStand.remove();
@@ -78,7 +76,7 @@ public class Animation2_Task extends Animation {
 	@Override
 	public void onRewardReveal() {
 
-		music.cancel();
+		cancelRunnable("music");
 
 		armorStand.remove();
 		armorStand = null;

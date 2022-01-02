@@ -31,8 +31,6 @@ public class Animation13_Task extends Animation {
 	private ArmorStand armorStand;
 	private Location armorStandLocation;
 
-	private Animation13_Blocks blocks;
-
 	private Set<Animation13_Gwen> guardians = new HashSet<>();
 
 	private double rotSpeed = 0.001;
@@ -127,8 +125,8 @@ public class Animation13_Task extends Animation {
 	@Override
 	public void onStart() {
 
-		blocks = new Animation13_Blocks(getCubeletBox().getLocation());
-		blocks.runTaskTimer(getMain(), 0L, 6L);
+		setAnimationBlocks(new Animation13_Blocks(getCubeletBox().getLocation()));
+		startAnimationBlocks(0L);
 
 		setColors(Arrays.asList(Color.BLUE, Color.AQUA));
 
@@ -137,9 +135,7 @@ public class Animation13_Task extends Animation {
 	@Override
 	public void onStop() {
 
-		blocks.cancel();
-
-		if(blocks != null) blocks.restore();
+		stopAnimationBlocks();
 
 		if(getMain().getAnimationHandler().getEntities().contains(armorStand)) {
 			if(armorStand != null) armorStand.remove();

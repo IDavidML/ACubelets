@@ -8,19 +8,18 @@ import com.comphenix.protocol.wrappers.BlockPosition;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
+import me.davidml16.acubelets.animations.FakeBlock;
 import me.davidml16.acubelets.utils.*;
 import me.davidml16.acubelets.utils.MultiVersion.AB_12;
 import me.davidml16.acubelets.utils.MultiVersion.AB_13;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Location;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.*;
+import org.bukkit.material.MaterialData;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
@@ -33,8 +32,6 @@ public class Animation20_Task extends Animation {
 	public Animation20_Task(Main main, AnimationSettings animationSettings) {
 		super(main, animationSettings);
 	}
-
-	private Animation20_Blocks blocks;
 
 	private Location rotationLocation;
 	private LivingEntity enderman;
@@ -51,7 +48,11 @@ public class Animation20_Task extends Animation {
 			Sounds.playSound(getCubeletBox().getLocation(), Sounds.MySound.ENDERMAN_TELEPORT, 0.5F, 2F);
 
 			if(XMaterial.supports(9)) enderman.setCollidable(false);
-			((Enderman)enderman).setCarriedBlock(Bukkit.createBlockData(XMaterial.CHEST.parseMaterial()));
+
+			if(XMaterial.supports(13))
+				((Enderman)enderman).setCarriedBlock(Bukkit.createBlockData(XMaterial.CHEST.parseMaterial()));
+			else
+				((Enderman)enderman).setCarriedMaterial(new MaterialData(XMaterial.CHEST.parseMaterial()));
 
 			enderman.setRemoveWhenFarAway(false);
 			enderman.setMetadata("ACUBELETS", new FixedMetadataValue(getMain(), Boolean.TRUE));
@@ -72,7 +73,10 @@ public class Animation20_Task extends Animation {
 		if(time == 70) {
 
 			if(enderman != null)
-				((Enderman)enderman).setCarriedBlock(Bukkit.createBlockData(XMaterial.AIR.parseMaterial()));
+				if(XMaterial.supports(13))
+					((Enderman)enderman).setCarriedBlock(Bukkit.createBlockData(XMaterial.AIR.parseMaterial()));
+				else
+					((Enderman)enderman).setCarriedMaterial(new MaterialData(XMaterial.AIR.parseMaterial()));
 
 			Location eye = getBoxLocation().clone().add(0.0D, 0.4D, 0.0D);
 			for (Location location2 : LocationUtils.getCircle(getBoxLocation().clone().add(0, 0.75,0), 0.25D, 50)) {
@@ -117,8 +121,8 @@ public class Animation20_Task extends Animation {
 
 		rotationLocation = getLocationRotation(0);
 
-		blocks = new Animation20_Blocks(getCubeletBox().getLocation());
-		blocks.runTaskTimer(getMain(), 6L, 6L);
+		setAnimationBlocks(new Animation20_Blocks(getCubeletBox().getLocation()));
+		startAnimationBlocks(6L);
 
 		setColors(Arrays.asList(Color.BLACK, Color.PURPLE));
 
@@ -127,11 +131,7 @@ public class Animation20_Task extends Animation {
 	@Override
 	public void onStop() {
 
-		getBoxLocation().clone().getBlock().setType(XMaterial.AIR.parseMaterial());
-
-		blocks.cancel();
-
-		if(blocks != null) blocks.restore();
+		stopAnimationBlocks();
 
 	}
 
@@ -171,11 +171,9 @@ public class Animation20_Task extends Animation {
 				break;
 		}
 
-		if(XMaterial.supports(13)) {
-			AB_13.placeOrientedStair(loc, XMaterial.CHEST.parseMaterial(), blockFace);
-		} else {
-			AB_12.placeOrientedStair(loc, XMaterial.CHEST.parseMaterial(), blockFace);
-		}
+		getAnimationBlocks().setStepFakeBlocks(1, new FakeBlock[] {
+				new FakeBlock(loc, XMaterial.CHEST, blockFace)
+		});
 
 	}
 

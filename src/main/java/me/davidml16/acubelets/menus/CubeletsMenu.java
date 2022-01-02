@@ -114,7 +114,6 @@ public class CubeletsMenu extends Menu {
 
         }
 
-
         ItemStack close = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Close.Material")).get().parseItem())
                 .setName(guiLayout.getMessage("Items.Close.Name"))
                 .setLore(guiLayout.getMessageList("Items.Close.Lore"))
