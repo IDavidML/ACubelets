@@ -1,18 +1,14 @@
 package me.davidml16.acubelets.events;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.objects.CubeletBox;
 import me.davidml16.acubelets.utils.NBTEditor;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.HashMap;
 
 public class Event_Block implements Listener {
 

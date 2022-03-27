@@ -1,8 +1,12 @@
 package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.menus.*;
-import me.davidml16.acubelets.menus.rewards.RewardsMenu;
+import me.davidml16.acubelets.menus.admin.AnimationsMenu;
+import me.davidml16.acubelets.menus.admin.rewards.RaritiesMenu;
+import me.davidml16.acubelets.menus.admin.rewards.RewardsMenu;
+import me.davidml16.acubelets.menus.admin.type.TypeConfigMenu;
+import me.davidml16.acubelets.menus.admin.type.TypeListMenu;
+import me.davidml16.acubelets.menus.player.CubeletsMenu;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -14,7 +18,6 @@ import org.bukkit.entity.Player;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.sql.SQLException;
 import java.util.*;
 
 public class ExecuteType {

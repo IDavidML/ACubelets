@@ -1,7 +1,7 @@
 package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.menus.rewards.RewardsPreviewMenu;
+import me.davidml16.acubelets.menus.player.rewards.RewardsPreviewMenu;
 import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.command.CommandSender;

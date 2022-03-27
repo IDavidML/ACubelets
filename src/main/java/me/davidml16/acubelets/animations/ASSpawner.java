@@ -2,18 +2,16 @@ package me.davidml16.acubelets.animations;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.enums.Rotation;
-import me.davidml16.acubelets.objects.CubeletBox;
+import me.davidml16.acubelets.objects.CubeletMachine;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.utils.NBTEditor;
 import me.davidml16.acubelets.utils.VersionUtil;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.util.EulerAngle;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -21,7 +19,7 @@ import java.lang.reflect.Method;
 
 public class ASSpawner {
 
-    public static ArmorStand spawn(Main main, CubeletBox box, CubeletType type, boolean opposite) {
+    public static ArmorStand spawn(Main main, CubeletMachine box, CubeletType type, boolean opposite) {
         Location loc = box.getLocation().clone().add(0.5, -0.35, 0.5);
         loc.setYaw(getRotation(box, opposite).value);
 
@@ -44,7 +42,7 @@ public class ASSpawner {
         return armorStand;
     }
 
-    public static ArmorStand spawn(Main main, CubeletBox box, CubeletType type, boolean opposite, boolean small, Location loc) {
+    public static ArmorStand spawn(Main main, CubeletMachine box, CubeletType type, boolean opposite, boolean small, Location loc) {
         loc.setYaw(getRotation(box, opposite).value);
 
         ArmorStand armorStand = box.getLocation().getWorld().spawn(loc, ArmorStand.class);
@@ -66,7 +64,7 @@ public class ASSpawner {
         return armorStand;
     }
 
-    public static ArmorStand spawn(Main main, CubeletBox box, ItemStack head, boolean opposite, boolean small, Location loc) {
+    public static ArmorStand spawn(Main main, CubeletMachine box, ItemStack head, boolean opposite, boolean small, Location loc) {
         loc.setYaw(getRotation(box, opposite).value);
 
         ArmorStand armorStand = box.getLocation().getWorld().spawn(loc, ArmorStand.class);
@@ -130,7 +128,7 @@ public class ASSpawner {
         return armorStand;
     }
 
-    public static Rotation getRotation(CubeletBox box, boolean opposite) {
+    public static Rotation getRotation(CubeletMachine box, boolean opposite) {
         if(box.getRotation() == Rotation.NORTH)
             return opposite ? Rotation.SOUTH : Rotation.NORTH;
         else if(box.getRotation() == Rotation.SOUTH)

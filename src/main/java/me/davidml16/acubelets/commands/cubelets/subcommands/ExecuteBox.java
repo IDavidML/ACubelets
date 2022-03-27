@@ -1,7 +1,7 @@
 package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.menus.EditBoxMenu;
+import me.davidml16.acubelets.menus.admin.EditMachineMenu;
 import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.Sounds;
@@ -134,9 +134,9 @@ public class ExecuteBox {
 
                 if (main.getCubeletBoxHandler().getBoxes().containsKey(block.getLocation())) {
 
-                    EditBoxMenu editBoxMenu = new EditBoxMenu(main, (Player) sender);
-                    editBoxMenu.setAttribute(Menu.AttrType.CUBELET_BOX_ATTR, main.getCubeletBoxHandler().getBoxByLocation(block.getLocation()));
-                    editBoxMenu.open();
+                    EditMachineMenu editMachineMenu = new EditMachineMenu(main, (Player) sender);
+                    editMachineMenu.setAttribute(Menu.AttrType.CUBELET_BOX_ATTR, main.getCubeletBoxHandler().getBoxByLocation(block.getLocation()));
+                    editMachineMenu.open();
 
                     return true;
 

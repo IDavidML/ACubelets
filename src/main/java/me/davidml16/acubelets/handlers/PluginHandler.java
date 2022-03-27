@@ -75,6 +75,7 @@ public class PluginHandler {
 
         main.getHologramTask().stop();
         main.getLiveGuiTask().stop();
+
         main.getHologramImplementation().removeHolograms();
         main.getLanguageHandler().pushMessages();
         main.getCubeletBoxHandler().loadBoxes();
@@ -86,7 +87,10 @@ public class PluginHandler {
         main.getLayoutHandler().loadLayouts();
         main.getAnimationHandler().loadAnimations();
         main.getHologramHandler().getColorAnimation().setColors(main.getConfig().getStringList("Holograms.ColorAnimation"));
-        main.getHologramHandler().setVisibilityDistance(main.getConfig().getInt("Holograms.VisibilityDistance"));
+
+        int distance = main.getConfig().getInt("Holograms.VisibilityDistance");
+        main.getHologramHandler().setVisibilityDistance(distance * distance);
+
         main.getHologramImplementation().loadHolograms();
 
         main.getHologramTask().start();

@@ -14,6 +14,8 @@ import me.davidml16.acubelets.handlers.*;
 import me.davidml16.acubelets.handlers.PluginHandler;
 import me.davidml16.acubelets.holograms.HologramHandler;
 import me.davidml16.acubelets.holograms.HologramImplementation;
+import me.davidml16.acubelets.holograms.implementations.HolographicDisplaysImpl;
+import me.davidml16.acubelets.tasks.DataCacheTask;
 import me.davidml16.acubelets.tasks.DataSaveTask;
 import me.davidml16.acubelets.tasks.HologramTask;
 import me.davidml16.acubelets.tasks.LiveGuiTask;
@@ -47,6 +49,7 @@ public class Main extends JavaPlugin {
     private HologramTask hologramTask;
     private DataSaveTask dataSaveTask;
     private LiveGuiTask liveGuiTask;
+    private DataCacheTask dataCacheTask;
 
     private LanguageHandler languageHandler;
     private DatabaseHandler databaseHandler;
@@ -170,12 +173,13 @@ public class Main extends JavaPlugin {
 
         if(hologramHandler.getImplementation() == null) {
             getLogger().severe("*** HolographicDisplays is not installed or not enabled. ***");
-            getLogger().severe("*** This plugin will be disabled. ***");
+            getLogger().severe("*** Now the plugin will be disabled. ***");
             setEnabled(false);
             return;
         }
 
-        hologramHandler.setVisibilityDistance(getConfig().getInt("Holograms.VisibilityDistance"));
+        int distance = getConfig().getInt("Holograms.VisibilityDistance");
+        hologramHandler.setVisibilityDistance(distance * distance);
 
         hologramHandler.getColorAnimation().setColors(getConfig().getStringList("Holograms.ColorAnimation"));
         hologramHandler.getImplementation().loadHolograms();
@@ -189,6 +193,9 @@ public class Main extends JavaPlugin {
 
         dataSaveTask = new DataSaveTask(this);
         dataSaveTask.start();
+
+        dataCacheTask = new DataCacheTask(this);
+        dataCacheTask.start();
 
         cubeletOpenHandler = new CubeletOpenHandler(this);
 

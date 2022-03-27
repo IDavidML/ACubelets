@@ -2,8 +2,8 @@ package me.davidml16.acubelets.events;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.interfaces.CubeletDateComparator;
-import me.davidml16.acubelets.menus.CubeletsMenu;
-import me.davidml16.acubelets.menus.rewards.RewardsPreviewMenu;
+import me.davidml16.acubelets.menus.player.CubeletsMenu;
+import me.davidml16.acubelets.menus.player.rewards.RewardsPreviewMenu;
 import me.davidml16.acubelets.objects.*;
 import me.davidml16.acubelets.utils.NBTEditor;
 import org.bukkit.Bukkit;
@@ -17,7 +17,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,7 +58,7 @@ public class Event_Interact implements Listener {
                         if (e.getHand() == EquipmentSlot.OFF_HAND) return;
                     }
 
-                    CubeletBox box = main.getCubeletBoxHandler().getBoxByLocation(e.getClickedBlock().getLocation());
+                    CubeletMachine box = main.getCubeletBoxHandler().getBoxByLocation(e.getClickedBlock().getLocation());
 
                     if (box.isWaiting()) {
                         main.getPlayerDataHandler().getData(player).setBoxOpened(box);
@@ -139,7 +138,7 @@ public class Event_Interact implements Listener {
 
                     } else {
 
-                        CubeletBox box = main.getCubeletBoxHandler().getBoxByLocation(e.getClickedBlock().getLocation());
+                        CubeletMachine box = main.getCubeletBoxHandler().getBoxByLocation(e.getClickedBlock().getLocation());
 
                         if (box.isWaiting()) {
 

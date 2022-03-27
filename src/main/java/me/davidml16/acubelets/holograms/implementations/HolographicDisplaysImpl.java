@@ -8,18 +8,19 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.holograms.HologramHandler;
 import me.davidml16.acubelets.holograms.HologramImplementation;
-import me.davidml16.acubelets.objects.CubeletBox;
+import me.davidml16.acubelets.objects.CubeletMachine;
 import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.utils.RepeatingTask;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public class HolographicDisplaysImpl implements HologramImplementation {
+public class HolographicDisplaysImpl implements HologramImplementation, Listener {
 
     private Main main;
     private HologramHandler hologramHandler;
@@ -27,7 +28,7 @@ public class HolographicDisplaysImpl implements HologramImplementation {
     private static final double LINE_HEIGHT = 0.36;
     private static final double LINE_HEIGHT_REWARD = 0.32;
 
-    private HashMap<CubeletBox, HashMap<UUID, Hologram>> holograms;
+    private HashMap<CubeletMachine, HashMap<UUID, Hologram>> holograms;
 
     public HolographicDisplaysImpl(Main main, HologramHandler hologramHandler) {
 
@@ -49,7 +50,7 @@ public class HolographicDisplaysImpl implements HologramImplementation {
 
     public void loadHolograms(Player p) {
 
-        for(CubeletBox box : main.getCubeletBoxHandler().getBoxes().values()) {
+        for(CubeletMachine box : main.getCubeletBoxHandler().getBoxes().values()) {
 
             loadHolograms(p, box);
 
@@ -57,7 +58,7 @@ public class HolographicDisplaysImpl implements HologramImplementation {
 
     }
 
-    public void loadHolograms(CubeletBox box) {
+    public void loadHolograms(CubeletMachine box) {
 
         for(Player p : Bukkit.getOnlinePlayers()) {
 
@@ -89,7 +90,7 @@ public class HolographicDisplaysImpl implements HologramImplementation {
 
     }
 
-    public void loadHolograms(Player p, CubeletBox box) {
+    public void loadHolograms(Player p, CubeletMachine box) {
 
         Hologram hologram = HologramsAPI.createHologram(main, box.getLocation().clone().add(0.5, 1.025 + (box.getBlockHeight() + 0.1875), 0.5));
         VisibilityManager visibilityManager = hologram.getVisibilityManager();
@@ -132,7 +133,7 @@ public class HolographicDisplaysImpl implements HologramImplementation {
 
     public void reloadHolograms(Player p) {
 
-        for (CubeletBox box : main.getCubeletBoxHandler().getBoxes().values()) {
+        for (CubeletMachine box : main.getCubeletBoxHandler().getBoxes().values()) {
 
             reloadHologram(p, box);
 
@@ -140,7 +141,7 @@ public class HolographicDisplaysImpl implements HologramImplementation {
 
     }
 
-    public void reloadHologram(CubeletBox box) {
+    public void reloadHologram(CubeletMachine box) {
 
         for (Hologram hologram : holograms.get(box).values()) {
             hologram.clearLines();
@@ -152,10 +153,10 @@ public class HolographicDisplaysImpl implements HologramImplementation {
 
     }
 
-    public void reloadHologram(Player p, CubeletBox box) {
+    public void reloadHologram(Player p, CubeletMachine box) {
 
         if (!Objects.equals(box.getLocation().getWorld(), p.getLocation().getWorld()) ||
-                box.getLocation().distance(p.getLocation()) > hologramHandler.getVisibilityDistance())
+                box.getLocation().distanceSquared(p.getLocation()) > hologramHandler.getVisibilityDistance())
             return;
 
         if (box.getState() == CubeletBoxState.EMPTY) {
@@ -196,18 +197,18 @@ public class HolographicDisplaysImpl implements HologramImplementation {
     }
 
     @Override
-    public void clearLines(CubeletBox box) {
+    public void clearLines(CubeletMachine box) {
         for (Hologram hologram : holograms.get(box).values()) {
             hologram.clearLines();
         }
     }
 
     @Override
-    public void clearHolograms(CubeletBox box) {
+    public void clearHolograms(CubeletMachine box) {
         holograms.get(box).clear();
     }
 
-    public void moveHologram(CubeletBox box) {
+    public void moveHologram(CubeletMachine box) {
 
         int max = Math.max(main.getLanguageHandler().getMessageList("Holograms.CubeletAvailable").size(), main.getLanguageHandler().getMessageList("Holograms.NoCubeletAvailable").size());
 
@@ -220,7 +221,7 @@ public class HolographicDisplaysImpl implements HologramImplementation {
 
     }
 
-    public void rewardHologram(CubeletBox box, Reward reward) {
+    public void rewardHologram(CubeletMachine box, Reward reward) {
 
         for(Player p : Bukkit.getOnlinePlayers()) {
 
@@ -249,7 +250,7 @@ public class HolographicDisplaysImpl implements HologramImplementation {
 
     }
 
-    public RepeatingTask duplicationRewardHologram(CubeletBox box, Reward reward) {
+    public RepeatingTask duplicationRewardHologram(CubeletMachine box, Reward reward) {
 
         int duplicationPoints = box.getLastDuplicationPoints();
 
@@ -298,7 +299,7 @@ public class HolographicDisplaysImpl implements HologramImplementation {
 
     public void removeHolograms(Player p) {
 
-        for(CubeletBox box : main.getCubeletBoxHandler().getBoxes().values()) {
+        for(CubeletMachine box : main.getCubeletBoxHandler().getBoxes().values()) {
 
             if(holograms.get(box) == null)
                 continue;
@@ -319,7 +320,7 @@ public class HolographicDisplaysImpl implements HologramImplementation {
     }
 
     @Override
-    public void removeHolograms(CubeletBox box) {
+    public void removeHolograms(CubeletMachine box) {
 
         if(holograms.get(box) == null)
             return;

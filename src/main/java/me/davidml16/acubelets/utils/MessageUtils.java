@@ -2,7 +2,7 @@ package me.davidml16.acubelets.utils;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.rewards.Reward;
-import me.davidml16.acubelets.objects.CubeletBox;
+import me.davidml16.acubelets.objects.CubeletMachine;
 import me.davidml16.acubelets.objects.CubeletType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -178,15 +178,15 @@ public class MessageUtils {
         return returnMessage.toString();
     }
 
-    public static void sendLootMessage(CubeletBox cubeletBox, CubeletType cubeletType, Reward reward) {
-        Player target = Bukkit.getPlayer(cubeletBox.getPlayerOpening().getUuid());
+    public static void sendLootMessage(CubeletMachine cubeletMachine, CubeletType cubeletType, Reward reward) {
+        Player target = Bukkit.getPlayer(cubeletMachine.getPlayerOpening().getUuid());
         if (target != null) {
             if(!Main.get().isDuplicationEnabled()) {
                 newLootMessage(target, cubeletType, reward);
-            } else if (!Main.get().getCubeletRewardHandler().isDuplicated(cubeletBox, reward)) {
+            } else if (!Main.get().getCubeletRewardHandler().isDuplicated(cubeletMachine, reward)) {
                 newLootMessage(target, cubeletType, reward);
-            } else if(Main.get().isDuplicationEnabled() && Main.get().getCubeletRewardHandler().isDuplicated(cubeletBox, reward)) {
-                duplicateLootMessage(target, cubeletType, reward, cubeletBox.getLastDuplicationPoints());
+            } else if(Main.get().isDuplicationEnabled() && Main.get().getCubeletRewardHandler().isDuplicated(cubeletMachine, reward)) {
+                duplicateLootMessage(target, cubeletType, reward, cubeletMachine.getLastDuplicationPoints());
             }
         }
     }

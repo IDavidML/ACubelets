@@ -2,10 +2,8 @@ package me.davidml16.acubelets.conversation.crafting;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.CommonPrompts;
-import me.davidml16.acubelets.menus.RaritiesMenu;
-import me.davidml16.acubelets.menus.crafting.EditCraftingCraftsMenu;
+import me.davidml16.acubelets.menus.admin.crafting.EditCraftingCraftsMenu;
 import me.davidml16.acubelets.objects.CraftParent;
-import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.ChatColor;

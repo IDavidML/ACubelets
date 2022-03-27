@@ -2,7 +2,7 @@ package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.enums.Rotation;
-import me.davidml16.acubelets.objects.CubeletBox;
+import me.davidml16.acubelets.objects.CubeletMachine;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 public class CubeletBoxHandler {
 
-    private HashMap<Location, CubeletBox> boxes;
+    private HashMap<Location, CubeletMachine> boxes;
     private File file;
     private YamlConfiguration config;
 
@@ -23,10 +23,10 @@ public class CubeletBoxHandler {
 
     public CubeletBoxHandler(Main main) {
         this.main = main;
-        this.boxes = new HashMap<Location, CubeletBox>();
+        this.boxes = new HashMap<Location, CubeletMachine>();
     }
 
-    public HashMap<Location, CubeletBox> getBoxes() {
+    public HashMap<Location, CubeletMachine> getBoxes() {
         return boxes;
     }
 
@@ -38,19 +38,19 @@ public class CubeletBoxHandler {
         return config;
     }
 
-    public CubeletBox getBoxByLocation(Location loc) {
+    public CubeletMachine getBoxByLocation(Location loc) {
         return boxes.get(loc);
     }
 
     public void createBox(Location loc, double blockHeight) {
-        CubeletBox box = new CubeletBox(loc, blockHeight, blockHeight, Rotation.SOUTH);
+        CubeletMachine box = new CubeletMachine(loc, blockHeight, blockHeight, Rotation.SOUTH);
         boxes.put(loc, box);
         main.getHologramImplementation().loadHolograms(box);
 
         config.set("locations", new ArrayList<>());
 
         int i = 1;
-        for(CubeletBox bx : boxes.values()) {
+        for(CubeletMachine bx : boxes.values()) {
             config.set("locations." + i + ".world", bx.getLocation().getWorld().getName());
             config.set("locations." + i + ".x", bx.getLocation().getBlockX());
             config.set("locations." + i + ".y", bx.getLocation().getBlockY());
@@ -65,9 +65,10 @@ public class CubeletBoxHandler {
     }
 
     public void removeBox(Location loc) {
+
         if(boxes.containsKey(loc)) {
 
-            CubeletBox box = getBoxByLocation(loc);
+            CubeletMachine box = getBoxByLocation(loc);
             main.getHologramImplementation().removeHolograms(box);
 
             main.getHologramImplementation().clearHolograms(box);
@@ -77,7 +78,7 @@ public class CubeletBoxHandler {
             config.set("locations", new ArrayList<>());
 
             int i = 1;
-            for(CubeletBox bx : boxes.values()) {
+            for(CubeletMachine bx : boxes.values()) {
                 config.set("locations." + i + ".world", bx.getLocation().getWorld().getName());
                 config.set("locations." + i + ".x", bx.getLocation().getBlockX());
                 config.set("locations." + i + ".y", bx.getLocation().getBlockY());
@@ -90,13 +91,14 @@ public class CubeletBoxHandler {
 
             saveConfig();
         }
+
     }
 
     public void saveBoxes() {
         config.set("locations", new ArrayList<>());
 
         int i = 1;
-        for(CubeletBox bx : boxes.values()) {
+        for(CubeletMachine bx : boxes.values()) {
             config.set("locations." + i + ".world", bx.getLocation().getWorld().getName());
             config.set("locations." + i + ".x", bx.getLocation().getBlockX());
             config.set("locations." + i + ".y", bx.getLocation().getBlockY());
@@ -168,13 +170,13 @@ public class CubeletBoxHandler {
                         permanentBlockHeight = config.getDouble("locations." + i + ".permanentBlockHeight");
 
                     Location loc = new Location(Bukkit.getWorld(world), x, y, z);
-                    boxes.put(loc, new CubeletBox(loc, blockHeight, permanentBlockHeight, rotation));
+                    boxes.put(loc, new CubeletMachine(loc, blockHeight, permanentBlockHeight, rotation));
                 }
             }
 
             config.set("locations", new ArrayList<>());
             int i = 1;
-            for(CubeletBox bx : boxes.values()) {
+            for(CubeletMachine bx : boxes.values()) {
                 if(bx.getLocation().getWorld() == null) continue;
                 config.set("locations." + i + ".world", bx.getLocation().getWorld().getName());
                 config.set("locations." + i + ".x", bx.getLocation().getBlockX());

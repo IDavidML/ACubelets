@@ -13,7 +13,7 @@ public class Profile {
 
 	private UUID uuid;
 
-	private CubeletBox boxOpened;
+	private CubeletMachine boxOpened;
 
 	private List<Cubelet> cubelets;
 
@@ -56,9 +56,9 @@ public class Profile {
 		this.lootHistory = lootHistory;
 	}
 
-	public CubeletBox getBoxOpened() { return boxOpened; }
+	public CubeletMachine getBoxOpened() { return boxOpened; }
 
-	public void setBoxOpened(CubeletBox boxOpened) { this.boxOpened = boxOpened; }
+	public void setBoxOpened(CubeletMachine boxOpened) { this.boxOpened = boxOpened; }
 
 	public String getOrderBy() { return orderBy; }
 

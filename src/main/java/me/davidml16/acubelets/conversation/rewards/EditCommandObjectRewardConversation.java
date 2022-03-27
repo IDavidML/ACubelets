@@ -2,8 +2,7 @@ package me.davidml16.acubelets.conversation.rewards;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.CommonPrompts;
-import me.davidml16.acubelets.menus.crafting.EditCraftingIngredientsMenu;
-import me.davidml16.acubelets.menus.rewards.EditRewardCommandsMenu;
+import me.davidml16.acubelets.menus.admin.rewards.EditRewardCommandsMenu;
 import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.objects.rewards.CommandObject;
 import me.davidml16.acubelets.objects.CubeletType;

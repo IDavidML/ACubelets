@@ -4,7 +4,7 @@ import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.objects.CubeletBox;
+import me.davidml16.acubelets.objects.CubeletMachine;
 import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -22,11 +22,11 @@ public class Animation4_EntityPackets extends BukkitRunnable {
     private final ArmorStand armorStand;
     private final PacketContainer entitySwing;
     private final ProtocolManager protocolManager;
-    private final CubeletBox box;
+    private final CubeletMachine box;
 
     private final Random random;
 
-    public Animation4_EntityPackets(LivingEntity entity, ArmorStand armorStand, CubeletBox box) {
+    public Animation4_EntityPackets(LivingEntity entity, ArmorStand armorStand, CubeletMachine box) {
         this.entity = entity;
         this.armorStand = armorStand;
         this.random = new Random();

@@ -2,7 +2,7 @@ package me.davidml16.acubelets.conversation.crafting;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.CommonPrompts;
-import me.davidml16.acubelets.menus.crafting.EditCraftingIngredientsMenu;
+import me.davidml16.acubelets.menus.admin.crafting.EditCraftingIngredientsMenu;
 import me.davidml16.acubelets.objects.CraftIngredient;
 import me.davidml16.acubelets.objects.CraftParent;
 import me.davidml16.acubelets.objects.Menu;

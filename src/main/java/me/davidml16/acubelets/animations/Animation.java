@@ -5,14 +5,14 @@ import me.davidml16.acubelets.api.CubeletEndEvent;
 import me.davidml16.acubelets.api.CubeletOpenEvent;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.enums.Rotation;
-import me.davidml16.acubelets.objects.CubeletBox;
+import me.davidml16.acubelets.objects.CubeletMachine;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.rewards.Reward;
-import me.davidml16.acubelets.utils.MessageUtils;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import me.davidml16.acubelets.utils.RepeatingTask;
 import me.davidml16.acubelets.utils.Utils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -29,7 +29,7 @@ public abstract class Animation {
 
     private AnimationSettings animationSettings;
 
-    private CubeletBox cubeletBox;
+    private CubeletMachine cubeletMachine;
     private CubeletType cubeletType;
     private Reward reward;
 
@@ -73,16 +73,16 @@ public abstract class Animation {
 
     }
 
-    public void setCubeletBox(CubeletBox box) {
+    public void setCubeletBox(CubeletMachine box) {
 
-        this.cubeletBox = box;
+        this.cubeletMachine = box;
 
-        this.boxLocation = cubeletBox.getLocation().clone().add(0.5, 0, 0.5);
+        this.boxLocation = cubeletMachine.getLocation().clone().add(0.5, 0, 0.5);
 
-        this.corner1 = cubeletBox.getLocation().clone().add(0.05, box.getPermanentBlockHeight() - 0.325, 0.05);
-        this.corner2 = cubeletBox.getLocation().clone().add(0.95, box.getPermanentBlockHeight() - 0.325, 0.05);
-        this.corner3 = cubeletBox.getLocation().clone().add(0.95, box.getPermanentBlockHeight() - 0.325, 0.95);
-        this.corner4 = cubeletBox.getLocation().clone().add(0.05, box.getPermanentBlockHeight() - 0.325, 0.95);
+        this.corner1 = cubeletMachine.getLocation().clone().add(0.05, box.getPermanentBlockHeight() - 0.325, 0.05);
+        this.corner2 = cubeletMachine.getLocation().clone().add(0.95, box.getPermanentBlockHeight() - 0.325, 0.05);
+        this.corner3 = cubeletMachine.getLocation().clone().add(0.95, box.getPermanentBlockHeight() - 0.325, 0.95);
+        this.corner4 = cubeletMachine.getLocation().clone().add(0.05, box.getPermanentBlockHeight() - 0.325, 0.95);
 
     }
 
@@ -96,7 +96,7 @@ public abstract class Animation {
 
     public void start() {
 
-        this.cubeletBox.setState(CubeletBoxState.ANIMATION);
+        this.cubeletMachine.setState(CubeletBoxState.ANIMATION);
 
         this.animationId = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, () -> {
 
@@ -129,7 +129,7 @@ public abstract class Animation {
 
         }, 0L, 1);
 
-        Bukkit.getPluginManager().callEvent(new CubeletOpenEvent(cubeletBox.getPlayerOpening(), cubeletType));
+        Bukkit.getPluginManager().callEvent(new CubeletOpenEvent(cubeletMachine.getPlayerOpening(), cubeletType));
 
         main.getAnimationHandler().getTasks().add(this);
 
@@ -144,13 +144,13 @@ public abstract class Animation {
         main.getAnimationHandler().getTasks().remove(this);
         Bukkit.getServer().getScheduler().cancelTask(animationId);
 
-        Bukkit.getPluginManager().callEvent(new CubeletEndEvent(cubeletBox.getPlayerOpening(), cubeletType));
+        Bukkit.getPluginManager().callEvent(new CubeletEndEvent(cubeletMachine.getPlayerOpening(), cubeletType));
 
-        main.getCubeletRewardHandler().giveReward(cubeletBox, cubeletType, reward);
+        main.getCubeletRewardHandler().giveReward(cubeletMachine, cubeletType, reward);
 
-        cubeletBox.setState(CubeletBoxState.EMPTY);
-        cubeletBox.setPlayerOpening(null);
-        main.getHologramImplementation().reloadHologram(cubeletBox);
+        cubeletMachine.setState(CubeletBoxState.EMPTY);
+        cubeletMachine.setPlayerOpening(null);
+        main.getHologramImplementation().reloadHologram(cubeletMachine);
 
         onStop();
 
@@ -166,8 +166,8 @@ public abstract class Animation {
 
     public void doRewardReveal() {
 
-        main.getHologramImplementation().rewardHologram(cubeletBox, reward);
-        cubeletBox.setState(CubeletBoxState.REWARD);
+        main.getHologramImplementation().rewardHologram(cubeletMachine, reward);
+        cubeletMachine.setState(CubeletBoxState.REWARD);
 
         onRewardReveal();
 
@@ -178,7 +178,7 @@ public abstract class Animation {
         if(!main.isDuplicationEnabled())
             return;
 
-        hologramAnimation = main.getCubeletRewardHandler().duplicationTask(cubeletBox, reward);
+        hologramAnimation = main.getCubeletRewardHandler().duplicationTask(cubeletMachine, reward);
 
     }
 
@@ -233,8 +233,8 @@ public abstract class Animation {
         this.animationSettings = animationSettings;
     }
 
-    public CubeletBox getCubeletBox() {
-        return cubeletBox;
+    public CubeletMachine getCubeletBox() {
+        return cubeletMachine;
     }
 
     public CubeletType getCubeletType() {
@@ -249,16 +249,40 @@ public abstract class Animation {
 
         this.reward = reward;
 
-        this.cubeletBox.setLastReward(reward);
+        this.cubeletMachine.setLastReward(reward);
 
-        int min = Math.min(Integer.parseInt(reward.getRarity().getDuplicatePointsRange().split("-")[0]),
-                Integer.parseInt(reward.getRarity().getDuplicatePointsRange().split("-")[1]));
-        int max = Math.max(Integer.parseInt(reward.getRarity().getDuplicatePointsRange().split("-")[0]),
-                Integer.parseInt(reward.getRarity().getDuplicatePointsRange().split("-")[1]));
+        String dpr = reward.getRarity().getDuplicatePointsRange();
 
-        int randomPoints = ThreadLocalRandom.current().nextInt(min, max);
+        int randomPoints;
 
-        this.cubeletBox.setLastDuplicationPoints(randomPoints);
+        if(!dpr.contains("-") && StringUtils.isNumeric(dpr)) {
+
+            randomPoints = Integer.parseInt(dpr);
+
+        } else {
+
+            int num1 = Integer.parseInt(dpr.split("-")[0]);
+            int num2 = Integer.parseInt(dpr.split("-")[1]);
+
+            if(num1 < 1) num1 = 1;
+            if(num2 < 1) num2 = 1;
+
+            if(num1 != num2) {
+
+                int min = Math.min(num1, num2);
+                int max = Math.max(num1, num2);
+
+                randomPoints = ThreadLocalRandom.current().nextInt(min, max);
+
+            } else {
+
+                randomPoints = num1;
+
+            }
+
+        }
+
+        this.cubeletMachine.setLastDuplicationPoints(randomPoints);
 
         setColorRarity(Utils.getRGBbyColor(Utils.getColorByText(reward.getRarity().getName())));
 
@@ -449,29 +473,29 @@ public abstract class Animation {
 
     public Location getLocationRotation(double y) {
 
-        switch (cubeletBox.getRotation()) {
+        switch (cubeletMachine.getRotation()) {
 
             case SOUTH:
 
-                Location s = cubeletBox.getLocation().clone().add(0.5, y, -0.5);
+                Location s = cubeletMachine.getLocation().clone().add(0.5, y, -0.5);
                 s.setYaw(Rotation.SOUTH.value);
                 return s;
 
             case NORTH:
 
-                Location n = cubeletBox.getLocation().clone().add(0.5, y, 1.5);
+                Location n = cubeletMachine.getLocation().clone().add(0.5, y, 1.5);
                 n.setYaw(Rotation.NORTH.value);
                 return n;
 
             case EAST:
 
-                Location e = cubeletBox.getLocation().clone().add(-0.5, y, 0.5);
+                Location e = cubeletMachine.getLocation().clone().add(-0.5, y, 0.5);
                 e.setYaw(Rotation.EAST.value);
                 return e;
 
             case WEST:
 
-                Location w = cubeletBox.getLocation().clone().add(1.5, y, 0.5);
+                Location w = cubeletMachine.getLocation().clone().add(1.5, y, 0.5);
                 w.setYaw(Rotation.WEST.value);
                 return w;
 

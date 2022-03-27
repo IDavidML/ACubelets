@@ -4,12 +4,10 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationHandler;
 import me.davidml16.acubelets.animations.AnimationSettings;
-import me.davidml16.acubelets.api.CubeletOpenEvent;
-import me.davidml16.acubelets.objects.CubeletBox;
+import me.davidml16.acubelets.objects.CubeletMachine;
 import me.davidml16.acubelets.objects.CubeletOpener;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Profile;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class CubeletOpenHandler {
@@ -19,7 +17,7 @@ public class CubeletOpenHandler {
         this.main = main;
     }
 
-    public void openAnimation(Player p, CubeletBox box, CubeletType type, boolean openedByKey) {
+    public void openAnimation(Player p, CubeletMachine box, CubeletType type, boolean openedByKey) {
         if(box.isWaiting()) {
 
             CubeletOpener cubeletOpener = new CubeletOpener(p.getUniqueId(), p.getName());

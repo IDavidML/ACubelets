@@ -1,6 +1,6 @@
 package me.davidml16.acubelets.holograms;
 
-import me.davidml16.acubelets.objects.CubeletBox;
+import me.davidml16.acubelets.objects.CubeletMachine;
 import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.utils.RepeatingTask;
 import org.bukkit.entity.Player;
@@ -11,32 +11,32 @@ public interface HologramImplementation {
 
     void loadHolograms(Player p);
 
-    void loadHolograms(CubeletBox box);
+    void loadHolograms(CubeletMachine box);
 
     void removeHolograms();
 
     void removeHolograms(Player p);
 
-    void removeHolograms(CubeletBox box);
+    void removeHolograms(CubeletMachine box);
 
-    void loadHolograms(Player p, CubeletBox box);
+    void loadHolograms(Player p, CubeletMachine box);
 
     void reloadHolograms();
 
     void reloadHolograms(Player p);
 
-    void reloadHologram(CubeletBox box);
+    void reloadHologram(CubeletMachine box);
 
-    void reloadHologram(Player p, CubeletBox box);
+    void reloadHologram(Player p, CubeletMachine box);
 
-    void clearLines(CubeletBox box);
+    void clearLines(CubeletMachine box);
 
-    void clearHolograms(CubeletBox box);
+    void clearHolograms(CubeletMachine box);
 
-    void moveHologram(CubeletBox box);
+    void moveHologram(CubeletMachine box);
 
-    void rewardHologram(CubeletBox box, Reward reward);
+    void rewardHologram(CubeletMachine box, Reward reward);
 
-    RepeatingTask duplicationRewardHologram(CubeletBox box, Reward reward);
+    RepeatingTask duplicationRewardHologram(CubeletMachine box, Reward reward);
 
 }

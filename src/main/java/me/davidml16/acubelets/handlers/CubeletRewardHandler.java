@@ -1,7 +1,7 @@
 package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.menus.LootHistoryMenu;
+import me.davidml16.acubelets.menus.player.LootHistoryMenu;
 import me.davidml16.acubelets.objects.loothistory.LootHistory;
 import me.davidml16.acubelets.objects.loothistory.RewardHistory;
 import me.davidml16.acubelets.objects.rewards.*;
@@ -15,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
-import java.security.Permission;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -189,16 +188,16 @@ public class CubeletRewardHandler {
 		return null;
 	}
 
-	public void giveReward(CubeletBox cubeletBox, CubeletType cubeletType, Reward reward) {
+	public void giveReward(CubeletMachine cubeletMachine, CubeletType cubeletType, Reward reward) {
 
-		UUID playerUUID = cubeletBox.getPlayerOpening().getUuid();
+		UUID playerUUID = cubeletMachine.getPlayerOpening().getUuid();
 
 		Player target = Bukkit.getPlayer(playerUUID);
 
 		if(main.isBroadcastEnabled()) {
 
 			String msg = main.getLanguageHandler().getMessage("Cubelet.Reward.Broadcast");
-			msg = msg.replaceAll("%player%", cubeletBox.getPlayerOpening().getName());
+			msg = msg.replaceAll("%player%", cubeletMachine.getPlayerOpening().getName());
 			msg = msg.replaceAll("%reward%",  Utils.getColorByText(reward.getRarity().getName()) + reward.getName());
 			msg = msg.replaceAll("%cubelet%", reward.getParentCubelet().getName());
 
@@ -209,15 +208,15 @@ public class CubeletRewardHandler {
 		RewardHistory rewardHistory = new RewardHistory(reward.getRewardUUID(), reward.getName(), reward.getIcon());
 		LootHistory lootHistory = new LootHistory(playerUUID, cubeletType.getName(), System.currentTimeMillis(), rewardHistory);
 
-		if(main.isDuplicationEnabled() && isDuplicated(cubeletBox, reward)) {
+		if(main.isDuplicationEnabled() && isDuplicated(cubeletMachine, reward)) {
 
 			Bukkit.getServer().dispatchCommand(
 					main.getServer().getConsoleSender(),
 					main.getDuplicationPointsCommand()
-							.replaceAll("%player%", cubeletBox.getPlayerOpening().getName())
-							.replaceAll("%points%", ""+cubeletBox.getLastDuplicationPoints()));
+							.replaceAll("%player%", cubeletMachine.getPlayerOpening().getName())
+							.replaceAll("%points%", ""+ cubeletMachine.getLastDuplicationPoints()));
 
-			MessageUtils.sendLootMessage(cubeletBox, cubeletType, reward);
+			MessageUtils.sendLootMessage(cubeletMachine, cubeletType, reward);
 
 			main.getDatabaseHandler().addLootHistory(playerUUID, lootHistory);
 
@@ -234,20 +233,20 @@ public class CubeletRewardHandler {
 			Bukkit.getServer().dispatchCommand(
 					main.getServer().getConsoleSender(),
 					commandObject.getCommand()
-							.replaceAll("%player%", cubeletBox.getPlayerOpening().getName())
+							.replaceAll("%player%", cubeletMachine.getPlayerOpening().getName())
 			);
 
 		for (PermissionObject permissionObject : reward.getPermissions())
 			Bukkit.getServer().dispatchCommand(
 					main.getServer().getConsoleSender(),
 					main.getDuplicationPermissionCommand()
-							.replaceAll("%player%", cubeletBox.getPlayerOpening().getName())
+							.replaceAll("%player%", cubeletMachine.getPlayerOpening().getName())
 							.replaceAll("%permission%", permissionObject.getPermission())
 			);
 
 		for (ItemObject itemObject : reward.getItems()) {
 			if(target == null)
-				cubeletBox.getLocation().getWorld().dropItemNaturally(cubeletBox.getLocation().clone().add(0.5, 1, 0.5), itemObject.getItemStack().clone());
+				cubeletMachine.getLocation().getWorld().dropItemNaturally(cubeletMachine.getLocation().clone().add(0.5, 1, 0.5), itemObject.getItemStack().clone());
 			else
 				if(target.getInventory().firstEmpty() >= 0)
 					target.getInventory().addItem(itemObject.getItemStack());
@@ -260,7 +259,7 @@ public class CubeletRewardHandler {
 				Sounds.playSound(target, target.getLocation(), Sounds.MySound.ITEM_PICKUP, 0.5F, (float) ThreadLocalRandom.current().nextDouble(1, 3));
 		}
 
-		MessageUtils.sendLootMessage(cubeletBox, cubeletType, reward);
+		MessageUtils.sendLootMessage(cubeletMachine, cubeletType, reward);
 
 		main.getDatabaseHandler().addLootHistory(playerUUID, lootHistory);
 
@@ -272,11 +271,11 @@ public class CubeletRewardHandler {
 
 	}
 
-	public RepeatingTask duplicationTask(CubeletBox cubeletBox, Reward reward) {
+	public RepeatingTask duplicationTask(CubeletMachine cubeletMachine, Reward reward) {
 
-		if(isDuplicated(cubeletBox, reward)) {
+		if(isDuplicated(cubeletMachine, reward)) {
 
-			return main.getHologramImplementation().duplicationRewardHologram(cubeletBox, reward);
+			return main.getHologramImplementation().duplicationRewardHologram(cubeletMachine, reward);
 
 		}
 
@@ -284,9 +283,11 @@ public class CubeletRewardHandler {
 
 	}
 
-	public boolean isDuplicated(CubeletBox cubeletBox, Reward reward) {
+	public boolean isDuplicated(CubeletMachine cubeletMachine, Reward reward) {
 
-		Profile profile = main.getPlayerDataHandler().getData(cubeletBox.getPlayerOpening().getUuid());
+		Profile profile = main.getPlayerDataHandler().getData(cubeletMachine.getPlayerOpening().getUuid());
+
+		if(profile == null) return true;
 
 		LootHistory lootHistory = profile.getLootHistory().stream().filter(history -> history.getRewardHistory().getUUID().toString().equalsIgnoreCase(reward.getRewardUUID().toString())).findFirst().orElse(null);
 

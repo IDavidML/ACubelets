@@ -1,11 +1,10 @@
 package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.menus.gifts.GiftMenu;
+import me.davidml16.acubelets.menus.player.gifts.GiftMenu;
 import me.davidml16.acubelets.objects.GiftGuiSession;
 import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.utils.Utils;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

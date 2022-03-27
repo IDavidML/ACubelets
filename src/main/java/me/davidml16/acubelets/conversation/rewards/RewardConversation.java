@@ -2,7 +2,7 @@ package me.davidml16.acubelets.conversation.rewards;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.CommonPrompts;
-import me.davidml16.acubelets.menus.rewards.RewardsMenu;
+import me.davidml16.acubelets.menus.admin.rewards.RewardsMenu;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.objects.rewards.Reward;

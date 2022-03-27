@@ -1,8 +1,7 @@
 package me.davidml16.acubelets.conversation;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.menus.TypeConfigMenu;
-import me.davidml16.acubelets.menus.TypeSettingsMenu;
+import me.davidml16.acubelets.menus.admin.type.TypeSettingsMenu;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.utils.Sounds;

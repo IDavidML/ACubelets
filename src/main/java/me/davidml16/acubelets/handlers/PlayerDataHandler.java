@@ -14,6 +14,8 @@ public class PlayerDataHandler {
 
 	public HashMap<UUID, Profile> data = new HashMap<UUID, Profile>();
 
+	public HashMap<UUID, Long> disconnectCacheTime = new HashMap<UUID, Long>();
+
 	private Main main;
 	public PlayerDataHandler(Main main) {
 		this.main = main;
@@ -21,6 +23,10 @@ public class PlayerDataHandler {
 
 	public HashMap<UUID, Profile> getPlayersData() {
 		return data;
+	}
+
+	public HashMap<UUID, Long> getDisconnectCacheTime() {
+		return disconnectCacheTime;
 	}
 
 	public Profile getData(Player p) {
@@ -33,6 +39,16 @@ public class PlayerDataHandler {
 		if (data.containsKey(uuid))
 			return data.get(uuid);
 		return null;
+	}
+
+	public Long getDisconnectTime(UUID uuid) {
+		if (disconnectCacheTime.containsKey(uuid))
+			return disconnectCacheTime.get(uuid);
+		return null;
+	}
+
+	public void addDisconnectTime(UUID uuid, Long time) {
+		disconnectCacheTime.put(uuid, time);
 	}
 
 	public boolean playerExists(Player p) {

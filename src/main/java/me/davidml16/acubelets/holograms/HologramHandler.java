@@ -24,6 +24,7 @@ public class HologramHandler {
     private int visibilityDistance = 75;
 
     public HologramHandler(Main main) {
+
         this.main = main;
         this.colorAnimation = new ColorAnimation();
         this.actualColor = "&c";

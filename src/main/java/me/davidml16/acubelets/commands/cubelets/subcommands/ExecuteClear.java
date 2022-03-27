@@ -1,9 +1,9 @@
 package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.menus.CubeletsMenu;
-import me.davidml16.acubelets.menus.LootHistoryMenu;
-import me.davidml16.acubelets.menus.crafting.CraftingMenu;
+import me.davidml16.acubelets.menus.player.CubeletsMenu;
+import me.davidml16.acubelets.menus.player.LootHistoryMenu;
+import me.davidml16.acubelets.menus.player.crafting.CraftingMenu;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
