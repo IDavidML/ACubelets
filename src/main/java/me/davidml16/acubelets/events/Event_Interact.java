@@ -5,7 +5,7 @@ import me.davidml16.acubelets.interfaces.CubeletDateComparator;
 import me.davidml16.acubelets.menus.player.CubeletsMenu;
 import me.davidml16.acubelets.menus.player.rewards.RewardsPreviewMenu;
 import me.davidml16.acubelets.objects.*;
-import me.davidml16.acubelets.utils.NBTEditor;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;

@@ -247,8 +247,8 @@ public class XItemStack {
         } else if (meta instanceof PotionMeta) {
             PotionMeta potion = (PotionMeta) meta;
             for (String effects : config.getStringList(path + "." + "effects")) {
-                PotionEffect effect = XPotion.parsePotionEffectFromString(effects);
-                potion.addCustomEffect(effect, true);
+                XPotion.Effect effect = XPotion.parseEffect(effects);
+                if (effect.hasChance()) potion.addCustomEffect(effect.getEffect(), true);
             }
 
             String baseEffect = config.getString(path + "." + "base-effect");
@@ -538,8 +538,8 @@ public class XItemStack {
         } else if (meta instanceof PotionMeta) {
             PotionMeta potion = (PotionMeta) meta;
             for (String effects : config.getStringList(path + "." + "effects")) {
-                PotionEffect effect = XPotion.parsePotionEffectFromString(effects);
-                potion.addCustomEffect(effect, true);
+                XPotion.Effect effect = XPotion.parseEffect(effects);
+                if (effect.hasChance()) potion.addCustomEffect(effect.getEffect(), true);
             }
 
             String baseEffect = config.getString(path + "." + "base-effect");
@@ -660,7 +660,7 @@ public class XItemStack {
         if (enchants != null) {
             for (String ench : enchants.getKeys(false)) {
                 Optional<XEnchantment> enchant = XEnchantment.matchXEnchantment(ench);
-                enchant.ifPresent(xEnchantment -> meta.addEnchant(xEnchantment.parseEnchantment(), enchants.getInt(ench), true));
+                enchant.ifPresent(xEnchantment -> meta.addEnchant(xEnchantment.getEnchant(), enchants.getInt(ench), true));
             }
         }
 
@@ -670,7 +670,7 @@ public class XItemStack {
             for (String ench : enchantment.getKeys(false)) {
                 Optional<XEnchantment> enchant = XEnchantment.matchXEnchantment(ench);
                 EnchantmentStorageMeta book = (EnchantmentStorageMeta) meta;
-                enchant.ifPresent(xEnchantment -> book.addStoredEnchant(xEnchantment.parseEnchantment(), enchantment.getInt(ench), true));
+                enchant.ifPresent(xEnchantment -> book.addStoredEnchant(xEnchantment.getEnchant(), enchantment.getInt(ench), true));
             }
         }
 

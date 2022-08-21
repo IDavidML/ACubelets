@@ -8,7 +8,7 @@ import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.objects.Profile;
 import me.davidml16.acubelets.objects.loothistory.LootHistory;
 import me.davidml16.acubelets.utils.ItemBuilder;
-import me.davidml16.acubelets.utils.NBTEditor;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.utils.TimeAPI.TimeUtils;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;

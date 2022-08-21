@@ -20,7 +20,6 @@
  * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 package me.davidml16.acubelets.utils.XSeries;
-
 import com.google.common.base.Enums;
 import com.google.common.base.Strings;
 import org.apache.commons.lang.StringUtils;
@@ -49,7 +48,7 @@ import java.util.*;
  * Enchanting: https://minecraft.gamepedia.com/Enchanting
  *
  * @author Crypto Morin
- * @version 2.1.1
+ * @version 2.3.0
  * @see Enchantment
  */
 public enum XEnchantment {
@@ -68,7 +67,6 @@ public enum XEnchantment {
     FIRE_ASPECT(true, "FIRE", "MELEE_FIRE", "MELEE_FLAME", "FA"),
     FROST_WALKER(true, "FROST", "WALKER"),
     IMPALING(true, "IMPALE", "OCEAN_DAMAGE", "OCEAN_DMG"),
-    SOUL_SPEED(true, "SPEED_SOUL", "SOUL_RUNNER"),
     KNOCKBACK(true, "K_BACK", "KB"),
     LOOT_BONUS_BLOCKS("FORTUNE", "BLOCKS_LOOT_BONUS", "FORT", "LBB"),
     LOOT_BONUS_MOBS("LOOTING", "MOB_LOOT", "MOBS_LOOT_BONUS", "LBM"),
@@ -87,7 +85,9 @@ public enum XEnchantment {
     QUICK_CHARGE(true, "QUICKCHARGE", "QUICK_DRAW", "FAST_CHARGE", "FAST_DRAW"),
     RIPTIDE(true, "RIP", "TIDE", "LAUNCH"),
     SILK_TOUCH(true, "SOFT_TOUCH", "ST"),
+    SOUL_SPEED(true, "SPEED_SOUL", "SOUL_RUNNER"),
     SWEEPING_EDGE("SWEEPING", "SWEEPING_EDGE", "SWEEP_EDGE"),
+    SWIFT_SNEAK(true, "SNEAK_SWIFT"),
     THORNS(true, "HIGHCRIT", "THORN", "HIGHERCRIT", "T"),
     VANISHING_CURSE(true, "VANISHING_CURSE", "VANISH_CURSE", "VANISHING", "VANISH"),
     WATER_WORKER("AQUA_AFFINITY", "WATER_WORKER", "AQUA_AFFINITY", "WATER_MINE", "WW");
@@ -288,7 +288,7 @@ public enum XEnchantment {
 
         Optional<XEnchantment> enchantOpt = matchXEnchantment(split[0]);
         if (!enchantOpt.isPresent()) return item;
-        Enchantment enchant = enchantOpt.get().parseEnchantment();
+        Enchantment enchant = enchantOpt.get().enchantment;
         if (enchant == null) return item;
 
         int lvl = 1;
@@ -311,7 +311,7 @@ public enum XEnchantment {
         ItemStack book = new ItemStack(Material.ENCHANTED_BOOK);
         EnchantmentStorageMeta meta = (EnchantmentStorageMeta) book.getItemMeta();
 
-        meta.addStoredEnchant(this.parseEnchantment(), level, true);
+        meta.addStoredEnchant(this.enchantment, level, true);
         book.setItemMeta(meta);
         return book;
     }
@@ -323,7 +323,7 @@ public enum XEnchantment {
      * @since 1.0.0
      */
     @Nullable
-    public Enchantment parseEnchantment() {
+    public Enchantment getEnchant() {
         return this.enchantment;
     }
 
@@ -333,14 +333,14 @@ public enum XEnchantment {
      * An invocation of this method yields exactly the same result as the expression:
      * <p>
      * <blockquote>
-     * {@link #parseEnchantment()} != null
+     * {@link #getEnchant()} != null
      * </blockquote>
      *
      * @return true if the current version has this enchantment, otherwise false.
      * @since 1.0.0
      */
     public boolean isSupported() {
-        return parseEnchantment() != null;
+        return enchantment != null;
     }
 
     /**

@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.holograms;
 
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.holograms.implementations.DecentHologramsImpl;
 import me.davidml16.acubelets.holograms.implementations.HolographicDisplaysImpl;
 import me.davidml16.acubelets.objects.ColorAnimation;
 import me.davidml16.acubelets.objects.CubeletOpener;
@@ -31,6 +32,8 @@ public class HologramHandler {
 
         if(main.getServer().getPluginManager().isPluginEnabled("HolographicDisplays"))
             implementation = new HolographicDisplaysImpl(main, this);
+//        else if(main.getServer().getPluginManager().isPluginEnabled("DecentHolograms"))
+//            implementation = new DecentHologramsImpl(main, this);
 
     }
 

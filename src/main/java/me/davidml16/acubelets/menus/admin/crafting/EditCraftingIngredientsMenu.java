@@ -6,7 +6,7 @@ import me.davidml16.acubelets.enums.CraftType;
 import me.davidml16.acubelets.objects.*;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ItemBuilder;
-import me.davidml16.acubelets.utils.NBTEditor;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

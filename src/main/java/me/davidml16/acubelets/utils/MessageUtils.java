@@ -1,13 +1,17 @@
 package me.davidml16.acubelets.utils;
 
+import eu.decentsoftware.holograms.api.utils.scheduler.S;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.objects.CubeletMachine;
 import me.davidml16.acubelets.objects.CubeletType;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 
 public class MessageUtils {
@@ -260,6 +264,37 @@ public class MessageUtils {
                 }
             }
         }
+    }
+
+    public static void sendBroadcastMessage(Main main, CubeletMachine cubeletMachine, CubeletType cubeletType, Reward reward) {
+
+        List<String> lines = new ArrayList<>();
+
+        String key = "Cubelet.Reward.Broadcast";
+        FileConfiguration config = main.getLanguageHandler().getConfig();
+
+        if(config.get(key) instanceof ArrayList) {
+            lines.addAll(config.getStringList(key));
+        } else {
+            lines.add(config.getString(key));
+        }
+
+        for (String msg : Main.get().getLanguageHandler().getMessageList("Cubelet.Reward.Duplicate")) {
+
+            msg = msg.replaceAll("%player%", cubeletMachine.getPlayerOpening().getName());
+            msg = msg.replaceAll("%reward%",  Utils.getColorByText(reward.getRarity().getName()) + reward.getName());
+            msg = msg.replaceAll("%cubelet%", reward.getParentCubelet().getName());
+
+            main.getServer().broadcastMessage(Utils.translate(msg));
+
+            if (msg.contains("%center%")) {
+                msg = msg.replaceAll("%center%", "");
+                main.getServer().broadcastMessage(MessageUtils.centeredMessage(Utils.translate(msg)));
+            } else {
+                main.getServer().broadcastMessage(Utils.translate(msg));
+            }
+        }
+
     }
 
 }

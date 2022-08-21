@@ -1,5 +1,6 @@
 package me.davidml16.acubelets.handlers;
 
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.menus.player.LootHistoryMenu;
 import me.davidml16.acubelets.objects.loothistory.LootHistory;
@@ -194,16 +195,8 @@ public class CubeletRewardHandler {
 
 		Player target = Bukkit.getPlayer(playerUUID);
 
-		if(main.isBroadcastEnabled()) {
-
-			String msg = main.getLanguageHandler().getMessage("Cubelet.Reward.Broadcast");
-			msg = msg.replaceAll("%player%", cubeletMachine.getPlayerOpening().getName());
-			msg = msg.replaceAll("%reward%",  Utils.getColorByText(reward.getRarity().getName()) + reward.getName());
-			msg = msg.replaceAll("%cubelet%", reward.getParentCubelet().getName());
-
-			main.getServer().broadcastMessage(Utils.translate(msg));
-
-		}
+		if(main.isBroadcastEnabled())
+			MessageUtils.sendBroadcastMessage(main, cubeletMachine, cubeletType, reward);
 
 		RewardHistory rewardHistory = new RewardHistory(reward.getRewardUUID(), reward.getName(), reward.getIcon());
 		LootHistory lootHistory = new LootHistory(playerUUID, cubeletType.getName(), System.currentTimeMillis(), rewardHistory);

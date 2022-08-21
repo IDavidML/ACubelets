@@ -3,7 +3,7 @@ package me.davidml16.acubelets.animations.animation.animation16;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.utils.LocationUtils;
-import me.davidml16.acubelets.utils.NBTEditor;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import me.davidml16.acubelets.utils.VersionUtil;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;

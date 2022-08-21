@@ -5,7 +5,7 @@ import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.objects.GUILayout;
 import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.utils.ItemBuilder;
-import me.davidml16.acubelets.utils.NBTEditor;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Material;

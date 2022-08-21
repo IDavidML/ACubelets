@@ -3,7 +3,7 @@ package me.davidml16.acubelets.animations.animation.animation18;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.utils.LocationUtils;
-import me.davidml16.acubelets.utils.NBTEditor;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;

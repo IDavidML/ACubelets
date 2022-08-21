@@ -1,5 +1,6 @@
 package me.davidml16.acubelets.menus.player.crafting;
 
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.enums.CraftType;
 import me.davidml16.acubelets.menus.player.CubeletsMenu;

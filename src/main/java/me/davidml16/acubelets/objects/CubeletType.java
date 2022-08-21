@@ -1,11 +1,11 @@
 package me.davidml16.acubelets.objects;
 
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.interfaces.RarityComparator;
 import me.davidml16.acubelets.interfaces.RewardComparator;
 import me.davidml16.acubelets.interfaces.RewardIDComparator;
 import me.davidml16.acubelets.objects.rewards.*;
-import me.davidml16.acubelets.utils.NBTEditor;
 import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;

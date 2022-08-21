@@ -24,6 +24,10 @@ public class VersionUtil {
         return VERSION >= version;
     }
 
+    public static boolean between(int version1, int version2) {
+        return VERSION >= version1 && VERSION <= version2;
+    }
+
     public static String getMajorVersion(String version) {
         int index = version.lastIndexOf("MC:");
         if (index != -1) {

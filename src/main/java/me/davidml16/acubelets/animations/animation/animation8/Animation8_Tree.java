@@ -1,7 +1,7 @@
 package me.davidml16.acubelets.animations.animation.animation8;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.utils.NBTEditor;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Location;
