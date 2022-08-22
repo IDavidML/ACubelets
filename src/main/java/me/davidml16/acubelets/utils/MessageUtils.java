@@ -273,19 +273,15 @@ public class MessageUtils {
         String key = "Cubelet.Reward.Broadcast";
         FileConfiguration config = main.getLanguageHandler().getConfig();
 
-        if(config.get(key) instanceof ArrayList) {
-            lines.addAll(config.getStringList(key));
-        } else {
-            lines.add(config.getString(key));
-        }
+        if(config.get(key) instanceof ArrayList)
+            lines.addAll(main.getLanguageHandler().getMessageList(key));
+        else
+            lines.add(main.getLanguageHandler().getMessage(key));
 
-        for (String msg : Main.get().getLanguageHandler().getMessageList("Cubelet.Reward.Duplicate")) {
-
+        for (String msg : lines) {
             msg = msg.replaceAll("%player%", cubeletMachine.getPlayerOpening().getName());
             msg = msg.replaceAll("%reward%",  Utils.getColorByText(reward.getRarity().getName()) + reward.getName());
             msg = msg.replaceAll("%cubelet%", reward.getParentCubelet().getName());
-
-            main.getServer().broadcastMessage(Utils.translate(msg));
 
             if (msg.contains("%center%")) {
                 msg = msg.replaceAll("%center%", "");
