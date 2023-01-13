@@ -68,7 +68,9 @@ public class Reward {
     }
 
     public List<CommandObject> getCommands() {
-        return commands != null ? commands : new ArrayList<>();
+        if(commands == null)
+            commands = new ArrayList<>();
+        return commands;
     }
 
     public void setCommands(List<CommandObject> commands) {
@@ -89,7 +91,9 @@ public class Reward {
 
 
     public List<PermissionObject> getPermissions() {
-        return permissions != null ? permissions : new ArrayList<>();
+        if(permissions == null)
+            permissions = new ArrayList<>();
+        return permissions;
     }
 
     public void setPermissions(List<PermissionObject> permissions) {
@@ -110,7 +114,9 @@ public class Reward {
 
 
     public List<ItemObject> getItems() {
-        return items != null ? items : new ArrayList<>();
+        if(items == null)
+            items = new ArrayList<>();
+        return items;
     }
 
     public void setItems(List<ItemObject> items) { this.items = items; }

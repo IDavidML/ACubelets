@@ -23,12 +23,12 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.spigotmc:spigot:1.15.2-R0.1-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.gmail.filoghost.holographicdisplays:holographicdisplays-api:2.4.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: com.github.decentsoftware-eu:decentholograms:2.3.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.github.decentsoftware-eu:decentholograms:2.7.5" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.bstats:bstats-bukkit:3.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.bstats:bstats-base:3.0.0" level="project" />
-    <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:3.4.3" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.25" level="project" />
-    <orderEntry type="library" name="Maven: org.slf4j:slf4j-simple:1.7.25" level="project" />
+    <orderEntry type="library" name="Maven: com.zaxxer:HikariCP:4.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.7.30" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-simple:2.0.3" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: me.clip:placeholderapi:2.10.5" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.comphenix.protocol:ProtocolLib:4.7.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.bytebuddy:byte-buddy:1.11.0" level="project" />
@@ -42,7 +42,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.code.gson:gson:2.8.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.yaml:snakeyaml:1.21" level="project" />
     <orderEntry type="library" name="Maven: io.github.bananapuncher714:nbteditor:7.18.3" level="project" />
-    <orderEntry type="library" name="Maven: org.jetbrains:annotations-java5:20.1.0" level="project" />
-    <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.14.3" level="project" />
+    <orderEntry type="library" name="Maven: org.jetbrains:annotations-java5:23.0.0" level="project" />
+    <orderEntry type="library" name="Maven: org.jsoup:jsoup:1.15.3" level="project" />
   </component>
 </module>

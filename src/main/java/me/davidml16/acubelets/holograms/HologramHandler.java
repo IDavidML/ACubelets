@@ -32,8 +32,8 @@ public class HologramHandler {
 
         if(main.getServer().getPluginManager().isPluginEnabled("HolographicDisplays"))
             implementation = new HolographicDisplaysImpl(main, this);
-//        else if(main.getServer().getPluginManager().isPluginEnabled("DecentHolograms"))
-//            implementation = new DecentHologramsImpl(main, this);
+        else if(main.getServer().getPluginManager().isPluginEnabled("DecentHolograms"))
+            implementation = new DecentHologramsImpl(main, this);
 
     }
 

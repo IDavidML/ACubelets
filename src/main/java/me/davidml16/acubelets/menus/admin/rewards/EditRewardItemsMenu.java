@@ -137,6 +137,7 @@ public class EditRewardItemsMenu extends Menu {
             if(event.getClick() == ClickType.LEFT || event.getClick() == ClickType.SHIFT_LEFT) {
 
                 reward.getItems().remove(itemObject);
+                reward.recreateItems();
 
                 player.sendMessage(Utils.translate(getMain().getLanguageHandler().getPrefix()
                         + " &aYou removed item &e" + itemObject.getId() + " &afrom items of reward &e" + reward.getId()));
@@ -149,12 +150,9 @@ public class EditRewardItemsMenu extends Menu {
 
             ItemStack itemInHand = event.getCurrentItem();
 
-            List<ItemObject> itemObjects = reward.getItems();
-
-            int lastIndex = itemObjects.size() > 0 ? Integer.parseInt(itemObjects.get(itemObjects.size() - 1).getId().replaceAll("item-", "")) : 0;
-            ItemObject newItemObject = new ItemObject("item-" + (lastIndex + 1), itemInHand);
-
+            ItemObject newItemObject = new ItemObject("item-" + reward.getItems().size(), itemInHand);
             reward.getItems().add(newItemObject);
+
             player.sendMessage(Utils.translate(getMain().getLanguageHandler().getPrefix()
                     + " &aYou added item &e" + newItemObject.getId() + " &ato items of reward &e" + reward.getId()));
 

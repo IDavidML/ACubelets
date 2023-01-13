@@ -253,10 +253,6 @@ public class Main extends JavaPlugin {
 
         if(hologramHandler != null) hologramHandler.getImplementation().removeHolograms();
 
-        for (Hologram hologram : HologramsAPI.getHolograms(this)) {
-            hologram.delete();
-        }
-
         main.getPlayerDataHandler().saveAllPlayerDataSync();
 
         for(Animation task : new ArrayList<>(main.getAnimationHandler().getTasks())) {

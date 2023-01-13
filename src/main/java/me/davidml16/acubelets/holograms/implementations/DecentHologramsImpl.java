@@ -2,6 +2,7 @@ package me.davidml16.acubelets.holograms.implementations;
 
 import eu.decentsoftware.holograms.api.DHAPI;
 import eu.decentsoftware.holograms.api.holograms.Hologram;
+import eu.decentsoftware.holograms.api.holograms.HologramPage;
 import eu.decentsoftware.holograms.api.utils.items.HologramItem;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.enums.CubeletBoxState;
@@ -89,9 +90,9 @@ public class DecentHologramsImpl implements HologramImplementation, Listener {
 
     public void loadHolograms(Player p, CubeletMachine box) {
 
-        Hologram hologram = DHAPI.createHologram(box.getLocation().toString() + " - " + p.getName().toLowerCase(), box.getLocation().clone().add(0.5, 1.025 + (box.getBlockHeight() + 0.1875), 0.5));
-
-        hologram.hideAll();
+        Hologram hologram = DHAPI.createHologram(UUID.randomUUID() + " - " + p.getName().toLowerCase(), box.getLocation().clone().add(0.5, 1.025 + (box.getBlockHeight() + 0.1875), 0.5));
+        hologram.setDefaultVisibleState(false);
+        hologram.setShowPlayer(p);
 
         if(box.getState() == CubeletBoxState.EMPTY) {
 
@@ -136,11 +137,6 @@ public class DecentHologramsImpl implements HologramImplementation, Listener {
 
     public void reloadHologram(CubeletMachine box) {
 
-        for (Hologram hologram : holograms.get(box).values()) {
-            DHAPI.removeHologramPage(hologram, 0);
-            DHAPI.addHologramPage(hologram);
-        }
-
         for(Player p : Bukkit.getOnlinePlayers()) {
             reloadHologram(p, box);
         }
@@ -157,12 +153,6 @@ public class DecentHologramsImpl implements HologramImplementation, Listener {
             return;
 
         Hologram hologram = holograms.get(box).get(p.getUniqueId());
-
-        if (box.getState() == CubeletBoxState.ANIMATION) {
-            hologram.hide(p);
-        } else {
-            hologram.show(p, 0);
-        }
 
         if (box.getState() == CubeletBoxState.EMPTY) {
 
@@ -185,8 +175,13 @@ public class DecentHologramsImpl implements HologramImplementation, Listener {
     @Override
     public void clearLines(CubeletMachine box) {
         for (Hologram hologram : holograms.get(box).values()) {
-            DHAPI.removeHologramPage(hologram, 0);
-            DHAPI.addHologramPage(hologram);
+            HologramPage page = hologram.getPage(0);
+            while(page.size() > 0) {
+                page.removeLine(page.size() - 1);
+            }
+            hologram.realignLines();
+            hologram.updateAll();
+            hologram.save();
         }
     }
 
@@ -218,22 +213,18 @@ public class DecentHologramsImpl implements HologramImplementation, Listener {
             if (holograms.get(box).containsKey(p.getUniqueId())) {
 
                 Hologram hologram = holograms.get(box).get(p.getUniqueId());
-                DHAPI.removeHologramPage(hologram, 0);
-                DHAPI.addHologramPage(hologram);
-
                 List<String> lines = hologramHandler.getLinesReward(p, box.getPlayerOpening(), reward);
+                List<String> formattedLines = new ArrayList<>();
 
                 for (String line : lines) {
-                    if(!line.contains("%reward_icon%"))
-                        DHAPI.addHologramLine(hologram, line);
+                    if(line.contains("%reward_icon%"))
+                        formattedLines.add("#ICON:" + HologramItem.fromItemStack(box.getLastReward().getIcon()).getContent());
                     else
-                        DHAPI.addHologramLine(hologram, "#ICON:" + HologramItem.fromItemStack(box.getLastReward().getIcon()).getContent());
+                        formattedLines.add(line);
                 }
 
+                DHAPI.setHologramLines(hologram, formattedLines);
                 DHAPI.moveHologram(hologram, box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + (box.getBlockHeight() + 0.1875), 0.5));
-
-                hologram.hideAll();
-                hologram.show(p, 0);
 
             }
 
@@ -266,23 +257,15 @@ public class DecentHologramsImpl implements HologramImplementation, Listener {
                     if (holograms.get(box).containsKey(p.getUniqueId())) {
 
                         Hologram hologram = holograms.get(box).get(p.getUniqueId());
+                        HologramPage page = hologram.getPage(0);
 
-                        DHAPI.removeHologramPage(hologram, 0);
-                        DHAPI.addHologramPage(hologram);
-
-                        for (int i = 0; i < lines.size(); i++) {
-
-                            String text = hologram.getPage(0).getLine(i).getText();
-
-                            if (!(text.equalsIgnoreCase("%reward_icon%")))
+                        for (int i = 0; i < page.getLines().size(); i++) {
+                            String text = page.getLine(i).getContent();
+                            if (!(text.contains("#ICON:")))
                                 DHAPI.setHologramLine(hologram, i, lines.get(i));
-
                         }
 
                         DHAPI.moveHologram(hologram, box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + (box.getBlockHeight() + 0.1875), 0.5));
-
-                        hologram.hideAll();
-                        hologram.show(p, 0);
 
                     }
 

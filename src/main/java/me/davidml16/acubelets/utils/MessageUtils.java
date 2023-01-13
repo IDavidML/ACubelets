@@ -200,15 +200,15 @@ public class MessageUtils {
             if (line.contains("%center%")) {
                 line = line.replaceAll("%center%", "");
                 target.sendMessage(MessageUtils.centeredMessage(Utils.translate(line
-                        .replaceAll("%cubelet_type%", cubeletType.getName())
+                        .replaceAll("%cubelet_type%", Matcher.quoteReplacement(cubeletType.getName()))
                         .replaceAll("%reward_name%", Matcher.quoteReplacement(reward.getName()))
-                        .replaceAll("%reward_rarity%", reward.getRarity().getName())
+                        .replaceAll("%reward_rarity%", Matcher.quoteReplacement(reward.getRarity().getName()))
                 )));
             } else {
                 target.sendMessage(Utils.translate(line
-                        .replaceAll("%cubelet_type%", cubeletType.getName())
+                        .replaceAll("%cubelet_type%", Matcher.quoteReplacement(cubeletType.getName()))
                         .replaceAll("%reward_name%", Matcher.quoteReplacement(reward.getName()))
-                        .replaceAll("%reward_rarity%", reward.getRarity().getName())
+                        .replaceAll("%reward_rarity%", Matcher.quoteReplacement(reward.getRarity().getName()))
                 ));
             }
         }
@@ -225,16 +225,16 @@ public class MessageUtils {
             if (line.contains("%center%")) {
                 line = line.replaceAll("%center%", "");
                 target.sendMessage(MessageUtils.centeredMessage(Utils.translate(line
-                        .replaceAll("%cubelet_type%", cubeletType.getName())
+                        .replaceAll("%cubelet_type%", Matcher.quoteReplacement(cubeletType.getName()))
                         .replaceAll("%reward_name%", Matcher.quoteReplacement(reward.getName()))
-                        .replaceAll("%reward_rarity%", reward.getRarity().getName())
+                        .replaceAll("%reward_rarity%", Matcher.quoteReplacement(reward.getRarity().getName()))
                         .replaceAll("%points%", ""+duplicatePoints)
                 )));
             } else {
                 target.sendMessage(Utils.translate(line
-                        .replaceAll("%cubelet_type%", cubeletType.getName())
+                        .replaceAll("%cubelet_type%", Matcher.quoteReplacement(cubeletType.getName()))
                         .replaceAll("%reward_name%", Matcher.quoteReplacement(reward.getName()))
-                        .replaceAll("%reward_rarity%", reward.getRarity().getName())
+                        .replaceAll("%reward_rarity%", Matcher.quoteReplacement(reward.getRarity().getName()))
                         .replaceAll("%points%", ""+duplicatePoints)
                 ));
             }
@@ -279,9 +279,9 @@ public class MessageUtils {
             lines.add(main.getLanguageHandler().getMessage(key));
 
         for (String msg : lines) {
-            msg = msg.replaceAll("%player%", cubeletMachine.getPlayerOpening().getName());
-            msg = msg.replaceAll("%reward%",  Utils.getColorByText(reward.getRarity().getName()) + reward.getName());
-            msg = msg.replaceAll("%cubelet%", reward.getParentCubelet().getName());
+            msg = msg.replaceAll("%player%", Matcher.quoteReplacement(cubeletMachine.getPlayerOpening().getName()));
+            msg = msg.replaceAll("%reward%", Matcher.quoteReplacement(Utils.getColorByText(reward.getRarity().getName()) + reward.getName()));
+            msg = msg.replaceAll("%cubelet%", Matcher.quoteReplacement(reward.getParentCubelet().getName()));
 
             if (msg.contains("%center%")) {
                 msg = msg.replaceAll("%center%", "");
