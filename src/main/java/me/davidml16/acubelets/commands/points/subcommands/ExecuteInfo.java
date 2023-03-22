@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import java.sql.SQLException;
 import java.util.UUID;
+import java.util.regex.Matcher;
 
 public class ExecuteInfo {
 
@@ -53,7 +54,10 @@ public class ExecuteInfo {
 
                                 main.getDatabaseHandler().getPlayerLootPoints(uuid, points -> {
                                     sender.sendMessage("");
-                                    sender.sendMessage(Utils.translate(" &6&l" + name + " &ahas &6" + points + " &aPoints."));
+                                    String msg = main.getLanguageHandler().getMessage("Commands.Points.Info");
+                                    msg = msg.replaceAll("%player%", Matcher.quoteReplacement(name));
+                                    msg = msg.replaceAll("%amount%", Matcher.quoteReplacement(Long.toString(points)));
+                                    sender.sendMessage(Utils.translate(msg));
                                     sender.sendMessage("");
                                 });
 
@@ -69,7 +73,10 @@ public class ExecuteInfo {
                         long points = main.getPlayerDataHandler().getData(target).getLootPoints();
 
                         sender.sendMessage("");
-                        sender.sendMessage(Utils.translate(" &6&l" + name + " &ahas &6" + points + " &aPoints."));
+                        String msg = main.getLanguageHandler().getMessage("Commands.Points.Info");
+                        msg = msg.replaceAll("%player%", Matcher.quoteReplacement(name));
+                        msg = msg.replaceAll("%amount%", Matcher.quoteReplacement(Long.toString(points)));
+                        sender.sendMessage(Utils.translate(msg));
                         sender.sendMessage("");
 
                     }

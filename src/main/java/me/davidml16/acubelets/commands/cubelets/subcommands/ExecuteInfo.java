@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
 
 public class ExecuteInfo {
 
@@ -60,16 +61,25 @@ public class ExecuteInfo {
 
                                     if (list.size() == 0) {
 
-                                        sender.sendMessage(Utils.translate(" &6&l" + name + " &cnot have any cubelets:"));
+                                        String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Info.NotHave");
+                                        msg = msg.replaceAll("%player%", Matcher.quoteReplacement(name));
+                                        sender.sendMessage(Utils.translate(msg));
 
                                     } else {
 
-                                        sender.sendMessage(Utils.translate(" &6&l" + name + " &ahas the following cubelets:"));
+                                        String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Info.Have.Header");
+                                        msg = msg.replaceAll("%player%", Matcher.quoteReplacement(name));
+                                        sender.sendMessage(Utils.translate(msg));
 
                                         for (CubeletType type : main.getCubeletTypesHandler().getTypes().values()) {
                                             long amount = list.stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(type.getId())).count();
-                                            if (amount > 0)
-                                                sender.sendMessage(Utils.translate("  &7- " + type.getName() + " &7x" + amount));
+                                            if (amount > 0) {
+                                                String msgList = main.getLanguageHandler().getMessage("Commands.Cubelets.Info.Have.Header");
+                                                msgList = msgList.replaceAll("%player%", Matcher.quoteReplacement(name));
+                                                msgList = msgList.replaceAll("%cubelet%", Matcher.quoteReplacement(type.getName()));
+                                                msgList = msgList.replaceAll("%amount%", Matcher.quoteReplacement(name));
+                                                sender.sendMessage(Utils.translate(msgList));
+                                            }
                                         }
 
                                         sender.sendMessage("");
@@ -94,16 +104,25 @@ public class ExecuteInfo {
 
                         if (list.size() == 0) {
 
-                            sender.sendMessage(Utils.translate(" &6&l" + name + " &cnot have any cubelets:"));
+                            String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Info.NotHave");
+                            msg = msg.replaceAll("%player%", Matcher.quoteReplacement(name));
+                            sender.sendMessage(Utils.translate(msg));
 
                         } else {
 
-                            sender.sendMessage(Utils.translate(" &6&l" + name + " &ahas the following cubelets:"));
+                            String msg = main.getLanguageHandler().getMessage("Commands.Cubelets.Info.Have.Header");
+                            msg = msg.replaceAll("%player%", Matcher.quoteReplacement(name));
+                            sender.sendMessage(Utils.translate(msg));
 
                             for (CubeletType type : main.getCubeletTypesHandler().getTypes().values()) {
                                 long amount = list.stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(type.getId())).count();
-                                if (amount > 0)
-                                    sender.sendMessage(Utils.translate("  &7- " + type.getName() + " &7x" + amount));
+                                if (amount > 0) {
+                                    String msgList = main.getLanguageHandler().getMessage("Commands.Cubelets.Info.Have.Header");
+                                    msgList = msgList.replaceAll("%player%", Matcher.quoteReplacement(name));
+                                    msgList = msgList.replaceAll("%cubelet%", Matcher.quoteReplacement(type.getName()));
+                                    msgList = msgList.replaceAll("%amount%", Matcher.quoteReplacement(name));
+                                    sender.sendMessage(Utils.translate(msgList));
+                                }
                             }
 
                             sender.sendMessage("");

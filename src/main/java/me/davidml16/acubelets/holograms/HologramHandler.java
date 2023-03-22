@@ -99,7 +99,7 @@ public class HologramHandler {
                         .replaceAll("%player%", opening.getName())
                         .replaceAll("%reward_name%", Matcher.quoteReplacement(reward.getName()))
                         .replaceAll("%cubelet_type%", Matcher.quoteReplacement(Utils.removeColors(reward.getParentCubelet().getName())))
-                        .replaceAll("%reward_rarity%", reward.getRarity().getName())
+                        .replaceAll("%reward_rarity%",  Matcher.quoteReplacement(reward.getRarity().getName()))
                 ));
             }
         } else {
@@ -108,7 +108,7 @@ public class HologramHandler {
                         .replaceAll("%player%", opening.getName())
                         .replaceAll("%reward_name%", Matcher.quoteReplacement(reward.getName()))
                         .replaceAll("%cubelet_type%", Matcher.quoteReplacement(Utils.removeColors(reward.getParentCubelet().getName())))
-                        .replaceAll("%reward_rarity%", reward.getRarity().getName())
+                        .replaceAll("%reward_rarity%",  Matcher.quoteReplacement(reward.getRarity().getName()))
                 ));
             }
         }
@@ -124,7 +124,7 @@ public class HologramHandler {
                     .replaceAll("%points%", ""+duplicatePoints)
                     .replaceAll("%reward_name%", Matcher.quoteReplacement(reward.getName()))
                     .replaceAll("%cubelet_type%", Matcher.quoteReplacement(Utils.removeColors(reward.getParentCubelet().getName())))
-                    .replaceAll("%reward_rarity%", reward.getRarity().getName())
+                    .replaceAll("%reward_rarity%",  Matcher.quoteReplacement(reward.getRarity().getName()))
             ));
         }
 

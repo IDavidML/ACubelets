@@ -90,7 +90,7 @@ public class DecentHologramsImpl implements HologramImplementation, Listener {
 
     public void loadHolograms(Player p, CubeletMachine box) {
 
-        Hologram hologram = DHAPI.createHologram(UUID.randomUUID() + " - " + p.getName().toLowerCase(), box.getLocation().clone().add(0.5, 1.025 + (box.getBlockHeight() + 0.1875), 0.5));
+        Hologram hologram = DHAPI.createHologram(UUID.randomUUID().toString(), box.getLocation().clone().add(0.5, 1.025 + (box.getBlockHeight() + 0.1875), 0.5));
         hologram.setDefaultVisibleState(false);
         hologram.setShowPlayer(p);
 

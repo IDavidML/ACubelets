@@ -39,12 +39,18 @@ Commands:
     GiveKey:
       Give: '%prefix% &aGived &e%amount%x %cubelet% key(s) &ato &e%player%'
       Received: '%prefix% &aReceived &e%amount%x %cubelet% key(s)'
+    Info:
+      NotHave: '%prefix% &6&l%player% &cnot have any cubelets'
+      Have:
+        Header: '%prefix% &6&l%player% &ahas the following cubelets:'
+        List: ' &7- %cubelet% &7x%amount%'
   Points:
     Give: '%prefix% &aGived &e%amount%x Points &ato &e%player%'
     Set: '%prefix% &aSetted &e%amount%x Points &ato &e%player%'
     Remove:
       Removed: '%prefix% &aRemoved &e%amount%x Points &afrom &e%player%'
       NoBalance: '%prefix% &6%player% &cdoes not have &6%amount%x Points&c. Currently balance: &6%balance%'
+    Info: '%prefix% &6&l%player% &ahas &6%amount% &aPoints.'
 
 Cubelet:
   LoginReminder:

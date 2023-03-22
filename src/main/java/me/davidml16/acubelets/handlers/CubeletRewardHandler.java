@@ -65,7 +65,12 @@ public class CubeletRewardHandler {
 								}
 							}
 
-							rewardIcon = NBTEditor.set(rewardIcon, "reward_" + iterator, "rewardID");
+							try {
+								rewardIcon = NBTEditor.set(rewardIcon, "reward_" + iterator, "rewardID");
+							} catch (IllegalArgumentException exception) {
+								exception.printStackTrace();
+								continue;
+							}
 
 							List<Reward> rewardsRarity;
 							if (rewards.get(rarity) == null) {
