@@ -74,7 +74,7 @@ public class ExecuteInfo {
                                         for (CubeletType type : main.getCubeletTypesHandler().getTypes().values()) {
                                             long amount = list.stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(type.getId())).count();
                                             if (amount > 0) {
-                                                String msgList = main.getLanguageHandler().getMessage("Commands.Cubelets.Info.Have.Header");
+                                                String msgList = main.getLanguageHandler().getMessage("Commands.Cubelets.Info.Have.List");
                                                 msgList = msgList.replaceAll("%player%", Matcher.quoteReplacement(name));
                                                 msgList = msgList.replaceAll("%cubelet%", Matcher.quoteReplacement(type.getName()));
                                                 msgList = msgList.replaceAll("%amount%", Matcher.quoteReplacement(name));
@@ -117,7 +117,7 @@ public class ExecuteInfo {
                             for (CubeletType type : main.getCubeletTypesHandler().getTypes().values()) {
                                 long amount = list.stream().filter(cubelet -> cubelet.getType().equalsIgnoreCase(type.getId())).count();
                                 if (amount > 0) {
-                                    String msgList = main.getLanguageHandler().getMessage("Commands.Cubelets.Info.Have.Header");
+                                    String msgList = main.getLanguageHandler().getMessage("Commands.Cubelets.Info.Have.List");
                                     msgList = msgList.replaceAll("%player%", Matcher.quoteReplacement(name));
                                     msgList = msgList.replaceAll("%cubelet%", Matcher.quoteReplacement(type.getName()));
                                     msgList = msgList.replaceAll("%amount%", Matcher.quoteReplacement(name));
