@@ -140,14 +140,14 @@ public class EditRewardConversation implements ConversationAbandonedListener, Co
             }
 
             if (param1ConversationContext.getSessionData("rewardIcon") == null) {
-                cadena += ChatColor.RED + "    4 " + ChatColor.GRAY + "- Edit reward icon 'Item in Hand' (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
+                cadena += ChatColor.RED + "    3 " + ChatColor.GRAY + "- Edit reward icon 'Item in Hand' (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
             } else {
                 ItemStack icon = (ItemStack) param1ConversationContext.getSessionData("rewardIcon");
-                cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Edit reward icon 'Item in Hand' (" + ChatColor.YELLOW + icon.getType().name() + ChatColor.GRAY + ")\n";
+                cadena += ChatColor.GREEN + "    3 " + ChatColor.GRAY + "- Edit reward icon 'Item in Hand' (" + ChatColor.YELLOW + icon.getType().name() + ChatColor.GRAY + ")\n";
             }
 
-            cadena += ChatColor.GREEN + "    5 " + ChatColor.GRAY + "- Save\n";
-            cadena += ChatColor.GREEN + "    6 " + ChatColor.GRAY + "- Exit and discard\n";
+            cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Save\n";
+            cadena += ChatColor.GREEN + "    5 " + ChatColor.GRAY + "- Exit and discard\n";
             cadena += ChatColor.GREEN + " \n";
             cadena += ChatColor.GOLD + "" + ChatColor.YELLOW + "  Choose the option: \n";
             cadena += ChatColor.GREEN + " \n";

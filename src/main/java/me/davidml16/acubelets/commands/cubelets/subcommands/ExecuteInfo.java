@@ -77,7 +77,7 @@ public class ExecuteInfo {
                                                 String msgList = main.getLanguageHandler().getMessage("Commands.Cubelets.Info.Have.List");
                                                 msgList = msgList.replaceAll("%player%", Matcher.quoteReplacement(name));
                                                 msgList = msgList.replaceAll("%cubelet%", Matcher.quoteReplacement(type.getName()));
-                                                msgList = msgList.replaceAll("%amount%", Matcher.quoteReplacement(name));
+                                                msgList = msgList.replaceAll("%amount%", Matcher.quoteReplacement(Long.toString(amount)));
                                                 sender.sendMessage(Utils.translate(msgList));
                                             }
                                         }
@@ -120,7 +120,7 @@ public class ExecuteInfo {
                                     String msgList = main.getLanguageHandler().getMessage("Commands.Cubelets.Info.Have.List");
                                     msgList = msgList.replaceAll("%player%", Matcher.quoteReplacement(name));
                                     msgList = msgList.replaceAll("%cubelet%", Matcher.quoteReplacement(type.getName()));
-                                    msgList = msgList.replaceAll("%amount%", Matcher.quoteReplacement(name));
+                                    msgList = msgList.replaceAll("%amount%", Matcher.quoteReplacement(Long.toString(amount)));
                                     sender.sendMessage(Utils.translate(msgList));
                                 }
                             }
