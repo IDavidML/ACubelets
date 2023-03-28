@@ -9,7 +9,7 @@ public class RarityComparator implements Comparator<Rarity> {
 
     @Override
     public int compare(Rarity o1, Rarity o2) {
-        return (int) (o2.getChance() - o1.getChance());
+        return Double.compare(o2.getChance(), o1.getChance());
     }
 
 }

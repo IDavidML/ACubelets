@@ -238,7 +238,7 @@ public class DecentHologramsImpl implements HologramImplementation, Listener {
 
         return new RepeatingTask(main, 0, 1) {
 
-            final int pointsPerTick = duplicationPoints / 40;
+            int pointsPerTick = duplicationPoints > 40 ? duplicationPoints / 40 : duplicationPoints > 20 ? duplicationPoints / 20 : duplicationPoints / duplicationPoints;
             int pointsToShow = 0;
 
             @Override
