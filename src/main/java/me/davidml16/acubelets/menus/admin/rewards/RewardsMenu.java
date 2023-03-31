@@ -88,6 +88,8 @@ public class RewardsMenu extends Menu {
                                 Utils.translate(" &7Permissions: &6" + reward.getPermissions().size() + " "),
                                 Utils.translate(" &7Items: &6" + reward.getItems().size() + " "),
                                 "",
+                                Utils.translate(" &7Bypass Duplication: &6" + reward.isBypassDuplicationSystem() + " "),
+                                "",
                                 Utils.translate("&eLeft-Click » &aEdit commands "),
                                 Utils.translate("&eMiddle-Click » &aEdit permissions "),
                                 Utils.translate("&eRight-Click » &aEdit items "),

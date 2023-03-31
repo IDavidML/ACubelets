@@ -376,7 +376,7 @@ public interface CommonPrompts  {
             }
 
             if (param1String.equalsIgnoreCase("true") || param1String.equalsIgnoreCase("false")) {
-                param1ConversationContext.setSessionData(this.storeValue, param1String.toLowerCase());
+                param1ConversationContext.setSessionData(this.storeValue, Boolean.parseBoolean(param1String.toLowerCase()));
                 Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
                         ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.CLICK, 10, 2);
                 return parentPrompt;

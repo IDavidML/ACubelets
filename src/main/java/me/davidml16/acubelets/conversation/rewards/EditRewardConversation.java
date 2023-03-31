@@ -30,6 +30,7 @@ public class EditRewardConversation implements ConversationAbandonedListener, Co
         conversation.getContext().setSessionData("rewardName", reward.getName());
         conversation.getContext().setSessionData("rewardRarity", reward.getRarity().getId());
         conversation.getContext().setSessionData("rewardIcon", reward.getIcon());
+        conversation.getContext().setSessionData("bypassDuplication", reward.isBypassDuplicationSystem());
 
         main.getConversationHandler().addConversation(paramPlayer);
 
@@ -41,7 +42,7 @@ public class EditRewardConversation implements ConversationAbandonedListener, Co
     public void conversationAbandoned(ConversationAbandonedEvent paramConversationAbandonedEvent) {}
 
     public class RewardMenuOptions extends FixedSetPrompt {
-        RewardMenuOptions() { super("1", "2", "3", "4", "5"); }
+        RewardMenuOptions() { super("1", "2", "3", "4", "5", "6"); }
 
         protected Prompt acceptValidatedInput(ConversationContext param1ConversationContext, String param1String) {
             CubeletType cubeletType = (CubeletType) param1ConversationContext.getSessionData("cubeletType");
@@ -69,6 +70,8 @@ public class EditRewardConversation implements ConversationAbandonedListener, Co
 
                     return this;
                 case "4":
+                    return new BooleanPrompt(main,this, ChatColor.YELLOW + "  Toggle bypass duplication system, \"cancel\" to return.\n  Available parameters: true or false" + "\n\n ", "bypassDuplication");
+                case "5":
                     if(param1ConversationContext.getSessionData("rewardName") != null
                             && param1ConversationContext.getSessionData("rewardRarity") != null
                             && param1ConversationContext.getSessionData("rewardIcon") != null) {
@@ -77,12 +80,14 @@ public class EditRewardConversation implements ConversationAbandonedListener, Co
                                 String rewardID = (String) param1ConversationContext.getSessionData("rewardID");
                                 String rewardName = (String) param1ConversationContext.getSessionData("rewardName");
                                 String rewardRarity = (String) param1ConversationContext.getSessionData("rewardRarity");
+                                boolean bypassDuplication = (boolean) param1ConversationContext.getSessionData("bypassDuplication");
                                 ItemStack rewardIcon = (ItemStack) param1ConversationContext.getSessionData("rewardIcon");
 
                                 Reward permissionReward = cubeletType.getReward(rewardID);
                                 permissionReward.setName(rewardName);
                                 permissionReward.setRarity(cubeletType.getRarities().get(rewardRarity));
                                 permissionReward.setIcon(rewardIcon.clone());
+                                permissionReward.setBypassDuplicationSystem(bypassDuplication);
 
                                 cubeletType.saveType();
 
@@ -116,7 +121,7 @@ public class EditRewardConversation implements ConversationAbandonedListener, Co
                     } else {
                         return new ErrorPrompt(main, this, "\n" + ChatColor.RED + "  You need to setup ID, NAME, RARITY, PERMISSION and ICON to save reward!\n  Write anything to continue\n ");
                     }
-                case "5":
+                case "6":
                     return new ConfirmExitPrompt(main, this);
             }
             return null;
@@ -146,8 +151,10 @@ public class EditRewardConversation implements ConversationAbandonedListener, Co
                 cadena += ChatColor.GREEN + "    3 " + ChatColor.GRAY + "- Edit reward icon 'Item in Hand' (" + ChatColor.YELLOW + icon.getType().name() + ChatColor.GRAY + ")\n";
             }
 
-            cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Save\n";
-            cadena += ChatColor.GREEN + "    5 " + ChatColor.GRAY + "- Exit and discard\n";
+            cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Bypass duplication system (" + ChatColor.YELLOW + (boolean) param1ConversationContext.getSessionData("bypassDuplication") + ChatColor.GRAY + ")\n";
+
+            cadena += ChatColor.GREEN + "    5 " + ChatColor.GRAY + "- Save\n";
+            cadena += ChatColor.GREEN + "    6 " + ChatColor.GRAY + "- Exit and discard\n";
             cadena += ChatColor.GREEN + " \n";
             cadena += ChatColor.GOLD + "" + ChatColor.YELLOW + "  Choose the option: \n";
             cadena += ChatColor.GREEN + " \n";
