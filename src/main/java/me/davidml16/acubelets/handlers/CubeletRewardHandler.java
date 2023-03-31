@@ -100,6 +100,8 @@ public class CubeletRewardHandler {
 							if(config.contains("type.rewards." + rewardid + ".rewardUUID"))
 								reward.setRewardUUID(UUID.fromString(config.getString("type.rewards." + rewardid + ".rewardUUID")));
 
+							reward.setBypassDuplicationSystem(config.getBoolean("type.rewards." + rewardid + ".bypassDuplicationSystem", false));
+
 							rewardsRarity.add(reward);
 
 							rewards.put(rarity, rewardsRarity);
@@ -286,6 +288,8 @@ public class CubeletRewardHandler {
 		Profile profile = main.getPlayerDataHandler().getData(cubeletMachine.getPlayerOpening().getUuid());
 
 		if(profile == null) return true;
+
+		if(reward.isBypassDuplicationSystem()) return false;
 
 		LootHistory lootHistory = profile.getLootHistory().stream().filter(history -> history.getRewardHistory().getUUID().toString().equalsIgnoreCase(reward.getRewardUUID().toString())).findFirst().orElse(null);
 

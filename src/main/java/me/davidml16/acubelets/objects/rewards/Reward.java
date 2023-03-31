@@ -15,6 +15,7 @@ public class Reward {
     private Rarity rarity;
     private ItemStack icon;
     private CubeletType parentCubelet;
+    private boolean bypassDuplicationSystem;
 
     private List<CommandObject> commands;
     private List<PermissionObject> permissions;
@@ -29,6 +30,7 @@ public class Reward {
         this.icon = icon;
         this.parentCubelet = parentCubelet;
         this.rewardUUID = UUID.randomUUID();
+        this.bypassDuplicationSystem = true;
     }
 
     public String getId() {
@@ -65,6 +67,14 @@ public class Reward {
 
     public void setRewardUUID(UUID rewardUUID) {
         this.rewardUUID = rewardUUID;
+    }
+
+    public boolean isBypassDuplicationSystem() {
+        return bypassDuplicationSystem;
+    }
+
+    public void setBypassDuplicationSystem(boolean bypassDuplicationSystem) {
+        this.bypassDuplicationSystem = bypassDuplicationSystem;
     }
 
     public List<CommandObject> getCommands() {

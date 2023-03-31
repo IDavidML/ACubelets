@@ -219,6 +219,7 @@ public class CubeletType {
                 config.set("type.rewards.reward_" + i + ".rarity", reward.getRarity().getId());
 
                 config.set("type.rewards.reward_" + i + ".rewardUUID", reward.getRewardUUID().toString());
+                config.set("type.rewards.reward_" + i + ".bypassDuplicationSystem", reward.isBypassDuplicationSystem());
 
                 List<String> commands = new ArrayList<>();
                 for(CommandObject command : reward.getCommands())

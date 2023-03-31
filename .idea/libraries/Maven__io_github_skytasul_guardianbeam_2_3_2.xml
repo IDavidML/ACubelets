@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: io.github.skytasul:guardianbeam:2.3.2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../Maven/repository/io/github/skytasul/guardianbeam/2.3.2/guardianbeam-2.3.2.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../Maven/repository/io/github/skytasul/guardianbeam/2.3.2/guardianbeam-2.3.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/../Maven/repository/io/github/skytasul/guardianbeam/2.3.2/guardianbeam-2.3.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
