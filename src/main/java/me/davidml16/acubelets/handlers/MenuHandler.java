@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 public class MenuHandler {
@@ -100,7 +101,6 @@ public class MenuHandler {
             return;
 
         menu.OnMenuClick(event);
-
     }
 
     public void handleMenuClose(Player player) {
@@ -113,7 +113,6 @@ public class MenuHandler {
         menu.OnMenuClosed();
 
         openedMenus.remove(player);
-
     }
 
     public void reloadAllMenus(Player player, Class<? extends Menu> menuClass) {
@@ -125,27 +124,25 @@ public class MenuHandler {
         if(!menu.getClass().equals(menuClass)) return;
 
         menu.reloadMyMenu();
-
     }
 
     public void reloadAllMenus(Class<? extends Menu> menuClass) {
 
-        for(Menu menu : openedMenus.values()) {
+        for (Iterator<Menu> it = openedMenus.values().iterator(); it.hasNext(); ) {
+            Menu menu = it.next();
 
             if(!menu.getClass().equals(menuClass)) continue;
 
             menu.reloadMyMenu();
-
         }
 
     }
 
     public void reloadAllMenus() {
 
-        for(Menu menu : openedMenus.values()) {
-
+        for (Iterator<Menu> it = openedMenus.values().iterator(); it.hasNext(); ) {
+            Menu menu = it.next();
             menu.reloadMyMenu();
-
         }
 
     }

@@ -144,12 +144,14 @@ public abstract class Animation {
         main.getAnimationHandler().getTasks().remove(this);
         Bukkit.getServer().getScheduler().cancelTask(animationId);
 
-        Bukkit.getPluginManager().callEvent(new CubeletEndEvent(cubeletMachine.getPlayerOpening(), cubeletType));
+        Bukkit.getPluginManager().callEvent(new CubeletEndEvent(cubeletMachine.getPlayerOpening(), cubeletType, cubeletMachine.getLastReward(), cubeletMachine.getLastDuplicationPoints()));
 
         main.getCubeletRewardHandler().giveReward(cubeletMachine, cubeletType, reward);
 
         cubeletMachine.setState(CubeletBoxState.EMPTY);
         cubeletMachine.setPlayerOpening(null);
+        cubeletMachine.setLastReward(null);
+        cubeletMachine.setLastDuplicationPoints(0);
         main.getHologramImplementation().reloadHologram(cubeletMachine);
 
         onStop();

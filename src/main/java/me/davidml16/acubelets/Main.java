@@ -172,7 +172,7 @@ public class Main extends JavaPlugin {
         hologramHandler = new HologramHandler(this);
 
         if(hologramHandler.getImplementation() == null) {
-            getLogger().severe("*** HolographicDisplays is not installed or not enabled. ***");
+            getLogger().severe("*** HolographicDisplays or Decent Holograms is not installed or not enabled. ***");
             getLogger().severe("*** Now the plugin will be disabled. ***");
             setEnabled(false);
             return;
@@ -251,7 +251,7 @@ public class Main extends JavaPlugin {
         log.sendMessage(Utils.translate("    &aAuthor: &b" + pdf.getAuthors().get(0)));
         log.sendMessage("");
 
-        if(hologramHandler != null) hologramHandler.getImplementation().removeHolograms();
+        if(hologramHandler != null && hologramHandler.getImplementation() != null) hologramHandler.getImplementation().removeHolograms();
 
         main.getPlayerDataHandler().saveAllPlayerDataSync();
 
