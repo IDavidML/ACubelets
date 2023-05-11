@@ -152,11 +152,7 @@ public class Event_Interact implements Listener {
 
                                 main.getCubeletOpenHandler().openAnimation(player, box, type, true);
 
-                                if (item.getAmount() > 1) {
-                                    item.setAmount(item.getAmount() - 1);
-                                } else {
-                                    player.getInventory().remove(item);
-                                }
+                                item.setAmount(item.getAmount() - 1);
 
                                 Bukkit.getScheduler().runTaskLater(main, () -> player.updateInventory(), 20L);
 
