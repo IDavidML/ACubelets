@@ -5,8 +5,7 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
-import me.davidml16.acubelets.utils.*;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
+import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
@@ -15,7 +14,6 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.PigZombie;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
 
@@ -67,7 +65,7 @@ public class Animation4_Task extends Animation {
 
 			pigman = (LivingEntity) getCubeletBox().getLocation().getWorld().spawnEntity(getLocationRotation(3), EntityType.PIG_ZOMBIE);
 
-			if(XMaterial.supports(9)) pigman.setCollidable(false);
+			pigman.setCollidable(false);
 			((PigZombie )pigman).setBaby(false);
 			((PigZombie )pigman).setAngry(false);
 			pigman.setRemoveWhenFarAway(false);

@@ -1,14 +1,20 @@
 package me.davidml16.acubelets.handlers;
 
+import com.cryptomorin.xseries.XItemStack;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.menus.player.LootHistoryMenu;
+import me.davidml16.acubelets.objects.CubeletMachine;
+import me.davidml16.acubelets.objects.CubeletType;
+import me.davidml16.acubelets.objects.Profile;
+import me.davidml16.acubelets.objects.Rarity;
 import me.davidml16.acubelets.objects.loothistory.LootHistory;
 import me.davidml16.acubelets.objects.loothistory.RewardHistory;
-import me.davidml16.acubelets.objects.rewards.*;
-import me.davidml16.acubelets.objects.*;
+import me.davidml16.acubelets.objects.rewards.CommandObject;
+import me.davidml16.acubelets.objects.rewards.ItemObject;
+import me.davidml16.acubelets.objects.rewards.PermissionObject;
+import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.utils.*;
-import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -56,10 +62,10 @@ public class CubeletRewardHandler {
 
 							ItemStack rewardIcon = null;
 							if (config.get("type.rewards." + rewardid + ".icon") instanceof MemorySection) {
-								rewardIcon = XItemStack.deserializeIcon(config, "type.rewards." + rewardid + ".icon", true);
+								rewardIcon = XItemStack.deserialize(Utils.getConfigurationSection(config, "type.rewards." + rewardid + ".icon"));
 							} else {
 								try {
-									rewardIcon = XItemStack.itemStackFromBase64(config.getString("type.rewards." + rewardid + ".icon"));
+									rewardIcon = ItemStack64.itemStackFromBase64(config.getString("type.rewards." + rewardid + ".icon"));
 								} catch (IOException e) {
 									e.printStackTrace();
 								}
@@ -159,10 +165,10 @@ public class CubeletRewardHandler {
 			if (config.getConfigurationSection("type.rewards." + rewardid + ".item") != null) {
 				for (String itemid : config.getConfigurationSection("type.rewards." + rewardid + ".item").getKeys(false)) {
 					if (config.get("type.rewards." + rewardid + ".item." + itemid) instanceof MemorySection) {
-						list.add(new ItemObject("item-" + i, XItemStack.deserializeItem(config, "type.rewards." + rewardid + ".item." + itemid)));
+						list.add(new ItemObject("item-" + i, XItemStack.deserialize(Utils.getConfigurationSection(config, "type.rewards." + rewardid + ".item." + itemid))));
 					} else {
 						try {
-							list.add(new ItemObject("item-" + i, XItemStack.itemStackFromBase64(config.getString("type.rewards." + rewardid + ".item." + itemid))));
+							list.add(new ItemObject("item-" + i, ItemStack64.itemStackFromBase64(config.getString("type.rewards." + rewardid + ".item." + itemid))));
 						} catch (IOException e) {
 							e.printStackTrace();
 						}

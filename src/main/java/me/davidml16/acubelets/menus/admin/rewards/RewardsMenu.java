@@ -1,14 +1,15 @@
 package me.davidml16.acubelets.menus.admin.rewards;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.conversation.rewards.*;
+import me.davidml16.acubelets.conversation.rewards.EditRewardConversation;
+import me.davidml16.acubelets.conversation.rewards.RewardConversation;
 import me.davidml16.acubelets.menus.admin.type.TypeConfigMenu;
+import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.objects.rewards.Reward;
-import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ItemBuilder;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,7 +18,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 public class RewardsMenu extends Menu {
 
@@ -78,6 +80,7 @@ public class RewardsMenu extends Menu {
 
                 gui.addItem(new ItemBuilder(reward.getIcon().clone())
                         .setName(Utils.translate("&a" + reward.getId()))
+                        .hideAttributes()
                         .setLore(
                                 "",
                                 Utils.translate(" &7Name: &6" + reward.getName() + " "),
@@ -95,7 +98,7 @@ public class RewardsMenu extends Menu {
                                 Utils.translate("&eRight-Click » &aEdit items "),
                                 Utils.translate("&eShift-Left-Click » &aEdit reward properties "),
                                 Utils.translate("&eShift-Right-Click » &aDelete reward ")
-                        ).hideAttributes().toItemStack());
+                        ).toItemStack());
 
             }
 

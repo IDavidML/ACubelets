@@ -1,15 +1,13 @@
 package me.davidml16.acubelets.animations.animation.animation7;
 
-import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.utils.ItemBuilder;
+import com.cryptomorin.xseries.XMaterial;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
+import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import me.davidml16.acubelets.utils.Sounds;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -39,10 +37,7 @@ public class Animation7_Pumpkin extends BukkitRunnable {
 
         armorStand.setVisible(false);
         armorStand.setGravity(false);
-        if(XMaterial.isNewVersion())
-            armorStand.setHelmet(XMaterial.CARVED_PUMPKIN.parseItem());
-        else
-            armorStand.setHelmet(new ItemBuilder(Material.PUMPKIN, 1, (byte) 1).toItemStack());
+        armorStand.setHelmet(XMaterial.CARVED_PUMPKIN.parseItem());
         armorStand.setSmall(false);
         armorStand.setBasePlate(false);
         armorStand.setRemoveWhenFarAway(false);

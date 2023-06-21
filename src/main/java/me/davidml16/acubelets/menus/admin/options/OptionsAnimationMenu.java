@@ -1,12 +1,12 @@
 package me.davidml16.acubelets.menus.admin.options;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.conversation.options.RenameAnimationConversation;
 import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.Utils;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;

@@ -6,7 +6,7 @@
 
     <groupId>me.davidml16</groupId>
     <artifactId>acubelets</artifactId>
-    <version>2.1.7</version>
+    <version>2.1.9</version>
     <packaging>jar</packaging>
 
     <name>ACubelets</name>
@@ -85,16 +85,16 @@
         </dependency>
 
         <dependency>
-            <groupId>com.gmail.filoghost.holographicdisplays</groupId>
+            <groupId>me.filoghost.holographicdisplays</groupId>
             <artifactId>holographicdisplays-api</artifactId>
-            <version>2.4.0</version>
+            <version>3.0.0</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.github.decentsoftware-eu</groupId>
             <artifactId>decentholograms</artifactId>
-            <version>2.8.1</version>
+            <version>2.8.3</version>
             <scope>provided</scope>
         </dependency>
 
@@ -113,34 +113,40 @@
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.10.5</version>
+            <version>2.11.3</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
-            <version>4.8.0</version>
+            <version>5.0.0</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
-            <version>1.7</version>
+            <version>1.7.1</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
             <groupId>io.github.bananapuncher714</groupId>
             <artifactId>nbteditor</artifactId>
-            <version>7.18.5</version>
+            <version>7.18.6</version>
         </dependency>
 
         <dependency>
             <groupId>io.github.skytasul</groupId>
             <artifactId>guardianbeam</artifactId>
-            <version>2.3.2</version>
+            <version>2.3.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.cryptomorin</groupId>
+            <artifactId>XSeries</artifactId>
+            <version>9.4.0</version>
         </dependency>
 
         <dependency>

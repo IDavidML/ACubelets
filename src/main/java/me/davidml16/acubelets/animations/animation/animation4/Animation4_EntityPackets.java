@@ -13,7 +13,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
 
 public class Animation4_EntityPackets extends BukkitRunnable {
@@ -40,12 +39,7 @@ public class Animation4_EntityPackets extends BukkitRunnable {
 
     public void run() {
         for(Player p : Bukkit.getOnlinePlayers()) {
-            try {
-                protocolManager.sendServerPacket(p, entitySwing);
-            } catch (InvocationTargetException e) {
-                throw new RuntimeException(
-                        "Cannot send packet " + entitySwing, e);
-            }
+            protocolManager.sendServerPacket(p, entitySwing);
         }
         Sounds.playSound(this.entity.getLocation(), Sounds.MySound.DIG_STONE, 0.5F, 1F);
         Location l = armorStand.getLocation();

@@ -1,12 +1,13 @@
 package me.davidml16.acubelets.conversation;
 
+import com.cryptomorin.xseries.XItemStack;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.menus.admin.type.TypeSettingsMenu;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Menu;
+import me.davidml16.acubelets.utils.ItemStack64;
 import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.Utils;
-import me.davidml16.acubelets.utils.XSeries.XItemStack;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -71,9 +72,9 @@ public class TypeKeyConversation implements ConversationAbandonedListener, Commo
                     config.set("type.key", null);
 
                     if(!main.isSerializeBase64())
-                        XItemStack.serializeItem(key, config, "type.key");
+                        XItemStack.serialize(key, Utils.getConfigurationSection(config, "type.key"));
                     else
-                        config.set("type.key", XItemStack.itemStackToBase64(key));
+                        config.set("type.key", ItemStack64.itemStackToBase64(key));
 
                     main.getCubeletTypesHandler().saveConfig(type.getId());
 

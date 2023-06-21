@@ -1,12 +1,10 @@
 package me.davidml16.acubelets.animations.animation.animation16;
 
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.utils.LocationUtils;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
-import me.davidml16.acubelets.utils.VersionUtil;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -14,9 +12,6 @@ import org.bukkit.entity.Sheep;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -50,9 +45,9 @@ public class Animation16_Sheep extends BukkitRunnable {
         NBTEditor.set( sheep, ( byte ) 1, "Silent" );
         NBTEditor.set( sheep, ( byte ) 1, "Invulnerable" );
         NBTEditor.set( sheep, ( byte ) 1, "NoAI" );
-        if(XMaterial.supports(10)) sheep.setSilent(true);
+        sheep.setSilent(true);
         sheep.setBaby();
-        if(XMaterial.supports(9)) sheep.setCollidable(false);
+        sheep.setCollidable(false);
         sheep.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
         sheep.teleport(locations.get(step));
 

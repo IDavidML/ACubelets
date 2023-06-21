@@ -1,18 +1,11 @@
 package me.davidml16.acubelets.animations;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLib;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.ProtocolManager;
-import com.comphenix.protocol.events.ListenerPriority;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketEvent;
+import com.cryptomorin.xseries.XItemStack;
+import com.cryptomorin.xseries.XMaterial;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.animation.animation2.Animation2_Task;
 import me.davidml16.acubelets.utils.ConfigUpdater;
-import me.davidml16.acubelets.utils.XSeries.XItemStack;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
-import org.bukkit.Bukkit;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -38,7 +31,7 @@ public class AnimationHandler {
     private YamlConfiguration config;
 
     public static String DEFAULT_ANIMATION = "animation2";
-    public static int ANIMATION_COUNT = 21;
+    public static int ANIMATION_COUNT = 22;
 
     private static List<ItemStack> animationItems;
     static {
@@ -50,7 +43,8 @@ public class AnimationHandler {
                 XMaterial.LADDER.parseItem(), XMaterial.FIRE_CHARGE.parseItem(), XMaterial.ENDER_EYE.parseItem(),
                 XMaterial.CAULDRON.parseItem(), XMaterial.PRISMARINE_SHARD.parseItem(), XMaterial.POPPY.parseItem(),
                 XMaterial.BLAZE_POWDER.parseItem(), XMaterial.PINK_WOOL.parseItem(), XMaterial.SNOWBALL.parseItem(),
-                XMaterial.DIAMOND.parseItem(), XMaterial.ANVIL.parseItem(), XMaterial.ENDER_PEARL.parseItem()
+                XMaterial.DIAMOND.parseItem(), XMaterial.ANVIL.parseItem(), XMaterial.ENDER_PEARL.parseItem(),
+                XMaterial.PURPUR_BLOCK.parseItem()
         );
 
     }
@@ -108,10 +102,9 @@ public class AnimationHandler {
             if(config.contains("animations." + animationId + ".Icon")
                     && config.getConfigurationSection("animations." + animationId + ".Icon") != null) {
 
-                ItemStack item = XItemStack.deserializeIcon(config, "animations." + animationId + ".Icon", false);
+                ItemStack item = XItemStack.deserialize(Utils.getConfigurationSection(config, "animations." + animationId + ".Icon"));
 
-                if(item != null)
-                    animation.setDisplayItem(item);
+                animation.setDisplayItem(item);
 
             } else {
 
@@ -151,7 +144,7 @@ public class AnimationHandler {
 
             config.set("animations." + animationId + ".NeedPermission", animationSettings.isNeedPermission());
 
-            XItemStack.serializeIcon(animationSettings.getDisplayItem(), config, "animations." + animationId + ".Icon", false);
+            XItemStack.serialize(animationSettings.getDisplayItem(), Utils.getConfigurationSection(config, "animations." + animationId + ".Icon"));
         }
 
         try {

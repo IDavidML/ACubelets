@@ -1,10 +1,9 @@
 package me.davidml16.acubelets.utils;
 
-import eu.decentsoftware.holograms.api.utils.scheduler.S;
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.objects.CubeletMachine;
 import me.davidml16.acubelets.objects.CubeletType;
+import me.davidml16.acubelets.objects.rewards.Reward;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;

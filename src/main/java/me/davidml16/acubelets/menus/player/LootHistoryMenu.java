@@ -1,17 +1,16 @@
 package me.davidml16.acubelets.menus.player;
 
+import com.cryptomorin.xseries.XMaterial;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.interfaces.LootDateComparator;
-import me.davidml16.acubelets.menus.player.CubeletsMenu;
 import me.davidml16.acubelets.objects.GUILayout;
 import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.objects.Profile;
 import me.davidml16.acubelets.objects.loothistory.LootHistory;
 import me.davidml16.acubelets.utils.ItemBuilder;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.utils.TimeAPI.TimeUtils;
 import me.davidml16.acubelets.utils.Utils;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;

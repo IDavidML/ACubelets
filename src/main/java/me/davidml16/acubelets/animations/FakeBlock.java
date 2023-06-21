@@ -1,6 +1,6 @@
 package me.davidml16.acubelets.animations;
 
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.BlockFace;

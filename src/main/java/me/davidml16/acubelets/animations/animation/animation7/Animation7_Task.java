@@ -1,15 +1,19 @@
 package me.davidml16.acubelets.animations.animation.animation7;
 
+import com.cryptomorin.xseries.XMaterial;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
-import me.davidml16.acubelets.utils.*;
+import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
-import org.bukkit.*;
+import me.davidml16.acubelets.utils.SkullCreator;
+import me.davidml16.acubelets.utils.Sounds;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Bat;
 import org.bukkit.entity.Entity;
@@ -18,7 +22,9 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Animation7_Task extends Animation {
 

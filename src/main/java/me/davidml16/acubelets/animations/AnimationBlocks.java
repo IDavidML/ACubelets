@@ -1,12 +1,9 @@
 package me.davidml16.acubelets.animations;
 
 import me.davidml16.acubelets.utils.Cuboid;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
@@ -43,27 +40,46 @@ public abstract class AnimationBlocks extends BukkitRunnable {
 
         this.locations = new Location[] {
 
-                this.boxLocation.clone().add(0, -1, 0), this.boxLocation.clone().add(1, -1, 0), this.boxLocation.clone().add(-1, -1, 0),
-                this.boxLocation.clone().add(0, -1, 1), this.boxLocation.clone().add(0, -1, -1),
+                this.boxLocation.clone().add(0, -1, 0), // 0 - CENTER
 
-                this.boxLocation.clone().add(1, -1, 1), this.boxLocation.clone().add(1, -1, -1), this.boxLocation.clone().add(-1, -1, 1),
-                this.boxLocation.clone().add(-1, -1, -1),
+                this.boxLocation.clone().add(1, -1, 0), // 1 - LEFT CROSS
+                this.boxLocation.clone().add(-1, -1, 0), // 2 - RIGHT CROSS
+                this.boxLocation.clone().add(0, -1, 1), // 3 - UP CROSS
+                this.boxLocation.clone().add(0, -1, -1), // 4 - DOWN CROSS
 
-                this.boxLocation.clone().add(2, -1, 0), this.boxLocation.clone().add(-2, -1, 0), this.boxLocation.clone().add(0, -1, 2),
-                this.boxLocation.clone().add(0, -1,-2),
+                this.boxLocation.clone().add(1, -1, 1), // 5 - UP LEFT BOX CORNER
+                this.boxLocation.clone().add(1, -1, -1), // 6 - UP RIGHT BOX CORNER
+                this.boxLocation.clone().add(-1, -1, 1), // 7 - DOWN LEFT BOX CORNER
+                this.boxLocation.clone().add(-1, -1, -1), // 8 - DOWN LEFT BOX CORNER
 
-                this.boxLocation.clone().add(2, -1, 1), this.boxLocation.clone().add(2, -1, -1), this.boxLocation.clone().add(-2, -1, 1),
-                this.boxLocation.clone().add(-2, -1, -1), this.boxLocation.clone().add(1, -1, 2), this.boxLocation.clone().add(-1, -1, 2),
-                this.boxLocation.clone().add(1, -1, -2), this.boxLocation.clone().add(-1, -1, -2),
+                this.boxLocation.clone().add(2, -1, 0), // 9 - LEFT STAIR
+                this.boxLocation.clone().add(-2, -1, 0), // 10 - RIGHT STAIR
+                this.boxLocation.clone().add(0, -1, 2), // 11 - UP STAIR
+                this.boxLocation.clone().add(0, -1,-2), // 12 - DOWN STAIR
 
-                this.boxLocation.clone().add(2, -1, 2), this.boxLocation.clone().add(2, -1, -2), this.boxLocation.clone().add(-2, -1, 2),
-                this.boxLocation.clone().add(-2, -1, -2),
+                this.boxLocation.clone().add(2, -1, 1), // 13 - LEFT UP SLAB
+                this.boxLocation.clone().add(2, -1, -1), // 14 - LEFT DOWN SLAB
+                this.boxLocation.clone().add(-2, -1, 1), // 15 - RIGHT UP SLAB
+                this.boxLocation.clone().add(-2, -1, -1), // 16 - RIGHT DOWN SLAB
+                this.boxLocation.clone().add(1, -1, 2), // 17 - UP LEFT SLAB
+                this.boxLocation.clone().add(-1, -1, 2), // 18 - UP RIGHT SLAB
+                this.boxLocation.clone().add(1, -1, -2), // 19 - DOWN LEFT SLAB
+                this.boxLocation.clone().add(-1, -1, -2), // 20 - DOWN RIGHT SLAB
 
-                this.boxLocation.clone().add(2, 0, 2), this.boxLocation.clone().add(2, 0, -2),
-                this.boxLocation.clone().add(-2, 0, 2), this.boxLocation.clone().add(-2, 0, -2),
+                this.boxLocation.clone().add(2, -1, 2), // 21 - UP LEFT CORNER LEVEL 0
+                this.boxLocation.clone().add(2, -1, -2), // 22 - UP RIGHT CORNER LEVEL 0
+                this.boxLocation.clone().add(-2, -1, 2), // 23 - DOWN LEFT CORNER LEVEL 0
+                this.boxLocation.clone().add(-2, -1, -2), // 24 - DOWN RIGHT CORNER LEVEL 0
 
-                this.boxLocation.clone().add(2, 1, 2), this.boxLocation.clone().add(2, 1, -2),
-                this.boxLocation.clone().add(-2, 1, 2), this.boxLocation.clone().add(-2, 1, -2)
+                this.boxLocation.clone().add(2, 0, 2), // 25 - UP LEFT CORNER LEVEL 1
+                this.boxLocation.clone().add(2, 0, -2), // 26 - UP RIGHT CORNER LEVEL 1
+                this.boxLocation.clone().add(-2, 0, 2), // 27 - DOWN LEFT CORNER LEVEL 1
+                this.boxLocation.clone().add(-2, 0, -2), // 28 - DOWN RIGHT CORNER LEVEL 1
+
+                this.boxLocation.clone().add(2, 1, 2), // 29 - UP LEFT CORNER LEVEL 2
+                this.boxLocation.clone().add(2, 1, -2), // 30 - UP RIGHT CORNER LEVEL 2
+                this.boxLocation.clone().add(-2, 1, 2), // 31 - DOWN LEFT CORNER LEVEL 2
+                this.boxLocation.clone().add(-2, 1, -2) // 32 - DOWN RIGHT CORNER LEVEL 2
 
         };
 
@@ -76,7 +92,14 @@ public abstract class AnimationBlocks extends BukkitRunnable {
 
         FakeBlock[] fakeBlocks = getStepFakeBlocks(actualStep);
 
+        if(fakeBlocks.length == 0) {
+            step++;
+            return;
+        }
+
         for(Player player : Bukkit.getOnlinePlayers()) {
+
+            if(!player.getLocation().getWorld().getName().equalsIgnoreCase(fakeBlocks[0].getLocation().getWorld().getName())) continue;
 
             for(FakeBlock fakeBlock : fakeBlocks)
                 sendBlock(player, fakeBlock);
@@ -155,56 +178,12 @@ public abstract class AnimationBlocks extends BukkitRunnable {
         if(fakeBlock.getLocation() == null)
             return;
 
-        if(XMaterial.supports(13)) {
+        BlockData blockData = Bukkit.createBlockData(fakeBlock.getXMaterial().parseMaterial());
 
-            BlockData blockData = Bukkit.createBlockData(fakeBlock.getXMaterial().parseMaterial());
+        if(fakeBlock.hasBlockFace())
+            ((Directional) blockData).setFacing(fakeBlock.getBlockFace());
 
-            if(fakeBlock.hasBlockFace())
-                ((Directional) blockData).setFacing(fakeBlock.getBlockFace());
-
-            player.sendBlockChange(fakeBlock.getLocation(), blockData);
-
-        } else {
-
-            Material finalMaterial;
-            byte finalData;
-
-            if(fakeBlock.getAltXMaterial() == null && fakeBlock.getAltMaterial() == null) {
-                finalMaterial = fakeBlock.getXMaterial().parseMaterial();
-                finalData = fakeBlock.getXMaterial().getData();
-            } else if(fakeBlock.getAltXMaterial() != null && fakeBlock.getAltMaterial() == null) {
-                finalMaterial = fakeBlock.getAltXMaterial().parseMaterial();
-                finalData = fakeBlock.getAltXMaterial().getData();
-            } else {
-                finalMaterial = fakeBlock.getAltMaterial();
-                finalData = fakeBlock.getAltXMaterial().getData();
-            }
-
-            if(!fakeBlock.hasBlockFace()) {
-
-                player.sendBlockChange(fakeBlock.getLocation(), finalMaterial, finalData);
-
-            } else {
-
-                byte data = 0;
-
-                BlockFace facing = fakeBlock.getBlockFace();
-
-                if(facing == BlockFace.WEST){
-                    data = 0x1;
-                } else if(facing == BlockFace.EAST){
-                    data = 0x0;
-                } else if(facing == BlockFace.NORTH){
-                    data = 0x3;
-                } else if(facing == BlockFace.SOUTH){
-                    data = 0x2;
-                }
-
-                player.sendBlockChange(fakeBlock.getLocation(), finalMaterial, data);
-
-            }
-
-        }
+        player.sendBlockChange(fakeBlock.getLocation(), blockData);
 
     }
 

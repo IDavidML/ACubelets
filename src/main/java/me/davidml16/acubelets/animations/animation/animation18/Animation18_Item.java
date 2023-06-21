@@ -1,12 +1,11 @@
 package me.davidml16.acubelets.animations.animation.animation18;
 
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.utils.LocationUtils;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.Utils;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -33,7 +32,7 @@ public class Animation18_Item extends BukkitRunnable {
 
         ArmorStand armorStandItem = center.getWorld().spawn(center, ArmorStand.class);
         NBTEditor.set( armorStandItem, ( byte ) 1, "Silent" );
-        if(XMaterial.supports(10)) armorStandItem.setSilent(true);
+        armorStandItem.setSilent(true);
         armorStandItem.setVisible(false);
         armorStandItem.setGravity(false);
         armorStandItem.setItemInHand(reward.getIcon());
@@ -48,7 +47,7 @@ public class Animation18_Item extends BukkitRunnable {
 
         ArmorStand armorStandName = center.getWorld().spawn(center.clone().add(0, 0.45, 0), ArmorStand.class);
         NBTEditor.set( armorStandName, ( byte ) 1, "Silent" );
-        if(XMaterial.supports(10)) armorStandName.setSilent(true);
+        armorStandName.setSilent(true);
         armorStandName.setVisible(false);
         armorStandName.setGravity(false);
         armorStandName.setHelmet(null);

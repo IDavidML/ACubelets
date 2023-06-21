@@ -1,14 +1,16 @@
 package me.davidml16.acubelets.animations.animation.animation13;
 
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.utils.LocationUtils;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import me.davidml16.acubelets.utils.Sounds;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Location;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Guardian;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -38,8 +40,7 @@ public class Animation13_Gwen extends BukkitRunnable {
         guardian.setTarget((LivingEntity) target);
         NBTEditor.set( guardian, ( byte ) 1, "Silent" );
         NBTEditor.set( guardian, ( byte ) 1, "NoGravity" );
-        if(XMaterial.supports(10))
-            guardian.setGravity(false);
+        guardian.setGravity(false);
         guardian.setVelocity(new Vector(0, 0, 0));
         guardian.setCustomNameVisible(false);
         guardian.setRemoveWhenFarAway(false);

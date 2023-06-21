@@ -1,16 +1,15 @@
 package me.davidml16.acubelets.animations.animation.animation17;
 
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.utils.LocationUtils;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.Sounds;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
@@ -51,7 +50,7 @@ public class Animation17_Task extends Animation {
 
 			snowman = (LivingEntity) getCubeletBox().getLocation().getWorld().spawnEntity(getLocationRotation(0), EntityType.SNOWMAN);
 
-			if (XMaterial.supports(9)) snowman.setCollidable(false);
+			snowman.setCollidable(false);
 			snowman.setRemoveWhenFarAway(false);
 			snowman.setMetadata("ACUBELETS", new FixedMetadataValue(getMain(), Boolean.TRUE));
 

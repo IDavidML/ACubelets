@@ -1,12 +1,11 @@
 package me.davidml16.acubelets.animations;
 
+import com.cryptomorin.xseries.XMaterial;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.enums.Rotation;
 import me.davidml16.acubelets.objects.CubeletMachine;
 import me.davidml16.acubelets.objects.CubeletType;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
-import me.davidml16.acubelets.utils.VersionUtil;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
@@ -26,7 +25,7 @@ public class ASSpawner {
         ArmorStand armorStand = box.getLocation().getWorld().spawn(loc, ArmorStand.class);
 
         NBTEditor.set( armorStand, ( byte ) 1, "Silent" );
-        if(XMaterial.supports(10)) armorStand.setSilent(true);
+        armorStand.setSilent(true);
 
         armorStand.setVisible(false);
         armorStand.setGravity(false);
@@ -48,7 +47,7 @@ public class ASSpawner {
         ArmorStand armorStand = box.getLocation().getWorld().spawn(loc, ArmorStand.class);
 
         NBTEditor.set( armorStand, ( byte ) 1, "Silent" );
-        if(XMaterial.supports(10)) armorStand.setSilent(true);
+        armorStand.setSilent(true);
 
         armorStand.setVisible(false);
         armorStand.setGravity(false);
@@ -70,13 +69,13 @@ public class ASSpawner {
         ArmorStand armorStand = box.getLocation().getWorld().spawn(loc, ArmorStand.class);
 
         NBTEditor.set( armorStand, ( byte ) 1, "Silent" );
-        if(XMaterial.supports(10)) armorStand.setSilent(true);
+        armorStand.setSilent(true);
 
         armorStand.setVisible(false);
         armorStand.setGravity(false);
         armorStand.setHelmet(head);
         armorStand.setSmall(small);
-        armorStand.setMarker(false);
+        armorStand.setMarker(true);
         armorStand.setRemoveWhenFarAway(false);
         armorStand.setCustomNameVisible(false);
         armorStand.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
@@ -90,7 +89,7 @@ public class ASSpawner {
         ArmorStand armorStand = loc.getWorld().spawn(loc, ArmorStand.class);
 
         NBTEditor.set( armorStand, ( byte ) 1, "Silent" );
-        if(XMaterial.supports(10)) armorStand.setSilent(true);
+        armorStand.setSilent(true);
 
         armorStand.setVisible(false);
         armorStand.setGravity(gravity);
@@ -111,7 +110,7 @@ public class ASSpawner {
         ArmorStand armorStand = loc.getWorld().spawn(loc, ArmorStand.class);
 
         NBTEditor.set( armorStand, ( byte ) 1, "Silent" );
-        if(XMaterial.supports(10)) armorStand.setSilent(true);
+        armorStand.setSilent(true);
 
         armorStand.setVisible(false);
         armorStand.setGravity(gravity);
@@ -146,9 +145,9 @@ public class ASSpawner {
 
         String fieldName = "noclip";
 
-        if(VersionUtil.supports(18))
+        if(XMaterial.supports(18))
             fieldName = "Q";
-        else if(VersionUtil.supports(17))
+        else if(XMaterial.supports(17))
             fieldName = "P";
 
         try {

@@ -1,16 +1,24 @@
 package me.davidml16.acubelets.objects;
 
+import com.cryptomorin.xseries.XItemStack;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.interfaces.RarityComparator;
 import me.davidml16.acubelets.interfaces.RewardComparator;
 import me.davidml16.acubelets.interfaces.RewardIDComparator;
-import me.davidml16.acubelets.objects.rewards.*;
-import me.davidml16.acubelets.utils.XSeries.XItemStack;
+import me.davidml16.acubelets.objects.rewards.CommandObject;
+import me.davidml16.acubelets.objects.rewards.ItemObject;
+import me.davidml16.acubelets.objects.rewards.PermissionObject;
+import me.davidml16.acubelets.objects.rewards.Reward;
+import me.davidml16.acubelets.utils.ItemStack64;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CubeletType {
 
@@ -187,9 +195,9 @@ public class CubeletType {
 
         config.set("type.key", null);
         if(!main.isSerializeBase64())
-            XItemStack.serializeItem(key, config, "type.key");
+            XItemStack.serialize(key, Utils.getConfigurationSection(config, "type.key"));
         else
-            config.set("type.key", XItemStack.itemStackToBase64(key));
+            config.set("type.key", ItemStack64.itemStackToBase64(key));
 
         config.set("type.rarities", new ArrayList<>());
 
@@ -236,15 +244,15 @@ public class CubeletType {
                 config.set("type.rewards.reward_" + i + ".item", new ArrayList<>());
                 for (int j = 0; j < itemObjects.size(); j++) {
                     if(!main.isSerializeBase64())
-                        XItemStack.serializeItem(itemObjects.get(j).getItemStack(), config, "type.rewards.reward_" + i + ".item.item_" + j);
+                        XItemStack.serialize(itemObjects.get(j).getItemStack(), Utils.getConfigurationSection(config, "type.rewards.reward_" + i + ".item.item_" + j));
                     else
-                        config.set("type.rewards.reward_" + i + ".item.item_" + j, XItemStack.itemStackToBase64(itemObjects.get(j).getItemStack()));
+                        config.set("type.rewards.reward_" + i + ".item.item_" + j, ItemStack64.itemStackToBase64(itemObjects.get(j).getItemStack()));
                 }
 
                 if(!main.isSerializeBase64())
-                    XItemStack.serializeIcon(reward.getIcon(), config, "type.rewards.reward_" + i + ".icon", true);
+                    XItemStack.serialize(reward.getIcon(), Utils.getConfigurationSection(config, "type.rewards.reward_" + i + ".icon"));
                 else
-                    config.set("type.rewards.reward_" + i + ".icon", XItemStack.itemStackToBase64(reward.getIcon()));
+                    config.set("type.rewards.reward_" + i + ".icon", ItemStack64.itemStackToBase64(reward.getIcon()));
 
             }
 

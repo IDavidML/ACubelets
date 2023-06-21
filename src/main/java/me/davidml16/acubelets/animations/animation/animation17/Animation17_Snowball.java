@@ -1,12 +1,11 @@
 package me.davidml16.acubelets.animations.animation.animation17;
 
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.utils.LocationUtils;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import me.davidml16.acubelets.utils.SkullCreator;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -31,7 +30,7 @@ public class Animation17_Snowball extends BukkitRunnable {
 
         ArmorStand armorStand = center.getWorld().spawn(locations.get(step), ArmorStand.class);
         NBTEditor.set( armorStand, ( byte ) 1, "Silent" );
-        if(XMaterial.supports(10)) armorStand.setSilent(true);
+        armorStand.setSilent(true);
         armorStand.setVisible(false);
         armorStand.setHelmet(SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWRmZDc3MjRjNjlhMDI0ZGNmYzYwYjE2ZTAwMzM0YWI1NzM4ZjRhOTJiYWZiOGZiYzc2Y2YxNTMyMmVhMDI5MyJ9fX0="));
         armorStand.setGravity(false);

@@ -2,7 +2,6 @@ package me.davidml16.acubelets.tasks;
 
 import me.davidml16.acubelets.Main;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 public class HologramTask {
 	

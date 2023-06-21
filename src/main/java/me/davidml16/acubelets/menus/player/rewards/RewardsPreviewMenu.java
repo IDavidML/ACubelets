@@ -1,13 +1,15 @@
 package me.davidml16.acubelets.menus.player.rewards;
 
+import com.cryptomorin.xseries.XMaterial;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.menus.player.CubeletsMenu;
+import me.davidml16.acubelets.objects.CubeletType;
+import me.davidml16.acubelets.objects.GUILayout;
+import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.objects.rewards.Reward;
-import me.davidml16.acubelets.objects.*;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
-import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ItemBuilder;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -15,7 +17,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 
 public class RewardsPreviewMenu extends Menu {

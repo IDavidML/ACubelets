@@ -3,7 +3,8 @@ package me.davidml16.acubelets.animations.animation.animation1;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
-import org.bukkit.*;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
 
 public class Animation1_Task extends Animation {
 

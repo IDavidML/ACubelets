@@ -1,9 +1,5 @@
 package me.davidml16.acubelets.holograms.implementations;
 
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
-import com.gmail.filoghost.holographicdisplays.api.VisibilityManager;
-import com.gmail.filoghost.holographicdisplays.api.line.TextLine;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.holograms.HologramHandler;
@@ -11,6 +7,10 @@ import me.davidml16.acubelets.holograms.HologramImplementation;
 import me.davidml16.acubelets.objects.CubeletMachine;
 import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.utils.RepeatingTask;
+import me.filoghost.holographicdisplays.api.HolographicDisplaysAPI;
+import me.filoghost.holographicdisplays.api.hologram.Hologram;
+import me.filoghost.holographicdisplays.api.hologram.VisibilitySettings;
+import me.filoghost.holographicdisplays.api.hologram.line.TextHologramLine;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -70,7 +70,8 @@ public class HolographicDisplaysImpl implements HologramImplementation, Listener
 
     public void removeHolograms() {
 
-        for (Hologram hologram : HologramsAPI.getHolograms(main)) {
+        HolographicDisplaysAPI api = HolographicDisplaysAPI.get(main);
+        for (Hologram hologram : api.getHolograms()) {
 
             hologram.delete();
 
@@ -92,11 +93,12 @@ public class HolographicDisplaysImpl implements HologramImplementation, Listener
 
     public void loadHolograms(Player p, CubeletMachine box) {
 
-        Hologram hologram = HologramsAPI.createHologram(main, box.getLocation().clone().add(0.5, 1.025 + (box.getBlockHeight() + 0.1875), 0.5));
-        VisibilityManager visibilityManager = hologram.getVisibilityManager();
+        HolographicDisplaysAPI api = HolographicDisplaysAPI.get(main);
+        Hologram hologram = api.createHologram(box.getLocation().clone().add(0.5, 1.025 + (box.getBlockHeight() + 0.1875), 0.5));
+        VisibilitySettings visibilitySettings = hologram.getVisibilitySettings();
 
-        visibilityManager.showTo(p);
-        visibilityManager.setVisibleByDefault(false);
+        visibilitySettings.setGlobalVisibility(VisibilitySettings.Visibility.HIDDEN);
+        visibilitySettings.setIndividualVisibility(p, VisibilitySettings.Visibility.VISIBLE);
 
         if(box.getState() == CubeletBoxState.EMPTY) {
 
@@ -104,22 +106,22 @@ public class HolographicDisplaysImpl implements HologramImplementation, Listener
             int max = Math.max(main.getLanguageHandler().getMessageList("Holograms.CubeletAvailable").size(), main.getLanguageHandler().getMessageList("Holograms.NoCubeletAvailable").size());
 
             for (String line : lines) {
-                hologram.appendTextLine(line);
+                hologram.getLines().appendText(line);
             }
 
-            hologram.teleport(box.getLocation().clone().add(0.5, (max * LINE_HEIGHT) + (box.getBlockHeight() + 0.1875), 0.5));
+            hologram.setPosition(box.getLocation().clone().add(0.5, (max * LINE_HEIGHT) + (box.getBlockHeight() + 0.1875), 0.5));
 
         } else if(box.getState() == CubeletBoxState.REWARD) {
 
             List<String> lines = hologramHandler.getLinesReward(p, box.getPlayerOpening(), box.getLastReward());
 
-            hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + (box.getBlockHeight() + 0.1875), 0.5));
+            hologram.setPosition(box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + (box.getBlockHeight() + 0.1875), 0.5));
 
             for (String line : lines) {
                 if(!line.contains("%reward_icon%"))
-                    hologram.appendTextLine(line);
+                    hologram.getLines().appendText(line);
                 else
-                    hologram.appendItemLine(box.getLastReward().getIcon());
+                    hologram.getLines().appendItem(box.getLastReward().getIcon());
             }
 
         }
@@ -144,7 +146,7 @@ public class HolographicDisplaysImpl implements HologramImplementation, Listener
     public void reloadHologram(CubeletMachine box) {
 
         for (Hologram hologram : holograms.get(box).values()) {
-            hologram.clearLines();
+            hologram.getLines().clear();
         }
 
         for(Player p : Bukkit.getOnlinePlayers()) {
@@ -162,8 +164,9 @@ public class HolographicDisplaysImpl implements HologramImplementation, Listener
 
         if (!Objects.equals(box.getLocation().getWorld(), p.getLocation().getWorld()) ||
                 box.getLocation().distanceSquared(p.getLocation()) > hologramHandler.getVisibilityDistance()) {
-            if (hologram.getVisibilityManager().isVisibleTo(p))
-                hologram.getVisibilityManager().hideTo(p);
+            VisibilitySettings visibilitySettings = hologram.getVisibilitySettings();
+            if (visibilitySettings.isVisibleTo(p))
+                visibilitySettings.setIndividualVisibility(p, VisibilitySettings.Visibility.HIDDEN);
             return;
         }
 
@@ -171,25 +174,27 @@ public class HolographicDisplaysImpl implements HologramImplementation, Listener
 
             List<String> lines = hologramHandler.getLines(p);
 
-            if (!hologram.getVisibilityManager().isVisibleTo(p))
-                hologram.getVisibilityManager().showTo(p);
+            VisibilitySettings visibilitySettings = hologram.getVisibilitySettings();
+            if (!visibilitySettings.isVisibleTo(p))
+                visibilitySettings.setIndividualVisibility(p, VisibilitySettings.Visibility.VISIBLE);
 
             int max = Math.max(main.getLanguageHandler().getMessageList("Holograms.CubeletAvailable").size(), main.getLanguageHandler().getMessageList("Holograms.NoCubeletAvailable").size());
-            if (hologram.size() != lines.size())
-                hologram.teleport(box.getLocation().clone().add(0.5, (max * LINE_HEIGHT) + (box.getBlockHeight() + 0.1875), 0.5));
+            if (hologram.getLines().size() != lines.size())
+                hologram.setPosition(box.getLocation().clone().add(0.5, (max * LINE_HEIGHT) + (box.getBlockHeight() + 0.1875), 0.5));
 
-            if (hologram.size() > lines.size()) {
-                for (int i = lines.size(); i < hologram.size(); i++)
-                    hologram.getLine(i).removeLine();
+            if (hologram.getLines().size() > lines.size()) {
+                for (int i = lines.size(); i < hologram.getLines().size(); i++)
+                    hologram.getLines().remove(i);
 
-            } else if (hologram.size() < lines.size()) {
-                for (int i = hologram.size(); i < lines.size(); i++)
-                    hologram.appendTextLine(lines.get(i));
+            } else if (hologram.getLines().size() < lines.size()) {
+                for (int i = hologram.getLines().size(); i < lines.size(); i++)
+                    hologram.getLines().appendText(lines.get(i));
             }
 
             for (int i = 0; i < lines.size(); i++) {
-                if (!((TextLine) hologram.getLine(i)).getText().equalsIgnoreCase(lines.get(i)))
-                    ((TextLine) hologram.getLine(i)).setText(lines.get(i));
+                TextHologramLine line = (TextHologramLine) hologram.getLines().get(i);
+                if (!(line.getText().equalsIgnoreCase(lines.get(i))))
+                    line.setText(lines.get(i));
             }
 
         }
@@ -199,7 +204,7 @@ public class HolographicDisplaysImpl implements HologramImplementation, Listener
     @Override
     public void clearLines(CubeletMachine box) {
         for (Hologram hologram : holograms.get(box).values()) {
-            hologram.clearLines();
+            hologram.getLines().clear();
         }
     }
 
@@ -216,7 +221,7 @@ public class HolographicDisplaysImpl implements HologramImplementation, Listener
             return;
 
         for (Hologram hologram : holograms.get(box).values()) {
-            hologram.teleport(box.getLocation().clone().add(0.5, (max * LINE_HEIGHT) + (box.getBlockHeight() + 0.1875), 0.5));
+            hologram.setPosition(box.getLocation().clone().add(0.5, (max * LINE_HEIGHT) + (box.getBlockHeight() + 0.1875), 0.5));
         }
 
     }
@@ -231,17 +236,17 @@ public class HolographicDisplaysImpl implements HologramImplementation, Listener
             if (holograms.get(box).containsKey(p.getUniqueId())) {
 
                 Hologram hologram = holograms.get(box).get(p.getUniqueId());
-                hologram.clearLines();
+                hologram.getLines().clear();
 
                 List<String> lines = hologramHandler.getLinesReward(p, box.getPlayerOpening(), reward);
 
-                hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + (box.getBlockHeight() + 0.1875), 0.5));
+                hologram.setPosition(box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + (box.getBlockHeight() + 0.1875), 0.5));
 
                 for (String line : lines) {
                     if(!line.contains("%reward_icon%"))
-                        hologram.appendTextLine(line);
+                        hologram.getLines().appendText(line);
                     else
-                        hologram.appendItemLine(reward.getIcon());
+                        hologram.getLines().appendItem(reward.getIcon());
                 }
 
             }
@@ -279,11 +284,11 @@ public class HolographicDisplaysImpl implements HologramImplementation, Listener
                     if (holograms.get(box).containsKey(p.getUniqueId())) {
 
                         Hologram hologram = holograms.get(box).get(p.getUniqueId());
-                        hologram.teleport(box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + (box.getBlockHeight() + 0.1875), 0.5));
+                        hologram.setPosition(box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + (box.getBlockHeight() + 0.1875), 0.5));
 
                         for (int i = 0; i < lines.size(); i++) {
                             if (!lines.get(i).equalsIgnoreCase("%reward_icon%")) {
-                                ((TextLine) hologram.getLine(i)).setText(lines.get(i));
+                                ((TextHologramLine) hologram.getLines().get(i)).setText(lines.get(i));
                             }
                         }
 

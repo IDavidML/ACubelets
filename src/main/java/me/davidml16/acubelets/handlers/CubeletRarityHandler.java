@@ -3,7 +3,6 @@ package me.davidml16.acubelets.handlers;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Rarity;
-import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;

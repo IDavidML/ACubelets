@@ -8,9 +8,8 @@ import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.Profile;
 import me.davidml16.acubelets.objects.loothistory.LootHistory;
 import me.davidml16.acubelets.objects.loothistory.RewardHistory;
+import me.davidml16.acubelets.utils.ItemStack64;
 import me.davidml16.acubelets.utils.Utils;
-import me.davidml16.acubelets.utils.XSeries.XItemStack;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -111,14 +110,18 @@ public class DatabaseHandler {
 		executeQuery("CREATE TABLE IF NOT EXISTS ac_players (`UUID` varchar(40) NOT NULL, `NAME` varchar(40), `LOOT_POINTS` integer(25), `ORDER_BY` varchar(10), `ANIMATION` varchar(25), PRIMARY KEY (`UUID`));");
 
 		try {
-			executeQueryError("CREATE TABLE IF NOT EXISTS ac_loothistory (`ID` INTEGER PRIMARY KEY AUTO_INCREMENT, `UUID` varchar(40) NOT NULL, `cubeletName` varchar(50) NOT NULL, `rewardID` varchar(50) NOT NULL, `rewardName` varchar(20) NOT NULL, `rewardIcon` LONGTEXT NOT NULL, `received` bigint NOT NULL DEFAULT 0);");
+			executeQueryError("CREATE TABLE IF NOT EXISTS ac_loothistory (`ID` INTEGER PRIMARY KEY AUTO_INCREMENT, `UUID` varchar(40) NOT NULL, `cubeletName` varchar(50) NOT NULL, `rewardID` varchar(50) NOT NULL, `rewardName` varchar(255) NOT NULL, `rewardIcon` LONGTEXT NOT NULL, `received` bigint NOT NULL DEFAULT 0);");
 		} catch (SQLException e) {
 			try {
-				executeQueryError("CREATE TABLE IF NOT EXISTS ac_loothistory (`ID` INTEGER PRIMARY KEY AUTOINCREMENT, `UUID` varchar(40) NOT NULL, `cubeletName` varchar(50) NOT NULL, `rewardID` varchar(50) NOT NULL, `rewardName` varchar(20) NOT NULL, `rewardIcon` LONGTEXT NOT NULL, `received` bigint NOT NULL DEFAULT 0);");
+				executeQueryError("CREATE TABLE IF NOT EXISTS ac_loothistory (`ID` INTEGER PRIMARY KEY AUTOINCREMENT, `UUID` varchar(40) NOT NULL, `cubeletName` varchar(50) NOT NULL, `rewardID` varchar(50) NOT NULL, `rewardName` varchar(255) NOT NULL, `rewardIcon` LONGTEXT NOT NULL, `received` bigint NOT NULL DEFAULT 0);");
 			} catch (SQLException throwables) {
 				throwables.printStackTrace();
 			}
 		}
+
+		try {
+			executeQueryError("ALTER TABLE ac_loothistory MODIFY rewardName VARCHAR(255)");
+		} catch (SQLException e) {}
 
 	}
 
@@ -574,39 +577,33 @@ public class DatabaseHandler {
 	}
 
 	public void addCubelets(UUID uuid, Collection<Cubelet> cubelets) {
-		if(XMaterial.supports(11)) {
-			Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
 
-				StringBuilder insertString = new StringBuilder();
-				for(Cubelet cubelet : cubelets) {
-					if(insertString.toString().equalsIgnoreCase("")) insertString.append("('").append(uuid.toString()).append("','").append(cubelet.getUuid()).append("','").append(cubelet.getType()).append("',").append(cubelet.getReceived()).append(",").append(cubelet.getExpire()).append(")");
-					else insertString.append(", ('").append(uuid.toString()).append("','").append(cubelet.getUuid()).append("','").append(cubelet.getType()).append("',").append(cubelet.getReceived()).append(",").append(cubelet.getExpire()).append(")");
-				}
-
-				PreparedStatement ps = null;
-				Connection connection = null;
-				try {
-					connection = databaseConnection.getConnection();
-					ps = connection.prepareStatement("INSERT INTO ac_cubelets (UUID,cubeletUUID,type,received,expire) VALUES " + insertString.toString());
-					ps.executeUpdate();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				} finally {
-					if (ps != null) {
-						try {
-							ps.close();
-						} catch (SQLException throwables) {
-							throwables.printStackTrace();
-						}
-					}
-					databaseConnection.close(connection);
-				}
-			});
-		} else {
-			for (Cubelet cubelet : cubelets) {
-				addCubelet(uuid, cubelet.getUuid(), cubelet.getType(), cubelet.getReceived(), cubelet.getExpire());
+			StringBuilder insertString = new StringBuilder();
+			for(Cubelet cubelet : cubelets) {
+				if(insertString.toString().equalsIgnoreCase("")) insertString.append("('").append(uuid.toString()).append("','").append(cubelet.getUuid()).append("','").append(cubelet.getType()).append("',").append(cubelet.getReceived()).append(",").append(cubelet.getExpire()).append(")");
+				else insertString.append(", ('").append(uuid.toString()).append("','").append(cubelet.getUuid()).append("','").append(cubelet.getType()).append("',").append(cubelet.getReceived()).append(",").append(cubelet.getExpire()).append(")");
 			}
-		}
+
+			PreparedStatement ps = null;
+			Connection connection = null;
+			try {
+				connection = databaseConnection.getConnection();
+				ps = connection.prepareStatement("INSERT INTO ac_cubelets (UUID,cubeletUUID,type,received,expire) VALUES " + insertString.toString());
+				ps.executeUpdate();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				if (ps != null) {
+					try {
+						ps.close();
+					} catch (SQLException throwables) {
+						throwables.printStackTrace();
+					}
+				}
+				databaseConnection.close(connection);
+			}
+		});
 	}
 
 	public void removeCubelet(UUID uuid, UUID cubeletUUID) {
@@ -936,7 +933,7 @@ public class DatabaseHandler {
 
 			try {
 
-				String iconBase64 = XItemStack.itemStackToBase64(lootHistory.getRewardHistory().getItemStack());
+				String iconBase64 = ItemStack64.itemStackToBase64(lootHistory.getRewardHistory().getItemStack());
 
 				String value =
 						"('"

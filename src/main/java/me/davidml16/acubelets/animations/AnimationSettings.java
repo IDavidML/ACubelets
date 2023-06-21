@@ -1,12 +1,8 @@
 package me.davidml16.acubelets.animations;
 
-import me.davidml16.acubelets.utils.ItemBuilder;
+import com.cryptomorin.xseries.XMaterial;
 import me.davidml16.acubelets.utils.Utils;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
-import org.bukkit.ChatColor;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.Comparator;
 
 public class AnimationSettings implements Comparable<AnimationSettings> {
 

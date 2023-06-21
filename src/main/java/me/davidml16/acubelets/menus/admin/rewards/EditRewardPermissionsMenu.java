@@ -1,5 +1,6 @@
 package me.davidml16.acubelets.menus.admin.rewards;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.rewards.EditPermissionObjectRewardConversation;
 import me.davidml16.acubelets.conversation.rewards.PermissionObjectRewardConversation;
@@ -9,7 +10,6 @@ import me.davidml16.acubelets.objects.rewards.PermissionObject;
 import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.Utils;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

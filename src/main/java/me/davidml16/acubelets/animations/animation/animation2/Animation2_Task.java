@@ -4,7 +4,8 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
-import org.bukkit.*;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 
 public class Animation2_Task extends Animation {

@@ -5,28 +5,30 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.wrappers.BlockPosition;
+import com.cryptomorin.xseries.XMaterial;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
 import me.davidml16.acubelets.animations.FakeBlock;
-import me.davidml16.acubelets.utils.*;
-
-
+import me.davidml16.acubelets.utils.LocationUtils;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
-import org.bukkit.*;
+import me.davidml16.acubelets.utils.Sounds;
+import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.*;
-import org.bukkit.material.MaterialData;
+import org.bukkit.entity.Enderman;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.List;
 
 public class Animation20_Task extends Animation {
 
@@ -48,12 +50,9 @@ public class Animation20_Task extends Animation {
 
 			Sounds.playSound(getCubeletBox().getLocation(), Sounds.MySound.ENDERMAN_TELEPORT, 0.5F, 2F);
 
-			if(XMaterial.supports(9)) enderman.setCollidable(false);
+			enderman.setCollidable(false);
 
-			if(XMaterial.supports(13))
-				((Enderman)enderman).setCarriedBlock(Bukkit.createBlockData(XMaterial.CHEST.parseMaterial()));
-			else
-				((Enderman)enderman).setCarriedMaterial(new MaterialData(XMaterial.CHEST.parseMaterial()));
+			((Enderman)enderman).setCarriedBlock(Bukkit.createBlockData(XMaterial.CHEST.parseMaterial()));
 
 			enderman.setRemoveWhenFarAway(false);
 			enderman.setMetadata("ACUBELETS", new FixedMetadataValue(getMain(), Boolean.TRUE));
@@ -74,10 +73,7 @@ public class Animation20_Task extends Animation {
 		if(time == 70) {
 
 			if(enderman != null)
-				if(XMaterial.supports(13))
 					((Enderman)enderman).setCarriedBlock(Bukkit.createBlockData(XMaterial.AIR.parseMaterial()));
-				else
-					((Enderman)enderman).setCarriedMaterial(new MaterialData(XMaterial.AIR.parseMaterial()));
 
 			Location eye = getBoxLocation().clone().add(0.0D, 0.4D, 0.0D);
 			for (Location location2 : LocationUtils.getCircle(getBoxLocation().clone().add(0, 0.75,0), 0.25D, 50)) {
@@ -187,14 +183,10 @@ public class Animation20_Task extends Animation {
 		int distanceSquared = 64 * 64;
 		Location loc = block.getLocation();
 		ProtocolManager manager = ProtocolLibrary.getProtocolManager();
-		try {
-			for (Player player : block.getWorld().getPlayers()) {
-				if (player.getLocation().distanceSquared(loc) < distanceSquared) {
-					manager.sendServerPacket(player, libPacket);
-				}
+		for (Player player : block.getWorld().getPlayers()) {
+			if (player.getLocation().distanceSquared(loc) < distanceSquared) {
+				manager.sendServerPacket(player, libPacket);
 			}
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
 		}
 	}
 	

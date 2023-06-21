@@ -1,19 +1,10 @@
 package me.davidml16.acubelets.animations.animation.animation19;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.davidml16.acubelets.animations.AnimationBlocks;
 import me.davidml16.acubelets.animations.FakeBlock;
-import me.davidml16.acubelets.utils.CuboidRegion;
-
-
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Location;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class Animation19_Blocks extends AnimationBlocks {
 

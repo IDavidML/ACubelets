@@ -197,3 +197,12 @@ animations:
     NeedPermission: true
     Icon:
       material: ENDER_PEARL
+
+  animation_21:
+    Enabled: true
+    DisplayName: 'Animation 21'
+    OutlineParticles: true
+    FloorParticles: true
+    NeedPermission: true
+    Icon:
+      material: PURPUR_BLOCK

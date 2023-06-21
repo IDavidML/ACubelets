@@ -1,14 +1,14 @@
 package me.davidml16.acubelets.animations.animation.animation18;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
-
-import me.davidml16.acubelets.utils.*;
+import me.davidml16.acubelets.utils.LocationUtils;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
+import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -17,7 +17,9 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class Animation18_Task extends Animation {
 

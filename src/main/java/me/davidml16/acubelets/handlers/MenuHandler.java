@@ -1,9 +1,9 @@
 package me.davidml16.acubelets.handlers;
 
+import com.cryptomorin.xseries.XItemStack;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.Menu;
-import me.davidml16.acubelets.utils.XSeries.XItemStack;
-import org.bukkit.Bukkit;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -32,7 +32,7 @@ public class MenuHandler {
         this.rewardPreviewClickType = ClickType.SHIFT_LEFT;
 
         this.menuDecorationEnabled = main.getConfig().getBoolean("MenuDecoration.Enabled");
-        this.menuDecorationItem = XItemStack.deserializeItem(main.getConfig(), "MenuDecoration.Item");
+        this.menuDecorationItem = XItemStack.deserialize(Utils.getConfigurationSection(main.getConfig(), "MenuDecoration.Item"));
 
     }
 

@@ -1,12 +1,11 @@
 package me.davidml16.acubelets.animations.animation.animation11;
 
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.utils.LocationUtils;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import me.davidml16.acubelets.utils.Sounds;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.inventory.ItemStack;
@@ -31,7 +30,7 @@ public class Animation11_Planet extends BukkitRunnable {
 
         ArmorStand armorStand = center.getWorld().spawn(locations.get(step), ArmorStand.class);
         NBTEditor.set( armorStand, ( byte ) 1, "Silent" );
-        if(XMaterial.supports(10)) armorStand.setSilent(true);
+        armorStand.setSilent(true);
         armorStand.setVisible(false);
         armorStand.setGravity(false);
         armorStand.setHelmet(planet);

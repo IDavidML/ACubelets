@@ -1,12 +1,11 @@
 package me.davidml16.acubelets.events;
 
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.interfaces.CubeletDateComparator;
 import me.davidml16.acubelets.menus.player.CubeletsMenu;
 import me.davidml16.acubelets.menus.player.rewards.RewardsPreviewMenu;
 import me.davidml16.acubelets.objects.*;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
-import me.davidml16.acubelets.utils.VersionUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
@@ -15,7 +14,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerArmorStandManipulateEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
@@ -56,9 +54,7 @@ public class Event_Interact implements Listener {
 
                     e.setCancelled(true);
 
-                    if(!VersionUtil.isOneEight()) {
-                        if (e.getHand() != EquipmentSlot.HAND) return;
-                    }
+                    if (e.getHand() != EquipmentSlot.HAND) return;
 
                     CubeletMachine box = main.getCubeletBoxHandler().getBoxByLocation(e.getClickedBlock().getLocation());
 
@@ -123,9 +119,7 @@ public class Event_Interact implements Listener {
 
                     e.setCancelled(true);
 
-                    if(!VersionUtil.isOneEight()) {
-                        if (e.getHand() != EquipmentSlot.HAND) return;
-                    }
+                    if (e.getHand() != EquipmentSlot.HAND) return;
 
                     String typeID = NBTEditor.getString(item, "keyType");
 
@@ -135,7 +129,7 @@ public class Event_Interact implements Listener {
 
                             RewardsPreviewMenu rewardsPreviewMenu = new RewardsPreviewMenu(Main.get(), player);
                             rewardsPreviewMenu.setAttribute(Menu.AttrType.CUSTOM_ID_ATTR, typeID);
-                            rewardsPreviewMenu.setAttribute(Menu.AttrType.OPENED_EXTERNALLY_ATTR, new Boolean(true));
+                            rewardsPreviewMenu.setAttribute(Menu.AttrType.OPENED_EXTERNALLY_ATTR, Boolean.TRUE);
                             rewardsPreviewMenu.open();
 
                         }

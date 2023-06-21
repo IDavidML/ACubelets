@@ -1,16 +1,13 @@
 package me.davidml16.acubelets.utils;
 
-import me.davidml16.acubelets.utils.XSeries.XItemStack;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.MemorySection;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -110,6 +107,14 @@ public class Utils {
 
     public static ColorSet<Integer, Integer, Integer> getRGBbyColor(ChatColor color) {
         return colorMap.get(color);
+    }
+
+    public static ConfigurationSection getConfigurationSection(Configuration config, String path) {
+        if(!config.isConfigurationSection(path)) {
+            config.createSection(path);
+        }
+        ConfigurationSection section = config.getConfigurationSection(path);
+        return section;
     }
 
 }

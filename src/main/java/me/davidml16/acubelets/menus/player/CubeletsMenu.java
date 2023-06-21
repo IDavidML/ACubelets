@@ -1,5 +1,6 @@
 package me.davidml16.acubelets.menus.player;
 
+import com.cryptomorin.xseries.XMaterial;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.interfaces.CubeletDateComparator;
@@ -8,9 +9,11 @@ import me.davidml16.acubelets.menus.player.crafting.CraftingMenu;
 import me.davidml16.acubelets.menus.player.gifts.GiftPlayerMenu;
 import me.davidml16.acubelets.menus.player.rewards.RewardsPreviewMenu;
 import me.davidml16.acubelets.objects.*;
-import me.davidml16.acubelets.utils.*;
+import me.davidml16.acubelets.utils.ItemBuilder;
+import me.davidml16.acubelets.utils.MessageUtils;
+import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.TimeAPI.TimeUtils;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -302,7 +305,7 @@ public class CubeletsMenu extends Menu {
 
                 case "loothistory":
                     LootHistoryMenu lootHistoryMenu = new LootHistoryMenu(getMain(), player);
-                    lootHistoryMenu.setAttribute(AttrType.OPENED_EXTERNALLY_ATTR, new Boolean(false));
+                    lootHistoryMenu.setAttribute(AttrType.OPENED_EXTERNALLY_ATTR, Boolean.FALSE);
                     lootHistoryMenu.open();
                     break;
 
@@ -372,7 +375,7 @@ public class CubeletsMenu extends Menu {
                     if(getMain().isPreviewEnabled()) {
                         RewardsPreviewMenu rewardsPreviewMenu = new RewardsPreviewMenu(Main.get(), player);
                         rewardsPreviewMenu.setAttribute(Menu.AttrType.CUSTOM_ID_ATTR, typeID);
-                        rewardsPreviewMenu.setAttribute(Menu.AttrType.OPENED_EXTERNALLY_ATTR, new Boolean(false));
+                        rewardsPreviewMenu.setAttribute(Menu.AttrType.OPENED_EXTERNALLY_ATTR, Boolean.FALSE);
                         rewardsPreviewMenu.open();
                         return;
                     }

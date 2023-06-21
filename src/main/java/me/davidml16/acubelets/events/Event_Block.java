@@ -1,7 +1,7 @@
 package me.davidml16.acubelets.events;
 
-import me.davidml16.acubelets.Main;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
+import me.davidml16.acubelets.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

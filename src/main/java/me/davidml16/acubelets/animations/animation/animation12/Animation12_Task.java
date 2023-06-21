@@ -1,19 +1,20 @@
 package me.davidml16.acubelets.animations.animation.animation12;
 
+import com.cryptomorin.xseries.XMaterial;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
-
-import me.davidml16.acubelets.utils.*;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
+import me.davidml16.acubelets.utils.Sounds;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
-import org.bukkit.entity.*;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.Vector;
@@ -55,7 +56,7 @@ public class Animation12_Task extends Animation {
 
 			witch = (LivingEntity) getCubeletBox().getLocation().getWorld().spawnEntity(getLocationRotation(0), EntityType.WITCH);
 
-			if (XMaterial.supports(9)) witch.setCollidable(false);
+			witch.setCollidable(false);
 			witch.setRemoveWhenFarAway(false);
 			witch.setMetadata("ACUBELETS", new FixedMetadataValue(getMain(), Boolean.TRUE));
 

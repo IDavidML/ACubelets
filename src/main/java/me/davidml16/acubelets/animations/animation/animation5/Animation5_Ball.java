@@ -4,17 +4,11 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.Sounds;
-import me.davidml16.acubelets.utils.VersionUtil;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Location;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 public class Animation5_Ball extends BukkitRunnable {
 
@@ -25,7 +19,7 @@ public class Animation5_Ball extends BukkitRunnable {
         this.spawnLoc = spawnLoc;
 
         ArmorStand armorStand = spawnLoc.getWorld().spawn(spawnLoc.clone().add(0, -1.5, 0), ArmorStand.class);
-        if(XMaterial.supports(10)) armorStand.setSilent(true);
+        armorStand.setSilent(true);
         armorStand.setVisible(false);
         armorStand.setGravity(true);
         armorStand.setHelmet(SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNWE1YWIwNWVhMjU0YzMyZTNjNDhmM2ZkY2Y5ZmQ5ZDc3ZDNjYmEwNGU2YjVlYzJlNjhiM2NiZGNmYWMzZmQifX19"));

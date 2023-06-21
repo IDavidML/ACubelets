@@ -1,6 +1,5 @@
 package me.davidml16.acubelets.interfaces;
 
-import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.loothistory.LootHistory;
 
 import java.util.Comparator;

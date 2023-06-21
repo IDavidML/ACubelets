@@ -1,15 +1,14 @@
 package me.davidml16.acubelets.menus.player;
 
+import com.cryptomorin.xseries.XMaterial;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.AnimationHandler;
 import me.davidml16.acubelets.animations.AnimationSettings;
-import me.davidml16.acubelets.menus.player.CubeletsMenu;
 import me.davidml16.acubelets.objects.GUILayout;
 import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.objects.Profile;
-import me.davidml16.acubelets.utils.*;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
+import me.davidml16.acubelets.utils.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -17,7 +16,9 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class PlayerAnimationMenu extends Menu {
 
@@ -170,7 +171,9 @@ public class PlayerAnimationMenu extends Menu {
     }
 
     @Override
-    public void OnMenuClosed() { }
+    public void OnMenuClosed() {
+        getMain().getDatabaseHandler().setPlayerAnimation(getOwner().getUniqueId(), getMain().getPlayerDataHandler().getData(getOwner()).getAnimation());
+    }
 
     private ItemStack getAnimationItem(Player player, GUILayout guiLayout, String animation) {
 

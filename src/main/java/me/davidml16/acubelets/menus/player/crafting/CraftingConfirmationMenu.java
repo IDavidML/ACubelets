@@ -1,5 +1,6 @@
 package me.davidml16.acubelets.menus.player.crafting;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.enums.CraftType;
 import me.davidml16.acubelets.menus.player.CubeletsMenu;
@@ -7,9 +8,8 @@ import me.davidml16.acubelets.objects.CraftIngredient;
 import me.davidml16.acubelets.objects.CraftParent;
 import me.davidml16.acubelets.objects.GUILayout;
 import me.davidml16.acubelets.objects.Menu;
-import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ItemBuilder;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -17,7 +17,8 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CraftingConfirmationMenu extends Menu {
 

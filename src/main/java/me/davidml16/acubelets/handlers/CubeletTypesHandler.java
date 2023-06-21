@@ -1,30 +1,24 @@
 package me.davidml16.acubelets.handlers;
 
+import com.cryptomorin.xseries.XItemStack;
+import com.cryptomorin.xseries.XMaterial;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.AnimationHandler;
-import me.davidml16.acubelets.api.CubeletReceivedEvent;
-import me.davidml16.acubelets.objects.Cubelet;
 import me.davidml16.acubelets.objects.CubeletType;
-import me.davidml16.acubelets.objects.Profile;
 import me.davidml16.acubelets.utils.ItemBuilder;
-import me.davidml16.acubelets.utils.Utils;
+import me.davidml16.acubelets.utils.ItemStack64;
 import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.TimeAPI.TimeAPI;
-import me.davidml16.acubelets.utils.XSeries.XItemStack;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
+import me.davidml16.acubelets.utils.Utils;
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
 
 public class CubeletTypesHandler {
 
@@ -185,10 +179,11 @@ public class CubeletTypesHandler {
                                 ))
                                 .toItemStack();
 
-                        if(!main.isSerializeBase64())
-                            XItemStack.serializeItem(key, config, "type.key");
-                        else
-                            config.set("type.key", XItemStack.itemStackToBase64(key));
+                        if(!main.isSerializeBase64()) {
+                            XItemStack.serialize(key, Utils.getConfigurationSection(config, "type.key"));
+                        } else {
+                            config.set("type.key", ItemStack64.itemStackToBase64(key));
+                        }
 
                     }
 
@@ -228,7 +223,7 @@ public class CubeletTypesHandler {
                         }
                     } else {
                         try {
-                            cubeletType.setIcon(new ItemBuilder(XItemStack.itemStackFromBase64(config.getString("type.icon.texture"))).setLore("").toItemStack());
+                            cubeletType.setIcon(new ItemBuilder(ItemStack64.itemStackFromBase64(config.getString("type.icon.texture"))).setLore("").toItemStack());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -266,10 +261,10 @@ public class CubeletTypesHandler {
 
                     ItemStack key = null;
                     if (config.get("type.key") instanceof MemorySection) {
-                        key = XItemStack.deserializeItem(config, "type.key");
+                        key = XItemStack.deserialize(Utils.getConfigurationSection(config, "type.key"));
                     } else {
                         try {
-                            key = XItemStack.itemStackFromBase64(config.getString("type.key"));
+                            key = ItemStack64.itemStackFromBase64(config.getString("type.key"));
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

@@ -2,7 +2,6 @@ package me.davidml16.acubelets.api;
 
 import me.davidml16.acubelets.objects.CubeletOpener;
 import me.davidml16.acubelets.objects.CubeletType;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 

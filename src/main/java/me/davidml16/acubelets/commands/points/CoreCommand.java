@@ -1,7 +1,10 @@
 package me.davidml16.acubelets.commands.points;
 
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.commands.points.subcommands.*;
+import me.davidml16.acubelets.commands.points.subcommands.ExecuteGive;
+import me.davidml16.acubelets.commands.points.subcommands.ExecuteInfo;
+import me.davidml16.acubelets.commands.points.subcommands.ExecuteRemove;
+import me.davidml16.acubelets.commands.points.subcommands.ExecuteSet;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

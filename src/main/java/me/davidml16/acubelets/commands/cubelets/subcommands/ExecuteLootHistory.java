@@ -22,7 +22,7 @@ public class ExecuteLootHistory {
         }
 
         LootHistoryMenu lootHistoryMenu = new LootHistoryMenu(main, (Player) sender);
-        lootHistoryMenu.setAttribute(Menu.AttrType.OPENED_EXTERNALLY_ATTR, new Boolean(true));
+        lootHistoryMenu.setAttribute(Menu.AttrType.OPENED_EXTERNALLY_ATTR, Boolean.TRUE);
         lootHistoryMenu.open();
 
         return true;

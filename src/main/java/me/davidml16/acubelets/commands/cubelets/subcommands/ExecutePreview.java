@@ -35,7 +35,7 @@ public class ExecutePreview {
 
         RewardsPreviewMenu rewardsPreviewMenu = new RewardsPreviewMenu(Main.get(), (Player) sender);
         rewardsPreviewMenu.setAttribute(Menu.AttrType.CUSTOM_ID_ATTR, id);
-        rewardsPreviewMenu.setAttribute(Menu.AttrType.OPENED_EXTERNALLY_ATTR, new Boolean(true));
+        rewardsPreviewMenu.setAttribute(Menu.AttrType.OPENED_EXTERNALLY_ATTR, Boolean.TRUE);
         rewardsPreviewMenu.open();
 
         return true;

@@ -1,15 +1,15 @@
 package me.davidml16.acubelets.menus.admin.rewards;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.conversation.rewards.CommandObjectRewardConversation;
 import me.davidml16.acubelets.conversation.rewards.EditCommandObjectRewardConversation;
+import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.objects.rewards.CommandObject;
-import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.Utils;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

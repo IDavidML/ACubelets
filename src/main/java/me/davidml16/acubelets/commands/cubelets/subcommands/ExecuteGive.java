@@ -2,7 +2,6 @@ package me.davidml16.acubelets.commands.cubelets.subcommands;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.api.CubeletsAPI;
-import me.davidml16.acubelets.objects.CubeletType;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;

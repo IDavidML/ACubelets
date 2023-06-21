@@ -1,8 +1,7 @@
 package me.davidml16.acubelets.objects.loothistory;
 
-import me.davidml16.acubelets.utils.ItemBuilder;
-import me.davidml16.acubelets.utils.XSeries.XItemStack;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
+import com.cryptomorin.xseries.XMaterial;
+import me.davidml16.acubelets.utils.ItemStack64;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
@@ -21,7 +20,7 @@ public class RewardHistory {
         this.name = name;
 
         try {
-            this.itemStack = XItemStack.itemStackFromBase64(itemBase64);
+            this.itemStack = ItemStack64.itemStackFromBase64(itemBase64);
         } catch (IOException e) {
             this.itemStack = XMaterial.BARREL.parseItem();
         }

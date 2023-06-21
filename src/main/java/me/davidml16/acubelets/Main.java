@@ -2,8 +2,7 @@ package me.davidml16.acubelets;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import com.gmail.filoghost.holographicdisplays.api.Hologram;
-import com.gmail.filoghost.holographicdisplays.api.HologramsAPI;
+import com.cryptomorin.xseries.XMaterial;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationHandler;
 import me.davidml16.acubelets.api.CubeletsAPI;
@@ -11,17 +10,15 @@ import me.davidml16.acubelets.api.PointsAPI;
 import me.davidml16.acubelets.database.DatabaseHandler;
 import me.davidml16.acubelets.events.*;
 import me.davidml16.acubelets.handlers.*;
-import me.davidml16.acubelets.handlers.PluginHandler;
 import me.davidml16.acubelets.holograms.HologramHandler;
 import me.davidml16.acubelets.holograms.HologramImplementation;
-import me.davidml16.acubelets.holograms.implementations.HolographicDisplaysImpl;
 import me.davidml16.acubelets.tasks.DataCacheTask;
 import me.davidml16.acubelets.tasks.DataSaveTask;
 import me.davidml16.acubelets.tasks.HologramTask;
 import me.davidml16.acubelets.tasks.LiveGuiTask;
-import me.davidml16.acubelets.utils.Utils;
 import me.davidml16.acubelets.utils.ConfigUpdater;
 import me.davidml16.acubelets.utils.FireworkUtil;
+import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.ConsoleCommandSender;
@@ -102,6 +99,13 @@ public class Main extends JavaPlugin {
             e.printStackTrace();
         }
         reloadConfig();
+
+        if (!XMaterial.supports(13)) {
+            getLogger().severe("***   Plugin only supports 1.13+ versions.");
+            getLogger().severe("***   Use the latest plugin version 2.1.8 where supports 1.8+.");
+            setEnabled(false);
+            return;
+        }
 
         if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
             getLogger().severe("*** ProtocolLib is not installed or not enabled. ***");

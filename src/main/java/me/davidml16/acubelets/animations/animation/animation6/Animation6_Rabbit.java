@@ -1,13 +1,15 @@
 package me.davidml16.acubelets.animations.animation.animation6;
 
-import me.davidml16.acubelets.Main;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
+import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import me.davidml16.acubelets.utils.Sounds;
-import me.davidml16.acubelets.utils.XSeries.XMaterial;
 import org.bukkit.Location;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Rabbit;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -35,7 +37,7 @@ public class Animation6_Rabbit extends BukkitRunnable {
 
         ((Rabbit) rabbit).setRabbitType(Rabbit.Type.values()[new Random().nextInt(Rabbit.Type.values().length - 1)]);
 
-        if(XMaterial.supports(9)) rabbit.setCollidable(false);
+        rabbit.setCollidable(false);
         rabbit.setRemoveWhenFarAway(false);
         rabbit.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
         rabbit.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 10, true, false));
