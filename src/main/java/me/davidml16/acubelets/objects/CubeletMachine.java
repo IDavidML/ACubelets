@@ -1,9 +1,13 @@
 package me.davidml16.acubelets.objects;
 
+import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.enums.Rotation;
+import me.davidml16.acubelets.machineIdleEffects.IdleEffect;
+import me.davidml16.acubelets.machineIdleEffects.IdleEffectType;
 import me.davidml16.acubelets.objects.rewards.Reward;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 
 public class CubeletMachine {
 
@@ -18,6 +22,8 @@ public class CubeletMachine {
 
     private CubeletBoxState state;
 
+    private IdleEffect idleEffect;
+
     private Reward lastReward;
     private int lastDuplicationPoints;
 
@@ -30,6 +36,7 @@ public class CubeletMachine {
         this.blockHeight = blockHeight;
         this.permanentBlockHeight = permanentBlockHeight;
         this.rotation = rotation;
+        this.idleEffect = new IdleEffect(Main.get(), this, IdleEffectType.NONE, Particle.FLAME);
     }
 
     public Location getLocation() {
@@ -71,7 +78,15 @@ public class CubeletMachine {
     public Rotation getRotation() { return rotation; }
 
     public void setRotation(Rotation rotation) { this.rotation = rotation; }
-    
+
+    public IdleEffect getIdleEffect() {
+        return idleEffect;
+    }
+
+    public void setIdleEffect(IdleEffect idleEffect) {
+        this.idleEffect = idleEffect;
+    }
+
     public boolean isWaiting() { return this.state == CubeletBoxState.EMPTY; }
 
     @Override

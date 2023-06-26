@@ -98,6 +98,8 @@ public abstract class Animation {
 
         this.cubeletMachine.setState(CubeletBoxState.ANIMATION);
 
+        cubeletMachine.getIdleEffect().getIdleEffectAnimation().stop();
+
         this.animationId = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(main, () -> {
 
             onTick(animationTick);
@@ -152,6 +154,7 @@ public abstract class Animation {
         cubeletMachine.setPlayerOpening(null);
         cubeletMachine.setLastReward(null);
         cubeletMachine.setLastDuplicationPoints(0);
+        cubeletMachine.getIdleEffect().getIdleEffectAnimation().start();
         main.getHologramImplementation().reloadHologram(cubeletMachine);
 
         onStop();

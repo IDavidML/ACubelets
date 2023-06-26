@@ -56,7 +56,7 @@ animations:
 
   animation_5:
     Enabled: true
-    DisplayName: 'Animation 5 (Summer)'
+    DisplayName: 'Animation 5'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
@@ -65,7 +65,7 @@ animations:
 
   animation_6:
     Enabled: true
-    DisplayName: 'Animation 6 (Easter)'
+    DisplayName: 'Animation 6'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
@@ -74,7 +74,7 @@ animations:
 
   animation_7:
     Enabled: true
-    DisplayName: 'Animation 7 (Halloween)'
+    DisplayName: 'Animation 7'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
@@ -83,7 +83,7 @@ animations:
 
   animation_8:
     Enabled: true
-    DisplayName: 'Animation 8 (Christmas)'
+    DisplayName: 'Animation 8'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
@@ -110,7 +110,7 @@ animations:
 
   animation_11:
     Enabled: true
-    DisplayName: 'Animation 11 (Galaxy)'
+    DisplayName: 'Animation 11'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
@@ -201,6 +201,15 @@ animations:
   animation_21:
     Enabled: true
     DisplayName: 'Animation 21'
+    OutlineParticles: true
+    FloorParticles: true
+    NeedPermission: true
+    Icon:
+      material: HEART_OF_THE_SEA
+
+  animation_22:
+    Enabled: true
+    DisplayName: 'Animation 22'
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true

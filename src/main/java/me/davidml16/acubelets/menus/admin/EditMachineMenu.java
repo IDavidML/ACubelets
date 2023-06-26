@@ -40,26 +40,22 @@ public class EditMachineMenu extends Menu {
         ItemStack downArrow = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzkxMmQ0NWIxYzc4Y2MyMjQ1MjcyM2VlNjZiYTJkMTU3NzdjYzI4ODU2OGQ2YzFiNjJhNTQ1YjI5YzcxODcifX19");
         ItemStack remove = SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGVkNjc5OTE0OTc4OGI5ZTkwMTY4MTFkM2EzZDBlZDFmNTUyNTMwZDY3Zjk4Njk0NTAzMmQ2ZTQzOWZhODk5ZCJ9fX0=");
 
-        gui.setItem(10, new ItemBuilder(upArrow).setName(Utils.translate("&aIncrease height")).setLore(
+        gui.setItem(10, new ItemBuilder(XMaterial.ANVIL.parseMaterial()).setName(Utils.translate("&aChange hologram height")).setLore(
                 "",
-                Utils.translate(" &7Actual height: &6" + String.format("%.3f", cubeletMachine.getBlockHeight())),
-                Utils.translate(" &7New height: &6" + String.format("%.3f", (cubeletMachine.getBlockHeight() + 0.015))),
+                Utils.translate(" &7Height: &6" + String.format("%.3f", cubeletMachine.getBlockHeight())),
                 "",
-                Utils.translate("&eClick to increase height")
+                Utils.translate("&eMiddle Click » &aReset height"),
+                Utils.translate("&eShift Click » &aSet default height to actual"),
+                "",
+                Utils.translate("&eLeft Click » &aIncrease height"),
+                Utils.translate("&eRight Click » &aDecrease height")
         ).toItemStack());
-        gui.setItem(11, new ItemBuilder(XMaterial.ANVIL.parseMaterial()).setName(Utils.translate("&aReset height to default")).setLore(
+        gui.setItem(12, new ItemBuilder(XMaterial.HEART_OF_THE_SEA.parseMaterial()).setName(Utils.translate("&aModify idle animation")).setLore(
                 "",
-                Utils.translate(" &7New height: &6" + String.format("%.3f", cubeletMachine.getPermanentBlockHeight())),
+                Utils.translate(" &7Animation: &6" + cubeletMachine.getIdleEffect().getIdleEffectType().name()),
+                Utils.translate(" &7Particle: &6" + cubeletMachine.getIdleEffect().getParticle().name()),
                 "",
-                Utils.translate("&eClick » &aReset height"),
-                Utils.translate("&eShift-Click » &aSet default height to actual")
-        ).toItemStack());
-        gui.setItem(12, new ItemBuilder(downArrow).setName(Utils.translate("&aDecrease height")).setLore(
-                "",
-                Utils.translate(" &7Actual height: &6" + String.format("%.3f", cubeletMachine.getBlockHeight())),
-                Utils.translate(" &7New height: &6" + String.format("%.3f", (cubeletMachine.getBlockHeight() - 0.015))),
-                "",
-                Utils.translate("&eClick to decrease height")
+                Utils.translate("&cComing soon...")
         ).toItemStack());
         gui.setItem(14, new ItemBuilder(XMaterial.COMPASS.parseItem()).setName(Utils.translate("&aChange direction")).setLore(
                 "",
@@ -103,16 +99,25 @@ public class EditMachineMenu extends Menu {
 
         if(slot == 10) {
 
-            cubeletMachine.setBlockHeight(cubeletMachine.getBlockHeight() + 0.015);
-            getMain().getHologramImplementation().moveHologram(cubeletMachine);
+            if(event.getClick() == ClickType.LEFT) {
 
-            playSound(SoundType.CLICK);
+                cubeletMachine.setBlockHeight(cubeletMachine.getBlockHeight() + 0.015);
+                getMain().getHologramImplementation().moveHologram(cubeletMachine);
 
-            reloadMyMenu();
+                playSound(SoundType.CLICK);
 
-        } else if(slot == 11) {
+                reloadMyMenu();
 
-            if(event.getClick() == ClickType.LEFT || event.getClick() == ClickType.RIGHT) {
+            } else if(event.getClick() == ClickType.RIGHT) {
+
+                cubeletMachine.setBlockHeight(cubeletMachine.getBlockHeight() - 0.015);
+                getMain().getHologramImplementation().moveHologram(cubeletMachine);
+
+                playSound(SoundType.CLICK);
+
+                reloadMyMenu();
+
+            } else if(event.getClick() == ClickType.MIDDLE) {
 
                 cubeletMachine.setBlockHeight(cubeletMachine.getPermanentBlockHeight());
 
@@ -135,12 +140,7 @@ public class EditMachineMenu extends Menu {
 
         } else if(slot == 12) {
 
-            cubeletMachine.setBlockHeight(cubeletMachine.getBlockHeight() - 0.015);
-            getMain().getHologramImplementation().moveHologram(cubeletMachine);
 
-            playSound(SoundType.CLICK);
-
-            reloadMyMenu();
 
         } else if(slot == 14) {
 

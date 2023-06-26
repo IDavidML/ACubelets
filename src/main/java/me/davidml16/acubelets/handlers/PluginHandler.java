@@ -2,9 +2,12 @@ package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
+import me.davidml16.acubelets.machineIdleEffects.IdleEffect;
+import me.davidml16.acubelets.objects.CubeletMachine;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 
@@ -28,6 +31,10 @@ public class PluginHandler {
             task.stop();
         }
         main.getAnimationHandler().getTasks().clear();
+
+        for(CubeletMachine cubeletMachine : main.getCubeletBoxHandler().getBoxes().values()) {
+            cubeletMachine.getIdleEffect().stop();
+        }
 
         for(Entity entity : main.getAnimationHandler().getEntities()) {
             if(entity == null || entity.isDead()) continue;
@@ -97,6 +104,10 @@ public class PluginHandler {
 
         if(main.isLiveGuiUpdates())
             main.getLiveGuiTask().start();
+
+        for(CubeletMachine cubeletMachine : main.getCubeletBoxHandler().getBoxes().values()) {
+            cubeletMachine.getIdleEffect().init();
+        }
     }
 
 }

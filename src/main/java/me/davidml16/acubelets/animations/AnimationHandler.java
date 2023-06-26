@@ -44,7 +44,7 @@ public class AnimationHandler {
                 XMaterial.CAULDRON.parseItem(), XMaterial.PRISMARINE_SHARD.parseItem(), XMaterial.POPPY.parseItem(),
                 XMaterial.BLAZE_POWDER.parseItem(), XMaterial.PINK_WOOL.parseItem(), XMaterial.SNOWBALL.parseItem(),
                 XMaterial.DIAMOND.parseItem(), XMaterial.ANVIL.parseItem(), XMaterial.ENDER_PEARL.parseItem(),
-                XMaterial.PURPUR_BLOCK.parseItem()
+                XMaterial.HEART_OF_THE_SEA.parseItem(), XMaterial.PURPUR_BLOCK.parseItem()
         );
 
     }
@@ -79,7 +79,7 @@ public class AnimationHandler {
 
         this.animations.clear();
 
-        for(int index = 0; index < ANIMATION_COUNT; index++) {
+        for(int index = 0; index <= ANIMATION_COUNT; index++) {
 
             AnimationSettings animation = new AnimationSettings("animation" + index);
 

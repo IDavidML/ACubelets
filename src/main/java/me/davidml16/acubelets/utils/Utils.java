@@ -110,10 +110,10 @@ public class Utils {
     }
 
     public static ConfigurationSection getConfigurationSection(Configuration config, String path) {
-        if(!config.isConfigurationSection(path)) {
-            config.createSection(path);
-        }
         ConfigurationSection section = config.getConfigurationSection(path);
+
+        if(section == null) section = config.createSection(path);
+
         return section;
     }
 
