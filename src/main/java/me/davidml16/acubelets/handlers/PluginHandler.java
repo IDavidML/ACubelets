@@ -2,7 +2,6 @@ package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
-import me.davidml16.acubelets.machineIdleEffects.IdleEffect;
 import me.davidml16.acubelets.objects.CubeletMachine;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
@@ -31,10 +30,6 @@ public class PluginHandler {
             task.stop();
         }
         main.getAnimationHandler().getTasks().clear();
-
-        for(CubeletMachine cubeletMachine : main.getCubeletBoxHandler().getBoxes().values()) {
-            cubeletMachine.getIdleEffect().stop();
-        }
 
         for(Entity entity : main.getAnimationHandler().getEntities()) {
             if(entity == null || entity.isDead()) continue;
@@ -82,6 +77,7 @@ public class PluginHandler {
 
         main.getHologramTask().stop();
         main.getLiveGuiTask().stop();
+        main.getMachineEffectsTask().stop();
 
         main.getHologramImplementation().removeHolograms();
         main.getLanguageHandler().pushMessages();
@@ -101,13 +97,10 @@ public class PluginHandler {
         main.getHologramImplementation().loadHolograms();
 
         main.getHologramTask().start();
+        main.getMachineEffectsTask().start();
 
         if(main.isLiveGuiUpdates())
             main.getLiveGuiTask().start();
-
-        for(CubeletMachine cubeletMachine : main.getCubeletBoxHandler().getBoxes().values()) {
-            cubeletMachine.getIdleEffect().init();
-        }
     }
 
 }

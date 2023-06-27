@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.EntityBlockFormEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class Event_Block implements Listener {
@@ -35,6 +36,13 @@ public class Event_Block implements Listener {
 
         Bukkit.getScheduler().runTaskLater(main, () -> player.updateInventory(), 20L);
 
+    }
+
+    @EventHandler
+    public void onEntityBlockForm(EntityBlockFormEvent paramEntityBlockFormEvent) {
+        if (paramEntityBlockFormEvent.getEntity().hasMetadata("ACUBELETS")) {
+            paramEntityBlockFormEvent.setCancelled(true);
+        }
     }
 
 }

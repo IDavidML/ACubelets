@@ -1,7 +1,12 @@
 package me.davidml16.acubelets.utils;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.entity.Entity;
+import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,37 +25,87 @@ public class LocationUtils {
         return locations;
     }
 
-    public static List<Block> getSphere(Location location, int radius) {
-        List<Block> blocks = new ArrayList<Block>();
-        int X = location.getBlockX();
-        int Y = location.getBlockY();
-        int Z = location.getBlockZ();
-        int radiusSquared = radius * radius;
-        for (int x = X - radius; x <= X + radius; x++) {
-            for (int y = Y - radius; y <= Y + radius; y++) {
-                for (int z = Z - radius; z <= Z + radius; z++) {
-                    if ((X - x) * (X - x) + (Z - z) * (Z - z) <= radiusSquared) {
-                        blocks.add(location.getWorld().getBlockAt(x, y, z));
-                    }
-                }
-            }
-        }
-        return blocks;
+    @NotNull
+    public static String getWorldName(@NotNull Location location) {
+        World world = location.getWorld();
+        return world == null ? "null" : world.getName();
     }
 
-    public static List<Block> getCube(Location location, int radius) {
-        List<Block> blocks = new ArrayList<Block>();
-        int X = location.getBlockX() - radius / 2;
-        int Y = location.getBlockY() - radius / 2;
-        int Z = location.getBlockZ() - radius / 2;
-        for (int x = X; x < X + radius; x++) {
-            for (int y = Y; y < Y + radius; y++) {
-                for (int z = Z; z < Z + radius; z++) {
-                    blocks.add(location.getWorld().getBlockAt(x, y, z));
-                }
-            }
+    @NotNull
+    public static Location getFirstGroundBlock(@NotNull Location loc) {
+        float yaw = loc.getYaw();
+        float pitch = loc.getPitch();
+
+        Block under = loc.getBlock();
+        while ((under.isEmpty() || !under.getType().isSolid()) && under.getY() > 0) {
+            under = under.getRelative(BlockFace.DOWN);
         }
-        return blocks;
+
+        loc = under.getRelative(BlockFace.UP).getLocation();
+        loc.setYaw(yaw);
+        loc.setPitch(pitch);
+        return loc;
+    }
+
+    @NotNull
+    public static Location getCenter(@NotNull Location location) {
+        return getCenter(location, true);
+    }
+
+    @NotNull
+    public static Location getCenter(@NotNull Location location, boolean doVertical) {
+        float yaw = location.getYaw();
+        float pitch = location.getPitch();
+
+        double x = getRelativeCoord(location.getBlockX());
+        double y = doVertical ? getRelativeCoord(location.getBlockY()) : location.getBlockY();
+        double z = getRelativeCoord(location.getBlockZ());
+
+        location = new Location(location.getWorld(), x, y, z);
+        location.setYaw(yaw);
+        location.setPitch(pitch);
+        return location;
+    }
+
+    private static double getRelativeCoord(double cord) {
+        return cord < 0 ? cord + 0.5 : cord + 0.5;
+    }
+
+    @NotNull
+    public static Location getPointOnCircle(@NotNull Location loc, double n, double n2, double n3) {
+        return getPointOnCircle(loc, true, n, n2, n3);
+    }
+
+    @NotNull
+    public static Location getPointOnCircle(@NotNull Location loc, boolean doCopy, double n, double n2, double n3) {
+        return (doCopy ? loc.clone() : loc).add(Math.cos(n) * n2, n3, Math.sin(n) * n2);
+    }
+
+    public static BlockFace getDirection(@NotNull Entity entity) {
+        float yaw = Math.round(entity.getLocation().getYaw() / 90F);
+
+        if ((yaw == -4.0F) || (yaw == 0.0F) || (yaw == 4.0F)) {
+            return BlockFace.SOUTH;
+        }
+        if ((yaw == -1.0F) || (yaw == 3.0F)) {
+            return BlockFace.EAST;
+        }
+        if ((yaw == -2.0F) || (yaw == 2.0F)) {
+            return BlockFace.NORTH;
+        }
+        if ((yaw == -3.0F) || (yaw == 1.0F)) {
+            return BlockFace.WEST;
+        }
+        return null;
+    }
+
+    @NotNull
+    public static Vector getDirectionTo(@NotNull Location from, @NotNull Location to) {
+        Location origin = from.clone();
+        Vector target = to.clone().toVector();
+        origin.setDirection(target.subtract(origin.toVector()));
+
+        return origin.getDirection();
     }
 
 }

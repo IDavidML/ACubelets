@@ -2,10 +2,12 @@ package me.davidml16.acubelets.menus.admin;
 
 import com.cryptomorin.xseries.XMaterial;
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.effects.SimpleParticle;
 import me.davidml16.acubelets.enums.Rotation;
 import me.davidml16.acubelets.objects.CubeletMachine;
 import me.davidml16.acubelets.objects.GUILayout;
 import me.davidml16.acubelets.objects.Menu;
+import me.davidml16.acubelets.utils.CollectionUtils;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.Utils;
@@ -52,10 +54,11 @@ public class EditMachineMenu extends Menu {
         ).toItemStack());
         gui.setItem(12, new ItemBuilder(XMaterial.HEART_OF_THE_SEA.parseMaterial()).setName(Utils.translate("&aModify idle animation")).setLore(
                 "",
-                Utils.translate(" &7Animation: &6" + cubeletMachine.getIdleEffect().getIdleEffectType().name()),
-                Utils.translate(" &7Particle: &6" + cubeletMachine.getIdleEffect().getParticle().name()),
+                Utils.translate(" &7Animation: &6" + cubeletMachine.getBlockEffectModel().name()),
+                Utils.translate(" &7Particle: &6" + cubeletMachine.getBlockEffectParticle().getParticle().name()),
                 "",
-                Utils.translate("&cComing soon...")
+                Utils.translate("&eLeft Click » &aChange animation"),
+                Utils.translate("&eRight Click » &aChange particle")
         ).toItemStack());
         gui.setItem(14, new ItemBuilder(XMaterial.COMPASS.parseItem()).setName(Utils.translate("&aChange direction")).setLore(
                 "",
@@ -140,7 +143,20 @@ public class EditMachineMenu extends Menu {
 
         } else if(slot == 12) {
 
+            if(event.getClick() == ClickType.LEFT) {
 
+                cubeletMachine.setBlockEffectModel(CollectionUtils.next(cubeletMachine.getBlockEffectModel()));
+                playSound(SoundType.CLICK);
+                reloadMyMenu();
+
+            } else if(event.getClick() == ClickType.RIGHT) {
+
+                SimpleParticle simpleParticle = SimpleParticle.of(CollectionUtils.next(cubeletMachine.getBlockEffectParticle().getParticle())).parseData("");
+                cubeletMachine.setBlockEffectParticle(simpleParticle);
+                playSound(SoundType.CLICK);
+                reloadMyMenu();
+
+            }
 
         } else if(slot == 14) {
 

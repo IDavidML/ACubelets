@@ -1,23 +1,21 @@
 package me.davidml16.acubelets.handlers;
 
-import com.google.common.collect.Iterables;
 import me.davidml16.acubelets.Main;
+import me.davidml16.acubelets.effects.MachineEffectModel;
+import me.davidml16.acubelets.effects.SimpleParticle;
 import me.davidml16.acubelets.enums.Rotation;
-import me.davidml16.acubelets.machineIdleEffects.IdleEffectType;
 import me.davidml16.acubelets.objects.CubeletMachine;
+import me.davidml16.acubelets.utils.StringUtils;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.craftbukkit.libs.org.apache.commons.lang3.EnumUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.function.Predicate;
 
 public class CubeletBoxHandler {
 
@@ -64,8 +62,8 @@ public class CubeletBoxHandler {
             config.set("locations." + i + ".rotation", bx.getRotation().toString());
             config.set("locations." + i + ".blockHeight", bx.getBlockHeight());
             config.set("locations." + i + ".permanentBlockHeight", bx.getPermanentBlockHeight());
-            config.set("locations." + i + ".idleEffect.type", bx.getIdleEffect().getIdleEffectType().toString());
-            config.set("locations." + i + ".idleEffect.particle", bx.getIdleEffect().getParticle().toString());
+            config.set("locations." + i + ".idleEffect.type", bx.getBlockEffectModel().name());
+            config.set("locations." + i + ".idleEffect.particle", bx.getBlockEffectParticle().getParticle().name());
             i++;
         }
 
@@ -94,8 +92,8 @@ public class CubeletBoxHandler {
                 config.set("locations." + i + ".rotation", bx.getRotation().toString());
                 config.set("locations." + i + ".blockHeight", bx.getBlockHeight());
                 config.set("locations." + i + ".permanentBlockHeight", bx.getPermanentBlockHeight());
-                config.set("locations." + i + ".idleEffect.type", bx.getIdleEffect().getIdleEffectType().toString());
-                config.set("locations." + i + ".idleEffect.particle", bx.getIdleEffect().getParticle().toString());
+                config.set("locations." + i + ".idleEffect.type", bx.getBlockEffectModel().name());
+                config.set("locations." + i + ".idleEffect.particle", bx.getBlockEffectParticle().getParticle().name());
                 i++;
             }
 
@@ -116,8 +114,8 @@ public class CubeletBoxHandler {
             config.set("locations." + i + ".rotation", bx.getRotation().toString());
             config.set("locations." + i + ".blockHeight", bx.getBlockHeight());
             config.set("locations." + i + ".permanentBlockHeight", bx.getPermanentBlockHeight());
-            config.set("locations." + i + ".idleEffect.type", bx.getIdleEffect().getIdleEffectType().toString());
-            config.set("locations." + i + ".idleEffect.particle", bx.getIdleEffect().getParticle().toString());
+            config.set("locations." + i + ".idleEffect.type", bx.getBlockEffectModel().name());
+            config.set("locations." + i + ".idleEffect.particle", bx.getBlockEffectParticle().getParticle().name());
             i++;
         }
 
@@ -188,13 +186,16 @@ public class CubeletBoxHandler {
 
                     CubeletMachine cubeletMachine = new CubeletMachine(loc, blockHeight, permanentBlockHeight, rotation);
 
-                    if(config.contains("locations." + i + ".idleEffect.type") && IdleEffectType.isValid(config.getString("locations." + i + ".idleEffect.type")))
-                        cubeletMachine.getIdleEffect().setIdleEffectType(IdleEffectType.valueOf(config.getString("locations." + i + ".idleEffect.type")));
+                    if(config.contains("locations." + i + ".idleEffect.type")) {
+                        MachineEffectModel effectModel = StringUtils.getEnum(config.getString("locations." + i + ".idleEffect.type"), MachineEffectModel.class).orElse(MachineEffectModel.NONE);
+                        cubeletMachine.setBlockEffectModel(effectModel);
+                    }
 
-                    if(config.contains("locations." + i + ".idleEffect.particle") && IdleEffectType.isValidParticle(config.getString("locations." + i + ".idleEffect.particle")))
-                        cubeletMachine.getIdleEffect().setParticle(Particle.valueOf(config.getString("locations." + i + ".idleEffect.particle")));
-
-                    cubeletMachine.getIdleEffect().init();
+                    if(config.contains("locations." + i + ".idleEffect.particle")) {
+                        String particle = config.getString("locations." + i + ".idleEffect.particle").equalsIgnoreCase("NONE") ? "FLAME" : config.getString("locations." + i + ".idleEffect.particle");
+                        SimpleParticle simpleParticle = SimpleParticle.of(Particle.valueOf(particle)).parseData("");
+                        cubeletMachine.setBlockEffectParticle(simpleParticle);
+                    }
 
                     boxes.put(loc, cubeletMachine);
                 }
@@ -211,8 +212,8 @@ public class CubeletBoxHandler {
                 config.set("locations." + i + ".rotation", bx.getRotation().toString());
                 config.set("locations." + i + ".blockHeight", bx.getBlockHeight());
                 config.set("locations." + i + ".permanentBlockHeight", bx.getPermanentBlockHeight());
-                config.set("locations." + i + ".idleEffect.type", bx.getIdleEffect().getIdleEffectType().toString());
-                config.set("locations." + i + ".idleEffect.particle", bx.getIdleEffect().getParticle().toString());
+                config.set("locations." + i + ".idleEffect.type", bx.getBlockEffectModel().name());
+                config.set("locations." + i + ".idleEffect.particle", bx.getBlockEffectParticle().getParticle().name());
                 i++;
             }
             saveConfig();

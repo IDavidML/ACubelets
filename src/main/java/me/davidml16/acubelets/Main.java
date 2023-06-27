@@ -12,10 +12,7 @@ import me.davidml16.acubelets.events.*;
 import me.davidml16.acubelets.handlers.*;
 import me.davidml16.acubelets.holograms.HologramHandler;
 import me.davidml16.acubelets.holograms.HologramImplementation;
-import me.davidml16.acubelets.tasks.DataCacheTask;
-import me.davidml16.acubelets.tasks.DataSaveTask;
-import me.davidml16.acubelets.tasks.HologramTask;
-import me.davidml16.acubelets.tasks.LiveGuiTask;
+import me.davidml16.acubelets.tasks.*;
 import me.davidml16.acubelets.utils.ConfigUpdater;
 import me.davidml16.acubelets.utils.FireworkUtil;
 import me.davidml16.acubelets.utils.Utils;
@@ -47,6 +44,7 @@ public class Main extends JavaPlugin {
     private DataSaveTask dataSaveTask;
     private LiveGuiTask liveGuiTask;
     private DataCacheTask dataCacheTask;
+    private MachineEffectsTask machineEffectsTask;
 
     private LanguageHandler languageHandler;
     private DatabaseHandler databaseHandler;
@@ -201,6 +199,9 @@ public class Main extends JavaPlugin {
         dataCacheTask = new DataCacheTask(this);
         dataCacheTask.start();
 
+        machineEffectsTask = new MachineEffectsTask(this);
+        machineEffectsTask.start();
+
         cubeletOpenHandler = new CubeletOpenHandler(this);
 
         settings.put("LiveGuiUpdates", getConfig().getBoolean("LiveGuiUpdates"));
@@ -271,6 +272,7 @@ public class Main extends JavaPlugin {
 
         if(hologramTask != null) hologramTask.stop();
         if(dataSaveTask != null) dataSaveTask.stop();
+        if(machineEffectsTask != null) machineEffectsTask.stop();
         if(databaseHandler != null) databaseHandler.getDatabaseConnection().stop();
 
     }
@@ -330,6 +332,8 @@ public class Main extends JavaPlugin {
     public HologramTask getHologramTask() { return hologramTask; }
 
     public LiveGuiTask getLiveGuiTask() { return liveGuiTask; }
+
+    public MachineEffectsTask getMachineEffectsTask() { return machineEffectsTask; }
 
     public FireworkUtil getFireworkUtil() { return fireworkUtil; }
 
