@@ -8,6 +8,7 @@ import me.davidml16.acubelets.objects.CubeletMachine;
 import me.davidml16.acubelets.utils.StringUtils;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -192,8 +193,10 @@ public class CubeletBoxHandler {
                     }
 
                     if(config.contains("locations." + i + ".idleEffect.particle")) {
-                        String particle = config.getString("locations." + i + ".idleEffect.particle").equalsIgnoreCase("NONE") ? "FLAME" : config.getString("locations." + i + ".idleEffect.particle");
-                        SimpleParticle simpleParticle = SimpleParticle.of(Particle.valueOf(particle)).parseData("");
+                        String sParticle = config.getString("locations." + i + ".idleEffect.particle").equalsIgnoreCase("NONE") ? "FLAME" : config.getString("locations." + i + ".idleEffect.particle");
+                        Particle particle = Particle.valueOf(sParticle);
+                        SimpleParticle simpleParticle = SimpleParticle.of(particle).parseData("");
+
                         cubeletMachine.setBlockEffectParticle(simpleParticle);
                     }
 

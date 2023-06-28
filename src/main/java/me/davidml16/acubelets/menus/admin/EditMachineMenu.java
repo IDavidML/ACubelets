@@ -12,6 +12,8 @@ import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -151,7 +153,9 @@ public class EditMachineMenu extends Menu {
 
             } else if(event.getClick() == ClickType.RIGHT) {
 
-                SimpleParticle simpleParticle = SimpleParticle.of(CollectionUtils.next(cubeletMachine.getBlockEffectParticle().getParticle())).parseData("");
+                Particle particle = CollectionUtils.next(cubeletMachine.getBlockEffectParticle().getParticle());
+                SimpleParticle simpleParticle = SimpleParticle.of(particle).parseData("");
+
                 cubeletMachine.setBlockEffectParticle(simpleParticle);
                 playSound(SoundType.CLICK);
                 reloadMyMenu();

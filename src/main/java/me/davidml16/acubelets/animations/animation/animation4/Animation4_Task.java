@@ -1,5 +1,6 @@
 package me.davidml16.acubelets.animations.animation.animation4;
 
+import com.cryptomorin.xseries.XMaterial;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
@@ -63,7 +64,10 @@ public class Animation4_Task extends Animation {
 
 			cancelRunnable("music");
 
-			pigman = (LivingEntity) getCubeletBox().getLocation().getWorld().spawnEntity(getLocationRotation(3), EntityType.PIG_ZOMBIE);
+			if(XMaterial.supports(16))
+				pigman = (LivingEntity) getCubeletBox().getLocation().getWorld().spawnEntity(getLocationRotation(3), EntityType.valueOf("ZOMBIFIED_PIGLIN"));
+			else
+				pigman = (LivingEntity) getCubeletBox().getLocation().getWorld().spawnEntity(getLocationRotation(3), EntityType.valueOf("PIG_ZOMBIE"));
 
 			pigman.setCollidable(false);
 			((PigZombie )pigman).setBaby(false);

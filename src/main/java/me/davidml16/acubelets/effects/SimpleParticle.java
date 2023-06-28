@@ -87,13 +87,13 @@ public class SimpleParticle {
         if (player == null) {
             World world = location.getWorld();
             if (world == null) return;
-
-            world.spawnParticle(this.getParticle(), location, amount, xOffset, yOffset, zOffset, speed, this.getData());
-            //EffectUtil.playParticle(location, this.getParticle(), this.getData(), xOffset, yOffset, zOffset, speed, amount);
-        }
-        else {
-            player.spawnParticle(this.getParticle(), location, amount, xOffset, yOffset, zOffset, speed, this.getData());
-            //EffectUtil.playParticle(player, location, this.getParticle(), this.getData(), xOffset, yOffset, zOffset, speed, amount);
+            try {
+                world.spawnParticle(this.getParticle(), location, amount, xOffset, yOffset, zOffset, speed, this.getData());
+            } catch (Exception e) {}
+        } else {
+            try {
+                player.spawnParticle(this.getParticle(), location, amount, xOffset, yOffset, zOffset, speed, this.getData());
+            } catch (Exception e) {}
         }
     }
 
@@ -111,13 +111,27 @@ public class SimpleParticle {
             double size = split.length >= 2 ? StringUtils.getDouble(split[1], 1D) : 1D;
             data = new Particle.DustOptions(color, (float) size);
         }
+        else if (dataType == Particle.DustTransition.class) {
+            Color colorStart = StringUtils.parseColor(split[0]);
+            Color colorEnd = split.length >= 2 ? StringUtils.parseColor(split[1]) : colorStart;
+            double size = split.length >= 3 ? StringUtils.getDouble(split[2], 1D) : 1D;
+            data = new Particle.DustTransition(colorStart, colorEnd, 1.0f);
+        }
         else if (dataType == ItemStack.class) {
             Material material = Material.getMaterial(from.toUpperCase());
             if (material != null && !material.isAir()) data = new ItemStack(material);
             else data = new ItemStack(Material.STONE);
         }
-        else if (dataType != Void.class) return SimpleParticle.of(Particle.REDSTONE);
+        else if (dataType != Void.class) return SimpleParticle.redstone(Color.AQUA, 1);
 
         return SimpleParticle.of(this.getParticle(), data);
+    }
+
+    @Override
+    public String toString() {
+        return "SimpleParticle{" +
+                "particle=" + particle +
+                ", data=" + data +
+                '}';
     }
 }
