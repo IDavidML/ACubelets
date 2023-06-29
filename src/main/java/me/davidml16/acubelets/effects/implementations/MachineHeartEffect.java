@@ -13,7 +13,7 @@ public class MachineHeartEffect extends MachineEffect {
     private boolean rotate = false;
 
     public MachineHeartEffect() {
-        super(1L, POINTS);
+        super(1L, POINTS, -10);
     }
 
     @Override

@@ -12,6 +12,7 @@ public enum MachineEffectModel {
     PULSAR(new MachinePulsarEffect()),
     BEACON(new MachineBeaconEffect()),
     VORTEX(new MachineVortexEffect()),
+    RINGS(new MachineRingsEffect()),
     SIMPLE(new MachineSimpleEffect()),
     NONE(new MachineSimpleEffect());
 

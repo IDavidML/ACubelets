@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 public class MachineSimpleEffect extends MachineEffect {
 
     public MachineSimpleEffect() {
-        super(2L, 2);
+        super(2L, 2, -10);
     }
 
     @Override

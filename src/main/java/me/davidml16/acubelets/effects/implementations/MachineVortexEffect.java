@@ -14,7 +14,7 @@ public class MachineVortexEffect extends MachineEffect {
     private static final double ROTATION  = 0.7853981633974483D;
 
     public MachineVortexEffect() {
-        super(1L, PARTICLES);
+        super(1L, PARTICLES, -10);
     }
 
     @Override

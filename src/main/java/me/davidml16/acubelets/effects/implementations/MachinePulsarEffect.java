@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public class MachinePulsarEffect extends MachineEffect {
 
     public MachinePulsarEffect() {
-        super(2L, 38);
+        super(2L, 38, -20);
     }
 
     @Override

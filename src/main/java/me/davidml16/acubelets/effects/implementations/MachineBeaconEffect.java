@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public class MachineBeaconEffect extends MachineEffect {
 
     public MachineBeaconEffect() {
-        super(3L, 40);
+        super(3L, 40, -10);
     }
 
     @Override

@@ -10,12 +10,14 @@ public abstract class MachineEffect {
     protected long interval;
     protected int  duration;
     protected int  count;
+    protected int  waitReset;
 
-    public MachineEffect(long interval, int duration) {
+    public MachineEffect(long interval, int duration, int waitReset) {
         this.step = 0;
         this.count = 0;
         this.interval = interval;
         this.duration = duration;
+        this.waitReset = waitReset;
     }
 
     public void reset() {
@@ -35,7 +37,7 @@ public abstract class MachineEffect {
         this.doStep(LocationUtils.getCenter(location.clone(), false), particle, this.step);
 
         if (this.step >= this.getDuration()) {
-            this.step = -10;
+            this.step = waitReset;
             this.count = 0;
         }
     }

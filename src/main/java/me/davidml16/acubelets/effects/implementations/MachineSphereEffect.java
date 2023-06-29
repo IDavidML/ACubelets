@@ -13,7 +13,7 @@ public class MachineSphereEffect extends MachineEffect {
     private static final int NUM_POINTS = 10;
 
     public MachineSphereEffect() {
-        super(1L, NUM_CIRCLES);
+        super(1L, NUM_CIRCLES, -10);
     }
 
     public static Point3d[] getCircleCoordinates(double radius, int circleIndex) {

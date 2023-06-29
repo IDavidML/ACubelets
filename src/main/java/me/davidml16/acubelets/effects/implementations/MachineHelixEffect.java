@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public class MachineHelixEffect extends MachineEffect {
 
     public MachineHelixEffect() {
-        super(1L, 24);
+        super(1L, 24, -5);
     }
 
     @Override

@@ -14,7 +14,7 @@ public class MachineSpiralEffect extends MachineEffect {
     private static final int NUM_POINTS = 50;
 
     public MachineSpiralEffect() {
-        super(1L, NUM_POINTS);
+        super(1L, NUM_POINTS, -5);
     }
 
     @Override
