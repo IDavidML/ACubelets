@@ -1,5 +1,6 @@
 package me.davidml16.acubelets.effects;
 
+import com.cryptomorin.xseries.XMaterial;
 import me.davidml16.acubelets.utils.StringUtils;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
@@ -111,11 +112,11 @@ public class SimpleParticle {
             double size = split.length >= 2 ? StringUtils.getDouble(split[1], 1D) : 1D;
             data = new Particle.DustOptions(color, (float) size);
         }
-        else if (dataType == Particle.DustTransition.class) {
+        else if (XMaterial.supports(17) && dataType == Particle.DustTransition.class) {
             Color colorStart = StringUtils.parseColor(split[0]);
             Color colorEnd = split.length >= 2 ? StringUtils.parseColor(split[1]) : colorStart;
-            double size = split.length >= 3 ? StringUtils.getDouble(split[2], 1D) : 1D;
-            data = new Particle.DustTransition(colorStart, colorEnd, 1.0f);
+            float size = split.length >= 3 ? StringUtils.getFloat(split[2], 1F) : 1F;
+            data = new Particle.DustTransition(colorStart, colorEnd, size);
         }
         else if (dataType == ItemStack.class) {
             Material material = Material.getMaterial(from.toUpperCase());
@@ -125,6 +126,15 @@ public class SimpleParticle {
         else if (dataType != Void.class) return SimpleParticle.redstone(Color.AQUA, 1);
 
         return SimpleParticle.of(this.getParticle(), data);
+    }
+
+    public boolean isClass(String className) {
+        try  {
+            Class.forName(className);
+            return true;
+        }  catch (ClassNotFoundException e) {
+            return false;
+        }
     }
 
     @Override

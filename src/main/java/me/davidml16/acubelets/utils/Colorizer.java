@@ -44,7 +44,7 @@ public class Colorizer {
     @NotNull
     public static String hex(@NotNull String str) {
         Matcher matcher = PATTERN_HEX.matcher(str);
-        StringBuilder buffer = new StringBuilder(str.length() + 4 * 8);
+        StringBuffer buffer = new StringBuffer(str.length() + 4 * 8);
         while (RegexUtils.matcherFind(matcher)) {
             String group = matcher.group(1);
             matcher.appendReplacement(buffer,

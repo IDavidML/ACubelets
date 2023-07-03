@@ -137,6 +137,19 @@ public class StringUtils {
         }
     }
 
+    public static float getFloat(@NotNull String input, float def) {
+        return getFloat(input, def, false);
+    }
+
+    public static float getFloat(@NotNull String input, float def, boolean allowNegative) {
+        try {
+            float amount = Float.parseFloat(input);
+            return (amount < 0F && !allowNegative ? def : amount);
+        } catch (NumberFormatException ex) {
+            return def;
+        }
+    }
+
     public static int getInteger(@NotNull String input, int def) {
         return getInteger(input, def, false);
     }

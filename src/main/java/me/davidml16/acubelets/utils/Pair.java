@@ -36,9 +36,9 @@ public class Pair<F, S> {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof Pair<?, ?> other) {
-            return Objects.equals(this.first, other.first) && Objects.equals(this.second, other.second);
+    public boolean equals(Object other) {
+        if (this.getClass().getName().equalsIgnoreCase(other.getClass().getName())) {
+            return Objects.equals(this.first, ((Pair) other).first) && Objects.equals(this.second, ((Pair) other).second);
         }
         return false;
     }
