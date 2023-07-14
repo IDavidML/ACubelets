@@ -67,11 +67,10 @@ public class DecentHologramsImpl implements HologramImplementation, Listener {
 
     public void removeHolograms() {
 
-        for (Hologram hologram : Hologram.getCachedHolograms()) {
-
-            hologram.hideAll();
-            hologram.destroy();
-
+        for (CubeletMachine machine : holograms.keySet()) {
+            for(Hologram holo : holograms.get(machine).values()) {
+                holo.destroy();
+            }
         }
 
     }

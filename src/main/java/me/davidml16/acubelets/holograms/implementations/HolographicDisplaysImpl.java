@@ -70,11 +70,10 @@ public class HolographicDisplaysImpl implements HologramImplementation, Listener
 
     public void removeHolograms() {
 
-        HolographicDisplaysAPI api = HolographicDisplaysAPI.get(main);
-        for (Hologram hologram : api.getHolograms()) {
-
-            hologram.delete();
-
+        for (CubeletMachine machine : holograms.keySet()) {
+            for(Hologram holo : holograms.get(machine).values()) {
+                holo.delete();
+            }
         }
 
     }
