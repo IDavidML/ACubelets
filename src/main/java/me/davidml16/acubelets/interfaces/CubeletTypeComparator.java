@@ -8,7 +8,11 @@ public class CubeletTypeComparator implements Comparator<Cubelet> {
 
     @Override
     public int compare(Cubelet o1, Cubelet o2) {
-        return o1.getType().compareTo(o2.getType());
+        try {
+            return o1.getType().compareTo(o2.getType());
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
 }
