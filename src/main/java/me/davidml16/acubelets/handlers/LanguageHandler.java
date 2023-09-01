@@ -49,11 +49,13 @@ public class LanguageHandler {
 	}
 
 	public String getMessage(String message) {
+		if(!messages.containsKey(message)) return "";
 		return Utils.translate(messages.get(message).replaceAll("%prefix%", messages.get("Prefix")));
 	}
 
 	public List<String> getMessageList(String message) {
 		List<String> lines = new ArrayList<>();
+		if(!messageList.containsKey(message)) return lines;
 		for(String line : messageList.get(message)) {
 			lines.add(Utils.translate(line).replaceAll("%prefix%", messages.get("Prefix")));
 		}

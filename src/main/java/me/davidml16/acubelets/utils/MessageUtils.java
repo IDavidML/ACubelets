@@ -195,7 +195,11 @@ public class MessageUtils {
     }
 
     private static void newLootMessage(Player target, CubeletType cubeletType, Reward reward) {
-        for (String line : Main.get().getLanguageHandler().getMessageList("Cubelet.Reward.New")) {
+        List<String> lines = Main.get().getLanguageHandler().getMessageList("Cubelet.Reward.New");
+
+        if(lines.isEmpty()) return;
+
+        for (String line : lines) {
             if (line.contains("%center%")) {
                 line = line.replaceAll("%center%", "");
                 target.sendMessage(MessageUtils.centeredMessage(Utils.translate(line
@@ -214,13 +218,16 @@ public class MessageUtils {
     }
 
     private static void duplicateLootMessage(Player target, CubeletType cubeletType, Reward reward, int duplicatePoints) {
-
         if(duplicatePoints <= 0) {
             newLootMessage(target, cubeletType, reward);
             return;
         }
 
-        for (String line : Main.get().getLanguageHandler().getMessageList("Cubelet.Reward.Duplicate")) {
+        List<String> lines = Main.get().getLanguageHandler().getMessageList("Cubelet.Reward.Duplicate");
+
+        if(lines.isEmpty()) return;
+
+        for (String line : lines) {
             if (line.contains("%center%")) {
                 line = line.replaceAll("%center%", "");
                 target.sendMessage(MessageUtils.centeredMessage(Utils.translate(line
@@ -253,7 +260,9 @@ public class MessageUtils {
                         break;
                 }
             } else {
-                for (String line : Main.get().getLanguageHandler().getMessageList("Cubelet.NoCubelets")) {
+                List<String> lines = Main.get().getLanguageHandler().getMessageList("Cubelet.NoCubelets");
+                if(lines.isEmpty()) return;
+                for (String line : lines) {
                     if (line.contains("%center%")) {
                         line = line.replaceAll("%center%", "");
                         player.sendMessage(MessageUtils.centeredMessage(Utils.translate(line)));
@@ -276,6 +285,8 @@ public class MessageUtils {
             lines.addAll(main.getLanguageHandler().getMessageList(key));
         else
             lines.add(main.getLanguageHandler().getMessage(key));
+
+        if(lines.isEmpty()) return;
 
         for (String msg : lines) {
             msg = msg.replaceAll("%player%", Matcher.quoteReplacement(cubeletMachine.getPlayerOpening().getName()));
