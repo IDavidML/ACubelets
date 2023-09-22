@@ -32,13 +32,6 @@ public class Event_JoinQuit implements Listener {
 
         main.getMenuHandler().reloadAllMenus(GiftPlayerMenu.class);
 
-        if(player.getName().equalsIgnoreCase("DavidML16")) {
-            Bukkit.getScheduler().runTaskLater(main, () -> {
-                PluginDescriptionFile pdf = main.getDescription();
-                player.sendMessage(Utils.translate("&aServer using ACubelets. Version: &e" + pdf.getVersion()));
-            }, 40L);
-        }
-
     }
 
     @EventHandler
