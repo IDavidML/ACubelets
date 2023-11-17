@@ -22,18 +22,11 @@ public class MenuHandler {
 
     private ClickType rewardPreviewClickType;
 
-    private boolean menuDecorationEnabled;
-    private ItemStack menuDecorationItem;
-
     public MenuHandler(Main main) {
 
         this.main = main;
         this.openedMenus = new HashMap<>();
         this.rewardPreviewClickType = ClickType.SHIFT_LEFT;
-
-        this.menuDecorationEnabled = main.getConfig().getBoolean("MenuDecoration.Enabled");
-        this.menuDecorationItem = XItemStack.deserialize(Utils.getConfigurationSection(main.getConfig(), "MenuDecoration.Item"));
-
     }
 
     public Map<Player, Menu> getOpenedMenus() {
@@ -75,22 +68,6 @@ public class MenuHandler {
             this.rewardPreviewClickType = ClickType.valueOf(clickType.toUpperCase());
         else
             this.rewardPreviewClickType = ClickType.SHIFT_LEFT;
-    }
-
-    public boolean isMenuDecorationEnabled() {
-        return menuDecorationEnabled;
-    }
-
-    public void setMenuDecorationEnabled(boolean menuDecorationEnabled) {
-        this.menuDecorationEnabled = menuDecorationEnabled;
-    }
-
-    public ItemStack getMenuDecorationItem() {
-        return menuDecorationItem;
-    }
-
-    public void setMenuDecorationItem(ItemStack menuDecorationItem) {
-        this.menuDecorationItem = menuDecorationItem;
     }
 
     public void handleMenuClick(Player player, InventoryClickEvent event) {

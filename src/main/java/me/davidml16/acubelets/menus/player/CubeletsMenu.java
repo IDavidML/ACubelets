@@ -199,13 +199,13 @@ public class CubeletsMenu extends Menu {
 
                 List<String> lore = new ArrayList<>();
 
-                if (cubelet.getExpire() > System.currentTimeMillis()) {
+                if (cubelet.getExpire() < 0 || cubelet.getExpire() > System.currentTimeMillis()) {
 
                     for (String line : type.getLoreAvailable()) {
 
                         lore.add(Utils.translate(line
                                 .replaceAll("%received%", TimeUtils.millisToLongDHMS(System.currentTimeMillis() - cubelet.getReceived())))
-                                .replaceAll("%expires%", TimeUtils.millisToLongDHMS(cubelet.getExpire() - System.currentTimeMillis())));
+                                .replaceAll("%expires%", (cubelet.getExpire() >= 0 ? TimeUtils.millisToLongDHMS(cubelet.getExpire() - System.currentTimeMillis()) : guiLayout.getMessage("NoneExpiration"))));
 
                     }
 

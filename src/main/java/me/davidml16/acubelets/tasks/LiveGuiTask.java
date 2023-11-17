@@ -3,6 +3,7 @@ package me.davidml16.acubelets.tasks;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.menus.player.CubeletsMenu;
 import me.davidml16.acubelets.objects.Cubelet;
+import me.davidml16.acubelets.objects.GUILayout;
 import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.TimeAPI.TimeUtils;
@@ -29,6 +30,8 @@ public class LiveGuiTask {
 
 			if(main.getPlayerCount() == 0) return;
 
+			GUILayout guiLayout = main.getLayoutHandler().getLayout("opencubelet");
+
 			for(Menu menu : main.getMenuHandler().getOpenedMenus().values()) {
 
 				if(!menu.getClass().equals(CubeletsMenu.class)) continue;
@@ -52,11 +55,11 @@ public class LiveGuiTask {
 					ItemStack item = items.get(i);
 
 					List<String> lore = new ArrayList<>();
-					if (cubelet.getExpire() > System.currentTimeMillis()) {
+					if (cubelet.getExpire() < 0 || cubelet.getExpire() > System.currentTimeMillis()) {
 						for (String line : cubelet.getCubeletType().getLoreAvailable()) {
 							lore.add(Utils.translate(line
 									.replaceAll("%received%", TimeUtils.millisToLongDHMS(System.currentTimeMillis() - cubelet.getReceived())))
-									.replaceAll("%expires%", TimeUtils.millisToLongDHMS(cubelet.getExpire() - System.currentTimeMillis())));
+									.replaceAll("%expires%", (cubelet.getExpire() >= 0 ? TimeUtils.millisToLongDHMS(cubelet.getExpire() - System.currentTimeMillis()) : guiLayout.getMessage("NoneExpiration"))));
 						}
 					} else {
 						for (String line : cubelet.getCubeletType().getLoreExpired()) {

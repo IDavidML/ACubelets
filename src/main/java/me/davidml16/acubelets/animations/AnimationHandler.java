@@ -162,7 +162,7 @@ public class AnimationHandler {
     }
 
     public AnimationSettings getAnimationSetting(String id) {
-        return animations.containsKey(id) ? animations.get(id) : null;
+        return animations.containsKey(id) ? animations.get(id) : animations.get(DEFAULT_ANIMATION);
     }
 
     public Animation getAnimation(String animation) {

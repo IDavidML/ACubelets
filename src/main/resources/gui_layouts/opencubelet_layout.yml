@@ -20,6 +20,8 @@ Layout:
     # If gui size is resizable or fixed size
     Dynamic: true
 
+  NoneExpiration: 'Never'
+
   # GUI items
   Items:
 

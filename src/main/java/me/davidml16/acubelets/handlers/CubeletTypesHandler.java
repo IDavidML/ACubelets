@@ -141,7 +141,7 @@ public class CubeletTypesHandler {
                     if (!config.contains("type.lore.opening.available")) {
                         List<String> loreAvailable = Arrays.asList(
                                 "&5Received: &a%received% ago",
-                                "&5Expires: &aIn %expires%",
+                                "&5Expires: &a%expires%",
                                 "",
                                 "%description%",
                                 "",
@@ -253,8 +253,8 @@ public class CubeletTypesHandler {
                     cubeletType.setDescription(config.getStringList("type.description"));
 
                     long convertedTime;
-                    if(Objects.requireNonNull(config.getString("type.expiration")).equalsIgnoreCase(""))
-                        convertedTime = 0;
+                    if(Objects.requireNonNull(config.getString("type.expiration")).equalsIgnoreCase("") || Objects.requireNonNull(config.getString("type.expiration")).equalsIgnoreCase("none"))
+                        convertedTime = -1;
                     else
                         convertedTime = new TimeAPI(config.getString("type.expiration")).getMilliseconds();
                     cubeletType.setExpireTime(convertedTime);

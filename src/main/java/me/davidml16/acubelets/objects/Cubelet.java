@@ -34,7 +34,7 @@ public class Cubelet {
         this.uuid = UUID.randomUUID();
         this.type = type.getId();
         this.received = System.currentTimeMillis();
-        this.expire = received + type.getExpireTime();
+        this.expire = type.getExpireTime() >= 0 ? received + type.getExpireTime() : -1;
 
         this.cubeletType = type;
     }

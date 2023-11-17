@@ -76,7 +76,7 @@ public class TypeListMenu extends Menu {
                                 Utils.translate(" &7Rewards: &6" + cubeletType.getAllRewards().size() + " "),
                                 "",
                                 Utils.translate(" &7Animation: &6" + cubeletType.getAnimation() + " "),
-                                Utils.translate(" &7Expiration: &6" + TimeUtils.millisToLongDHMS(cubeletType.getExpireTime()) + " "),
+                                Utils.translate(" &7Expiration: &6" + (cubeletType.getExpireTime() >= 0 ? TimeUtils.millisToLongDHMS(cubeletType.getExpireTime()) : "none") + " "),
                                 "",
                                 Utils.translate("&eClick to setup " + cubeletType.getId() + " type ")
                         ).toItemStack());

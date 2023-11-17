@@ -80,7 +80,7 @@ public class Main extends JavaPlugin {
 
     private CommandMap commandMap;
 
-    private List<String> templates = Arrays.asList("normal", "super", "uber", "old", "summer", "easter", "halloween", "christmas");
+    private List<String> templates = Arrays.asList("example");
 
     @Override
     public void onEnable() {
