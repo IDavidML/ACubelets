@@ -5,6 +5,7 @@ import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationSettings;
+import me.davidml16.acubelets.animations.animation.animation18.Animation18_Item;
 import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.utils.LocationUtils;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
@@ -34,7 +35,7 @@ public class Animation23_Task extends Animation {
 	private List<Animation23_Item> items = new ArrayList<>();
 	private List<Location> circleLocations;
 
-	private BukkitTask spawnItemsRunnable;
+	private BukkitTask spawnItemsRunnable, removeItemsRunnable;
 
 	private double boxLocIncrease = -1.50;
 	private int circleInitialStep = 0;
@@ -58,7 +59,7 @@ public class Animation23_Task extends Animation {
 			newBoxLoc.setYaw(rotation);
 			armorStand.teleport(newBoxLoc);
 
-			UtilParticles.display(Particles.FIREWORKS_SPARK, armorStand.getLocation().clone().add(0, 1.25, 0), 1);
+			UtilParticles.display(Particles.SMOKE_NORMAL, armorStand.getLocation().clone().add(0, 1.25, 0), 1);
 
 		}
 
@@ -124,6 +125,14 @@ public class Animation23_Task extends Animation {
 		}
 
 		if(time == 345) Sounds.playSound(getCubeletBox().getLocation(), Sounds.MySound.LEVEL_UP, 0.5F, 1F);
+
+		if(time == 441) {
+			removeItemsRunnable = Bukkit.getScheduler().runTaskTimer(getMain(), () -> {
+				if(items.size() > 0) {
+					removeRandomItem();
+				}
+			}, 0, 2);
+		}
 	}
 
 	@Override
@@ -134,12 +143,14 @@ public class Animation23_Task extends Animation {
 
 		rotation = getRotation(false).value;
 
-		circleLocations = LocationUtils.getCircleVertical(getCubeletBox().getOriginalLocation().clone().add(0.5, 2, 0.5), 2D, 360);
+		circleLocations = LocationUtils.getCircleVertical(getCubeletBox().getOriginalLocation().clone().add(0.5, 2, 0.5), 2D, 360, getRotation(false));
 
 		setColors(Arrays.asList(Color.RED, Color.BLACK));
 
 		armorStand = ASSpawner.spawn(getMain(), getCubeletBox().getOriginalLocation().clone().add(0.5, -1.5, 0.5),
 				XMaterial.CHEST.parseItem(), false, false, false);
+
+		Sounds.playSound(getCubeletBox().getLocation(), Sounds.MySound.FIREWORK_LAUNCH, 0.5f, 0);
 
 		getMain().getAnimationHandler().getEntities().add(armorStand);
 
@@ -159,6 +170,7 @@ public class Animation23_Task extends Animation {
 	@Override
 	public void onStop() {
 		if(spawnItemsRunnable != null) spawnItemsRunnable.cancel();
+		if(removeItemsRunnable != null) removeItemsRunnable.cancel();
 
 		getCubeletBox().resetLocation();
 
@@ -204,6 +216,17 @@ public class Animation23_Task extends Animation {
 	@Override
 	public void onRewardDuplication() {
 		getCubeletBox().setLocation(getCubeletBox().getOriginalLocation().clone().add(0, 1.8, 0));
+	}
+
+	public void removeRandomItem() {
+		Animation23_Item item = items.get(0);
+		if(getMain().getAnimationHandler().getEntities().contains(item.getArmorStand())) {
+			Entity entity = item.getArmorStand();
+			if(entity != null) Sounds.playSound(entity.getLocation(), Sounds.MySound.PISTON_RETRACT, 0.5F, 3);
+			if(entity != null) entity.remove();
+			getMain().getAnimationHandler().getEntities().remove(entity);
+		}
+		items.remove(item);
 	}
 	
 }

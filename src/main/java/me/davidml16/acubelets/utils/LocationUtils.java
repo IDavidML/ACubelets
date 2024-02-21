@@ -1,5 +1,6 @@
 package me.davidml16.acubelets.utils;
 
+import me.davidml16.acubelets.enums.Rotation;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -25,14 +26,28 @@ public class LocationUtils {
         return locations;
     }
 
-    public static List<Location> getCircleVertical(Location location, double radius, int points) {
+    public static List<Location> getCircleVertical(Location location, double radius, int points, Rotation rotation) {
         List<Location> locations = new ArrayList<Location>();
         double increment = 6.283185307179586D / points;
         for (int i = 0; i < points; i++) {
             double angle = i * increment;
-            double x = location.getX() + Math.cos(angle) * radius;
-            double y = location.getY() + Math.sin(angle) * radius;
-            locations.add(new Location(location.getWorld(), x, y, location.getZ()));
+            if(rotation == Rotation.EAST) {
+                double z = location.getZ() + Math.cos(angle) * radius;
+                double y = location.getY() + Math.sin(angle) * radius;
+                locations.add(new Location(location.getWorld(), location.getX(), y, z));
+            } else if(rotation == Rotation.WEST) {
+                double z = location.getZ() - Math.cos(angle) * radius;
+                double y = location.getY() + Math.sin(angle) * radius;
+                locations.add(new Location(location.getWorld(), location.getX(), y, z));
+            } else if(rotation == Rotation.NORTH) {
+                double x = location.getX() + Math.cos(angle) * radius;
+                double y = location.getY() + Math.sin(angle) * radius;
+                locations.add(new Location(location.getWorld(), x, y, location.getZ()));
+            } else if(rotation == Rotation.SOUTH) {
+                double x = location.getX() - Math.cos(angle) * radius;
+                double y = location.getY() + Math.sin(angle) * radius;
+                locations.add(new Location(location.getWorld(), x, y, location.getZ()));
+            }
         }
         return locations;
     }

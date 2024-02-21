@@ -5,6 +5,8 @@ import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.utils.LocationUtils;
+import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
+import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import me.davidml16.acubelets.utils.Sounds;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
@@ -77,6 +79,8 @@ public class Animation23_Item {
 
         if (!active) return;
         if(speedRate <= 0) return;
+
+        UtilParticles.display(Particles.CLOUD, armorStand.getLocation().add(0, 1.70, 0), 1);
 
         this.circleStep += speedRate;
         if(circleStep >= locations.size()) {
