@@ -163,4 +163,7 @@ public class Animation4_Task extends Animation {
 
 	}
 
+	@Override
+	public void onRewardDuplication() {}
+
 }

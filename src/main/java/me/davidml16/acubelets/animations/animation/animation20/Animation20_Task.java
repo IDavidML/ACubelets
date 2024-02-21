@@ -149,6 +149,9 @@ public class Animation20_Task extends Animation {
 
 	}
 
+	@Override
+	public void onRewardDuplication() {}
+
 	public void placeOrientedChest(Location loc) {
 
 		BlockFace blockFace;

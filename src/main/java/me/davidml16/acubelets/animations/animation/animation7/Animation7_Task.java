@@ -192,6 +192,9 @@ public class Animation7_Task extends Animation {
 
 	}
 
+	@Override
+	public void onRewardDuplication() {}
+
 	public void removeRandomGhost() {
 
 		for(Entity bat : ghosts) {

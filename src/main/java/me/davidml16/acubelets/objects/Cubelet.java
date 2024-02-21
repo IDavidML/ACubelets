@@ -22,14 +22,6 @@ public class Cubelet {
         this.cubeletType = Main.get().getCubeletTypesHandler().getTypeBydId(type);
     }
 
-    public Cubelet(String type, Long received) {
-        this.uuid = UUID.randomUUID();
-        this.type = type;
-        this.received = received;
-
-        this.cubeletType = Main.get().getCubeletTypesHandler().getTypeBydId(type);
-    }
-
     public Cubelet(CubeletType type) {
         this.uuid = UUID.randomUUID();
         this.type = type.getId();

@@ -45,7 +45,7 @@ public class ExecuteBox {
 
             if(block.getType().isBlock() && block.getType() != Material.AIR) {
 
-                if (!main.getCubeletBoxHandler().getBoxes().containsKey(block.getLocation())) {
+                if (!main.getCubeletBoxHandler().getMachines().containsKey(block.getLocation())) {
 
                     ArmorStand armorStand = block.getLocation().getWorld().spawn(block.getLocation().clone().add(0.5, 1.5, 0.5), ArmorStand.class);
                     armorStand.setVisible(false);
@@ -65,7 +65,7 @@ public class ExecuteBox {
 
                     Bukkit.getScheduler().runTaskLater(main, () -> {
                         double blockHeight = armorStand.getLocation().getY() - block.getLocation().getBlockY();
-                        main.getCubeletBoxHandler().createBox(block.getLocation(), blockHeight);
+                        main.getCubeletBoxHandler().createMachine(block.getLocation(), blockHeight);
                         armorStand.remove();
                     }, 10);
 
@@ -94,9 +94,9 @@ public class ExecuteBox {
 
             if(block.getType().isBlock() && block.getType() != Material.AIR) {
 
-                if (main.getCubeletBoxHandler().getBoxes().containsKey(block.getLocation())) {
+                if (main.getCubeletBoxHandler().getMachines().containsKey(block.getLocation())) {
 
-                    main.getCubeletBoxHandler().removeBox(block.getLocation());
+                    main.getCubeletBoxHandler().removeMachine(block.getLocation());
 
                     Sounds.playSound(((Player)sender), ((Player)sender).getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
 
@@ -132,10 +132,10 @@ public class ExecuteBox {
 
             if(block.getType().isBlock() && block.getType() != Material.AIR) {
 
-                if (main.getCubeletBoxHandler().getBoxes().containsKey(block.getLocation())) {
+                if (main.getCubeletBoxHandler().getMachines().containsKey(block.getLocation())) {
 
                     EditMachineMenu editMachineMenu = new EditMachineMenu(main, (Player) sender);
-                    editMachineMenu.setAttribute(Menu.AttrType.CUBELET_BOX_ATTR, main.getCubeletBoxHandler().getBoxByLocation(block.getLocation()));
+                    editMachineMenu.setAttribute(Menu.AttrType.CUBELET_BOX_ATTR, main.getCubeletBoxHandler().getMachineByLocation(block.getLocation()));
                     editMachineMenu.open();
 
                     return true;

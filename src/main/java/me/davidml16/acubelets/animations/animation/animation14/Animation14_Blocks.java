@@ -69,25 +69,25 @@ public class Animation14_Blocks extends AnimationBlocks {
         // FLOWERS 1
         setStepFakeBlocks(7, new FakeBlock[] {
                 new FakeBlock(location.clone().add(1, 0, 1), XMaterial.POPPY),
-                new FakeBlock(location.clone().add(1, 0, 0), XMaterial.GRASS, XMaterial.GRASS, Material.matchMaterial("LONG_GRASS"))
+                new FakeBlock(location.clone().add(1, 0, 0), XMaterial.SHORT_GRASS, XMaterial.SHORT_GRASS, Material.matchMaterial("LONG_GRASS"))
         });
 
         // FLOWERS 2
         setStepFakeBlocks(8, new FakeBlock[] {
                 new FakeBlock(location.clone().add(1, 0, -1), XMaterial.DANDELION),
-                new FakeBlock(location.clone().add(0, 0, 1), XMaterial.GRASS, XMaterial.GRASS, Material.matchMaterial("LONG_GRASS"))
+                new FakeBlock(location.clone().add(0, 0, 1), XMaterial.SHORT_GRASS, XMaterial.SHORT_GRASS, Material.matchMaterial("LONG_GRASS"))
         });
 
         // FLOWERS 3
         setStepFakeBlocks(9, new FakeBlock[] {
                 new FakeBlock(location.clone().add(-1, 0, -1), XMaterial.POPPY),
-                new FakeBlock(location.clone().add(0, 0, -1), XMaterial.GRASS, XMaterial.GRASS, Material.matchMaterial("LONG_GRASS"))
+                new FakeBlock(location.clone().add(0, 0, -1), XMaterial.SHORT_GRASS, XMaterial.SHORT_GRASS, Material.matchMaterial("LONG_GRASS"))
         });
 
         // FLOWERS 4
         setStepFakeBlocks(10, new FakeBlock[] {
                 new FakeBlock(location.clone().add(-1, 0, 1), XMaterial.POPPY),
-                new FakeBlock(location.clone().add(-1, 0, 0), XMaterial.GRASS, XMaterial.GRASS, Material.matchMaterial("LONG_GRASS"))
+                new FakeBlock(location.clone().add(-1, 0, 0), XMaterial.SHORT_GRASS, XMaterial.SHORT_GRASS, Material.matchMaterial("LONG_GRASS"))
         });
 
     }

@@ -219,6 +219,9 @@ public class Animation12_Task extends Animation {
 
 	}
 
+	@Override
+	public void onRewardDuplication() {}
+
 	private void chargeParticles() {
 		Random random = new Random();
 		Location loc = liquidStand.getLocation().clone().add(0, 1, 0);

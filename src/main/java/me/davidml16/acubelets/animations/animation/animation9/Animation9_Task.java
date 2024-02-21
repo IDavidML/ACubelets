@@ -143,6 +143,9 @@ public class Animation9_Task extends Animation {
 
 	}
 
+	@Override
+	public void onRewardDuplication() {}
+
 	private void chargeParticles() {
 
 		Random random = new Random();

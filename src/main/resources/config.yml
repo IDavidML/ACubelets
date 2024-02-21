@@ -26,6 +26,9 @@ MySQL:
     User: root
     Password: example
     Database: acubelets
+    Pools:
+        MinimumSize: 4
+        MaximumSize: 75
 
 
 # Enable/disable if execute a command when click on barrier

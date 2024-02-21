@@ -208,7 +208,7 @@ public class CubeletTypesHandler {
 
                     cubeletType.setAnimation(config.getString("type.animation").toLowerCase());
 
-                    if (!(config.get("type.icon.texture") instanceof MemorySection)) {
+                    if (config.contains("type.icon.texture")) {
                         String[] icon = ((String) config.get("type.icon.texture")).split(":");
                         switch (icon[0].toLowerCase()) {
                             case "base64":
@@ -222,12 +222,7 @@ public class CubeletTypesHandler {
                                 break;
                         }
                     } else {
-                        try {
-                            cubeletType.setIcon(new ItemBuilder(ItemStack64.itemStackFromBase64(config.getString("type.icon.texture"))).setLore("").toItemStack());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
+                        cubeletType.setIcon(new ItemBuilder(XItemStack.deserialize(Utils.getConfigurationSection(config, "type.icon"))).setLore("").toItemStack());
                     }
 
                     List<String> loreAvailable = new ArrayList<>();

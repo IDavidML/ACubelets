@@ -185,6 +185,9 @@ public class Animation22_Task extends Animation {
 
 	}
 
+	@Override
+	public void onRewardDuplication() {}
+
 	public void removeRandomFloatingBlock() {
 		for(Animation22_FloatingBlock floatingBlock : floatingBlocks) {
 			floatingBlock.cancel();

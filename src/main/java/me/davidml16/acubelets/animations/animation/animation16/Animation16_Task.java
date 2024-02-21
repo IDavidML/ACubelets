@@ -220,5 +220,8 @@ public class Animation16_Task extends Animation {
 			break;
 		}
 	}
+
+	@Override
+	public void onRewardDuplication() {}
 	
 }

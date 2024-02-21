@@ -336,7 +336,7 @@ public class CubeletsMenu extends Menu {
 
                         if (cubelet.isPresent()) {
 
-                            if (cubelet.get().getExpire() > System.currentTimeMillis()) {
+                            if (cubelet.get().getExpire() > System.currentTimeMillis() || cubelet.get().getExpire() == -1) {
 
                                 if (type.getAllRewards().size() > 0) {
 

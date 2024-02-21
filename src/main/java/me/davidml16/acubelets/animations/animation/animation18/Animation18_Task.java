@@ -198,6 +198,9 @@ public class Animation18_Task extends Animation {
 
 	}
 
+	@Override
+	public void onRewardDuplication() {}
+
 	public void removeRandomItem() {
 		Animation18_Item item = items.get((int) (Math.random() * items.size()));
 		item.cancel();

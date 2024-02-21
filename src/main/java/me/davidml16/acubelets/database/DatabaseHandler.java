@@ -105,22 +105,30 @@ public class DatabaseHandler {
 
 	public void loadTables() {
 
-		executeQuery("CREATE TABLE IF NOT EXISTS ac_cubelets (`UUID` varchar(40) NOT NULL, `cubeletUUID` varchar(40) NOT NULL, `type` VARCHAR(15) NOT NULL, `received` bigint NOT NULL DEFAULT 0, `expire` bigint NOT NULL DEFAULT 0, PRIMARY KEY (`UUID`, `cubeletUUID`));");
+		executeQuery("CREATE TABLE IF NOT EXISTS ac_cubelets (`UUID` varchar(40) NOT NULL, `cubeletUUID` varchar(40) NOT NULL, `type` VARCHAR(255) NOT NULL, `received` bigint NOT NULL DEFAULT 0, `expire` bigint NOT NULL DEFAULT 0, PRIMARY KEY (`UUID`, `cubeletUUID`));");
 
 		executeQuery("CREATE TABLE IF NOT EXISTS ac_players (`UUID` varchar(40) NOT NULL, `NAME` varchar(40), `LOOT_POINTS` integer(25), `ORDER_BY` varchar(10), `ANIMATION` varchar(25), PRIMARY KEY (`UUID`));");
 
 		try {
-			executeQueryError("CREATE TABLE IF NOT EXISTS ac_loothistory (`ID` INTEGER PRIMARY KEY AUTO_INCREMENT, `UUID` varchar(40) NOT NULL, `cubeletName` varchar(50) NOT NULL, `rewardID` varchar(50) NOT NULL, `rewardName` varchar(255) NOT NULL, `rewardIcon` LONGTEXT NOT NULL, `received` bigint NOT NULL DEFAULT 0);");
+			executeQueryError("CREATE TABLE IF NOT EXISTS ac_loothistory (`ID` INTEGER PRIMARY KEY AUTO_INCREMENT, `UUID` varchar(40) NOT NULL, `cubeletName` varchar(255) NOT NULL, `rewardID` varchar(50) NOT NULL, `rewardName` varchar(255) NOT NULL, `rewardIcon` LONGTEXT NOT NULL, `received` bigint NOT NULL DEFAULT 0);");
 		} catch (SQLException e) {
 			try {
-				executeQueryError("CREATE TABLE IF NOT EXISTS ac_loothistory (`ID` INTEGER PRIMARY KEY AUTOINCREMENT, `UUID` varchar(40) NOT NULL, `cubeletName` varchar(50) NOT NULL, `rewardID` varchar(50) NOT NULL, `rewardName` varchar(255) NOT NULL, `rewardIcon` LONGTEXT NOT NULL, `received` bigint NOT NULL DEFAULT 0);");
+				executeQueryError("CREATE TABLE IF NOT EXISTS ac_loothistory (`ID` INTEGER PRIMARY KEY AUTOINCREMENT, `UUID` varchar(40) NOT NULL, `cubeletName` varchar(255) NOT NULL, `rewardID` varchar(50) NOT NULL, `rewardName` varchar(255) NOT NULL, `rewardIcon` LONGTEXT NOT NULL, `received` bigint NOT NULL DEFAULT 0);");
 			} catch (SQLException throwables) {
 				throwables.printStackTrace();
 			}
 		}
 
 		try {
+			executeQueryError("ALTER TABLE ac_cubelets MODIFY type VARCHAR(255)");
+		} catch (SQLException e) {}
+
+		try {
 			executeQueryError("ALTER TABLE ac_loothistory MODIFY rewardName VARCHAR(255)");
+		} catch (SQLException e) {}
+
+		try {
+			executeQueryError("ALTER TABLE ac_loothistory MODIFY cubeletName VARCHAR(255)");
 		} catch (SQLException e) {}
 
 	}
@@ -345,31 +353,6 @@ public class DatabaseHandler {
 		});
 	}
 
-	public void setPlayerOrderSetting(UUID uuid, String orderBy) {
-		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
-			PreparedStatement ps = null;
-			Connection connection = null;
-			try {
-				connection = databaseConnection.getConnection();
-				ps = connection.prepareStatement("UPDATE ac_players SET `ORDER_BY` = ? WHERE `UUID` = ?");
-				ps.setString(1, orderBy);
-				ps.setString(2, uuid.toString());
-				ps.executeUpdate();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				if(ps != null) {
-					try {
-						ps.close();
-					} catch (SQLException throwables) {
-						throwables.printStackTrace();
-					}
-				}
-				databaseConnection.close(connection);
-			}
-		});
-	}
-
 	public void setPlayerLootPoints(UUID uuid, long amount) {
 		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
 			PreparedStatement ps = null;
@@ -513,62 +496,6 @@ public class DatabaseHandler {
 						rs.close();
 					} catch (SQLException e) {
 						e.printStackTrace();
-					}
-				}
-				databaseConnection.close(connection);
-			}
-		});
-	}
-
-	public void addCubelet(UUID uuid, String type, Long received, Long expire) {
-		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
-			PreparedStatement ps = null;
-			Connection connection = null;
-			try {
-				connection = databaseConnection.getConnection();
-				ps = connection.prepareStatement("INSERT INTO ac_cubelets (UUID,cubeletUUID,type,received,expire) VALUES(?,?,?,?,?)");
-				ps.setString(1, uuid.toString());
-				ps.setString(2, UUID.randomUUID().toString());
-				ps.setString(3, type);
-				ps.setLong(4, received);
-				ps.setLong(5, expire);
-				ps.executeUpdate();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				if (ps != null) {
-					try {
-						ps.close();
-					} catch (SQLException throwables) {
-						throwables.printStackTrace();
-					}
-				}
-				databaseConnection.close(connection);
-			}
-		});
-	}
-
-	public void addCubelet(UUID uuid, UUID cubeletUUID, String type, Long received, Long expire) {
-		Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
-			PreparedStatement ps = null;
-			Connection connection = null;
-			try {
-				connection = databaseConnection.getConnection();
-				ps = connection.prepareStatement("INSERT INTO ac_cubelets (UUID,cubeletUUID,type,received,expire) VALUES(?,?,?,?,?)");
-				ps.setString(1, uuid.toString());
-				ps.setString(2, cubeletUUID.toString());
-				ps.setString(3, type);
-				ps.setLong(4, received);
-				ps.setLong(5, expire);
-				ps.executeUpdate();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				if (ps != null) {
-					try {
-						ps.close();
-					} catch (SQLException throwables) {
-						throwables.printStackTrace();
 					}
 				}
 				databaseConnection.close(connection);
@@ -735,7 +662,7 @@ public class DatabaseHandler {
 			Connection connection = null;
 			try {
 				connection = databaseConnection.getConnection();
-				ps = connection.prepareStatement("DELETE FROM ac_cubelets WHERE UUID = '" + uuid + "' AND expire < '" + actualTime + "';");
+				ps = connection.prepareStatement("DELETE FROM ac_cubelets WHERE UUID = '" + uuid + "' AND expire != -1 AND expire < '" + actualTime + "';");
 				ps.execute();
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -810,7 +737,7 @@ public class DatabaseHandler {
 			try {
 
 				connection = databaseConnection.getConnection();
-				ps = connection.prepareStatement("SELECT * FROM ac_cubelets WHERE UUID = '" + uuid.toString() + "' AND expire > '" + actualTime + "';");
+				ps = connection.prepareStatement("SELECT * FROM ac_cubelets WHERE UUID = '" + uuid.toString() + "' AND (expire = -1 OR expire > '" + actualTime + "');");
 
 				rs = ps.executeQuery();
 				while (rs.next()) {

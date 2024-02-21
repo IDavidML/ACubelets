@@ -52,7 +52,7 @@ public class Main extends JavaPlugin {
     private CubeletTypesHandler cubeletTypesHandler;
     private CubeletRarityHandler cubeletRarityHandler;
     private CubeletRewardHandler cubeletRewardHandler;
-    private CubeletBoxHandler cubeletBoxHandler;
+    private CubeletMachineHandler cubeletMachineHandler;
     private HologramHandler hologramHandler;
     private CubeletOpenHandler cubeletOpenHandler;
     private AnimationHandler animationHandler;
@@ -140,8 +140,8 @@ public class Main extends JavaPlugin {
 
         settings.put("AnimationsByPlayer", getConfig().getBoolean("AnimationsByPlayer"));
 
-        cubeletBoxHandler = new CubeletBoxHandler(this);
-        cubeletBoxHandler.loadBoxes();
+        cubeletMachineHandler = new CubeletMachineHandler(this);
+        cubeletMachineHandler.loadMachines();
         settings.put("NoGuiMode", getConfig().getBoolean("NoGuiMode"));
 
         settings.put("SerializeBase64", getConfig().getBoolean("SerializeBase64"));
@@ -305,7 +305,7 @@ public class Main extends JavaPlugin {
 
     public CubeletRewardHandler getCubeletRewardHandler() { return cubeletRewardHandler; }
 
-    public CubeletBoxHandler getCubeletBoxHandler() { return cubeletBoxHandler; }
+    public CubeletMachineHandler getCubeletBoxHandler() { return cubeletMachineHandler; }
 
     public HologramHandler getHologramHandler() { return hologramHandler; }
 

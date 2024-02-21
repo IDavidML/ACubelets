@@ -4,6 +4,9 @@ import me.davidml16.acubelets.objects.CubeletMachine;
 import me.davidml16.acubelets.objects.rewards.Reward;
 import me.davidml16.acubelets.utils.RepeatingTask;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.List;
 
 public interface HologramImplementation {
 
@@ -36,6 +39,8 @@ public interface HologramImplementation {
     void moveHologram(CubeletMachine box);
 
     void rewardHologram(CubeletMachine box, Reward reward);
+
+    void showTextAndIcon(CubeletMachine box, List<String> lines, ItemStack item);
 
     RepeatingTask duplicationRewardHologram(CubeletMachine box, Reward reward);
 

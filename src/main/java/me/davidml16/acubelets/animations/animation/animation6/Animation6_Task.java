@@ -164,6 +164,9 @@ public class Animation6_Task extends Animation {
 
 	}
 
+	@Override
+	public void onRewardDuplication() {}
+
 	private void drawCircle(Location loc, double radius) {
 		for (int i = 0; i < 10; i++) {
 			double angle = 2 * Math.PI * i / 10;

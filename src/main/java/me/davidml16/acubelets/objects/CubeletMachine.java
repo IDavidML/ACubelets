@@ -10,6 +10,7 @@ import org.bukkit.Particle;
 
 public class CubeletMachine {
 
+    private Location originalLocation;
     private Location location;
 
     private double blockHeight;
@@ -28,7 +29,8 @@ public class CubeletMachine {
     private int lastDuplicationPoints;
 
     public CubeletMachine(Location location, double blockHeight, double permanentBlockHeight, Rotation rotation) {
-        this.location = location;
+        this.originalLocation = location.clone();
+        this.location = location.clone();
         this.state = CubeletBoxState.EMPTY;
         this.playerOpening = null;
         this.lastReward = null;
@@ -42,6 +44,14 @@ public class CubeletMachine {
 
     public Location getLocation() {
         return location;
+    }
+
+    public Location getOriginalLocation() {
+        return originalLocation;
+    }
+
+    public void resetLocation() {
+        this.location = originalLocation.clone();
     }
 
     public void setLocation(Location location) {

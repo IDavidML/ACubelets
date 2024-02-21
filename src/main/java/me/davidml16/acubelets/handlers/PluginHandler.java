@@ -2,11 +2,9 @@ package me.davidml16.acubelets.handlers;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.Animation;
-import me.davidml16.acubelets.objects.CubeletMachine;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.ArrayList;
 
@@ -81,7 +79,7 @@ public class PluginHandler {
 
         main.getHologramImplementation().removeHolograms();
         main.getLanguageHandler().pushMessages();
-        main.getCubeletBoxHandler().loadBoxes();
+        main.getCubeletBoxHandler().loadMachines();
         main.getCubeletTypesHandler().loadTypes();
         main.getCubeletRarityHandler().loadRarities();
         main.getCubeletRewardHandler().loadRewards();

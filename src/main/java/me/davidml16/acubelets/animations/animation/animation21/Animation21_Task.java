@@ -138,6 +138,9 @@ public class Animation21_Task extends Animation {
 	}
 
 	@Override
+	public void onRewardDuplication() {}
+
+	@Override
 	public void doRewardDuplication() {
 
 		for(Animation21_RotatingParticle rotatingParticle : rotatingParticles) {

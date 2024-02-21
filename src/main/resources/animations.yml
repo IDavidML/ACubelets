@@ -215,3 +215,12 @@ animations:
     NeedPermission: true
     Icon:
       material: PURPUR_BLOCK
+
+  animation_23:
+    Enabled: true
+    DisplayName: 'Animation 23'
+    OutlineParticles: true
+    FloorParticles: true
+    NeedPermission: true
+    Icon:
+      material: BEACON

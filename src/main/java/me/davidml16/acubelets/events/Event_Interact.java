@@ -50,13 +50,13 @@ public class Event_Interact implements Listener {
 
             if(action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
 
-                if (main.getCubeletBoxHandler().getBoxes().containsKey(e.getClickedBlock().getLocation())) {
+                if (main.getCubeletBoxHandler().getMachines().containsKey(e.getClickedBlock().getLocation())) {
 
                     e.setCancelled(true);
 
                     if (e.getHand() != EquipmentSlot.HAND) return;
 
-                    CubeletMachine box = main.getCubeletBoxHandler().getBoxByLocation(e.getClickedBlock().getLocation());
+                    CubeletMachine box = main.getCubeletBoxHandler().getMachineByLocation(e.getClickedBlock().getLocation());
 
                     if (box.isWaiting()) {
                         main.getPlayerDataHandler().getData(player).setBoxOpened(box);
@@ -77,7 +77,7 @@ public class Event_Interact implements Listener {
 
                                 Cubelet cubelet = optionalCubelet.get();
 
-                                if (cubelet.getExpire() > System.currentTimeMillis()) {
+                                if (cubelet.getExpire() > System.currentTimeMillis() || cubelet.getExpire() == -1) {
 
                                     CubeletType type = main.getCubeletTypesHandler().getTypeBydId(cubelet.getType());
 
@@ -115,7 +115,7 @@ public class Event_Interact implements Listener {
 
             if(action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
 
-                if (main.getCubeletBoxHandler().getBoxes().containsKey(e.getClickedBlock().getLocation())) {
+                if (main.getCubeletBoxHandler().getMachines().containsKey(e.getClickedBlock().getLocation())) {
 
                     e.setCancelled(true);
 
@@ -136,7 +136,7 @@ public class Event_Interact implements Listener {
 
                     } else {
 
-                        CubeletMachine box = main.getCubeletBoxHandler().getBoxByLocation(e.getClickedBlock().getLocation());
+                        CubeletMachine box = main.getCubeletBoxHandler().getMachineByLocation(e.getClickedBlock().getLocation());
 
                         if (box.isWaiting()) {
 

@@ -255,6 +255,9 @@ public class Animation11_Task extends Animation {
 
 	}
 
+	@Override
+	public void onRewardDuplication() {}
+
 	private int r_i(int min, int max) {
 	    return RANDOM.nextInt(max - min) + min;
     }

@@ -126,6 +126,9 @@ public class Animation8_Task extends Animation {
 
 	}
 
+	@Override
+	public void onRewardDuplication() {}
+
 	public Location getRandomLocation(Location loc1, Location loc2) {
 		double minX = Math.min(loc1.getX(), loc2.getX());
 		double minY = Math.min(loc1.getY(), loc2.getY());

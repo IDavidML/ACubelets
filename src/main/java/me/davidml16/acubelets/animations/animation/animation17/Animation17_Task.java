@@ -228,6 +228,9 @@ public class Animation17_Task extends Animation {
 
 	}
 
+	@Override
+	public void onRewardDuplication() {}
+
 	public void removeRandomBall() {
 		for(Animation17_Snowball snowball : snowballs) {
 			snowball.cancel();

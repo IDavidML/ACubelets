@@ -25,6 +25,18 @@ public class LocationUtils {
         return locations;
     }
 
+    public static List<Location> getCircleVertical(Location location, double radius, int points) {
+        List<Location> locations = new ArrayList<Location>();
+        double increment = 6.283185307179586D / points;
+        for (int i = 0; i < points; i++) {
+            double angle = i * increment;
+            double x = location.getX() + Math.cos(angle) * radius;
+            double y = location.getY() + Math.sin(angle) * radius;
+            locations.add(new Location(location.getWorld(), x, y, location.getZ()));
+        }
+        return locations;
+    }
+
     @NotNull
     public static String getWorldName(@NotNull Location location) {
         World world = location.getWorld();

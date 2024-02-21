@@ -13,7 +13,6 @@ import org.bukkit.World;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 
 public class MachineEffectsTask {
 
@@ -28,7 +27,7 @@ public class MachineEffectsTask {
 		@Override
 		public void run() {
 
-			Collection<CubeletMachine> machines = main.getCubeletBoxHandler().getBoxes().values();
+			Collection<CubeletMachine> machines = main.getCubeletBoxHandler().getMachines().values();
 
 			machines.forEach(machine -> {
 				if (machine.getBlockEffectModel() == MachineEffectModel.NONE) return;

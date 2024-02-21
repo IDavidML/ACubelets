@@ -43,4 +43,7 @@ public class Animation0_Task extends Animation {
 	@Override
 	public void onRewardReveal() { }
 
+	@Override
+	public void onRewardDuplication() {}
+
 }

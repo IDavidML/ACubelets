@@ -12,7 +12,6 @@ import me.davidml16.acubelets.utils.ItemBuilder;
 import me.davidml16.acubelets.utils.SkullCreator;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -182,9 +181,9 @@ public class EditMachineMenu extends Menu {
 
         } else if(slot == 16) {
 
-            if (getMain().getCubeletBoxHandler().getBoxes().containsKey(cubeletMachine.getLocation())) {
+            if (getMain().getCubeletBoxHandler().getMachines().containsKey(cubeletMachine.getLocation())) {
 
-                getMain().getCubeletBoxHandler().removeBox(cubeletMachine.getLocation());
+                getMain().getCubeletBoxHandler().removeMachine(cubeletMachine.getLocation());
 
                 playSound(SoundType.ANVIL_USE);
 
@@ -223,7 +222,7 @@ public class EditMachineMenu extends Menu {
     @Override
     public void OnMenuClosed() {
 
-        getMain().getCubeletBoxHandler().saveBoxes();
+        getMain().getCubeletBoxHandler().saveMachines();
 
     }
 

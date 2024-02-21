@@ -45,6 +45,7 @@ public abstract class Animation {
     private int animationId;
 
     private boolean rewardRevealed;
+    private boolean rewardRevealInHologram;
 
     private boolean showOutlineParticles, showFloorParticles, showAroundParticles;
 
@@ -62,6 +63,7 @@ public abstract class Animation {
         this.animationRevealTick = 0;
 
         this.rewardRevealed = false;
+        this.rewardRevealInHologram = true;
 
         this.showOutlineParticles = true;
         this.showFloorParticles = true;
@@ -77,12 +79,12 @@ public abstract class Animation {
 
         this.cubeletMachine = box;
 
-        this.boxLocation = cubeletMachine.getLocation().clone().add(0.5, 0, 0.5);
+        this.boxLocation = cubeletMachine.getOriginalLocation().clone().add(0.5, 0, 0.5);
 
-        this.corner1 = cubeletMachine.getLocation().clone().add(0.05, box.getPermanentBlockHeight() - 0.325, 0.05);
-        this.corner2 = cubeletMachine.getLocation().clone().add(0.95, box.getPermanentBlockHeight() - 0.325, 0.05);
-        this.corner3 = cubeletMachine.getLocation().clone().add(0.95, box.getPermanentBlockHeight() - 0.325, 0.95);
-        this.corner4 = cubeletMachine.getLocation().clone().add(0.05, box.getPermanentBlockHeight() - 0.325, 0.95);
+        this.corner1 = cubeletMachine.getOriginalLocation().clone().add(0.05, box.getPermanentBlockHeight() - 0.325, 0.05);
+        this.corner2 = cubeletMachine.getOriginalLocation().clone().add(0.95, box.getPermanentBlockHeight() - 0.325, 0.05);
+        this.corner3 = cubeletMachine.getOriginalLocation().clone().add(0.95, box.getPermanentBlockHeight() - 0.325, 0.95);
+        this.corner4 = cubeletMachine.getOriginalLocation().clone().add(0.05, box.getPermanentBlockHeight() - 0.325, 0.95);
 
     }
 
@@ -152,6 +154,7 @@ public abstract class Animation {
         cubeletMachine.setPlayerOpening(null);
         cubeletMachine.setLastReward(null);
         cubeletMachine.setLastDuplicationPoints(0);
+        cubeletMachine.resetLocation();
         main.getHologramImplementation().reloadHologram(cubeletMachine);
 
         onStop();
@@ -168,7 +171,8 @@ public abstract class Animation {
 
     public void doRewardReveal() {
 
-        main.getHologramImplementation().rewardHologram(cubeletMachine, reward);
+        if(rewardRevealInHologram) main.getHologramImplementation().rewardHologram(cubeletMachine, reward);
+
         cubeletMachine.setState(CubeletBoxState.REWARD);
 
         onRewardReveal();
@@ -179,6 +183,8 @@ public abstract class Animation {
 
         if(!main.isDuplicationEnabled())
             return;
+
+        onRewardDuplication();
 
         hologramAnimation = main.getCubeletRewardHandler().duplicationTask(cubeletMachine, reward);
 
@@ -211,6 +217,8 @@ public abstract class Animation {
 
     public abstract void onRewardReveal();
 
+    public abstract void onRewardDuplication();
+
     public int getAnimationId() {
         return animationId;
     }
@@ -233,6 +241,14 @@ public abstract class Animation {
 
     public void setAnimationSettings(AnimationSettings animationSettings) {
         this.animationSettings = animationSettings;
+    }
+
+    public boolean isRewardRevealInHologram() {
+        return rewardRevealInHologram;
+    }
+
+    public void setRewardRevealInHologram(boolean rewardRevealInHologram) {
+        this.rewardRevealInHologram = rewardRevealInHologram;
     }
 
     public CubeletMachine getCubeletBox() {

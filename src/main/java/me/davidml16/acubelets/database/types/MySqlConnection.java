@@ -45,8 +45,8 @@ public class MySqlConnection implements DatabaseConnection{
             config.setJdbcUrl("jdbc:mysql://" + this.host + ":" + this.port + "/" + this.database);
             config.setUsername(this.user);
             config.setPassword(this.password);
-            config.setMaximumPoolSize(75);
-            config.setMinimumIdle(4);
+            config.setMaximumPoolSize(main.getConfig().getInt("MySQL.Pools.MaximumSize"));
+            config.setMinimumIdle(main.getConfig().getInt("MySQL.Pools.MinimumSize"));
             config.addDataSourceProperty("cachePrepStmts", "true");
             config.addDataSourceProperty("prepStmtCacheSize", "250");
             config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");

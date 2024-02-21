@@ -182,4 +182,7 @@ public class Animation13_Task extends Animation {
 
 	}
 
+	@Override
+	public void onRewardDuplication() {}
+
 }
