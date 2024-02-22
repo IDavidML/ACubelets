@@ -17,6 +17,7 @@ public class AnimationSettings implements Comparable<AnimationSettings> {
     private boolean floorParticles;
     private boolean aroundParticles;
     private boolean needPermission;
+    private boolean changeBlocks;
 
     public AnimationSettings(String id) {
         this.id = id;
@@ -28,6 +29,7 @@ public class AnimationSettings implements Comparable<AnimationSettings> {
         this.floorParticles = false;
         this.aroundParticles = false;
         this.needPermission = true;
+        this.changeBlocks = true;
     }
 
     public String getId() { return id; }
@@ -81,6 +83,14 @@ public class AnimationSettings implements Comparable<AnimationSettings> {
     public boolean isNeedPermission() { return needPermission; }
 
     public void setNeedPermission(boolean needPermission) { this.needPermission = needPermission; }
+
+    public boolean isChangeBlocks() {
+        return changeBlocks;
+    }
+
+    public void setChangeBlocks(boolean changeBlocks) {
+        this.changeBlocks = changeBlocks;
+    }
 
     @Override
     public int compareTo(AnimationSettings o) {

@@ -475,6 +475,9 @@ public abstract class Animation {
         if(animationBlocks == null)
             return;
 
+        if(!animationSettings.isChangeBlocks())
+            return;
+
         animationBlocks.runTaskTimer(main, delay, 1L);
 
     }

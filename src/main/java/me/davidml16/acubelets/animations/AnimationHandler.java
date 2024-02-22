@@ -31,7 +31,7 @@ public class AnimationHandler {
     private YamlConfiguration config;
 
     public static String DEFAULT_ANIMATION = "animation2";
-    public static int ANIMATION_COUNT = 23;
+    public static int ANIMATION_COUNT = 24;
 
     private static List<ItemStack> animationItems;
     static {
@@ -44,7 +44,8 @@ public class AnimationHandler {
                 XMaterial.CAULDRON.parseItem(), XMaterial.PRISMARINE_SHARD.parseItem(), XMaterial.POPPY.parseItem(),
                 XMaterial.BLAZE_POWDER.parseItem(), XMaterial.PINK_WOOL.parseItem(), XMaterial.SNOWBALL.parseItem(),
                 XMaterial.DIAMOND.parseItem(), XMaterial.ANVIL.parseItem(), XMaterial.ENDER_PEARL.parseItem(),
-                XMaterial.HEART_OF_THE_SEA.parseItem(), XMaterial.PURPUR_BLOCK.parseItem(), XMaterial.RED_CONCRETE.parseItem()
+                XMaterial.HEART_OF_THE_SEA.parseItem(), XMaterial.PURPUR_BLOCK.parseItem(), XMaterial.RED_CONCRETE.parseItem(),
+                XMaterial.BLACK_CONCRETE.parseItem()
         );
 
     }
@@ -99,6 +100,8 @@ public class AnimationHandler {
 
             animation.setNeedPermission(config.getBoolean("animations." + animation + ".NeedPermission", true));
 
+            animation.setChangeBlocks(config.getBoolean("animations." + animationId + ".ChangeBlocks", true));
+
             if(config.contains("animations." + animationId + ".Icon")
                     && config.getConfigurationSection("animations." + animationId + ".Icon") != null) {
 
@@ -143,6 +146,8 @@ public class AnimationHandler {
             config.set("animations." + animationId + ".AroundParticles", animationSettings.isAroundParticles());
 
             config.set("animations." + animationId + ".NeedPermission", animationSettings.isNeedPermission());
+
+            config.set("animations." + animationId + ".ChangeBlocks", animationSettings.isChangeBlocks());
 
             XItemStack.serialize(animationSettings.getDisplayItem(), Utils.getConfigurationSection(config, "animations." + animationId + ".Icon"));
         }

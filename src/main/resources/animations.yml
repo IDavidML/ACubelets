@@ -51,6 +51,7 @@ animations:
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    ChangeBlocks: true
     Icon:
       material: NETHERRACK
 
@@ -60,6 +61,7 @@ animations:
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    ChangeBlocks: true
     Icon:
       material: SANDSTONE
 
@@ -78,6 +80,7 @@ animations:
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    ChangeBlocks: true
     Icon:
       material: PUMPKIN
 
@@ -87,6 +90,7 @@ animations:
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    ChangeBlocks: true
     Icon:
       material: RED_WOOL
 
@@ -123,6 +127,7 @@ animations:
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    ChangeBlocks: true
     Icon:
       material: CAULDRON
 
@@ -132,6 +137,7 @@ animations:
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    ChangeBlocks: true
     Icon:
       material: PRISMARINE_SHARD
 
@@ -141,6 +147,7 @@ animations:
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    ChangeBlocks: true
     Icon:
       material: POPPY
 
@@ -150,6 +157,7 @@ animations:
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    ChangeBlocks: true
     Icon:
       material: BLAZE_POWDER
 
@@ -168,6 +176,7 @@ animations:
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    ChangeBlocks: true
     Icon:
       material: SNOWBALL
 
@@ -186,6 +195,7 @@ animations:
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    ChangeBlocks: true
     Icon:
       material: ANVIL
 
@@ -195,6 +205,7 @@ animations:
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    ChangeBlocks: true
     Icon:
       material: ENDER_PEARL
 
@@ -204,6 +215,7 @@ animations:
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    ChangeBlocks: true
     Icon:
       material: HEART_OF_THE_SEA
 
@@ -213,6 +225,7 @@ animations:
     OutlineParticles: true
     FloorParticles: true
     NeedPermission: true
+    ChangeBlocks: true
     Icon:
       material: PURPUR_BLOCK
 
@@ -224,3 +237,12 @@ animations:
     NeedPermission: true
     Icon:
       material: RED_CONCRETE
+
+  animation_24:
+    Enabled: true
+    DisplayName: 'Animation 24'
+    OutlineParticles: true
+    FloorParticles: true
+    NeedPermission: true
+    Icon:
+      material: BLACK_CONCRETE
