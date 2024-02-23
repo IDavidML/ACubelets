@@ -1,5 +1,6 @@
 package me.davidml16.acubelets.holograms.implementations;
 
+import eu.decentsoftware.holograms.api.DHAPI;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.enums.CubeletBoxState;
 import me.davidml16.acubelets.holograms.HologramHandler;
@@ -224,6 +225,20 @@ public class HolographicDisplaysImpl implements HologramImplementation, Listener
                     if (!line.contains("%reward_icon%")) hologram.getLines().appendText(Utils.translate(line));
                     else hologram.getLines().appendItem(item);
                 }
+            }
+        }
+    }
+
+    @Override
+    public void moveHologramShowTextAndIcon(CubeletMachine box, List<String> lines) {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (holograms.get(box) == null) continue;
+
+            if (holograms.get(box).containsKey(p.getUniqueId())) {
+                Hologram hologram = holograms.get(box).get(p.getUniqueId());
+                hologram.getLines().clear();
+
+                hologram.setPosition(box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + (box.getBlockHeight() + 0.1875), 0.5));
             }
         }
     }

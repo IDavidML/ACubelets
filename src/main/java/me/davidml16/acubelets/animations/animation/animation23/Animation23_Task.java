@@ -57,10 +57,11 @@ public class Animation23_Task extends Animation {
 			Location newBoxLoc = getBoxLocation().clone();
 			newBoxLoc.add(0.0D, this.boxLocIncrease, 0.0D);
 			newBoxLoc.setYaw(rotation);
-			armorStand.teleport(newBoxLoc);
 
-			UtilParticles.display(Particles.SMOKE_NORMAL, armorStand.getLocation().clone().add(0, 1.25, 0), 1);
-
+			if(armorStand != null) {
+				armorStand.teleport(newBoxLoc);
+				UtilParticles.display(Particles.SMOKE_NORMAL, armorStand.getLocation().clone().add(0, 1.25, 0), 1);
+			}
 		}
 
 		if(time == 90) {
@@ -97,7 +98,7 @@ public class Animation23_Task extends Animation {
 
 				selectedReward = items.get(rouletteRewardIndex).getReward();
 
-				armorStand.setHelmet(XMaterial.AIR.parseItem());
+				if(armorStand != null) armorStand.setHelmet(XMaterial.AIR.parseItem());
 
 				getMain().getHologramImplementation().showTextAndIcon(getCubeletBox(), Arrays.asList(selectedReward.getName(), "", "%reward_icon%"), selectedReward.getIcon());
 			}
@@ -139,7 +140,7 @@ public class Animation23_Task extends Animation {
 	public void onStart() {
 
 		getCubeletBox().setLocation(getCubeletBox().getLocation().add(0, 2.25, 0));
-		getMain().getHologramImplementation().showTextAndIcon(getCubeletBox(), Arrays.asList("", "", "%reward_icon%"), XMaterial.AIR.parseItem());
+		getMain().getHologramImplementation().moveHologramShowTextAndIcon(getCubeletBox(), Arrays.asList("", "", "%reward_icon%"));
 
 		rotation = getRotation(false).value;
 
@@ -193,7 +194,7 @@ public class Animation23_Task extends Animation {
 	@Override
 	public void onPreRewardReveal() {
 
-		Sounds.playSound(armorStand.getLocation(), Sounds.MySound.EXPLODE, 0.5F, 1F);
+		Sounds.playSound(getCubeletBox().getLocation(), Sounds.MySound.EXPLODE, 0.5F, 1F);
 
 		getMain().getFireworkUtil().spawn(
 				getCubeletBox().getLocation().clone().add(0.5, 1.50, 0.5),
@@ -205,8 +206,10 @@ public class Animation23_Task extends Animation {
 
 	@Override
 	public void onRewardReveal() {
-		armorStand.remove();
-		armorStand = null;
+		if(armorStand != null) {
+			armorStand.remove();
+			armorStand = null;
+		}
 
 		spawnItemsRunnable.cancel();
 

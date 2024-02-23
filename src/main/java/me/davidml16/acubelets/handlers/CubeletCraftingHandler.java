@@ -23,7 +23,8 @@ public class CubeletCraftingHandler {
 
     private List<CraftParent> crafts;
 
-    private int inventorySize;
+    private final int inventorySizeRows = 6;
+    private final int inventorySize = 6 * 9;
 
     private Main main;
 
@@ -42,6 +43,14 @@ public class CubeletCraftingHandler {
 
     public List<CraftParent> getCrafts() {
         return crafts;
+    }
+
+    public int getInventorySize() {
+        return inventorySize;
+    }
+
+    public int getInventorySizeRows() {
+        return inventorySizeRows;
     }
 
     public CraftParent getCraftById(String id) {
@@ -68,7 +77,6 @@ public class CubeletCraftingHandler {
         if(!file.exists()) {
             try {
                 file.createNewFile();
-                config.set("cubelet-crafting.settings.rows", 4);
                 config.set("cubelet-crafting.crafts", new ArrayList<>());
                 saveConfig();
             } catch (IOException e) {
@@ -84,8 +92,6 @@ public class CubeletCraftingHandler {
 
         saveConfig();
 
-        inventorySize = config.getInt("cubelet-crafting.settings.rows");
-
         Main.log.sendMessage(Utils.translate("  &eLoading crafts:"));
 
         if(config.contains("cubelet-crafting.crafts")) {
@@ -94,7 +100,7 @@ public class CubeletCraftingHandler {
                     if(!main.getCubeletTypesHandler().getTypes().containsKey(cubeletType)) continue;
 
                     int slot = config.getInt("cubelet-crafting.crafts." + cubeletType + ".slot");
-                    if(slot > (getInventorySize() - 10) || slot < 0) continue;
+                    if(slot > (inventorySize - 10) || slot < 0) continue;
 
                     List<CraftIngredient> ingredients = new ArrayList<>();
                     if(config.contains("cubelet-crafting.crafts." + cubeletType + ".ingredients")) {
@@ -137,7 +143,6 @@ public class CubeletCraftingHandler {
     }
 
     public void saveCrafting() {
-        config.set("cubelet-crafting.settings.rows", this.inventorySize);
         config.set("cubelet-crafting.crafts", new ArrayList<>());
 
         for(CraftParent craftParent : crafts) {
@@ -156,21 +161,6 @@ public class CubeletCraftingHandler {
         }
 
         saveConfig();
-    }
-
-    public int getInventorySize() {
-        int size = this.inventorySize;
-        if(size >= 2 && size <= 6)
-            return size * 9;
-        return 4 * 9;
-    }
-
-    public int getInventoryRows() {
-        return this.inventorySize;
-    }
-
-    public void setInventorySize(int inventorySize) {
-        this.inventorySize = inventorySize;
     }
 
     public boolean haveIngredient(Player player, CraftIngredient ingredient) {

@@ -16,6 +16,13 @@ Layout:
   # GUI items
   Items:
 
+    NoPlayer:
+      Name: '&4No player online'
+      Material: 'BARRIER'
+      Lore:
+        - '&7There are no online players'
+        - '&7to give away a cubelet.'
+
     # Player item
     Player:
       Name: '&a%player%'

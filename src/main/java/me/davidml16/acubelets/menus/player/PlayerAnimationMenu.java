@@ -23,9 +23,8 @@ import java.util.List;
 public class PlayerAnimationMenu extends Menu {
 
     public PlayerAnimationMenu(Main main, Player player) {
-
         super(main, player);
-
+        setSize(6);
     }
 
     @Override
@@ -52,16 +51,16 @@ public class PlayerAnimationMenu extends Menu {
             return;
         }
 
-        if(page > 0 && animations.size() < (page * 14) + 1) {
+        if(page > 0 && animations.size() < (page * getPageSize()) + 1) {
             openPage(getPage() - 1);
             return;
         }
 
-        if (animations.size() > 14) animations = animations.subList(page * 14, Math.min(((page * 14) + 14), animations.size()));
+        if (animations.size() > 14) animations = animations.subList(page * getPageSize(), Math.min(((page * getPageSize()) + getPageSize()), animations.size()));
 
         GUILayout guiLayout = getMain().getLayoutHandler().getLayout("animations");
 
-        Inventory gui = createInventory(45, guiLayout.getMessage("Title"));
+        Inventory gui = createInventory(getSize(), guiLayout.getMessage("Title"));
 
         if (page > 0) {
 
@@ -73,7 +72,7 @@ public class PlayerAnimationMenu extends Menu {
             item = NBTEditor.set(item, "previous", "action");
 
             if(guiLayout.getSlot("PreviousPage") >= 0)
-                gui.setItem(((45 - 10) + guiLayout.getSlot("PreviousPage")), item);
+                gui.setItem(((getSize() - 10) + guiLayout.getSlot("PreviousPage")), item);
 
         }
 
@@ -87,7 +86,7 @@ public class PlayerAnimationMenu extends Menu {
             item = NBTEditor.set(item, "next", "action");
 
             if(guiLayout.getSlot("NextPage") >= 0)
-                gui.setItem((gui.getSize() - 10) + guiLayout.getSlot("NextPage"), item);
+                gui.setItem((getSize() - 10) + guiLayout.getSlot("NextPage"), item);
 
         }
 
@@ -96,19 +95,19 @@ public class PlayerAnimationMenu extends Menu {
                 .setLore(guiLayout.getMessageList("Items.Back.Lore"))
                 .toItemStack();
         back = NBTEditor.set(back, "back", "action");
-        gui.setItem((gui.getSize() - 10) + guiLayout.getSlot("Back"), back);
+        gui.setItem((getSize() - 10) + guiLayout.getSlot("Back"), back);
 
         ItemStack filler = XMaterial.GRAY_STAINED_GLASS_PANE.parseItem();
-        fillTopSide(filler, 3);
+        fillTopSide(filler, 4);
 
         for(AnimationSettings animation : animations)
             gui.addItem(getAnimationItem(player, guiLayout, animation.getId()));
 
         ItemStack randomAnimation = getRandomAnimationItem(player, guiLayout);
         randomAnimation = NBTEditor.set(randomAnimation, "random", "action");
-        gui.setItem((gui.getSize() - 10) + guiLayout.getSlot("RandomAnimation"), randomAnimation);
+        gui.setItem((getSize() - 10) + guiLayout.getSlot("RandomAnimation"), randomAnimation);
 
-        fillTopSide(null, 3);
+        fillTopSide(null, 4);
 
         openInventory();
 

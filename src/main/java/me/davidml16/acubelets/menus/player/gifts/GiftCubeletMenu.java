@@ -22,9 +22,8 @@ import java.util.List;
 public class GiftCubeletMenu extends Menu {
 
     public GiftCubeletMenu(Main main, Player player) {
-
         super(main, player);
-
+        setSize(6);
     }
 
     @Override
@@ -55,7 +54,7 @@ public class GiftCubeletMenu extends Menu {
 
         }
 
-        Inventory gui = createInventory(36, guiLayout.getMessage("Title")
+        Inventory gui = createInventory(getSize(), guiLayout.getMessage("Title")
                         .replaceAll("%cubelet_type%", Utils.removeColors(session.getCubeletType().getName()))
                         .replaceAll("%amount%", String.valueOf(session.getCubeletAmount())));
 
@@ -64,7 +63,7 @@ public class GiftCubeletMenu extends Menu {
                 .setLore(guiLayout.getMessageList("Items.Back.Lore"))
                 .toItemStack();
         back = NBTEditor.set(back, "back", "action");
-        gui.setItem((36 - 10) + guiLayout.getSlot("Back"), back);
+        gui.setItem((getSize() - 10) + guiLayout.getSlot("Back"), back);
 
         List<String> cubeletLore = new ArrayList<>();
 
@@ -97,19 +96,19 @@ public class GiftCubeletMenu extends Menu {
                 .setLore(cubeletLore)
                 .toItemStack();
         cubelet = NBTEditor.set(cubelet, "send", "action");
-        gui.setItem(13, cubelet);
+        gui.setItem(getCenterSlot(), cubelet);
 
         ItemStack add = new ItemBuilder(SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjFkMGY4MmEyYTRjZGQ4NWY3OWY0ZDlkOTc5OGY5YzNhNWJjY2JlOWM3ZjJlMjdjNWZjODM2NjUxYThmM2Y0NSJ9fX0="))
                 .setName(guiLayout.getMessage("Items.Add.Name"))
                 .toItemStack();
         add = NBTEditor.set(add, "add", "action");
-        gui.setItem(15, add);
+        gui.setItem(getCenterSlot() + 2, add);
 
         ItemStack substract = new ItemBuilder(SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZWRmNWMyZjg5M2JkM2Y4OWNhNDA3MDNkZWQzZTQyZGQwZmJkYmE2ZjY3NjhjODc4OWFmZGZmMWZhNzhiZjYifX19"))
                 .setName(guiLayout.getMessage("Items.Substract.Name"))
                 .toItemStack();
         substract = NBTEditor.set(substract, "substract", "action");
-        gui.setItem(11, substract);
+        gui.setItem(getCenterSlot() - 2, substract);
 
         openInventory();
 

@@ -26,9 +26,8 @@ import java.util.regex.Matcher;
 public class LootHistoryMenu extends Menu {
 
     public LootHistoryMenu(Main main, Player player) {
-
         super(main, player);
-
+        setSize(6);
     }
 
     @Override
@@ -44,18 +43,14 @@ public class LootHistoryMenu extends Menu {
 
         GUILayout guiLayout = getMain().getLayoutHandler().getLayout("loothistory");
 
-        int pageSize = getPageSize(guiLayout);
-
-        if(page > 0 && lootHistories.size() < (page * pageSize) + 1) {
+        if(page > 0 && lootHistories.size() < (page * getPageSize()) + 1) {
             openPage(getPage() - 1);
             return;
         }
 
-        if (lootHistories.size() > pageSize) lootHistories = lootHistories.subList(page * pageSize, Math.min(((page * pageSize) + pageSize), lootHistories.size()));
+        if (lootHistories.size() > getPageSize()) lootHistories = lootHistories.subList(page * getPageSize(), Math.min(((page * getPageSize()) + getPageSize()), lootHistories.size()));
 
-        int neededSize = getNeededSize(guiLayout, lootHistories.size());
-
-        Inventory gui = createInventory(neededSize, guiLayout.getMessage("Title"));
+        Inventory gui = createInventory(getSize(), guiLayout.getMessage("Title"));
 
         if (page > 0) {
 
@@ -67,11 +62,11 @@ public class LootHistoryMenu extends Menu {
             item = NBTEditor.set(item, "previous", "action");
 
             if(guiLayout.getSlot("PreviousPage") >= 0)
-                gui.setItem(((neededSize - 10) + guiLayout.getSlot("PreviousPage")), item);
+                gui.setItem(((getSize() - 10) + guiLayout.getSlot("PreviousPage")), item);
 
         }
 
-        if (profile.getLootHistory().size() > (page + 1) * pageSize) {
+        if (profile.getLootHistory().size() > (page + 1) * getPageSize()) {
 
             int amount = guiLayout.getBoolean("Items.NextPage.ShowPageNumber") ? (page + 2) : 1;
 
@@ -81,7 +76,7 @@ public class LootHistoryMenu extends Menu {
             item = NBTEditor.set(item, "next", "action");
 
             if(guiLayout.getSlot("NextPage") >= 0)
-                gui.setItem((neededSize - 10) + guiLayout.getSlot("NextPage"), item);
+                gui.setItem((getSize() - 10) + guiLayout.getSlot("NextPage"), item);
 
         }
 
@@ -93,7 +88,7 @@ public class LootHistoryMenu extends Menu {
                     .toItemStack();
             back = NBTEditor.set(back, "back", "action");
 
-            gui.setItem((neededSize - 10) + guiLayout.getSlot("Back"), back);
+            gui.setItem((getSize() - 10) + guiLayout.getSlot("Back"), back);
 
         } else {
 
@@ -103,12 +98,15 @@ public class LootHistoryMenu extends Menu {
                     .toItemStack();
             close = NBTEditor.set(close, "close", "action");
 
-            gui.setItem((neededSize - 10) + guiLayout.getSlot("Close"), close);
+            gui.setItem((getSize() - 10) + guiLayout.getSlot("Close"), close);
 
         }
 
-        for (int i = 0; i <= (neededSize-10); i++)
+        for (int i = 0; i <= (getSize() - 10); i++)
             gui.setItem(i, null);
+
+        ItemStack filler = XMaterial.GRAY_STAINED_GLASS_PANE.parseItem();
+        fillTopSide(filler, getSizeRows() - 2);
 
         if(lootHistories.size() > 0) {
 
@@ -139,21 +137,14 @@ public class LootHistoryMenu extends Menu {
 
         } else {
 
-            int slot = 0;
-
-            if(!guiLayout.getBoolean("Size.Dynamic")) {
-
-                if(guiLayout.getSlot("NoHistory") <= (neededSize - 10))
-                    slot = guiLayout.getSlot("NoHistory");
-
-            }
-
-            gui.setItem(slot, new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NoHistory.Material")).get().parseItem())
+            gui.setItem(getCenterSlot(), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NoHistory.Material")).get().parseItem())
                     .setName(guiLayout.getMessage("Items.NoHistory.Name"))
                     .setLore(guiLayout.getMessageList("Items.NoHistory.Lore")
                     ).toItemStack());
 
         }
+
+        fillTopSide(null, getSizeRows() - 2);
 
         openInventory();
 
@@ -208,57 +199,5 @@ public class LootHistoryMenu extends Menu {
 
     @Override
     public void OnMenuClosed() { }
-
-    private int getNeededSize(GUILayout guiLayout, int cubelets) {
-
-        int finalRows = 0;
-        int rows = guiLayout.getInteger("Size.Max-History-Rows");
-
-        if(rows < 1) rows = 1;
-        else if(rows > 5) rows = 5;
-
-        if(guiLayout.getBoolean("Size.Dynamic")) {
-
-            if(rows == 1) {
-                finalRows = 1;
-            } else if(rows == 2) {
-                if(cubelets <= 9) finalRows = 1;
-                else finalRows = 2;
-            } else if(rows == 3) {
-                if(cubelets >= 0 && cubelets <= 9) finalRows = 1;
-                else if(cubelets >= 9 && cubelets <= 18) finalRows = 2;
-                else finalRows = 3;
-            } else if(rows == 4) {
-                if(cubelets >= 0 && cubelets <= 9) finalRows = 1;
-                else if(cubelets >= 9 && cubelets <= 18) finalRows = 2;
-                else if(cubelets >= 18 && cubelets <= 27) finalRows = 3;
-                else finalRows = 4;
-            } else {
-                if(cubelets >= 0 && cubelets <= 9) finalRows = 1;
-                else if(cubelets >= 9 && cubelets <= 18) finalRows = 2;
-                else if(cubelets >= 18 && cubelets <= 27) finalRows = 3;
-                else if(cubelets >= 27 && cubelets <= 36) finalRows = 4;
-                else finalRows = 5;
-            }
-
-        } else {
-
-            finalRows = rows;
-
-        }
-
-        return (finalRows + 1) * 9;
-    }
-
-    private int getPageSize(GUILayout guiLayout) {
-
-        int rows = guiLayout.getInteger("Size.Max-History-Rows");
-
-        if(rows < 1) rows = 1;
-        else if(rows > 5) rows = 5;
-
-        return rows * 9;
-
-    }
 
 }

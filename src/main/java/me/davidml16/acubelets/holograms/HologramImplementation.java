@@ -42,6 +42,8 @@ public interface HologramImplementation {
 
     void showTextAndIcon(CubeletMachine box, List<String> lines, ItemStack item);
 
+    void moveHologramShowTextAndIcon(CubeletMachine box, List<String> lines);
+
     RepeatingTask duplicationRewardHologram(CubeletMachine box, Reward reward);
 
 }

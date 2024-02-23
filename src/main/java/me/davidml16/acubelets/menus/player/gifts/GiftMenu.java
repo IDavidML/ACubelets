@@ -19,9 +19,8 @@ import java.util.List;
 public class GiftMenu extends Menu {
 
     public GiftMenu(Main main, Player player) {
-
         super(main, player);
-
+        setSize(6);
     }
 
     @Override
@@ -33,7 +32,7 @@ public class GiftMenu extends Menu {
 
         List<CubeletType> cubeletTypes = getCubeletTypesAvailable(player);
 
-        if(page > 0 && cubeletTypes.size() < (page * 14) + 1) {
+        if(page > 0 && cubeletTypes.size() < (page * getPageSize()) + 1) {
             openPage(getPage() - 1);
             return;
         }
@@ -42,7 +41,7 @@ public class GiftMenu extends Menu {
 
         Profile profile = getMain().getPlayerDataHandler().getData(player);
 
-        Inventory gui = createInventory(45, guiLayout.getMessage("Title"));
+        Inventory gui = createInventory(getSize(), guiLayout.getMessage("Title"));
         ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
 
         if (page > 0) {
@@ -54,11 +53,11 @@ public class GiftMenu extends Menu {
                     .toItemStack();
             item = NBTEditor.set(item, "previous", "action");
 
-            gui.setItem((45 - 10) + guiLayout.getSlot("PreviousPage"), item);
+            gui.setItem((getSize() - 10) + guiLayout.getSlot("PreviousPage"), item);
 
         }
 
-        if (cubeletTypes.size() > (page + 1) * 14) {
+        if (cubeletTypes.size() > (page + 1) * getPageSize()) {
 
             int amount = guiLayout.getBoolean("Items.NextPage.ShowPageNumber") ? (page + 2) : 1;
 
@@ -67,7 +66,7 @@ public class GiftMenu extends Menu {
                     .toItemStack();
             item = NBTEditor.set(item, "next", "action");
 
-            gui.setItem((45 - 10) + guiLayout.getSlot("NextPage"), item);
+            gui.setItem((getSize() - 10) + guiLayout.getSlot("NextPage"), item);
 
         }
 
@@ -79,7 +78,7 @@ public class GiftMenu extends Menu {
                     .toItemStack();
             close = NBTEditor.set(close, "close", "action");
 
-            gui.setItem((45 - 10) + guiLayout.getSlot("Close"), close);
+            gui.setItem((getSize() - 10) + guiLayout.getSlot("Close"), close);
 
         } else {
 
@@ -89,13 +88,13 @@ public class GiftMenu extends Menu {
                     .toItemStack();
             back = NBTEditor.set(back, "back", "action");
 
-            gui.setItem((45 - 10) + guiLayout.getSlot("Back"), back);
+            gui.setItem((getSize() - 10) + guiLayout.getSlot("Back"), back);
 
         }
 
-        fillTopSide(edge, 4);
+        fillTopSide(edge, getSizeRows() - 2);
 
-        if (cubeletTypes.size() > 14) cubeletTypes = cubeletTypes.subList(page * 14, ((page * 14) + 14) > cubeletTypes.size() ? cubeletTypes.size() : (page * 14) + 14);
+        if (cubeletTypes.size() > getPageSize()) cubeletTypes = cubeletTypes.subList(page * getPageSize(), Math.min(((page * getPageSize()) + getPageSize()), cubeletTypes.size()));
 
         if(cubeletTypes.size() > 0) {
 
@@ -122,7 +121,7 @@ public class GiftMenu extends Menu {
 
         }
 
-        fillTopSide(null, 4);
+        fillTopSide(null, getSizeRows() - 2);
 
         openInventory();
 

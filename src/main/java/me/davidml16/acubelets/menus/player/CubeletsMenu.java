@@ -26,9 +26,8 @@ import java.util.*;
 public class CubeletsMenu extends Menu {
 
     public CubeletsMenu(Main main, Player player) {
-
         super(main, player);
-
+        setSize(6);
     }
 
     @Override
@@ -46,23 +45,19 @@ public class CubeletsMenu extends Menu {
         else if(profile.getOrderBy().equalsIgnoreCase("type"))
             cubelets.sort(new CubeletTypeComparator());
 
-        int pageSize = getPageSize(guiLayout);
-
         if(page < 0) {
             openPage(0);
             return;
         }
 
-        if(page > 0 && cubelets.size() < (page * pageSize) + 1) {
+        if(page > 0 && cubelets.size() < (page * getPageSize()) + 1) {
             openPage(getPage() - 1);
             return;
         }
 
-        if (cubelets.size() > pageSize) cubelets = cubelets.subList(page * pageSize, Math.min(((page * pageSize) + pageSize), cubelets.size()));
+        if (cubelets.size() > getPageSize()) cubelets = cubelets.subList(page * getPageSize(), Math.min(((page * getPageSize()) + getPageSize()), cubelets.size()));
 
-        int neededSize = getNeededSize(guiLayout, cubelets.size());
-
-        Inventory inventory = createInventory(neededSize, guiLayout.getMessage("Title"));
+        Inventory inventory = createInventory(getSize(), guiLayout.getMessage("Title"));
 
         if (page > 0) {
 
@@ -74,11 +69,11 @@ public class CubeletsMenu extends Menu {
             item = NBTEditor.set(item, "previous", "action");
 
             if(guiLayout.getSlot("PreviousPage") >= 0)
-                inventory.setItem(((neededSize - 10) + guiLayout.getSlot("PreviousPage")), item);
+                inventory.setItem(((getSize() - 10) + guiLayout.getSlot("PreviousPage")), item);
 
         }
 
-        if (getMain().getPlayerDataHandler().getData(player.getUniqueId()).getCubelets().size() > (page + 1) * pageSize) {
+        if (getMain().getPlayerDataHandler().getData(player.getUniqueId()).getCubelets().size() > (page + 1) * getPageSize()) {
 
             int amount = guiLayout.getBoolean("Items.NextPage.ShowPageNumber") ? (page + 2) : 1;
 
@@ -88,11 +83,11 @@ public class CubeletsMenu extends Menu {
             item = NBTEditor.set(item, "next", "action");
 
             if(guiLayout.getSlot("NextPage") >= 0)
-                inventory.setItem((neededSize - 10) + guiLayout.getSlot("NextPage"), item);
+                inventory.setItem((getSize() - 10) + guiLayout.getSlot("NextPage"), item);
 
         }
 
-        if(getMain().isCraftingEnabled()) {
+        if(getMain().isCraftingEnabled() && getMain().getCubeletCraftingHandler().getCrafts().size() > 0) {
 
             ItemStack crafting = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Crafting.Material")).get().parseItem())
                     .setName(guiLayout.getMessage("Items.Crafting.Name"))
@@ -101,7 +96,7 @@ public class CubeletsMenu extends Menu {
             crafting = NBTEditor.set(crafting, "crafting", "action");
 
             if(guiLayout.getBoolean("Items.Crafting.Enabled") && guiLayout.getSlot("Crafting") >= 0)
-                inventory.setItem((neededSize - 10) + guiLayout.getSlot("Crafting"), crafting);
+                inventory.setItem((getSize() - 10) + guiLayout.getSlot("Crafting"), crafting);
 
         }
 
@@ -114,7 +109,7 @@ public class CubeletsMenu extends Menu {
             animation = NBTEditor.set(animation, "animations", "action");
 
             if(guiLayout.getBoolean("Items.Animations.Enabled") && guiLayout.getSlot("Animations") >= 0)
-                inventory.setItem((neededSize - 10) + guiLayout.getSlot("Animations"), animation);
+                inventory.setItem((getSize() - 10) + guiLayout.getSlot("Animations"), animation);
 
         }
 
@@ -125,7 +120,7 @@ public class CubeletsMenu extends Menu {
         close = NBTEditor.set(close, "close", "action");
 
         if(guiLayout.getBoolean("Items.Close.Enabled") && guiLayout.getSlot("Close") >= 0)
-            inventory.setItem((neededSize - 10) + guiLayout.getSlot("Close"), close);
+            inventory.setItem((getSize() - 10) + guiLayout.getSlot("Close"), close);
 
         ItemStack history = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.LootHistory.Material")).get().parseItem())
                 .setName(guiLayout.getMessage("Items.LootHistory.Name"))
@@ -134,7 +129,7 @@ public class CubeletsMenu extends Menu {
         history = NBTEditor.set(history, "loothistory", "action");
 
         if(guiLayout.getBoolean("Items.LootHistory.Enabled") && guiLayout.getSlot("LootHistory") >= 0)
-            inventory.setItem((neededSize - 10) + guiLayout.getSlot("LootHistory"), history);
+            inventory.setItem((getSize() - 10) + guiLayout.getSlot("LootHistory"), history);
 
 
         if(getMain().isGiftCubelets()) {
@@ -146,11 +141,11 @@ public class CubeletsMenu extends Menu {
             gift = NBTEditor.set(gift, "gift", "action");
 
             if(guiLayout.getBoolean("Items.Gift.Enabled") && guiLayout.getSlot("Gift") >= 0)
-                inventory.setItem((neededSize - 10) + guiLayout.getSlot("Gift"), gift);
+                inventory.setItem((getSize() - 10) + guiLayout.getSlot("Gift"), gift);
 
         }
 
-        for (int i = 0; i <= (neededSize-10); i++)
+        for (int i = 0; i <= (getSize()-10); i++)
             inventory.setItem(i, null);
 
         if(getMain().getCubeletTypesHandler().getTypes().size() > 1) {
@@ -166,7 +161,7 @@ public class CubeletsMenu extends Menu {
 
                     orderByDate = NBTEditor.set(orderByDate, "ordered", "action");
 
-                    inventory.setItem((neededSize - 10) + guiLayout.getSlot("Ordered"), orderByDate);
+                    inventory.setItem((getSize() - 10) + guiLayout.getSlot("Ordered"), orderByDate);
 
                 } else if (profile.getOrderBy().equalsIgnoreCase("type")) {
 
@@ -177,7 +172,7 @@ public class CubeletsMenu extends Menu {
 
                     orderByType = NBTEditor.set(orderByType, "ordered", "action");
 
-                    inventory.setItem((neededSize - 10) + guiLayout.getSlot("Ordered"), orderByType);
+                    inventory.setItem((getSize() - 10) + guiLayout.getSlot("Ordered"), orderByType);
 
                 }
 
@@ -189,7 +184,10 @@ public class CubeletsMenu extends Menu {
 
         }
 
-        List<ItemStack> items = new ArrayList<>();
+        ItemStack filler = XMaterial.GRAY_STAINED_GLASS_PANE.parseItem();
+        fillTopSide(filler, getSizeRows() - 2);
+
+        List<DisplayedCubelet> displayedCubelets = new ArrayList<>();
 
         if(cubelets.size() > 0) {
 
@@ -224,33 +222,27 @@ public class CubeletsMenu extends Menu {
                 item = NBTEditor.set(item, cubelet.getUuid().toString(), "cubeletUUID");
                 item = NBTEditor.set(item, type.getId(), "typeID");
 
-                inventory.addItem(item);
-                items.add(item);
+                int slot = getNextAvailableSlot();
+
+                inventory.setItem(slot, item);
+                displayedCubelets.add(new DisplayedCubelet(cubelet, item, slot));
 
             }
 
         } else {
 
-            int slot = 0;
-
-            if(!guiLayout.getBoolean("Size.Dynamic")) {
-
-                if(guiLayout.getSlot("NoCubelets") <= (neededSize - 10))
-                    slot = guiLayout.getSlot("NoCubelets");
-
-            }
-
-            inventory.setItem(slot, new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NoCubelets.Material")).get().parseItem())
+            inventory.setItem(getCenterSlot(), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NoCubelets.Material")).get().parseItem())
                     .setName(guiLayout.getMessage("Items.NoCubelets.Name"))
                     .setLore(guiLayout.getMessageList("Items.NoCubelets.Lore")
                     ).toItemStack());
 
         }
 
+        fillTopSide(null, getSizeRows() - 2);
+
         openInventory();
 
-        setAttribute(AttrType.CUBELET_DISPLAYED_LIST_ATTR, cubelets);
-        setAttribute(AttrType.CUBELET_DISPLAYED_ITEMS_ATTR, items);
+        setAttribute(AttrType.CUBELET_DISPLAYED_CUBELETS_ATTR, displayedCubelets);
 
     }
 
@@ -384,14 +376,7 @@ public class CubeletsMenu extends Menu {
 
             } else {
 
-                int noCubeletsSlot = 0;
-
-                if(!guiLayout.getBoolean("Size.Dynamic"))
-
-                    if(guiLayout.getSlot("NoCubelets") <= (getPageSize(guiLayout)))
-                        noCubeletsSlot = guiLayout.getSlot("NoCubelets");
-
-                if (slot == noCubeletsSlot) {
+                if (slot == getCenterSlot()) {
 
                     player.closeInventory();
                     MessageUtils.sendShopMessage(player);
@@ -408,42 +393,5 @@ public class CubeletsMenu extends Menu {
 
     @Override
     public void OnMenuClosed() { }
-
-    private int getNeededSize(GUILayout guiLayout, int cubelets) {
-
-        int finalRows = 0;
-        int rows = guiLayout.getInteger("Size.Max-Cubelets-Rows");
-
-        if(rows < 1) rows = 1;
-        else if(rows > 5) rows = 5;
-
-        if(guiLayout.getBoolean("Size.Dynamic")) {
-
-            if(cubelets > 36)
-                finalRows = 5;
-            else
-                finalRows = (cubelets / 9) + (cubelets == 0 ? 1 : cubelets % 9 != 0 ? 1 : 0);
-
-            finalRows = Math.min(finalRows, rows);
-
-        } else {
-
-            finalRows = rows;
-
-        }
-
-        return (finalRows + 1) * 9;
-    }
-
-    private int getPageSize(GUILayout guiLayout) {
-
-        int rows = guiLayout.getInteger("Size.Max-Cubelets-Rows");
-
-        if(rows < 1) rows = 1;
-        else if(rows > 5) rows = 5;
-
-        return rows * 9;
-
-    }
 
 }

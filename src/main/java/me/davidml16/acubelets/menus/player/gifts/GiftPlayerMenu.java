@@ -23,9 +23,8 @@ import java.util.UUID;
 public class GiftPlayerMenu extends Menu {
 
     public GiftPlayerMenu(Main main, Player player) {
-
         super(main, player);
-
+        setSize(6);
     }
 
     @Override
@@ -35,18 +34,18 @@ public class GiftPlayerMenu extends Menu {
 
         List<Player> players = new ArrayList<>(getMain().getServer().getOnlinePlayers());
 
-        if(page > 0 && players.size() < (page * 21) + 1) {
+        if(page > 0 && players.size() < (page * getPageSize()) + 1) {
             openPage(getPage() - 1);
             return;
         }
 
         GUILayout guiLayout = getMain().getLayoutHandler().getLayout("giftplayer");
 
-        Inventory gui = createInventory(45, guiLayout.getMessage("Title"));
+        Inventory gui = createInventory(getSize(), guiLayout.getMessage("Title"));
 
         ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
 
-        fillTopSide(edge, 4);
+        fillTopSide(edge, getSizeRows() - 2);
 
         if (page > 0) {
 
@@ -57,11 +56,11 @@ public class GiftPlayerMenu extends Menu {
                     .toItemStack();
             item = NBTEditor.set(item, "previous", "action");
 
-            gui.setItem((45 - 10) + guiLayout.getSlot("PreviousPage"), item);
+            gui.setItem((getSize() - 10) + guiLayout.getSlot("PreviousPage"), item);
 
         }
 
-        if (players.size() > (page + 1) * 14) {
+        if (players.size() > (page + 1) * getPageSize()) {
 
             int amount = guiLayout.getBoolean("Items.NextPage.ShowPageNumber") ? (page + 2) : 1;
 
@@ -70,7 +69,7 @@ public class GiftPlayerMenu extends Menu {
                     .toItemStack();
             item = NBTEditor.set(item, "next", "action");
 
-            gui.setItem((45 - 10) + guiLayout.getSlot("NextPage"), item);
+            gui.setItem((getSize() - 10) + guiLayout.getSlot("NextPage"), item);
 
         }
 
@@ -79,11 +78,11 @@ public class GiftPlayerMenu extends Menu {
                 .setLore(guiLayout.getMessageList("Items.Back.Lore"))
                 .toItemStack();
         back = NBTEditor.set(back, "back", "action");
-        gui.setItem((45 - 10) + guiLayout.getSlot("Back"), back);
+        gui.setItem((getSize() - 10) + guiLayout.getSlot("Back"), back);
 
-        if (players.size() > 14) players = players.subList(page * 14, Math.min(((page * 14) + 14), players.size()));
+        if (players.size() > getPageSize()) players = players.subList(page * getPageSize(), Math.min(((page * getPageSize()) + getPageSize()), players.size()));
 
-        if(players.size() > 0) {
+        if(players.size() > 1) {
 
             for (Player loop : players) {
 
@@ -103,9 +102,16 @@ public class GiftPlayerMenu extends Menu {
 
             }
 
+        } else {
+
+            gui.setItem(getCenterSlot(), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NoPlayer.Material")).get().parseItem())
+                    .setName(guiLayout.getMessage("Items.NoPlayer.Name"))
+                    .setLore(guiLayout.getMessageList("Items.NoPlayer.Lore")
+                    ).toItemStack());
+
         }
 
-        fillTopSide(null, 4);
+        fillTopSide(null, getSizeRows() - 2);
 
         openInventory();
 

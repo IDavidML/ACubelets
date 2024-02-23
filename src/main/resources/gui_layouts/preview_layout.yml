@@ -13,13 +13,6 @@ Layout:
   # GUI Title
   Title: 'Preview of %cubelet_type%'
 
-  # GUI rows options
-  Size:
-    # Max rows of cubelets, (1 to 5) 1 row reserved to navigation buttons
-    Max-Cubelets-Rows: 3
-    # If gui size is resizable or fixed size
-    Dynamic: true
-
   # GUI items
   Items:
 

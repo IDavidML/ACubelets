@@ -53,14 +53,15 @@ public class Animation24_Task extends Animation {
 			this.boxLocIncrease += 0.085D;
 			Location newBoxLoc = getBoxLocation().clone();
 			newBoxLoc.add(0.0D, this.boxLocIncrease, 0.0D);
-			armorStand.teleport(newBoxLoc);
 
-			UtilParticles.display(Particles.CLOUD, armorStand.getLocation().clone().add(0, 1.25, 0), 1);
-
+			if(armorStand != null) {
+				armorStand.teleport(newBoxLoc);
+				UtilParticles.display(Particles.CLOUD, armorStand.getLocation().clone().add(0, 1.25, 0), 1);
+			}
 		}
 
 		if (time <= 325) {
-			armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.26, 0));
+			if(armorStand != null) armorStand.setHeadPose(armorStand.getHeadPose().add(0, 0.26, 0));
 		}
 
 		if(time == 90) {
@@ -135,7 +136,7 @@ public class Animation24_Task extends Animation {
 	public void onStart() {
 
 		getCubeletBox().setLocation(getCubeletBox().getLocation().add(0, 2.75, 0));
-		getMain().getHologramImplementation().showTextAndIcon(getCubeletBox(), Arrays.asList("", "", "%reward_icon%"), XMaterial.AIR.parseItem());
+		getMain().getHologramImplementation().moveHologramShowTextAndIcon(getCubeletBox(), Arrays.asList("", "", "%reward_icon%"));
 
 		rotation = getRotation(false).value;
 
@@ -193,7 +194,7 @@ public class Animation24_Task extends Animation {
 	@Override
 	public void onPreRewardReveal() {
 
-		Sounds.playSound(armorStand.getLocation(), Sounds.MySound.EXPLODE, 0.5F, 1F);
+		if(armorStand != null) Sounds.playSound(armorStand.getLocation(), Sounds.MySound.EXPLODE, 0.5F, 1F);
 
 		getMain().getFireworkUtil().spawn(
 				getCubeletBox().getLocation().clone().add(0.5, 1.50, 0.5),
@@ -205,8 +206,10 @@ public class Animation24_Task extends Animation {
 
 	@Override
 	public void onRewardReveal() {
-		armorStand.remove();
-		armorStand = null;
+		if(armorStand != null) {
+			armorStand.remove();
+			armorStand = null;
+		}
 
 		spawnItemsRunnable.cancel();
 

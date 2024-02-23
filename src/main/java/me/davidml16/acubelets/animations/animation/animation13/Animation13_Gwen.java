@@ -36,7 +36,6 @@ public class Animation13_Gwen extends BukkitRunnable {
         location.setDirection(target.getLocation().clone().toVector().subtract(location.toVector()));
 
         Guardian guardian = (Guardian)target.getWorld().spawnEntity(location, EntityType.GUARDIAN);
-        guardian.setTarget(null);
         guardian.setTarget((LivingEntity) target);
         NBTEditor.set( guardian, ( byte ) 1, "Silent" );
         NBTEditor.set( guardian, ( byte ) 1, "NoGravity" );

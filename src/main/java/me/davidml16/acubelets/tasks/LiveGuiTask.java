@@ -3,6 +3,7 @@ package me.davidml16.acubelets.tasks;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.menus.player.CubeletsMenu;
 import me.davidml16.acubelets.objects.Cubelet;
+import me.davidml16.acubelets.objects.DisplayedCubelet;
 import me.davidml16.acubelets.objects.GUILayout;
 import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.utils.ItemBuilder;
@@ -13,7 +14,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+
+import static me.davidml16.acubelets.utils.MessageUtils.DefaultFontInfo.i;
 
 public class LiveGuiTask {
 
@@ -27,32 +31,26 @@ public class LiveGuiTask {
 	class Task implements Runnable {
 		@Override
 		public void run() {
-
 			if(main.getPlayerCount() == 0) return;
 
 			GUILayout guiLayout = main.getLayoutHandler().getLayout("opencubelet");
 
 			for(Menu menu : main.getMenuHandler().getOpenedMenus().values()) {
-
 				if(!menu.getClass().equals(CubeletsMenu.class)) continue;
 
-				List<Cubelet> cubelets = (List<Cubelet>) menu.getAttribute(Menu.AttrType.CUBELET_DISPLAYED_LIST_ATTR);
-				List<ItemStack> items = (List<ItemStack>) menu.getAttribute(Menu.AttrType.CUBELET_DISPLAYED_ITEMS_ATTR);
+				List<DisplayedCubelet> displayedCubelets = (List<DisplayedCubelet>) menu.getAttribute(Menu.AttrType.CUBELET_DISPLAYED_CUBELETS_ATTR);
 
-				if(cubelets == null) continue;
-				if(items == null) continue;
+				if(displayedCubelets == null) continue;
 
-				if(cubelets.size() == 0) continue;
+				if(displayedCubelets.size() == 0) continue;
 
-				List<ItemStack> updatedItems = new ArrayList<>();
+				Iterator<DisplayedCubelet> iterator = displayedCubelets.iterator();
 
-				for(int i = 0; i < cubelets.size(); i++) {
+				while (iterator.hasNext()) {
+					DisplayedCubelet displayedCubelet = iterator.next();
 
-					Cubelet cubelet = cubelets.get(i);
-
-					if(i >= items.size()) continue;
-
-					ItemStack item = items.get(i);
+					Cubelet cubelet = displayedCubelet.getCubelet();
+					ItemStack item = displayedCubelet.getItem();
 
 					List<String> lore = new ArrayList<>();
 					if (cubelet.getExpire() < 0 || cubelet.getExpire() > System.currentTimeMillis()) {
@@ -68,22 +66,20 @@ public class LiveGuiTask {
 						}
 					}
 
-					updatedItems.add(new ItemBuilder(item).setLore(lore).toItemStack());
-
+					displayedCubelet.setItem(new ItemBuilder(item).setLore(lore).toItemStack());
 				}
 
 				Bukkit.getScheduler().runTask(main, () -> {
-
 					Player target = menu.getOwner();
 
 					if(target == null) return;
 
 					if(!main.getMenuHandler().hasOpenedMenu(target, CubeletsMenu.class)) return;
 
-					for(int i = 0; i < updatedItems.size(); i++) target.getOpenInventory().getTopInventory().setItem(i, updatedItems.get(i));
-
+					for (DisplayedCubelet displayedCubelet : displayedCubelets) {
+						target.getOpenInventory().getTopInventory().setItem(displayedCubelet.getSlot(), displayedCubelet.getItem());
+					}
 				});
-
 			}
 
 		}

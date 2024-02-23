@@ -22,9 +22,8 @@ import java.util.List;
 public class CraftingMenu extends Menu {
 
     public CraftingMenu(Main main, Player player) {
-
         super(main, player);
-
+        setSize(6); // 6 rows
     }
 
     @Override
@@ -34,11 +33,9 @@ public class CraftingMenu extends Menu {
 
         player.updateInventory();
 
-        int inventorySize = getMain().getCubeletCraftingHandler().getInventorySize();
-
         GUILayout guiLayout = getMain().getLayoutHandler().getLayout("crafting");
 
-        Inventory gui = createInventory(inventorySize, guiLayout.getMessage("Title"));
+        Inventory gui = createInventory(getSize(), guiLayout.getMessage("Title"));
 
         if(guiLayout.getBoolean("Items.PlayerInfo.Enabled")) {
 
@@ -52,7 +49,7 @@ public class CraftingMenu extends Menu {
                     .setLore(guiLayout.getMessageListPlaceholders(player, "Items.PlayerInfo.Lore"))
                     .toItemStack();
 
-            gui.setItem((inventorySize - 10) + guiLayout.getSlot("PlayerInfo"), finalItem);
+            gui.setItem((getSize() - 10) + guiLayout.getSlot("PlayerInfo"), finalItem);
 
         }
 
@@ -60,7 +57,7 @@ public class CraftingMenu extends Menu {
                 .setName(guiLayout.getMessage("Items.Back.Name"))
                 .setLore(guiLayout.getMessageList("Items.Back.Lore"))
                 .toItemStack();
-        gui.setItem((inventorySize - 10) + guiLayout.getSlot("Back"), back);
+        gui.setItem((getSize() - 10) + guiLayout.getSlot("Back"), back);
 
         if(guiLayout.getBoolean("Items.Points.Enabled")) {
 
@@ -74,7 +71,7 @@ public class CraftingMenu extends Menu {
                     .setLore(lorePoints)
                     .toItemStack();
 
-            gui.setItem((inventorySize - 10) + guiLayout.getSlot("Points"), points);
+            gui.setItem((getSize() - 10) + guiLayout.getSlot("Points"), points);
 
         }
 
@@ -132,7 +129,7 @@ public class CraftingMenu extends Menu {
             item = NBTEditor.set(item, Boolean.toString(getMain().getCubeletCraftingHandler().haveIngredients(player, craft)), "haveIngredients");
 
             if(craft.getIngrediens().size() > 0)
-                if(craft.getSlot() <= (inventorySize - 10))
+                if(craft.getSlot() <= (getSize() - 10))
                     gui.setItem(craft.getSlot(), item);
 
         }
@@ -151,13 +148,12 @@ public class CraftingMenu extends Menu {
 
         Player player = getOwner();
 
-        int inventorySize = getMain().getCubeletCraftingHandler().getInventorySize();
         int slot = event.getRawSlot();
         GUILayout guiLayout = getMain().getLayoutHandler().getLayout("crafting");
 
         if(event.getClick() == ClickType.DOUBLE_CLICK) return;
 
-        if (slot >= 0 && slot <= (inventorySize - 10)) {
+        if (slot >= 0 && slot <= (getSize() - 10)) {
 
             String haveIngredients = NBTEditor.getString(event.getCurrentItem(), "haveIngredients");
 
@@ -175,7 +171,7 @@ public class CraftingMenu extends Menu {
             craftingConfirmationMenu.setAttribute(AttrType.CUSTOM_ID_ATTR, cubeletType);
             craftingConfirmationMenu.open();
 
-        } else if (slot == ((inventorySize - 10) + guiLayout.getSlot("Back"))) {
+        } else if (slot == ((getSize() - 10) + guiLayout.getSlot("Back"))) {
 
             new CubeletsMenu(getMain(), player).open();
 

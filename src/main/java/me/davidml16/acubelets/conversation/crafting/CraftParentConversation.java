@@ -41,7 +41,7 @@ public class CraftParentConversation implements ConversationAbandonedListener, C
 
                     return new CommonStringPrompt(main,this, false, ChatColor.YELLOW + "  Enter crafted cubelet, \"cancel\" to return.\n  Available cubelets: " + cubelets + "\n\n ", "cubeletType");
                 case "2":
-                    return new NumericIntegerRangePrompt(main, this, ChatColor.YELLOW + "  Enter craft icon slot, \"cancel\" to return.\n  Range: 0 to " + (main.getCubeletCraftingHandler().getInventoryRows() - 1) * 9 + "\n\n ", "slot", 0, (main.getCubeletCraftingHandler().getInventoryRows() - 1) * 9);
+                    return new NumericIntegerRangePrompt(main, this, ChatColor.YELLOW + "  Enter craft icon slot, \"cancel\" to return.\n  Range: 0 to " + (main.getCubeletCraftingHandler().getInventorySizeRows() - 1) * 9 + "\n\n ", "slot", 0, (main.getCubeletCraftingHandler().getInventorySizeRows() - 1) * 9);
                 case "3":
                     if(param1ConversationContext.getSessionData("cubeletType") != null
                             && param1ConversationContext.getSessionData("slot") != null) {

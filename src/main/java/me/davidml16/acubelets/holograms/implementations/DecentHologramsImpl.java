@@ -221,6 +221,18 @@ public class DecentHologramsImpl implements HologramImplementation, Listener {
     }
 
     @Override
+    public void moveHologramShowTextAndIcon(CubeletMachine box, List<String> lines) {
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (holograms.get(box) == null) continue;
+
+            if (holograms.get(box).containsKey(p.getUniqueId())) {
+                Hologram hologram = holograms.get(box).get(p.getUniqueId());
+                DHAPI.moveHologram(hologram, box.getLocation().clone().add(0.5, (lines.size() * LINE_HEIGHT_REWARD) + (box.getBlockHeight() + 0.1875), 0.5));
+            }
+        }
+    }
+
+    @Override
     public RepeatingTask duplicationRewardHologram(CubeletMachine box, Reward reward) {
         int duplicationPoints = box.getLastDuplicationPoints();
 

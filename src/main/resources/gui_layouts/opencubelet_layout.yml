@@ -13,13 +13,6 @@ Layout:
   # GUI Title
   Title: 'Cubelets'
 
-  # GUI rows options
-  Size:
-    # Max rows of cubelets, (1 to 5) 1 row reserved to navigation buttons
-    Max-Cubelets-Rows: 3
-    # If gui size is resizable or fixed size
-    Dynamic: true
-
   NoneExpiration: 'Never'
 
   # GUI items
@@ -35,12 +28,9 @@ Layout:
         - '&7Click to close'
         - '&7this menu'
 
-    # Item when you dont have any cubelets
-    # Slot only works if you have dinamic gui size disabled, with this enabled, slot is always 0
     NoCubelets:
       Name: '&4You have no Cubelets'
       Material: 'BARRIER'
-      Slot: 0
       Lore:
         - '&7You can get Cubelets by playing games.'
         - '&7You are also able to purchase them'

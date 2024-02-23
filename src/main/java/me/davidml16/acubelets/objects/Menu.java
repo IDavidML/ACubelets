@@ -9,14 +9,16 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public abstract class Menu {
 
     public enum AttrType {
         CUBELET_TYPE_ATTR, CUBELET_DISPLAYED_LIST_ATTR, CUBELET_DISPLAYED_ITEMS_ATTR, CUBELET_BOX_ATTR, CUSTOM_ID_ATTR, CRAFT_PARENT_ATTR,
-        GIFT_GUISESSION_ATTR, ANIMATION_SETTINGS_ATTR, REWARD_ATTR, OPENED_EXTERNALLY_ATTR
+        GIFT_GUISESSION_ATTR, ANIMATION_SETTINGS_ATTR, REWARD_ATTR, OPENED_EXTERNALLY_ATTR, CUBELET_DISPLAYED_CUBELETS_ATTR
     }
 
     public enum SoundType { CLICK, CHICKEN_EGG_POP, ANVIL_USE, NOTE_PLING };
@@ -25,7 +27,13 @@ public abstract class Menu {
     private Player owner;
 
     private Inventory inventory;
+    private int size;
+    private int sizeRows;
+    private int pageSize;
+    private int centerSlot;
     private int page;
+
+    private List<Integer> pageSlots;
 
     private Map<AttrType, Object> attributes;
 
@@ -108,6 +116,46 @@ public abstract class Menu {
 
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.sizeRows = size;
+        this.size = size * 9;
+        this.pageSize = (size - 3) * 7;
+        this.centerSlot = 22;
+
+        this.pageSlots = new ArrayList<>();
+
+        for (int row = 2; row <= getSizeRows() - 2; row++) {
+            for (int column = 0; column < 7; column++) {
+                int slot = (((row * 9) - 1) - 7) + column;
+                pageSlots.add(slot);
+            }
+        }
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public int getSizeRows() {
+        return sizeRows;
+    }
+
+    public int getCenterSlot() {
+        return centerSlot;
+    }
+
+    public int getNextAvailableSlot() {
+        for(int slot : pageSlots) {
+            if(inventory.getItem(slot) == null) return slot;
+        }
+
+        return pageSlots.get(0);
     }
 
     public int getPage() {

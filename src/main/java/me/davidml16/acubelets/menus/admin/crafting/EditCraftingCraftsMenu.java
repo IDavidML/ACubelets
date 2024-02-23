@@ -42,24 +42,12 @@ public class EditCraftingCraftsMenu extends Menu {
         ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
         ItemStack newReward = new ItemBuilder(XMaterial.SUNFLOWER.parseItem()).setName(Utils.translate("&aCreate new craft")).toItemStack();
 
-        int rows = getMain().getCubeletCraftingHandler().getInventoryRows();
-        ItemStack editRows = new ItemBuilder(XMaterial.CHEST.parseItem()).setName(Utils.translate("&aModify gui rows"))
-                .setLore(
-                        "",
-                        Utils.translate(" &7Actual rows: &6" + rows + " " + (rows == 6 ? "&c(Max reached)" : rows == 2 ? "&c(Min reached)" : "")),
-                        "",
-                        Utils.translate("&eLeft-Click » &aAdd one row "),
-                        Utils.translate("&eMiddle-Click » &aReset to 4 rows "),
-                        Utils.translate("&eRight-Click » &aRemove one row"))
-                .toItemStack();
-
         ItemStack back = new ItemBuilder(XMaterial.ARROW.parseItem()).setName(Utils.translate("&aBack")).toItemStack();
 
         fillBorders(edge);
 
         gui.setItem(38, newReward);
         gui.setItem(40, back);
-        gui.setItem(42, editRows);
 
         for (int i = 10; i <= 16; i++)
             gui.setItem(i, null);
@@ -158,42 +146,6 @@ public class EditCraftingCraftsMenu extends Menu {
         } else if (slot == 40) {
 
             new OptionsMainMenu(getMain(), player).open();
-
-        } else if (slot == 42) {
-
-            if (event.getClick() == ClickType.LEFT) {
-
-                if (getMain().getCubeletCraftingHandler().getInventoryRows() < 6) {
-
-                    getMain().getCubeletCraftingHandler().setInventorySize(getMain().getCubeletCraftingHandler().getInventoryRows() + 1);
-
-                    playSound(SoundType.CLICK);
-
-                    reloadMenu();
-
-                }
-
-            } else if (event.getClick() == ClickType.MIDDLE) {
-
-                getMain().getCubeletCraftingHandler().setInventorySize(4);
-
-                playSound(SoundType.CHICKEN_EGG_POP);
-
-                reloadMenu();
-
-            } else if (event.getClick() == ClickType.RIGHT) {
-
-                if (getMain().getCubeletCraftingHandler().getInventoryRows() > 2) {
-
-                    getMain().getCubeletCraftingHandler().setInventorySize(getMain().getCubeletCraftingHandler().getInventoryRows() - 1);
-
-                    playSound(SoundType.CLICK);
-
-                    reloadMenu();
-
-                }
-
-            }
 
         } else if ((slot >= 10 && slot <= 16) || (slot >= 19 && slot <= 25) || (slot >= 28 && slot <= 34)) {
 

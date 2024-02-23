@@ -24,9 +24,8 @@ import java.util.regex.Matcher;
 public class RewardsPreviewMenu extends Menu {
 
     public RewardsPreviewMenu(Main main, Player player) {
-
         super(main, player);
-
+        setSize(6);
     }
 
     @Override
@@ -41,18 +40,14 @@ public class RewardsPreviewMenu extends Menu {
 
         GUILayout guiLayout = getMain().getLayoutHandler().getLayout("preview");
 
-        int pageSize = getPageSize(guiLayout);
-
-        if(page > 0 && rewards.size() < (page * pageSize) + 1) {
+        if(page > 0 && rewards.size() < (page * getPageSize()) + 1) {
             openPage(getPage() - 1);
             return;
         }
 
-        if (rewards.size() > pageSize) rewards = rewards.subList(page * pageSize, Math.min(((page * pageSize) + pageSize), rewards.size()));
+        if (rewards.size() > getPageSize()) rewards = rewards.subList(page * getPageSize(), Math.min(((page * getPageSize()) + getPageSize()), rewards.size()));
 
-        int neededSize = getNeededSize(guiLayout, rewards.size());
-
-        Inventory gui = createInventory(neededSize, guiLayout.getMessage("Title").replaceAll("%cubelet_type%", Utils.removeColors(cubeletType.getName())));
+        Inventory gui = createInventory(getSize(), guiLayout.getMessage("Title").replaceAll("%cubelet_type%", Utils.removeColors(cubeletType.getName())));
 
         if (page > 0) {
 
@@ -64,11 +59,11 @@ public class RewardsPreviewMenu extends Menu {
             item = NBTEditor.set(item, "previous", "action");
 
             if(guiLayout.getSlot("PreviousPage") >= 0)
-                gui.setItem(((neededSize - 10) + guiLayout.getSlot("PreviousPage")), item);
+                gui.setItem(((getSize() - 10) + guiLayout.getSlot("PreviousPage")), item);
 
         }
 
-        if (cubeletType.getAllRewards().size() > (page + 1) * pageSize) {
+        if (cubeletType.getAllRewards().size() > (page + 1) * getPageSize()) {
 
             int amount = guiLayout.getBoolean("Items.NextPage.ShowPageNumber") ? (page + 2) : 1;
 
@@ -78,7 +73,7 @@ public class RewardsPreviewMenu extends Menu {
             item = NBTEditor.set(item, "next", "action");
 
             if(guiLayout.getSlot("NextPage") >= 0)
-                gui.setItem((neededSize - 10) + guiLayout.getSlot("NextPage"), item);
+                gui.setItem((getSize() - 10) + guiLayout.getSlot("NextPage"), item);
 
         }
 
@@ -90,7 +85,7 @@ public class RewardsPreviewMenu extends Menu {
                     .toItemStack();
             back = NBTEditor.set(back, "back", "action");
 
-            gui.setItem((neededSize - 10) + guiLayout.getSlot("Back"), back);
+            gui.setItem((getSize() - 10) + guiLayout.getSlot("Back"), back);
 
         } else {
 
@@ -100,12 +95,15 @@ public class RewardsPreviewMenu extends Menu {
                     .toItemStack();
             close = NBTEditor.set(close, "close", "action");
 
-            gui.setItem((neededSize - 10) + guiLayout.getSlot("Close"), close);
+            gui.setItem((getSize() - 10) + guiLayout.getSlot("Close"), close);
 
         }
 
-        for (int i = 0; i <= (neededSize-10); i++)
+        for (int i = 0; i <= (getSize() - 10); i++)
             gui.setItem(i, null);
+
+        ItemStack filler = XMaterial.GRAY_STAINED_GLASS_PANE.parseItem();
+        fillTopSide(filler, getSizeRows() - 2);
 
         if(rewards.size() > 0) {
 
@@ -144,6 +142,8 @@ public class RewardsPreviewMenu extends Menu {
             player.closeInventory();
 
         }
+
+        fillTopSide(null, getSizeRows() - 2);
 
         openInventory();
 
@@ -198,57 +198,5 @@ public class RewardsPreviewMenu extends Menu {
 
     @Override
     public void OnMenuClosed() { }
-
-    private int getNeededSize(GUILayout guiLayout, int cubelets) {
-
-        int finalRows = 0;
-        int rows = guiLayout.getInteger("Size.Max-Cubelets-Rows");
-
-        if(rows < 1) rows = 1;
-        else if(rows > 5) rows = 5;
-
-        if(guiLayout.getBoolean("Size.Dynamic")) {
-
-            if(rows == 1) {
-                finalRows = 1;
-            } else if(rows == 2) {
-                if(cubelets <= 9) finalRows = 1;
-                else finalRows = 2;
-            } else if(rows == 3) {
-                if(cubelets >= 0 && cubelets <= 9) finalRows = 1;
-                else if(cubelets >= 9 && cubelets <= 18) finalRows = 2;
-                else finalRows = 3;
-            } else if(rows == 4) {
-                if(cubelets >= 0 && cubelets <= 9) finalRows = 1;
-                else if(cubelets >= 9 && cubelets <= 18) finalRows = 2;
-                else if(cubelets >= 18 && cubelets <= 27) finalRows = 3;
-                else finalRows = 4;
-            } else {
-                if(cubelets >= 0 && cubelets <= 9) finalRows = 1;
-                else if(cubelets >= 9 && cubelets <= 18) finalRows = 2;
-                else if(cubelets >= 18 && cubelets <= 27) finalRows = 3;
-                else if(cubelets >= 27 && cubelets <= 36) finalRows = 4;
-                else finalRows = 5;
-            }
-
-        } else {
-
-            finalRows = rows;
-
-        }
-
-        return (finalRows + 1) * 9;
-    }
-
-    private int getPageSize(GUILayout guiLayout) {
-
-        int rows = guiLayout.getInteger("Size.Max-Cubelets-Rows");
-
-        if(rows < 1) rows = 1;
-        else if(rows > 5) rows = 5;
-
-        return rows * 9;
-
-    }
 
 }

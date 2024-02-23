@@ -13,13 +13,6 @@ Layout:
   # GUI Title
   Title: 'Loot History'
 
-  # GUI rows options
-  Size:
-    # Max rows of loot items, (1 to 5) 1 row reserved to navigation buttons
-    Max-History-Rows: 3
-    # If gui size is resizable or fixed size
-    Dynamic: true
-
   # GUI items
   Items:
 
@@ -30,12 +23,9 @@ Layout:
         - '&5Found in: &a%cubelet_name%'
         - '&5Received: &a%received% ago'
 
-    # Item when you dont have any loot history
-    # Slot only works if you have dinamic gui size disabled, with this enabled, slot is always 0
     NoHistory:
       Name: '&4You have no loot history'
       Material: 'BARRIER'
-      Slot: 0
       Lore:
         - '&7You can get loot by opening cubelets.'
 
