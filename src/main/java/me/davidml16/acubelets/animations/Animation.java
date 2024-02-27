@@ -472,10 +472,10 @@ public abstract class Animation {
 
     public void startAnimationBlocks(long delay) {
 
-        if(animationBlocks == null)
+        if(!animationSettings.isChangeBlocks())
             return;
 
-        if(!animationSettings.isChangeBlocks())
+        if(animationBlocks == null)
             return;
 
         animationBlocks.runTaskTimer(main, delay, 1L);
@@ -483,6 +483,9 @@ public abstract class Animation {
     }
 
     public void stopAnimationBlocks() {
+
+        if(!animationSettings.isChangeBlocks())
+            return;
 
         if(animationBlocks == null)
             return;

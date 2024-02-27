@@ -39,15 +39,6 @@ public class AnimationsMenu extends Menu {
 
         player.updateInventory();
 
-        Profile profile = getMain().getPlayerDataHandler().getData(player);
-        if(!profile.getAnimation().equalsIgnoreCase("random")) {
-            AnimationSettings animationSetting = getMain().getAnimationHandler().getAnimationSetting(profile.getAnimation());
-            if (animationSetting.isNeedPermission()) {
-                if (!getMain().getAnimationHandler().haveAnimationPermission(player, animationSetting))
-                    profile.setAnimation(AnimationHandler.DEFAULT_ANIMATION);
-            }
-        }
-
         List<AnimationSettings> animations = new ArrayList<>(getMain().getAnimationHandler().getAnimations().values());
         Collections.sort(animations);
 

@@ -48,9 +48,9 @@ public class LootHistoryMenu extends Menu {
             return;
         }
 
-        if (lootHistories.size() > getPageSize()) lootHistories = lootHistories.subList(page * getPageSize(), Math.min(((page * getPageSize()) + getPageSize()), lootHistories.size()));
+        Inventory gui = createInventory(getSize(), translateTitleVariables(guiLayout.getMessage("Title"), lootHistories.size()));
 
-        Inventory gui = createInventory(getSize(), guiLayout.getMessage("Title"));
+        if (lootHistories.size() > getPageSize()) lootHistories = lootHistories.subList(page * getPageSize(), Math.min(((page * getPageSize()) + getPageSize()), lootHistories.size()));
 
         if (page > 0) {
 

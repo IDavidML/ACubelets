@@ -41,7 +41,7 @@ public class GiftPlayerMenu extends Menu {
 
         GUILayout guiLayout = getMain().getLayoutHandler().getLayout("giftplayer");
 
-        Inventory gui = createInventory(getSize(), guiLayout.getMessage("Title"));
+        Inventory gui = createInventory(getSize(), translateTitleVariables(guiLayout.getMessage("Title"), players.size()));
 
         ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
 

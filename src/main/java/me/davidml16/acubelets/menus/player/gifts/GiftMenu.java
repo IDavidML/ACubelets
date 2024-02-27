@@ -41,7 +41,7 @@ public class GiftMenu extends Menu {
 
         Profile profile = getMain().getPlayerDataHandler().getData(player);
 
-        Inventory gui = createInventory(getSize(), guiLayout.getMessage("Title"));
+        Inventory gui = createInventory(getSize(), translateTitleVariables(guiLayout.getMessage("Title"), cubeletTypes.size()));
         ItemStack edge = new ItemBuilder(XMaterial.GRAY_STAINED_GLASS_PANE.parseItem()).setName("").toItemStack();
 
         if (page > 0) {

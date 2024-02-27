@@ -34,13 +34,20 @@ public class PlayerAnimationMenu extends Menu {
 
         player.updateInventory();
 
+        GUILayout guiLayout = getMain().getLayoutHandler().getLayout("animations");
+
         Profile profile = getMain().getPlayerDataHandler().getData(player);
         if(!profile.getAnimation().equalsIgnoreCase("random")) {
             AnimationSettings animationSetting = getMain().getAnimationHandler().getAnimationSetting(profile.getAnimation());
-            if (animationSetting.isNeedPermission()) {
-                if (!getMain().getAnimationHandler().haveAnimationPermission(player, animationSetting))
-                    profile.setAnimation(AnimationHandler.DEFAULT_ANIMATION);
+            if(animationSetting == null) {
+                profile.setAnimation(AnimationHandler.DEFAULT_ANIMATION);
+            } else {
+                if (animationSetting.isNeedPermission()) {
+                    if (!getMain().getAnimationHandler().haveAnimationPermission(player, animationSetting))
+                        profile.setAnimation(AnimationHandler.DEFAULT_ANIMATION);
+                }
             }
+
         }
 
         List<AnimationSettings> animations = new ArrayList<>(getMain().getAnimationHandler().getAnimationSettings());
@@ -56,11 +63,9 @@ public class PlayerAnimationMenu extends Menu {
             return;
         }
 
+        Inventory gui = createInventory(getSize(), translateTitleVariables(guiLayout.getMessage("Title"), animations.size()));
+
         if (animations.size() > 14) animations = animations.subList(page * getPageSize(), Math.min(((page * getPageSize()) + getPageSize()), animations.size()));
-
-        GUILayout guiLayout = getMain().getLayoutHandler().getLayout("animations");
-
-        Inventory gui = createInventory(getSize(), guiLayout.getMessage("Title"));
 
         if (page > 0) {
 

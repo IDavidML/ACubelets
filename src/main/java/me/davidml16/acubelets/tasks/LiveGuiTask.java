@@ -77,6 +77,8 @@ public class LiveGuiTask {
 					if(!main.getMenuHandler().hasOpenedMenu(target, CubeletsMenu.class)) return;
 
 					for (DisplayedCubelet displayedCubelet : displayedCubelets) {
+						if(target.getOpenInventory().getTopInventory().getSize() < displayedCubelet.getSlot()) continue;
+
 						target.getOpenInventory().getTopInventory().setItem(displayedCubelet.getSlot(), displayedCubelet.getItem());
 					}
 				});

@@ -88,6 +88,17 @@ public abstract class Menu {
 
     }
 
+    public String translateTitleVariables(String message, int itemsCount) {
+        message = message.replaceAll("%current_page%", Integer.toString(this.page + 1));
+
+        int totalPages = itemsCount / getPageSize();
+        totalPages = totalPages > 0 ? totalPages + 1 : 1;
+        totalPages = itemsCount > 0 && itemsCount % getPageSize() == 0 ? totalPages - 1 : totalPages;
+
+        message = message.replaceAll("%total_pages%", Integer.toString(totalPages));
+        return message;
+    }
+
     public abstract void OnPageOpened(int page);
 
     public abstract void OnMenuClick(InventoryClickEvent event);

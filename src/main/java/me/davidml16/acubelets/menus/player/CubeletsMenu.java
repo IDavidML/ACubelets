@@ -55,9 +55,9 @@ public class CubeletsMenu extends Menu {
             return;
         }
 
-        if (cubelets.size() > getPageSize()) cubelets = cubelets.subList(page * getPageSize(), Math.min(((page * getPageSize()) + getPageSize()), cubelets.size()));
+        Inventory inventory = createInventory(getSize(), translateTitleVariables(guiLayout.getMessage("Title"), cubelets.size()));
 
-        Inventory inventory = createInventory(getSize(), guiLayout.getMessage("Title"));
+        if (cubelets.size() > getPageSize()) cubelets = cubelets.subList(page * getPageSize(), Math.min(((page * getPageSize()) + getPageSize()), cubelets.size()));
 
         if (page > 0) {
 
