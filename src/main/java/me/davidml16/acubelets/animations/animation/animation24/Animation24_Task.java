@@ -172,22 +172,23 @@ public class Animation24_Task extends Animation {
 
 		try {
 			for(Animation24_Item item : items) {
-				if(getMain().getAnimationHandler().getEntities().contains(item.getArmorStandItem())) {
-					Entity entity = item.getArmorStandItem();
-					if(entity != null) entity.remove();
-					getMain().getAnimationHandler().getEntities().remove(entity);
+				Entity itemEntity = item.getArmorStandItem();
+				if(itemEntity != null) {
+					getMain().getAnimationHandler().getEntities().remove(itemEntity);
+					itemEntity.remove();
 				}
-				if(getMain().getAnimationHandler().getEntities().contains(item.getArmorStandName())) {
-					Entity entity = item.getArmorStandName();
-					if(entity != null) entity.remove();
-					getMain().getAnimationHandler().getEntities().remove(entity);
+
+				Entity nameEntity = item.getArmorStandName();
+				if(nameEntity != null) {
+					getMain().getAnimationHandler().getEntities().remove(nameEntity);
+					nameEntity.remove();
 				}
 			}
 		} catch(IllegalStateException | NullPointerException ignored) {}
 
-		if(getMain().getAnimationHandler().getEntities().contains(armorStand)) {
-			if(armorStand != null) armorStand.remove();
+		if(armorStand != null) {
 			getMain().getAnimationHandler().getEntities().remove(armorStand);
+			armorStand.remove();
 		}
 	}
 
@@ -223,17 +224,20 @@ public class Animation24_Task extends Animation {
 
 	public void removeRandomItem() {
 		Animation24_Item item = items.get(0);
-		if(getMain().getAnimationHandler().getEntities().contains(item.getArmorStandItem())) {
-			Entity entity = item.getArmorStandItem();
-			if(entity != null) Sounds.playSound(entity.getLocation(), Sounds.MySound.PISTON_RETRACT, 0.5F, 3);
-			if(entity != null) entity.remove();
-			getMain().getAnimationHandler().getEntities().remove(entity);
+
+		Entity itemEntity = item.getArmorStandItem();
+		if(itemEntity != null) {
+			Sounds.playSound(itemEntity.getLocation(), Sounds.MySound.PISTON_RETRACT, 0.5F, 3);
+			getMain().getAnimationHandler().getEntities().remove(itemEntity);
+			itemEntity.remove();
 		}
-		if(getMain().getAnimationHandler().getEntities().contains(item.getArmorStandName())) {
-			Entity entity = item.getArmorStandName();
-			if(entity != null) entity.remove();
-			getMain().getAnimationHandler().getEntities().remove(entity);
+
+		Entity nameEntity = item.getArmorStandName();
+		if(nameEntity != null) {
+			getMain().getAnimationHandler().getEntities().remove(nameEntity);
+			nameEntity.remove();
 		}
+
 		items.remove(item);
 	}
 	

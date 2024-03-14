@@ -177,10 +177,10 @@ public class Animation23_Task extends Animation {
 
 		try {
 			for(Animation23_Item item : items) {
-				if(getMain().getAnimationHandler().getEntities().contains(item.getArmorStand())) {
-					Entity entity = item.getArmorStand();
-					if(entity != null) entity.remove();
+				Entity entity = item.getArmorStand();
+				if(entity != null) {
 					getMain().getAnimationHandler().getEntities().remove(entity);
+					entity.remove();
 				}
 			}
 		} catch(IllegalStateException | NullPointerException ignored) {}
@@ -223,12 +223,14 @@ public class Animation23_Task extends Animation {
 
 	public void removeRandomItem() {
 		Animation23_Item item = items.get(0);
-		if(getMain().getAnimationHandler().getEntities().contains(item.getArmorStand())) {
-			Entity entity = item.getArmorStand();
-			if(entity != null) Sounds.playSound(entity.getLocation(), Sounds.MySound.PISTON_RETRACT, 0.5F, 3);
-			if(entity != null) entity.remove();
+
+		Entity entity = item.getArmorStand();
+		if(entity != null) {
+			Sounds.playSound(entity.getLocation(), Sounds.MySound.PISTON_RETRACT, 0.5F, 3);
 			getMain().getAnimationHandler().getEntities().remove(entity);
+			entity.remove();
 		}
+
 		items.remove(item);
 	}
 	

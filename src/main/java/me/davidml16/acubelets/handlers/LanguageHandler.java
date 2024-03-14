@@ -29,6 +29,7 @@ public class LanguageHandler {
 		new File(main.getDataFolder().toString() + "/language").mkdirs();
 		loadLanguage("en");
 		loadLanguage("es");
+		loadLanguage("ru");
 		this.language = checkLanguage(language);
 		this.messages = new HashMap<String, String>();
 		this.messageList = new HashMap<String, List<String>>();
