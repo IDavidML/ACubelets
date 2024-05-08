@@ -20,7 +20,8 @@ public class ExecuteInfo {
     public boolean executeCommand(CommandSender sender, String label, String[] args) {
         if(sender instanceof Player) {
             if (!main.playerHasPermission((Player) sender, "acubelets.admin")) {
-                sender.sendMessage(main.getLanguageHandler().getMessage("Commands.NoPerms"));
+                if(!main.getLanguageHandler().isEmptyMessage("Commands.NoPerms"))
+                    sender.sendMessage(main.getLanguageHandler().getMessage("Commands.NoPerms"));
                 return false;
             }
         }

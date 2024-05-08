@@ -81,6 +81,12 @@ BroadcastReward: false
 LoginReminder: false
 
 
+# Change click type to open cubelets machine menu
+# Available click types: LEFT, RIGHT, BOTH
+CubeletMachine:
+    ClickType: BOTH
+
+
 # Enable/disable cubelet rewards preview
 # Available click types: LEFT, RIGHT, MIDDLE, SHIFT_LEFT or SHIFT_RIGHT
 RewardsPreview:

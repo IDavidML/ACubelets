@@ -351,13 +351,11 @@ public class CubeletsMenu extends Menu {
                     } else {
 
                         if(profile.getBoxOpened().getPlayerOpening().getUuid() == player.getUniqueId()) {
-
-                            player.sendMessage(getMain().getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));
-
+                            if(!getMain().getLanguageHandler().isEmptyMessage("Cubelet.BoxInUse.Me"))
+                                player.sendMessage(getMain().getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));
                         } else {
-
-                            player.sendMessage(getMain().getLanguageHandler().getMessage("Cubelet.BoxInUse.Other").replaceAll("%player%", profile.getBoxOpened().getPlayerOpening().getName()));
-
+                            if(!getMain().getLanguageHandler().isEmptyMessage("Cubelet.BoxInUse.Other"))
+                                player.sendMessage(getMain().getLanguageHandler().getMessage("Cubelet.BoxInUse.Other").replaceAll("%player%", profile.getBoxOpened().getPlayerOpening().getName()));
                         }
 
                     }

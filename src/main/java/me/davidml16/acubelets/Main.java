@@ -142,6 +142,7 @@ public class Main extends JavaPlugin {
 
         cubeletMachineHandler = new CubeletMachineHandler(this);
         cubeletMachineHandler.loadMachines();
+        cubeletMachineHandler.setClickType(getConfig().getString("CubeletMachine.ClickType"));
         settings.put("NoGuiMode", getConfig().getBoolean("NoGuiMode"));
 
         settings.put("SerializeBase64", getConfig().getBoolean("SerializeBase64"));

@@ -145,7 +145,8 @@ public class TypeConfigMenu extends Menu {
 
             getMain().getPluginHandler().reloadAll();
 
-            player.sendMessage(getMain().getLanguageHandler().getMessage("Commands.Reload"));
+            if(!getMain().getLanguageHandler().isEmptyMessage("Commands.Reload"))
+                player.sendMessage(getMain().getLanguageHandler().getMessage("Commands.Reload"));
 
             playSound(SoundType.ANVIL_USE);
 

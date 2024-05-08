@@ -31,8 +31,8 @@ public class CoreCommand extends Command {
 
         if(args.length == 0) {
             if(sender instanceof Player) {
-                sender.sendMessage(main.getLanguageHandler().getMessage("Commands.Balance.Points")
-                        .replaceAll("%points_available%", ""+main.getPlayerDataHandler().getData((Player) sender).getLootPoints()));
+                if(!main.getLanguageHandler().isEmptyMessage("Commands.Balance.Points"))
+                    sender.sendMessage(main.getLanguageHandler().getMessage("Commands.Balance.Points").replaceAll("%points_available%", String.valueOf(main.getPlayerDataHandler().getData((Player) sender).getLootPoints())));
                 return true;
             } else {
                 return sendCommandHelp(sender, label);

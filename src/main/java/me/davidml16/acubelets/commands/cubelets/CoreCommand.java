@@ -39,8 +39,8 @@ public class CoreCommand extends Command {
 
         if(args.length == 0) {
             if(sender instanceof Player) {
-                sender.sendMessage(main.getLanguageHandler().getMessage("Commands.Balance.Cubelets")
-                        .replaceAll("%cubelets_available%", ""+main.getPlayerDataHandler().getData((Player) sender).getCubelets().size()));
+                if(!main.getLanguageHandler().isEmptyMessage("Commands.Balance.Cubelets"))
+                    sender.sendMessage(main.getLanguageHandler().getMessage("Commands.Balance.Cubelets").replaceAll("%cubelets_available%", String.valueOf(main.getPlayerDataHandler().getData((Player) sender).getCubelets().size())));
                 return true;
             } else {
                 return sendCommandHelp(sender, label);

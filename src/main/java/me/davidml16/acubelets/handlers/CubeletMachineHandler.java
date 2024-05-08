@@ -11,10 +11,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.event.block.Action;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class CubeletMachineHandler {
@@ -22,6 +24,8 @@ public class CubeletMachineHandler {
     private HashMap<Location, CubeletMachine> machines;
     private File file;
     private YamlConfiguration config;
+
+    private String cubeletMachineClickType;
 
     private Main main;
 
@@ -226,6 +230,23 @@ public class CubeletMachineHandler {
         else
             Main.log.sendMessage(Utils.translate("    &b" + machines.size() + " &aCubelet Machines loaded!"));
 
+    }
+
+    public void setClickType(String clickType) {
+        if(Arrays.asList("LEFT", "RIGHT", "BOTH").contains(clickType))
+            this.cubeletMachineClickType = clickType.toUpperCase();
+        else
+            this.cubeletMachineClickType = "BOTH";
+    }
+
+    public boolean isClickType(Action action) {
+        if(cubeletMachineClickType.equalsIgnoreCase("BOTH"))
+            return (action == Action.LEFT_CLICK_BLOCK || action == Action.RIGHT_CLICK_BLOCK);
+        else if(cubeletMachineClickType.equalsIgnoreCase("LEFT"))
+            return (action == Action.LEFT_CLICK_BLOCK);
+        else if(cubeletMachineClickType.equalsIgnoreCase("RIGHT"))
+            return (action == Action.RIGHT_CLICK_BLOCK);
+        return false;
     }
 
 }

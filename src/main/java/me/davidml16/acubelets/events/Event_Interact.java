@@ -48,7 +48,7 @@ public class Event_Interact implements Listener {
 
         if(item == null || !NBTEditor.contains(item, "keyType") || !main.isKeysEnabled()) {
 
-            if(action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
+            if(main.getCubeletBoxHandler().isClickType(action)) {
 
                 if (main.getCubeletBoxHandler().getMachines().containsKey(e.getClickedBlock().getLocation())) {
 
@@ -100,11 +100,13 @@ public class Event_Interact implements Listener {
 
                     } else {
 
-                        if (box.getPlayerOpening().getUuid() == player.getUniqueId())
-                            player.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));
-                        else
-                            player.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Other").replaceAll("%player%", box.getPlayerOpening().getName()));
-
+                        if (box.getPlayerOpening().getUuid() == player.getUniqueId()) {
+                            if(!main.getLanguageHandler().isEmptyMessage("Cubelet.BoxInUse.Me"))
+                                player.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));
+                        } else {
+                            if(!main.getLanguageHandler().isEmptyMessage("Cubelet.BoxInUse.Other"))
+                                player.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Other").replaceAll("%player%", box.getPlayerOpening().getName()));
+                        }
                     }
 
                 }
@@ -113,7 +115,7 @@ public class Event_Interact implements Listener {
 
         } else {
 
-            if(action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
+            if(main.getCubeletBoxHandler().isClickType(action)) {
 
                 if (main.getCubeletBoxHandler().getMachines().containsKey(e.getClickedBlock().getLocation())) {
 
@@ -155,12 +157,13 @@ public class Event_Interact implements Listener {
                             }
 
                         } else {
-
-                            if (box.getPlayerOpening().getUuid() == player.getUniqueId())
-                                player.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));
-                            else
-                                player.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Other").replaceAll("%player%", box.getPlayerOpening().getName()));
-
+                            if (box.getPlayerOpening().getUuid() == player.getUniqueId()) {
+                                if(!main.getLanguageHandler().isEmptyMessage("Cubelet.BoxInUse.Me"))
+                                    player.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));
+                            } else {
+                                if(!main.getLanguageHandler().isEmptyMessage("Cubelet.BoxInUse.Other"))
+                                    player.sendMessage(main.getLanguageHandler().getMessage("Cubelet.BoxInUse.Other").replaceAll("%player%", box.getPlayerOpening().getName()));
+                            }
                         }
 
                     }

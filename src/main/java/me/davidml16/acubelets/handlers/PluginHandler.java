@@ -40,6 +40,7 @@ public class PluginHandler {
         main.setCraftingEnabled(main.getConfig().getBoolean("Crafting"));
         main.setPreviewEnabled(main.getConfig().getBoolean("RewardsPreview.Enabled"));
         main.getMenuHandler().setClickType(main.getConfig().getString("RewardsPreview.ClickType"));
+        main.getCubeletBoxHandler().setClickType(main.getConfig().getString("CubeletMachine.ClickType"));
 
         main.setCubeletsCommandEnabled(main.getConfig().getBoolean("NoCubelets.ExecuteCommand"));
         main.setNoCubeletsCommand(main.getConfig().getString("NoCubelets.Command"));

@@ -54,6 +54,11 @@ public class LanguageHandler {
 		return Utils.translate(messages.get(message).replaceAll("%prefix%", messages.get("Prefix")));
 	}
 
+	public boolean isEmptyMessage(String message) {
+		if(!messages.containsKey(message)) return true;
+		return messages.get(message).isEmpty();
+	}
+
 	public List<String> getMessageList(String message) {
 		List<String> lines = new ArrayList<>();
 		if(!messageList.containsKey(message)) return lines;
