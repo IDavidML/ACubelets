@@ -1,6 +1,5 @@
 package me.davidml16.acubelets.animations.animation.animation6;
 
-import com.cryptomorin.xseries.particles.XParticle;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.animations.ASSpawner;
 import me.davidml16.acubelets.animations.Animation;
@@ -84,7 +83,7 @@ public class Animation6_Task extends Animation {
 			}
 
 			for(int i = 0; i < 3; i++) {
-				Color color = XParticle.randomColor();
+				Color color = com.cryptomorin.xseries.particles.Particles.randomColor();
 				UtilParticles.display(color.getRed(), color.getBlue(), color.getGreen(), getRandomLocation(pc1, pc2));
 			}
 

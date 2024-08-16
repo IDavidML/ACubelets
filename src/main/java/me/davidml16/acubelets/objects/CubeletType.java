@@ -72,18 +72,18 @@ public class CubeletType {
         List<Reward> rewards = new ArrayList<>();
         List<Rarity> rarities = new ArrayList<>(getRarities().values());
 
-        if(main.isRewardSorting()) rarities.sort(new RarityComparator());
+        if(main.isSetting("Rewards.AutoSorting")) rarities.sort(new RarityComparator());
 
         for (Rarity rarity : rarities) {
 
             List<Reward> rarityRewards = new ArrayList<>(getRewards().getOrDefault(rarity.getId(), new ArrayList<>()));
-            if(main.isRewardSorting()) rarityRewards.sort(new RewardComparator());
+            if(main.isSetting("Rewards.AutoSorting")) rarityRewards.sort(new RewardComparator());
 
             rewards.addAll(rarityRewards);
 
         }
 
-        if(!main.isRewardSorting())
+        if(!main.isSetting("Rewards.AutoSorting"))
             rewards.sort(new RewardIDComparator());
 
         return rewards;
@@ -194,7 +194,7 @@ public class CubeletType {
         FileConfiguration config = main.getCubeletTypesHandler().getConfig(id);
 
         config.set("type.key", null);
-        if(!main.isSerializeBase64())
+        if(!main.isSetting("SerializeBase64"))
             XItemStack.serialize(key, Utils.getConfigurationSection(config, "type.key"));
         else
             config.set("type.key", ItemStack64.itemStackToBase64(key));
@@ -243,13 +243,13 @@ public class CubeletType {
                 List<ItemObject> itemObjects = reward.getItems();
                 config.set("type.rewards.reward_" + i + ".item", new ArrayList<>());
                 for (int j = 0; j < itemObjects.size(); j++) {
-                    if(!main.isSerializeBase64())
+                    if(!main.isSetting("SerializeBase64"))
                         XItemStack.serialize(itemObjects.get(j).getItemStack(), Utils.getConfigurationSection(config, "type.rewards.reward_" + i + ".item.item_" + j));
                     else
                         config.set("type.rewards.reward_" + i + ".item.item_" + j, ItemStack64.itemStackToBase64(itemObjects.get(j).getItemStack()));
                 }
 
-                if(!main.isSerializeBase64())
+                if(!main.isSetting("SerializeBase64"))
                     XItemStack.serialize(reward.getIcon(), Utils.getConfigurationSection(config, "type.rewards.reward_" + i + ".icon"));
                 else
                     config.set("type.rewards.reward_" + i + ".icon", ItemStack64.itemStackToBase64(reward.getIcon()));

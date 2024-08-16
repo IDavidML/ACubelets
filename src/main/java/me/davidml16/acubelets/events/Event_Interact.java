@@ -46,7 +46,7 @@ public class Event_Interact implements Listener {
 
         }
 
-        if(item == null || !NBTEditor.contains(item, "keyType") || !main.isKeysEnabled()) {
+        if(item == null || !NBTEditor.contains(item, "keyType") || !main.isSetting("UseKeys")) {
 
             if(main.getCubeletBoxHandler().isClickType(action)) {
 
@@ -61,7 +61,7 @@ public class Event_Interact implements Listener {
                     if (box.isWaiting()) {
                         main.getPlayerDataHandler().getData(player).setBoxOpened(box);
 
-                        if (!main.isNoGuiMode()) {
+                        if (!main.isSetting("NoGuiMode")) {
 
                             new CubeletsMenu(main, player).open();
 
@@ -127,7 +127,7 @@ public class Event_Interact implements Listener {
 
                     if(action == Action.LEFT_CLICK_BLOCK) {
 
-                        if(main.isPreviewEnabled()) {
+                        if(main.isSetting("Rewards.Preview.Enabled")) {
 
                             RewardsPreviewMenu rewardsPreviewMenu = new RewardsPreviewMenu(Main.get(), player);
                             rewardsPreviewMenu.setAttribute(Menu.AttrType.CUSTOM_ID_ATTR, typeID);

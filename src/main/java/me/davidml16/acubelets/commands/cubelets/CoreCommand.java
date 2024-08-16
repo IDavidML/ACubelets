@@ -92,14 +92,14 @@ public class CoreCommand extends Command {
 
         if(sender instanceof Player) {
 
-            if(main.isGiftCubelets()) {
+            if(main.isSetting("GiftCubeletsCommand")) {
                 sender.sendMessage("");
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " gift [player]"));
             } else {
                 sender.sendMessage("");
             }
 
-            if(main.isPreviewEnabled()) {
+            if(main.isSetting("Rewards.Preview.Enabled")) {
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " preview [typeID]"));
             }
 
@@ -110,7 +110,7 @@ public class CoreCommand extends Command {
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " [give/remove] [player] [typeID] [amount]"));
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " [info/clear] [player]"));
 
-                if(main.isKeysEnabled())
+                if(main.isSetting("UseKeys"))
                     sender.sendMessage(Utils.translate("&7 - &a/" + label + " givekey [player] [typeID] [amount]"));
 
                 sender.sendMessage("");
@@ -131,7 +131,7 @@ public class CoreCommand extends Command {
             sender.sendMessage(Utils.translate("&7 - &a/" + label + " [give/remove] [player] [typeID] [amount]"));
             sender.sendMessage(Utils.translate("&7 - &a/" + label + " [info/clear] [player]"));
 
-            if(main.isKeysEnabled())
+            if(main.isSetting("UseKeys"))
                 sender.sendMessage(Utils.translate("&7 - &a/" + label + " givekey [player] [typeID] [amount]"));
 
             sender.sendMessage("");
@@ -154,16 +154,16 @@ public class CoreCommand extends Command {
         List<String> auto = new ArrayList<String>();
 
         if (args.length == 1) {
-            if(main.isGiftCubelets())
+            if(main.isSetting("GiftCubeletsCommand"))
                 list.add("gift");
-            if(main.isPreviewEnabled())
+            if(main.isSetting("Rewards.Preview.Enabled"))
                 list.add("preview");
             list.add("history");
             if (main.playerHasPermission(p, "acubelets.admin")) {
                 list.add("help");
                 list.add("give");
 
-                if(main.isKeysEnabled())
+                if(main.isSetting("UseKeys"))
                     list.add("givekey");
 
                 list.add("info");

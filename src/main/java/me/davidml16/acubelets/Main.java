@@ -70,13 +70,7 @@ public class Main extends JavaPlugin {
 
     private int playerCount;
 
-    private Map<String, Boolean> settings;
-
-    private String noCubeletsCommand;
-    private String noCubeletsCommandExecutor;
-
-    private String duplicationPermissionCommand;
-    private String duplicationPointsCommand;
+    private Map<String, Object> settings;
 
     private CommandMap commandMap;
 
@@ -114,15 +108,7 @@ public class Main extends JavaPlugin {
 
         protocolManager = ProtocolLibrary.getProtocolManager();
 
-        settings.put("Crafting", getConfig().getBoolean("Crafting"));
-
-        settings.put("BroadcastReward", getConfig().getBoolean("BroadcastReward"));
-
-        settings.put("LoginReminder", getConfig().getBoolean("LoginReminder"));
-
-        settings.put("CubeletsCommand", getConfig().getBoolean("NoCubelets.ExecuteCommand"));
-        noCubeletsCommand = getConfig().getString("NoCubelets.Command");
-        noCubeletsCommandExecutor = getConfig().getString("NoCubelets.Executor");
+        registerSettings();
 
         pluginHandler = new PluginHandler(this);
 
@@ -138,16 +124,10 @@ public class Main extends JavaPlugin {
         animationHandler = new AnimationHandler(this);
         animationHandler.loadAnimations();
 
-        settings.put("AnimationsByPlayer", getConfig().getBoolean("AnimationsByPlayer"));
-
         cubeletMachineHandler = new CubeletMachineHandler(this);
         cubeletMachineHandler.loadMachines();
         cubeletMachineHandler.setClickType(getConfig().getString("CubeletMachine.ClickType"));
-        settings.put("NoGuiMode", getConfig().getBoolean("NoGuiMode"));
 
-        settings.put("SerializeBase64", getConfig().getBoolean("SerializeBase64"));
-        settings.put("RewardAutoSorting", getConfig().getBoolean("RewardAutoSorting"));
-        settings.put("UseKeys", getConfig().getBoolean("UseKeys"));
         cubeletTypesHandler = new CubeletTypesHandler(this);
         cubeletTypesHandler.loadTypes();
 
@@ -158,11 +138,6 @@ public class Main extends JavaPlugin {
         cubeletRewardHandler.loadRewards();
 
         cubeletTypesHandler.printLog();
-
-        settings.put("RewardsDuplication", getConfig().getBoolean("RewardsDuplication.Enabled"));
-        settings.put("duplicationPermissionCommand", getConfig().getBoolean("RewardsDuplication.Enabled"));
-        duplicationPermissionCommand = getConfig().getString("RewardsDuplication.PermissionCommand");
-        duplicationPointsCommand = getConfig().getString("RewardsDuplication.PointsCommand");
 
         economyHandler = new EconomyHandler();
         economyHandler.load();
@@ -187,8 +162,6 @@ public class Main extends JavaPlugin {
         hologramHandler.getColorAnimation().setColors(getConfig().getStringList("Holograms.ColorAnimation"));
         hologramHandler.getImplementation().loadHolograms();
 
-        settings.put("HDVisibleToAllPlayers", getConfig().getBoolean("Holograms.Duplication.VisibleToAllPlayers"));
-
         playerDataHandler.loadAllPlayerData();
 
         hologramTask = new HologramTask(this);
@@ -205,20 +178,15 @@ public class Main extends JavaPlugin {
 
         cubeletOpenHandler = new CubeletOpenHandler(this);
 
-        settings.put("LiveGuiUpdates", getConfig().getBoolean("LiveGuiUpdates"));
         liveGuiTask = new LiveGuiTask(this);
-        if(isLiveGuiUpdates())
+        if(isSetting("LiveGuiUpdates"))
             liveGuiTask.start();
 
         layoutHandler = new LayoutHandler(this);
 
         menuHandler = new MenuHandler(this);
 
-        settings.put("RewardsPreview", getConfig().getBoolean("RewardsPreview.Enabled"));
-
-        menuHandler.setClickType(getConfig().getString("RewardsPreview.ClickType"));
-
-        settings.put("GiftCubeletsCommand", getConfig().getBoolean("GiftCubeletsCommand"));
+        menuHandler.setClickType(getConfig().getString("Rewards.Preview.ClickType"));
 
         conversationHandler = new ConversationHandler(this);
 
@@ -278,7 +246,48 @@ public class Main extends JavaPlugin {
 
     }
 
+    public void registerSettings() {
+        settings.put("Crafting", getConfig().getBoolean("Crafting"));
+
+        settings.put("Rewards.Broadcast", getConfig().getBoolean("Rewards.Broadcast"));
+
+        settings.put("LoginReminder", getConfig().getBoolean("LoginReminder"));
+
+        settings.put("CubeletsCommand", getConfig().getBoolean("NoCubelets.ExecuteCommand"));
+        settings.put("NoCubelets.ExecuteCommand", getConfig().getBoolean("NoCubelets.ExecuteCommand"));
+        settings.put("NoCubelets.Command", getConfig().getString("NoCubelets.Command"));
+        settings.put("NoCubelets.Executor", getConfig().getString("NoCubelets.Executor"));
+
+        settings.put("Rewards.Duplication.Enabled", getConfig().getBoolean("Rewards.Duplication.Enabled"));
+        settings.put("Rewards.Duplication.PointsCommand", getConfig().getBoolean("Rewards.Duplication.PointsCommand"));
+        settings.put("Rewards.PermissionCommand", getConfig().getString("Rewards.PermissionCommand"));
+
+        settings.put("NoGuiMode", getConfig().getBoolean("NoGuiMode"));
+
+        settings.put("AnimationsByPlayer", getConfig().getBoolean("AnimationsByPlayer"));
+
+        settings.put("SerializeBase64", getConfig().getBoolean("SerializeBase64"));
+        settings.put("Rewards.AutoSorting", getConfig().getBoolean("Rewards.AutoSorting"));
+        settings.put("UseKeys", getConfig().getBoolean("UseKeys"));
+
+        settings.put("HDVisibleToAllPlayers", getConfig().getBoolean("Holograms.Duplication.VisibleToAllPlayers"));
+
+        settings.put("LiveGuiUpdates", getConfig().getBoolean("LiveGuiUpdates"));
+
+        settings.put("Rewards.Preview.Enabled", getConfig().getBoolean("Rewards.Preview.Enabled"));
+
+        settings.put("GiftCubeletsCommand", getConfig().getBoolean("GiftCubeletsCommand"));
+    }
+
     public static Main get() { return main; }
+
+    public boolean isSetting(String key) {
+        return settings.containsKey(key) ? (boolean) settings.get(key) : false;
+    }
+
+    public String getSetting(String key) {
+        return settings.containsKey(key) ? (String) settings.get(key) : "";
+    }
 
     public ProtocolManager getProtocolManager() { return protocolManager; }
 
@@ -348,85 +357,8 @@ public class Main extends JavaPlugin {
         return p.hasPermission(permission) || p.isOp();
     }
 
-    public boolean isCubeletsCommandEnabled() { return settings.get("CubeletsCommand"); }
-
-    public void setCubeletsCommandEnabled(boolean value) { settings.put("CubeletsCommand", value); }
-
-    public String getNoCubeletsCommandExecutor() { return noCubeletsCommandExecutor; }
-
-    public void setNoCubeletsCommandExecutor(String noCubeletsCommandExecutor) { this.noCubeletsCommandExecutor = noCubeletsCommandExecutor; }
-
-    public boolean isCraftingEnabled() { return settings.get("Crafting"); }
-
-    public void setCraftingEnabled(boolean value) { settings.put("Crafting", value); }
-
-    public boolean isPreviewEnabled() { return settings.get("RewardsPreview"); }
-
-    public void setPreviewEnabled(boolean value) { settings.put("RewardsPreview", value); }
-
-    public boolean isDuplicationVisibleAllPlayers() { return settings.get("HDVisibleToAllPlayers"); }
-
-    public void setDuplicationVisibleAllPlayers(boolean value) { settings.put("HDVisibleToAllPlayers", value); }
-
-    public boolean isNoGuiMode() { return settings.get("NoGuiMode"); }
-
-    public void setNoGuiMode(boolean value) { settings.put("NoGuiMode", value); }
-
-    public boolean isRewardSorting() { return settings.get("RewardAutoSorting"); }
-
-    public void setRewardSorting(boolean value) { settings.put("RewardAutoSorting", value); }
-
-    public boolean isLiveGuiUpdates() { return settings.get("LiveGuiUpdates"); }
-
-    public void setLiveGuiUpdates(boolean value) { settings.put("LiveGuiUpdates", value); }
-
-    public boolean isAnimationByPlayer() { return settings.get("AnimationsByPlayer"); }
-
-    public void setAnimationsByPlayer(boolean value) { settings.put("AnimationsByPlayer", value); }
-
-    public boolean isSerializeBase64() { return settings.get("SerializeBase64"); }
-
-    public void setSerializeBase64(boolean value) { settings.put("SerializeBase64", value); }
-
-    public boolean isGiftCubelets() { return settings.get("GiftCubeletsCommand"); }
-
-    public void setGiftCubelets(boolean value) { settings.put("GiftCubeletsCommand", value); }
-
-    public boolean isKeysEnabled() { return settings.get("UseKeys"); }
-
-    public void setKeysEnabled(boolean value) { settings.put("UseKeys", value); }
-
-    public boolean isBroadcastEnabled() { return settings.get("BroadcastReward"); }
-
-    public void setBroadcastEnabled(boolean value) { settings.put("BroadcastReward", value); }
-
-    public void setLoginReminder(boolean value) { settings.put("LoginReminder", value); }
-
-    public boolean isLoginReminder() { return settings.get("LoginReminder"); }
-
-    public String getNoCubeletsCommand() {
-        return noCubeletsCommand;
-    }
-
-    public void setNoCubeletsCommand(String noCubeletsCommand) {
-        this.noCubeletsCommand = noCubeletsCommand;
-    }
-
-    public CommandMap getCommandMap() {
-        return commandMap;
-    }
-
-    public boolean hasPlaceholderAPI() { return settings.get("placeholderapi"); }
-
-    public String getDuplicationPermissionCommand() { return duplicationPermissionCommand; }
-    public void setDuplicationPermissionCommand(String duplicationPermissionCommand) { this.duplicationPermissionCommand = duplicationPermissionCommand; }
-    public String getDuplicationPointsCommand() { return duplicationPointsCommand; }
-    public void setDuplicationPointsCommand(String duplicationPointsCommand) { this.duplicationPointsCommand = duplicationPointsCommand; }
-    public void setDuplicationEnabled(boolean duplicationEnabled) { settings.put("RewardsDuplication", duplicationEnabled); }
-    public boolean isDuplicationEnabled() { return settings.get("RewardsDuplication"); }
-
     private void registerCommands() {
-        Field bukkitCommandMap = null;
+        Field bukkitCommandMap;
         try {
             bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
             bukkitCommandMap.setAccessible(true);

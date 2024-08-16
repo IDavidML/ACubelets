@@ -77,8 +77,6 @@ public class OptionsMainMenu extends Menu {
     @Override
     public void OnMenuClick(InventoryClickEvent event) {
 
-        event.setCancelled(true);
-
         if (event.getCurrentItem() == null) return;
 
         Player player = getOwner();

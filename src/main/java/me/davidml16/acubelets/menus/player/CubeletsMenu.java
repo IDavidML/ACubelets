@@ -87,7 +87,7 @@ public class CubeletsMenu extends Menu {
 
         }
 
-        if(getMain().isCraftingEnabled() && getMain().getCubeletCraftingHandler().getCrafts().size() > 0) {
+        if(Main.get().isSetting("Crafting") && !getMain().getCubeletCraftingHandler().getCrafts().isEmpty()) {
 
             ItemStack crafting = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Crafting.Material")).get().parseItem())
                     .setName(guiLayout.getMessage("Items.Crafting.Name"))
@@ -100,7 +100,7 @@ public class CubeletsMenu extends Menu {
 
         }
 
-        if(getMain().isAnimationByPlayer()) {
+        if(Main.get().isSetting("AnimationsByPlayer")) {
 
             ItemStack animation = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Animations.Material")).get().parseItem())
                     .setName(guiLayout.getMessage("Items.Animations.Name"))
@@ -132,7 +132,7 @@ public class CubeletsMenu extends Menu {
             inventory.setItem((getSize() - 10) + guiLayout.getSlot("LootHistory"), history);
 
 
-        if(getMain().isGiftCubelets()) {
+        if(Main.get().isSetting("GiftCubeletsCommand")) {
 
             ItemStack gift = new ItemBuilder(SkullCreator.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmNlZjlhYTE0ZTg4NDc3M2VhYzEzNGE0ZWU4OTcyMDYzZjQ2NmRlNjc4MzYzY2Y3YjFhMjFhODViNyJ9fX0="))
                     .setName(guiLayout.getMessage("Items.Gift.Name"))
@@ -249,8 +249,6 @@ public class CubeletsMenu extends Menu {
     @Override
     public void OnMenuClick(InventoryClickEvent event) {
 
-        event.setCancelled(true);
-
         if (event.getCurrentItem() == null) return;
         if (event.getCurrentItem().getType() == Material.AIR) return;
 
@@ -362,7 +360,7 @@ public class CubeletsMenu extends Menu {
 
                 } else if (event.getClick() == getMain().getMenuHandler().getRewardPreviewClickType()) {
 
-                    if(getMain().isPreviewEnabled()) {
+                    if(getMain().isSetting("Rewards.Preview.Enabled")) {
                         RewardsPreviewMenu rewardsPreviewMenu = new RewardsPreviewMenu(Main.get(), player);
                         rewardsPreviewMenu.setAttribute(Menu.AttrType.CUSTOM_ID_ATTR, typeID);
                         rewardsPreviewMenu.setAttribute(Menu.AttrType.OPENED_EXTERNALLY_ATTR, Boolean.FALSE);

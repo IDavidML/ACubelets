@@ -93,8 +93,6 @@ public class EditMachineMenu extends Menu {
 
         Player player = getOwner();
 
-        event.setCancelled(true);
-
         if (event.getCurrentItem() == null) return;
 
         int slot = event.getRawSlot();

@@ -179,7 +179,7 @@ public class CubeletTypesHandler {
                                 ))
                                 .toItemStack();
 
-                        if(!main.isSerializeBase64()) {
+                        if(!main.isSetting("SerializeBase64")) {
                             XItemStack.serialize(key, Utils.getConfigurationSection(config, "type.key"));
                         } else {
                             config.set("type.key", ItemStack64.itemStackToBase64(key));

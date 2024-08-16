@@ -28,7 +28,7 @@ public class CubeletOpenHandler {
 
             Animation animation;
 
-            if(!main.isAnimationByPlayer() || openedByKey) {
+            if(!main.isSetting("AnimationsByPlayer") || openedByKey) {
 
                 if(!type.getAnimation().equalsIgnoreCase("random")) {
 

@@ -24,7 +24,7 @@ public class ExecuteGift {
             return true;
         }
 
-        if(!main.isGiftCubelets()) return true;
+        if(!main.isSetting("GiftCubeletsCommand")) return true;
 
         if (args.length == 1) {
             sender.sendMessage("");

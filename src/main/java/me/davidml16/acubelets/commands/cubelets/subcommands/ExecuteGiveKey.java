@@ -24,7 +24,7 @@ public class ExecuteGiveKey {
             }
         }
 
-        if(!main.isKeysEnabled()) return true;
+        if(!main.isSetting("UseKeys")) return true;
 
         if (args.length == 1 || args.length == 2) {
             sender.sendMessage("");

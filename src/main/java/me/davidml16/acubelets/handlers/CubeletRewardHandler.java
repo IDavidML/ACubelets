@@ -208,17 +208,17 @@ public class CubeletRewardHandler {
 
 		Player target = Bukkit.getPlayer(playerUUID);
 
-		if(main.isBroadcastEnabled())
+		if(main.isSetting("Rewards.Broadcast"))
 			MessageUtils.sendBroadcastMessage(main, cubeletMachine, cubeletType, reward);
 
 		RewardHistory rewardHistory = new RewardHistory(reward.getRewardUUID(), reward.getName(), reward.getIcon());
 		LootHistory lootHistory = new LootHistory(playerUUID, cubeletType.getName(), System.currentTimeMillis(), rewardHistory);
 
-		if(main.isDuplicationEnabled() && isDuplicated(cubeletMachine, reward)) {
+		if(main.isSetting("Rewards.Duplication.Enabled") && isDuplicated(cubeletMachine, reward)) {
 
 			Bukkit.getServer().dispatchCommand(
 					main.getServer().getConsoleSender(),
-					main.getDuplicationPointsCommand()
+					main.getSetting("Rewards.Duplication.PointsCommand")
 							.replaceAll("%player%", cubeletMachine.getPlayerOpening().getName())
 							.replaceAll("%points%", ""+ cubeletMachine.getLastDuplicationPoints()));
 
@@ -245,7 +245,7 @@ public class CubeletRewardHandler {
 		for (PermissionObject permissionObject : reward.getPermissions())
 			Bukkit.getServer().dispatchCommand(
 					main.getServer().getConsoleSender(),
-					main.getDuplicationPermissionCommand()
+					main.getSetting("Rewards.PermissionCommand")
 							.replaceAll("%player%", cubeletMachine.getPlayerOpening().getName())
 							.replaceAll("%permission%", permissionObject.getPermission())
 			);
@@ -260,7 +260,7 @@ public class CubeletRewardHandler {
 					target.getLocation().getWorld().dropItemNaturally(target.getLocation(), itemObject.getItemStack().clone());
 		}
 
-		if(reward.getItems().size() > 0) {
+		if(!reward.getItems().isEmpty()) {
 			if(target != null)
 				Sounds.playSound(target, target.getLocation(), Sounds.MySound.ITEM_PICKUP, 0.5F, (float) ThreadLocalRandom.current().nextDouble(1, 3));
 		}

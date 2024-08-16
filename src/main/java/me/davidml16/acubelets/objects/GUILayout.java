@@ -62,7 +62,7 @@ public class GUILayout {
     public List<String> getMessageListPlaceholders(Player player, String message) {
         List<String> lines = new ArrayList<>();
         for(String line : messageList.get("Layout." + message)) {
-            if(!Main.get().hasPlaceholderAPI())
+            if(!Main.get().isSetting("placeholderapi"))
                 lines.add(Utils.translate(line));
             else
                 lines.add(Utils.translate(PlaceholderAPI.setPlaceholders(player, line)));

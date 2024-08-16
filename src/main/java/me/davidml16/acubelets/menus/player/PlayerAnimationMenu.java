@@ -123,8 +123,6 @@ public class PlayerAnimationMenu extends Menu {
 
         Player player = getOwner();
 
-        event.setCancelled(true);
-
         if (event.getCurrentItem() == null) return;
         if (event.getCurrentItem().getType() == Material.AIR) return;
         if (event.getClick() == ClickType.DOUBLE_CLICK) return;

@@ -181,7 +181,7 @@ public abstract class Animation {
 
     public void doRewardDuplication() {
 
-        if(!main.isDuplicationEnabled())
+        if(!main.isSetting("Rewards.Duplication.Enabled"))
             return;
 
         onRewardDuplication();

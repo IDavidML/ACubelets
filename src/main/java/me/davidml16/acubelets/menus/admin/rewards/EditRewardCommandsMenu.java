@@ -107,8 +107,6 @@ public class EditRewardCommandsMenu extends Menu {
     @Override
     public void OnMenuClick(InventoryClickEvent event) {
 
-        event.setCancelled(true);
-
         if (event.getCurrentItem() == null) return;
         if (event.getCurrentItem().getType() == Material.AIR) return;
 

@@ -213,8 +213,6 @@ public class OptionsAnimationMenu extends Menu {
     @Override
     public void OnMenuClick(InventoryClickEvent event) {
 
-        event.setCancelled(true);
-
         if (event.getCurrentItem() == null) return;
         if (event.getCurrentItem().getType() == Material.AIR) return;
         if (event.getClick() == ClickType.DOUBLE_CLICK) return;

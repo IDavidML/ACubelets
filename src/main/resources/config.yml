@@ -53,10 +53,6 @@ AnimationsByPlayer: false
 NoGuiMode: false
 
 
-# Enable/disable if you want to disable the automatic sorting of rewards based on rarity and name
-RewardAutoSorting: true
-
-
 # Enable/disable if you want cubelet open gui updates in realtime.
 LiveGuiUpdates: true
 
@@ -73,10 +69,6 @@ GiftCubeletsCommand: false
 UseKeys: false
 
 
-# Enable/disable if you want to broadcast reward messages
-BroadcastReward: false
-
-
 # Enable/disable if you want to be reminded that you have cubelets when you login
 LoginReminder: false
 
@@ -87,20 +79,30 @@ CubeletMachine:
     ClickType: BOTH
 
 
-# Enable/disable cubelet rewards preview
-# Available click types: LEFT, RIGHT, MIDDLE, SHIFT_LEFT or SHIFT_RIGHT
-RewardsPreview:
-    Enabled: false
-    ClickType: SHIFT_LEFT
-
-
-# Enable/disable reward duplication system
-# Change the command to execute to the one of the plugin you are using
-# Change the command to give duplicated points
-RewardsDuplication:
-    Enabled: false
+# -- Rewards system --
+#
+# AutoSorting: Enable/disable if you want to disable the automatic sorting of rewards based on rarity and name
+# Broadcast: Enable/disable if you want to broadcast reward messages
+#
+# Preview.Enable: Enable/disable cubelet rewards preview
+# Preview.ClickType: Available click types: LEFT, RIGHT, MIDDLE, SHIFT_LEFT or SHIFT_RIGHT
+#
+# Duplication.Enabled: Enable/disable if you want the reward duplication system
+# Duplication.PointsCommand: Command to give the player duplication points
+#
+# PermissionCommand: Command to give the player cubelet permission rewards
+#
+# -- Rewards system --
+Rewards:
+    AutoSorting: true
+    Broadcast: false
+    Preview:
+        Enabled: false
+        ClickType: SHIFT_LEFT
+    Duplication:
+        Enabled: false
+        PointsCommand: 'points give %player% %points%'
     PermissionCommand: 'lp user %player% permission set %permission% true'
-    PointsCommand: 'points give %player% %points%'
 
 
 # Change hologram settings

@@ -260,7 +260,7 @@ public class HolographicDisplaysImpl implements HologramImplementation, Listener
                 List<String> lines = hologramHandler.getLinesRewardDuplicated(reward, pointsToShow);
 
                 for (Player p : Bukkit.getOnlinePlayers()) {
-                    if (!main.isDuplicationVisibleAllPlayers())
+                    if (!main.isSetting("HDVisibleToAllPlayers"))
                         if (!box.getPlayerOpening().getUuid().equals(p.getUniqueId())) continue;
 
                     if (holograms.get(box) == null) continue;

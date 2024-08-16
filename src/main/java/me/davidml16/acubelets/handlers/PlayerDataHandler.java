@@ -94,7 +94,7 @@ public class PlayerDataHandler {
 
 					Bukkit.getScheduler().runTaskLater(main, () -> main.getHologramImplementation().reloadHolograms(p), 2L);
 
-					if(main.isLoginReminder()) {
+					if(main.isSetting("LoginReminder")) {
 
 						Bukkit.getScheduler().runTaskLater(main, () -> {
 							if(cubelets.size() > 0) {

@@ -184,11 +184,11 @@ public class MessageUtils {
     public static void sendLootMessage(CubeletMachine cubeletMachine, CubeletType cubeletType, Reward reward) {
         Player target = Bukkit.getPlayer(cubeletMachine.getPlayerOpening().getUuid());
         if (target != null) {
-            if(!Main.get().isDuplicationEnabled()) {
+            if(!Main.get().isSetting("Rewards.Duplication.Enabled")) {
                 newLootMessage(target, cubeletType, reward);
             } else if (!Main.get().getCubeletRewardHandler().isDuplicated(cubeletMachine, reward)) {
                 newLootMessage(target, cubeletType, reward);
-            } else if(Main.get().isDuplicationEnabled() && Main.get().getCubeletRewardHandler().isDuplicated(cubeletMachine, reward)) {
+            } else if(Main.get().isSetting("Rewards.Duplication.Enabled") && Main.get().getCubeletRewardHandler().isDuplicated(cubeletMachine, reward)) {
                 duplicateLootMessage(target, cubeletType, reward, cubeletMachine.getLastDuplicationPoints());
             }
         }
@@ -249,14 +249,14 @@ public class MessageUtils {
 
     public static void sendShopMessage(Player player) {
         if (player != null) {
-            if(Main.get().isCubeletsCommandEnabled()) {
-                switch (Main.get().getNoCubeletsCommandExecutor()) {
+            if(Main.get().isSetting("NoCubelets.ExecuteCommand")) {
+                switch (Main.get().getSetting("NoCubelets.Executor")) {
                     case "player":
-                        player.chat("/" + Main.get().getNoCubeletsCommand());
+                        player.chat("/" + Main.get().getSetting("NoCubelets.Command"));
                         break;
                     case "console":
                         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(),
-                                Main.get().getNoCubeletsCommand().replaceAll("%player%", player.getName()));
+                                Main.get().getSetting("NoCubelets.Command").replaceAll("%player%", player.getName()));
                         break;
                 }
             } else {

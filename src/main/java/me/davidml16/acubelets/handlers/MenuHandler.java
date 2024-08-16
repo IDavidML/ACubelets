@@ -1,12 +1,15 @@
 package me.davidml16.acubelets.handlers;
 
 import com.cryptomorin.xseries.XItemStack;
+import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.objects.Menu;
 import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
@@ -71,11 +74,12 @@ public class MenuHandler {
     }
 
     public void handleMenuClick(Player player, InventoryClickEvent event) {
-
         Menu menu = getOpenedMenu(player);
 
         if(menu == null)
             return;
+
+        event.setCancelled(true);
 
         menu.OnMenuClick(event);
     }
@@ -89,7 +93,23 @@ public class MenuHandler {
 
         menu.OnMenuClosed();
 
+        for (ItemStack itemStack : player.getInventory().getContents()) {
+            if (itemStack == null) continue;
+            if(!NBTEditor.contains(itemStack, "acubelets")) continue;
+            itemStack.setAmount(0);
+        }
+
         openedMenus.remove(player);
+    }
+
+    public void handleMenuDrop(Player player, PlayerDropItemEvent event) {
+
+        Menu menu = getOpenedMenu(player);
+
+        if(menu == null)
+            return;
+
+       event.setCancelled(true);
     }
 
     public void reloadAllMenus(Player player, Class<? extends Menu> menuClass) {

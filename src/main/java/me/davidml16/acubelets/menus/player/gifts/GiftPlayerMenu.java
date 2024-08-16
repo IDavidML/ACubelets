@@ -120,8 +120,6 @@ public class GiftPlayerMenu extends Menu {
     @Override
     public void OnMenuClick(InventoryClickEvent event) {
 
-        event.setCancelled(true);
-
         if (event.getCurrentItem() == null) return;
 
         String action = NBTEditor.getString(event.getCurrentItem(), "action");
