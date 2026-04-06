@@ -256,7 +256,7 @@ public class Main extends JavaPlugin {
 		settings.put("NoCubelets.Executor", getConfig().getString("NoCubelets.Executor"));
 
 		settings.put("Rewards.Duplication.Enabled", getConfig().getBoolean("Rewards.Duplication.Enabled"));
-		settings.put("Rewards.Duplication.PointsCommand", getConfig().getBoolean("Rewards.Duplication.PointsCommand"));
+		settings.put("Rewards.Duplication.PointsCommand", getConfig().getString("Rewards.Duplication.PointsCommand"));
 		settings.put("Rewards.PermissionCommand", getConfig().getString("Rewards.PermissionCommand"));
 
 		settings.put("NoGuiMode", getConfig().getBoolean("NoGuiMode"));
