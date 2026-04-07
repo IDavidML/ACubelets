@@ -73,7 +73,7 @@ public class Animation15_Task extends Animation {
 			try {
 				blackHole = com.cryptomorin.xseries.particles.Particles.blackhole(getMain(), 8, 4, 200, 2, 999999, ParticleDisplay.display(getCubeletBox().getLocation()
 						.clone()
-						.add(0.5, 7, 0.5), Particle.SMOKE_LARGE).withCount(1));
+						.add(0.5, 7, 0.5), Particle.LARGE_SMOKE).withCount(1));
 			} catch (NoClassDefFoundError ignore) {
 			}
 

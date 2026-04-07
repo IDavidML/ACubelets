@@ -31,17 +31,17 @@ public class SimpleParticle {
 
     @NotNull
     public static SimpleParticle itemCrack(@NotNull Material material) {
-        return new SimpleParticle(Particle.ITEM_CRACK, new ItemStack(material));
+        return new SimpleParticle(Particle.ITEM, new ItemStack(material));
     }
 
     @NotNull
     public static SimpleParticle blockCrack(@NotNull Material material) {
-        return new SimpleParticle(Particle.BLOCK_CRACK, material.createBlockData());
+        return new SimpleParticle(Particle.BLOCK, material.createBlockData());
     }
 
     @NotNull
     public static SimpleParticle blockDust(@NotNull Material material) {
-        return new SimpleParticle(Particle.BLOCK_DUST, material.createBlockData());
+        return new SimpleParticle(Particle.DUST, material.createBlockData());
     }
 
     @NotNull
@@ -51,7 +51,7 @@ public class SimpleParticle {
 
     @NotNull
     public static SimpleParticle redstone(@NotNull Color color, float size) {
-        return new SimpleParticle(Particle.REDSTONE, new Particle.DustOptions(color, size));
+        return new SimpleParticle(Particle.DUST, new Particle.DustOptions(color, size));
     }
 
     @NotNull

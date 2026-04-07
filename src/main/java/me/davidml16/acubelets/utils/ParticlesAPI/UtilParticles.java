@@ -2,6 +2,7 @@ package me.davidml16.acubelets.utils.ParticlesAPI;
 
 import me.davidml16.acubelets.Main;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
@@ -71,6 +72,8 @@ public class UtilParticles {
     public static void display(Particles effect, Location location, int amount, float speed) {
         effect.display(0, 0, 0, speed, amount, location, 128);
     }
+
+
 
     public static void display(Particles effect, Location location, int amount) {
         effect.display(0, 0, 0, 0, amount, location, 128);

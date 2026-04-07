@@ -153,7 +153,7 @@ public enum Particles {
 	 * <li>Only the motion on the y-axis can be controlled, the motion on the x- and z-axis are multiplied by 0.1 when setting the values to 0
 	 * </ul>
 	 */
-	SPELL("spell", 13, -1),
+	SPELL("effect", 13, -1),
 	/**
 	 * A particle effect which is displayed when instant splash potions hit something:
 	 * <ul>
@@ -1417,8 +1417,7 @@ public enum Particles {
 						.spawnParticle(org.bukkit.Particle.valueOf(effect.toString()), center, amount, offsetX, offsetY, offsetZ, data.getMaterial()
 								.createBlockData());
 			} else {
-				center.getWorld()
-						.spawnParticle(org.bukkit.Particle.valueOf(effect.toString()), center.getX(), center.getY(), center.getZ(), amount, offsetX, offsetY, offsetZ, speed);
+				center.getWorld().spawnParticle(org.bukkit.Particle.valueOf(effect.toString()), center.getX(), center.getY(), center.getZ(), amount, offsetX, offsetY, offsetZ, speed);
 			}
 		}
 

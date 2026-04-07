@@ -39,7 +39,7 @@ public class Animation6_Rabbit extends BukkitRunnable {
 		rabbit.setCollidable(false);
 		rabbit.setRemoveWhenFarAway(false);
 		rabbit.setMetadata("ACUBELETS", new FixedMetadataValue(main, Boolean.TRUE));
-		rabbit.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 99999, 10, true, false));
+		rabbit.addPotionEffect(new PotionEffect(PotionEffectType.SLOWNESS, 99999, 10, true, false));
 
 		rabbit.setSilent(true);
 		rabbit.setInvulnerable(true);

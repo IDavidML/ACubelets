@@ -1,12 +1,16 @@
 package me.davidml16.acubelets.animations.animation.animation19;
 
 import com.cryptomorin.xseries.XMaterial;
+import lombok.Getter;
+import lombok.Setter;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.utils.LocationUtils;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import me.davidml16.acubelets.utils.Sounds;
+import org.bukkit.Color;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -16,11 +20,14 @@ import java.util.List;
 
 public class Animation19_Sword extends BukkitRunnable {
 
-	private final ArmorStand armorStand;
+	@Getter
+    private final ArmorStand armorStand;
 
 	private final List<Location> locations;
 
-	private int step;
+	@Setter
+    @Getter
+    private int step;
 
 	private final double yDif;
 
@@ -49,20 +56,7 @@ public class Animation19_Sword extends BukkitRunnable {
 		this.armorStand = armorStand;
 	}
 
-	public ArmorStand getArmorStand() {
-		return armorStand;
-	}
-
-	public int getStep() {
-		return step;
-	}
-
-	public void setStep(int step) {
-		this.step = step;
-	}
-
-	public void run() {
-
+    public void run() {
 		Location loc2 = locations.get(step);
 
 		if (step + 1 >= locations.size())
@@ -71,9 +65,24 @@ public class Animation19_Sword extends BukkitRunnable {
 
 		armorStand.teleport(loc2);
 
-		if (step % 2 == 0) UtilParticles.display(Particles.SPELL, armorStand.getLocation()
-				.add(armorStand.getLocation().getDirection().normalize().multiply(-3).multiply(1))
-				.add(0, 1, 0), 3);
+		if (step % 2 == 0) {
+			Location particleLoc = armorStand.getLocation()
+					.add(armorStand.getLocation().getDirection().normalize().multiply(-3))
+					.add(0, 1, 0);
+
+			Particle.Spell spellData = new Particle.Spell(Color.fromRGB(255, 255, 255), 1);
+
+			armorStand.getWorld().spawnParticle(
+					Particle.EFFECT,
+					particleLoc,
+					3,
+					0.5,
+					0.5,
+					0.5,
+					0.01,
+					spellData
+			);
+		}
 
 		this.step++;
 		if (step >= locations.size()) step = 0;

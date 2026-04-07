@@ -46,7 +46,7 @@ public class Animation17_Task extends Animation {
 
 			snowman = (LivingEntity) getCubeletBox().getLocation()
 					.getWorld()
-					.spawnEntity(getLocationRotation(0), EntityType.SNOWMAN);
+					.spawnEntity(getLocationRotation(0), EntityType.SNOW_GOLEM);
 
 			snowman.setCollidable(false);
 			snowman.setRemoveWhenFarAway(false);

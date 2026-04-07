@@ -20,6 +20,7 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.Chest;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -153,24 +154,14 @@ public class Animation20_Task extends Animation {
 
 	public void placeOrientedChest(Location loc) {
 
-		BlockFace blockFace;
+		BlockFace blockFace = switch (getCubeletBox().getRotation()) {
+            case SOUTH -> BlockFace.SOUTH;
+            case EAST -> BlockFace.EAST;
+            case WEST -> BlockFace.WEST;
+            default -> BlockFace.NORTH;
+        };
 
-		switch (getCubeletBox().getRotation()) {
-			case SOUTH:
-				blockFace = BlockFace.SOUTH;
-				break;
-			case EAST:
-				blockFace = BlockFace.EAST;
-				break;
-			case WEST:
-				blockFace = BlockFace.WEST;
-				break;
-			default:
-				blockFace = BlockFace.NORTH;
-				break;
-		}
-
-		getAnimationBlocks().setStepFakeBlocks(1, new FakeBlock[]{ new FakeBlock(loc, XMaterial.CHEST, blockFace) });
+        getAnimationBlocks().setStepFakeBlocks(1, new FakeBlock[]{ new FakeBlock(loc, XMaterial.CHEST, blockFace) });
 
 	}
 

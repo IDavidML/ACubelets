@@ -19,8 +19,8 @@ repositories {
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
-    implementation("org.apache.commons:commons-lang3:3.12.0")
+    compileOnly("org.spigotmc:spigot-api:1.21.11-R0.1-SNAPSHOT")
+    implementation("org.apache.commons:commons-lang3:3.18.0")
     implementation("com.googlecode.json-simple:json-simple:1.1")
     compileOnly("me.filoghost.holographicdisplays:holographicdisplays-api:3.0.0")
     compileOnly("com.github.decentsoftware-eu:decentholograms:2.8.8")
