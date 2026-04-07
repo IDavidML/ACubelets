@@ -16,125 +16,140 @@ import java.util.Map;
 
 public class MenuHandler {
 
-	private final Main main;
+    private final Main main;
 
-	private Map<Player, Menu> openedMenus;
+    private Map<Player, Menu> openedMenus;
 
-	private ClickType rewardPreviewClickType;
+    private ClickType rewardPreviewClickType;
 
-	public MenuHandler(Main main) {
+    public MenuHandler(Main main) {
 
-		this.main = main;
-		this.openedMenus = new HashMap<>();
-		this.rewardPreviewClickType = ClickType.SHIFT_LEFT;
-	}
+        this.main = main;
+        this.openedMenus = new HashMap<>();
+        this.rewardPreviewClickType = ClickType.SHIFT_LEFT;
+    }
 
-	public Map<Player, Menu> getOpenedMenus() {
-		return openedMenus;
-	}
+    public Map<Player, Menu> getOpenedMenus() {
+        return openedMenus;
+    }
 
-	public void setOpenedMenus(Map<Player, Menu> openedMenus) {
-		this.openedMenus = openedMenus;
-	}
+    public void setOpenedMenus(Map<Player, Menu> openedMenus) {
+        this.openedMenus = openedMenus;
+    }
 
-	public void addOpenedMenu(Player player, Menu menu) {
-		this.openedMenus.put(player, menu);
-	}
+    public void addOpenedMenu(Player player, Menu menu) {
+        this.openedMenus.put(player, menu);
+    }
 
-	public boolean hasOpenedMenu(Player player) {
-		return openedMenus.containsKey(player);
-	}
+    public boolean hasOpenedMenu(Player player) {
+        return openedMenus.containsKey(player);
+    }
 
-	public boolean hasOpenedMenu(Player player, Class<? extends Menu> menuClass) {
+    public boolean hasOpenedMenu(Player player, Class<? extends Menu> menuClass) {
 
-		Menu menu = getOpenedMenu(player);
+        Menu menu = getOpenedMenu(player);
 
-		if (menu == null) return false;
+        if (menu == null) return false;
 
-		return menu.getClass().equals(menuClass);
+        return menu.getClass().equals(menuClass);
 
-	}
+    }
 
-	public Menu getOpenedMenu(Player player) {
-		return hasOpenedMenu(player) ? openedMenus.get(player) : null;
-	}
+    public Menu getOpenedMenu(Player player) {
+        return hasOpenedMenu(player) ? openedMenus.get(player) : null;
+    }
 
-	public ClickType getRewardPreviewClickType() {
-		return rewardPreviewClickType;
-	}
+    public ClickType getRewardPreviewClickType() {
+        return rewardPreviewClickType;
+    }
 
-	public void setClickType(String clickType) {
-		if (Arrays.asList("LEFT", "RIGHT", "MIDDLE", "SHIFT_LEFT", "SHIFT_RIGHT").contains(clickType))
-			this.rewardPreviewClickType = ClickType.valueOf(clickType.toUpperCase());
-		else this.rewardPreviewClickType = ClickType.SHIFT_LEFT;
-	}
+    public void setClickType(String clickType) {
+        if (Arrays.asList("LEFT", "RIGHT", "MIDDLE", "SHIFT_LEFT", "SHIFT_RIGHT").contains(clickType))
+            this.rewardPreviewClickType = ClickType.valueOf(clickType.toUpperCase());
+        else this.rewardPreviewClickType = ClickType.SHIFT_LEFT;
+    }
 
-	public void handleMenuClick(Player player, InventoryClickEvent event) {
-		Menu menu = getOpenedMenu(player);
+    public void handleMenuClick(Player player, InventoryClickEvent event) {
+        Menu menu = getOpenedMenu(player);
 
-		if (menu == null) return;
+        if (menu == null) return;
 
-		event.setCancelled(true);
+        event.setCancelled(true);
 
-		menu.OnMenuClick(event);
-	}
+        ClickType click = event.getClick();
+        if (click == ClickType.DOUBLE_CLICK
+                || click == ClickType.SHIFT_LEFT
+                || click == ClickType.SHIFT_RIGHT
+                || click == ClickType.NUMBER_KEY) {
+            player.updateInventory();
+            return;
+        }
 
-	public void handleMenuClose(Player player) {
+        int topSize = player.getOpenInventory().getTopInventory().getSize();
+        if (event.getRawSlot() >= topSize) {
+            player.updateInventory();
+            return;
+        }
 
-		Menu menu = getOpenedMenu(player);
+        menu.OnMenuClick(event);
+    }
 
-		if (menu == null) return;
+    public void handleMenuClose(Player player) {
 
-		menu.OnMenuClosed();
+        Menu menu = getOpenedMenu(player);
 
-		for (ItemStack itemStack : player.getInventory().getContents()) {
-			if (itemStack == null) continue;
-			if (!NBTEditor.contains(itemStack, NBTEditor.CUSTOM_DATA, "acubelets")) continue;
-			itemStack.setAmount(0);
-		}
+        if (menu == null) return;
 
-		openedMenus.remove(player);
-	}
+        menu.OnMenuClosed();
 
-	public void handleMenuDrop(Player player, PlayerDropItemEvent event) {
+        for (ItemStack itemStack : player.getInventory().getContents()) {
+            if (itemStack == null) continue;
+            if (!NBTEditor.contains(itemStack, NBTEditor.CUSTOM_DATA, "acubelets")) continue;
+            itemStack.setAmount(0);
+        }
 
-		Menu menu = getOpenedMenu(player);
+        openedMenus.remove(player);
+    }
 
-		if (menu == null) return;
+    public void handleMenuDrop(Player player, PlayerDropItemEvent event) {
 
-		event.setCancelled(true);
-	}
+        Menu menu = getOpenedMenu(player);
 
-	public void reloadAllMenus(Player player, Class<? extends Menu> menuClass) {
+        if (menu == null) return;
 
-		Menu menu = getOpenedMenu(player);
+        event.setCancelled(true);
+    }
 
-		if (menu == null) return;
+    public void reloadAllMenus(Player player, Class<? extends Menu> menuClass) {
 
-		if (!menu.getClass().equals(menuClass)) return;
+        Menu menu = getOpenedMenu(player);
 
-		menu.reloadMyMenu();
-	}
+        if (menu == null) return;
 
-	public void reloadAllMenus(Class<? extends Menu> menuClass) {
+        if (!menu.getClass().equals(menuClass)) return;
 
-		for (Iterator<Menu> it = openedMenus.values().iterator(); it.hasNext(); ) {
-			Menu menu = it.next();
+        menu.reloadMyMenu();
+    }
 
-			if (!menu.getClass().equals(menuClass)) continue;
+    public void reloadAllMenus(Class<? extends Menu> menuClass) {
 
-			menu.reloadMyMenu();
-		}
+        for (Iterator<Menu> it = openedMenus.values().iterator(); it.hasNext(); ) {
+            Menu menu = it.next();
 
-	}
+            if (!menu.getClass().equals(menuClass)) continue;
 
-	public void reloadAllMenus() {
+            menu.reloadMyMenu();
+        }
 
-		for (Iterator<Menu> it = openedMenus.values().iterator(); it.hasNext(); ) {
-			Menu menu = it.next();
-			menu.reloadMyMenu();
-		}
+    }
 
-	}
+    public void reloadAllMenus() {
+
+        for (Iterator<Menu> it = openedMenus.values().iterator(); it.hasNext(); ) {
+            Menu menu = it.next();
+            menu.reloadMyMenu();
+        }
+
+    }
 
 }
