@@ -1,6 +1,6 @@
 plugins {
     java
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("com.gradleup.shadow") version "9.4.1"
 }
 
 group = "me.davidml16"
@@ -21,7 +21,7 @@ repositories {
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.21.11-R0.1-SNAPSHOT")
     implementation("org.apache.commons:commons-lang3:3.20.0")
-    implementation("com.googlecode.json-simple:json-simple:1.1.1")
+    implementation("com.googlecode.json-simple:json-simple:1.1")
     compileOnly("me.filoghost.holographicdisplays:holographicdisplays-api:3.0.0")
     compileOnly("com.github.decentsoftware-eu:decentholograms:2.9.9")
     implementation("com.zaxxer:HikariCP:7.0.2")
@@ -39,13 +39,13 @@ dependencies {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
     withSourcesJar()
 }
 
 tasks.compileJava {
     options.encoding = "UTF-8"
-    options.release.set(17)
+    options.release.set(25)
 }
 
 tasks {

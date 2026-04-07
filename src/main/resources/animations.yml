@@ -256,3 +256,13 @@ animations:
     ChangeBlocks: true
     Icon:
       material: JACK_O_LANTERN
+
+  animation_26:
+    Enabled: true
+    DisplayName: 'Animation 26'
+    OutlineParticles: true
+    FloorParticles: true
+    NeedPermission: true
+    ChangeBlocks: true
+    Icon:
+      material: EGG
