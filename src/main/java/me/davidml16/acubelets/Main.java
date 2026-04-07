@@ -3,6 +3,8 @@ package me.davidml16.acubelets;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import com.cryptomorin.xseries.XMaterial;
+import lombok.Getter;
+import lombok.Setter;
 import me.davidml16.acubelets.animations.Animation;
 import me.davidml16.acubelets.animations.AnimationHandler;
 import me.davidml16.acubelets.api.CubeletsAPI;
@@ -31,399 +33,323 @@ import java.util.*;
 
 public class Main extends JavaPlugin {
 
-	public static ConsoleCommandSender log;
-	private static Main main;
-	private final List<String> templates = Collections.singletonList("example");
-	private MetricsLite metrics;
-	private CubeletsAPI cubeletsAPI;
-	private PointsAPI pointsAPI;
-	private ProtocolManager protocolManager;
-	private HologramTask hologramTask;
-	private DataSaveTask dataSaveTask;
-	private LiveGuiTask liveGuiTask;
-	private DataCacheTask dataCacheTask;
-	private MachineEffectsTask machineEffectsTask;
-	private LanguageHandler languageHandler;
-	private DatabaseHandler databaseHandler;
-	private PlayerDataHandler playerDataHandler;
-	private CubeletTypesHandler cubeletTypesHandler;
-	private CubeletRarityHandler cubeletRarityHandler;
-	private CubeletRewardHandler cubeletRewardHandler;
-	private CubeletMachineHandler cubeletMachineHandler;
-	private HologramHandler hologramHandler;
-	private CubeletOpenHandler cubeletOpenHandler;
-	private AnimationHandler animationHandler;
-	private CubeletCraftingHandler cubeletCraftingHandler;
-	private EconomyHandler economyHandler;
-	private LayoutHandler layoutHandler;
-	private ConversationHandler conversationHandler;
-	private TransactionHandler transactionHandler;
-	private MenuHandler menuHandler;
-	private FireworkUtil fireworkUtil;
-	private PluginHandler pluginHandler;
-	private int playerCount;
-	private Map<String, Object> settings;
-	private CommandMap commandMap;
-
-	public static Main get() {
-		return main;
-	}
-
-	@Override
-	public void onEnable() {
-		main = this;
-		log = Bukkit.getConsoleSender();
-		metrics = new MetricsLite(this, 7349);
-
-		settings = new HashMap<>();
-
-		saveDefaultConfig();
-		try {
-			ConfigUpdater.update(this, "config.yml", new File(main.getDataFolder(), "config.yml"), Collections.emptyList());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		reloadConfig();
-
-		if (!XMaterial.supports(16)) {
-			getLogger().severe("***   Plugin only supports 1.16+ versions.");
-			getLogger().severe("***   If you are using 1.8+ versions, please use the latest plugin version 2.1.8.");
-			getLogger().severe("***   Or if you are using 1.13+ versions, please use the latest plugin version 2.4.7.");
-			setEnabled(false);
-			return;
-		}
-
-		if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
-			getLogger().severe("*** ProtocolLib is not installed or not enabled. ***");
-			getLogger().severe("*** This plugin will be disabled. ***");
-			setEnabled(false);
-			return;
-		}
+    public static ConsoleCommandSender log;
+    private static Main main;
+    @Getter
+    private final List<String> templates = Collections.singletonList("example");
+    @Getter
+    private MetricsLite metrics;
+    private CubeletsAPI cubeletsAPI;
+    private PointsAPI pointsAPI;
+    @Getter
+    private ProtocolManager protocolManager;
+    @Getter
+    private HologramTask hologramTask;
+    private DataSaveTask dataSaveTask;
+    @Getter
+    private LiveGuiTask liveGuiTask;
+    private DataCacheTask dataCacheTask;
+    @Getter
+    private MachineEffectsTask machineEffectsTask;
+    @Getter
+    private LanguageHandler languageHandler;
+    @Getter
+    private DatabaseHandler databaseHandler;
+    @Getter
+    private PlayerDataHandler playerDataHandler;
+    @Getter
+    private CubeletTypesHandler cubeletTypesHandler;
+    @Getter
+    private CubeletRarityHandler cubeletRarityHandler;
+    @Getter
+    private CubeletRewardHandler cubeletRewardHandler;
+    private CubeletMachineHandler cubeletMachineHandler;
+    @Getter
+    private HologramHandler hologramHandler;
+    @Getter
+    private CubeletOpenHandler cubeletOpenHandler;
+    @Getter
+    private AnimationHandler animationHandler;
+    @Getter
+    private CubeletCraftingHandler cubeletCraftingHandler;
+    @Getter
+    private EconomyHandler economyHandler;
+    @Getter
+    private LayoutHandler layoutHandler;
+    @Getter
+    private ConversationHandler conversationHandler;
+    @Getter
+    private TransactionHandler transactionHandler;
+    @Getter
+    private MenuHandler menuHandler;
+    @Getter
+    private FireworkUtil fireworkUtil;
+    @Getter
+    private PluginHandler pluginHandler;
+    @Getter
+    @Setter
+    private int playerCount;
+    private Map<String, Object> settings;
+    private CommandMap commandMap;
+
+    public static Main get() {
+        return main;
+    }
+
+    @Override
+    public void onEnable() {
+        main = this;
+        log = Bukkit.getConsoleSender();
+        metrics = new MetricsLite(this, 7349);
+
+        settings = new HashMap<>();
+
+        saveDefaultConfig();
+        try {
+            ConfigUpdater.update(this, "config.yml", new File(main.getDataFolder(), "config.yml"), Collections.emptyList());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        reloadConfig();
+
+        if (!XMaterial.supports(16)) {
+            getLogger().severe("***   Plugin only supports 1.16+ versions.");
+            getLogger().severe("***   If you are using 1.8+ versions, please use the latest plugin version 2.1.8.");
+            getLogger().severe("***   Or if you are using 1.13+ versions, please use the latest plugin version 2.4.7.");
+            setEnabled(false);
+            return;
+        }
+
+        if (!Bukkit.getPluginManager().isPluginEnabled("ProtocolLib")) {
+            getLogger().severe("*** ProtocolLib is not installed or not enabled. ***");
+            getLogger().severe("*** This plugin will be disabled. ***");
+            setEnabled(false);
+            return;
+        }
+
+        protocolManager = ProtocolLibrary.getProtocolManager();
+
+        registerSettings();
+
+        pluginHandler = new PluginHandler(this);
+
+        transactionHandler = new TransactionHandler(this);
 
-		protocolManager = ProtocolLibrary.getProtocolManager();
+        languageHandler = new LanguageHandler(this, getConfig().getString("Language").toLowerCase());
+        languageHandler.pushMessages();
 
-		registerSettings();
+        databaseHandler = new DatabaseHandler(this);
+        databaseHandler.openConnection();
+        databaseHandler.loadTables();
 
-		pluginHandler = new PluginHandler(this);
-
-		transactionHandler = new TransactionHandler(this);
-
-		languageHandler = new LanguageHandler(this, getConfig().getString("Language").toLowerCase());
-		languageHandler.pushMessages();
+        animationHandler = new AnimationHandler(this);
+        animationHandler.loadAnimations();
 
-		databaseHandler = new DatabaseHandler(this);
-		databaseHandler.openConnection();
-		databaseHandler.loadTables();
+        cubeletMachineHandler = new CubeletMachineHandler(this);
+        cubeletMachineHandler.loadMachines();
+        cubeletMachineHandler.setClickType(getConfig().getString("CubeletMachine.ClickType"));
 
-		animationHandler = new AnimationHandler(this);
-		animationHandler.loadAnimations();
-
-		cubeletMachineHandler = new CubeletMachineHandler(this);
-		cubeletMachineHandler.loadMachines();
-		cubeletMachineHandler.setClickType(getConfig().getString("CubeletMachine.ClickType"));
-
-		cubeletTypesHandler = new CubeletTypesHandler(this);
-		cubeletTypesHandler.loadTypes();
-
-		cubeletRarityHandler = new CubeletRarityHandler(this);
-		cubeletRarityHandler.loadRarities();
+        cubeletTypesHandler = new CubeletTypesHandler(this);
+        cubeletTypesHandler.loadTypes();
 
-		cubeletRewardHandler = new CubeletRewardHandler(this);
-		cubeletRewardHandler.loadRewards();
-
-		cubeletTypesHandler.printLog();
+        cubeletRarityHandler = new CubeletRarityHandler(this);
+        cubeletRarityHandler.loadRarities();
 
-		economyHandler = new EconomyHandler();
-		economyHandler.load();
+        cubeletRewardHandler = new CubeletRewardHandler(this);
+        cubeletRewardHandler.loadRewards();
 
-		cubeletCraftingHandler = new CubeletCraftingHandler(this);
-		cubeletCraftingHandler.loadCrafting();
+        cubeletTypesHandler.printLog();
 
-		playerDataHandler = new PlayerDataHandler(this);
+        economyHandler = new EconomyHandler();
+        economyHandler.load();
 
-		hologramHandler = new HologramHandler(this);
+        cubeletCraftingHandler = new CubeletCraftingHandler(this);
+        cubeletCraftingHandler.loadCrafting();
 
-		if (hologramHandler.getImplementation() == null) {
-			getLogger().severe("*** HolographicDisplays or Decent Holograms is not installed or not enabled. ***");
-			getLogger().severe("*** Now the plugin will be disabled. ***");
-			setEnabled(false);
-			return;
-		}
+        playerDataHandler = new PlayerDataHandler(this);
 
-		int distance = getConfig().getInt("Holograms.VisibilityDistance");
-		hologramHandler.setVisibilityDistance(distance * distance);
+        hologramHandler = new HologramHandler(this);
 
-		hologramHandler.getColorAnimation().setColors(getConfig().getStringList("Holograms.ColorAnimation"));
-		hologramHandler.getImplementation().loadHolograms();
+        if (hologramHandler.getImplementation() == null) {
+            getLogger().severe("*** HolographicDisplays or Decent Holograms is not installed or not enabled. ***");
+            getLogger().severe("*** Now the plugin will be disabled. ***");
+            setEnabled(false);
+            return;
+        }
 
-		playerDataHandler.loadAllPlayerData();
+        int distance = getConfig().getInt("Holograms.VisibilityDistance");
+        hologramHandler.setVisibilityDistance(distance * distance);
 
-		hologramTask = new HologramTask(this);
-		hologramTask.start();
+        hologramHandler.getColorAnimation().setColors(getConfig().getStringList("Holograms.ColorAnimation"));
+        hologramHandler.getImplementation().loadHolograms();
 
-		dataSaveTask = new DataSaveTask(this);
-		dataSaveTask.start();
+        playerDataHandler.loadAllPlayerData();
 
-		dataCacheTask = new DataCacheTask(this);
-		dataCacheTask.start();
+        hologramTask = new HologramTask(this);
+        hologramTask.start();
 
-		machineEffectsTask = new MachineEffectsTask(this);
-		machineEffectsTask.start();
+        dataSaveTask = new DataSaveTask(this);
+        dataSaveTask.start();
 
-		cubeletOpenHandler = new CubeletOpenHandler(this);
+        dataCacheTask = new DataCacheTask(this);
+        dataCacheTask.start();
 
-		liveGuiTask = new LiveGuiTask(this);
-		if (isSetting("LiveGuiUpdates")) liveGuiTask.start();
+        machineEffectsTask = new MachineEffectsTask(this);
+        machineEffectsTask.start();
 
-		layoutHandler = new LayoutHandler(this);
+        cubeletOpenHandler = new CubeletOpenHandler(this);
 
-		menuHandler = new MenuHandler(this);
+        liveGuiTask = new LiveGuiTask(this);
+        if (isSetting("LiveGuiUpdates")) liveGuiTask.start();
 
-		menuHandler.setClickType(getConfig().getString("Rewards.Preview.ClickType"));
+        layoutHandler = new LayoutHandler(this);
 
-		conversationHandler = new ConversationHandler(this);
+        menuHandler = new MenuHandler(this);
 
-		fireworkUtil = new FireworkUtil(this);
+        menuHandler.setClickType(getConfig().getString("Rewards.Preview.ClickType"));
 
-		cubeletsAPI = new CubeletsAPI(this);
-		pointsAPI = new PointsAPI(this);
+        conversationHandler = new ConversationHandler(this);
 
-		registerCommands();
-		registerEvents();
+        fireworkUtil = new FireworkUtil(this);
 
-		playerCount = getServer().getOnlinePlayers().size();
+        cubeletsAPI = new CubeletsAPI(this);
+        pointsAPI = new PointsAPI(this);
 
-		String authors = String.join(", ", getDescription().getAuthors());
+        registerCommands();
+        registerEvents();
 
-		PluginDescriptionFile pdf = getDescription();
-		log.sendMessage(Utils.translate("  &eACubelets Enabled!"));
-		log.sendMessage(Utils.translate("    &aVersion: &b" + pdf.getVersion()));
-		log.sendMessage(Utils.translate("    &aAuthor: &b" + authors));
-		log.sendMessage("");
+        playerCount = getServer().getOnlinePlayers().size();
 
-		if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-			new PlaceholderHook(this).register();
-			settings.put("placeholderapi", true);
-		} else {
-			settings.put("placeholderapi", false);
-		}
+        String authors = String.join(", ", getDescription().getAuthors());
 
-	}
+        PluginDescriptionFile pdf = getDescription();
+        log.sendMessage(Utils.translate("  &eACubelets Enabled!"));
+        log.sendMessage(Utils.translate("    &aVersion: &b" + pdf.getVersion()));
+        log.sendMessage(Utils.translate("    &aAuthor: &b" + authors));
+        log.sendMessage("");
 
-	@Override
-	public void onDisable() {
+        if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+            new PlaceholderHook(this).register();
+            settings.put("placeholderapi", true);
+        } else {
+            settings.put("placeholderapi", false);
+        }
 
-		PluginDescriptionFile pdf = getDescription();
-		String authors = String.join(", ", pdf.getAuthors());
-		log.sendMessage("");
-		log.sendMessage(Utils.translate("  &eACubelets Disabled!"));
-		log.sendMessage(Utils.translate("    &aVersion: &b" + pdf.getVersion()));
-		log.sendMessage(Utils.translate("    &aAuthor: &b" + authors));
-		log.sendMessage("");
+    }
 
-		if (hologramHandler != null && hologramHandler.getImplementation() != null)
-			hologramHandler.getImplementation().removeHolograms();
+    @Override
+    public void onDisable() {
 
-		main.getPlayerDataHandler().saveAllPlayerDataSync();
+        PluginDescriptionFile pdf = getDescription();
+        String authors = String.join(", ", pdf.getAuthors());
+        log.sendMessage("");
+        log.sendMessage(Utils.translate("  &eACubelets Disabled!"));
+        log.sendMessage(Utils.translate("    &aVersion: &b" + pdf.getVersion()));
+        log.sendMessage(Utils.translate("    &aAuthor: &b" + authors));
+        log.sendMessage("");
 
-		for (Animation task : new ArrayList<>(main.getAnimationHandler().getTasks())) {
-			task.stop();
-		}
-		main.getAnimationHandler().getTasks().clear();
+        if (hologramHandler != null && hologramHandler.getImplementation() != null)
+            hologramHandler.getImplementation().removeHolograms();
 
-		for (Entity entity : main.getAnimationHandler().getEntities()) {
-			entity.remove();
-		}
-		main.getAnimationHandler().getEntities().clear();
+        main.getPlayerDataHandler().saveAllPlayerDataSync();
 
-		if (hologramTask != null) hologramTask.stop();
-		if (dataSaveTask != null) dataSaveTask.stop();
-		if (machineEffectsTask != null) machineEffectsTask.stop();
-		if (databaseHandler != null) databaseHandler.getDatabaseConnection().stop();
+        for (Animation task : new ArrayList<>(main.getAnimationHandler().getTasks())) {
+            task.stop();
+        }
+        main.getAnimationHandler().getTasks().clear();
 
-	}
+        for (Entity entity : main.getAnimationHandler().getEntities()) {
+            entity.remove();
+        }
+        main.getAnimationHandler().getEntities().clear();
 
-	public void registerSettings() {
-		settings.put("Crafting", getConfig().getBoolean("Crafting"));
+        if (hologramTask != null) hologramTask.stop();
+        if (dataSaveTask != null) dataSaveTask.stop();
+        if (machineEffectsTask != null) machineEffectsTask.stop();
+        if (databaseHandler != null) databaseHandler.getDatabaseConnection().stop();
+    }
 
-		settings.put("Rewards.Broadcast", getConfig().getBoolean("Rewards.Broadcast"));
+    public void registerSettings() {
+        settings.put("Crafting", getConfig().getBoolean("Crafting"));
 
-		settings.put("LoginReminder", getConfig().getBoolean("LoginReminder"));
+        settings.put("Rewards.Broadcast", getConfig().getBoolean("Rewards.Broadcast"));
 
-		settings.put("CubeletsCommand", getConfig().getBoolean("NoCubelets.ExecuteCommand"));
-		settings.put("NoCubelets.ExecuteCommand", getConfig().getBoolean("NoCubelets.ExecuteCommand"));
-		settings.put("NoCubelets.Command", getConfig().getString("NoCubelets.Command"));
-		settings.put("NoCubelets.Executor", getConfig().getString("NoCubelets.Executor"));
+        settings.put("LoginReminder", getConfig().getBoolean("LoginReminder"));
 
-		settings.put("Rewards.Duplication.Enabled", getConfig().getBoolean("Rewards.Duplication.Enabled"));
-		settings.put("Rewards.Duplication.PointsCommand", getConfig().getString("Rewards.Duplication.PointsCommand"));
-		settings.put("Rewards.PermissionCommand", getConfig().getString("Rewards.PermissionCommand"));
+        settings.put("CubeletsCommand", getConfig().getBoolean("NoCubelets.ExecuteCommand"));
+        settings.put("NoCubelets.ExecuteCommand", getConfig().getBoolean("NoCubelets.ExecuteCommand"));
+        settings.put("NoCubelets.Command", getConfig().getString("NoCubelets.Command"));
+        settings.put("NoCubelets.Executor", getConfig().getString("NoCubelets.Executor"));
 
-		settings.put("NoGuiMode", getConfig().getBoolean("NoGuiMode"));
+        settings.put("Rewards.Duplication.Enabled", getConfig().getBoolean("Rewards.Duplication.Enabled"));
+        settings.put("Rewards.Duplication.PointsCommand", getConfig().getString("Rewards.Duplication.PointsCommand"));
+        settings.put("Rewards.PermissionCommand", getConfig().getString("Rewards.PermissionCommand"));
 
-		settings.put("AnimationsByPlayer", getConfig().getBoolean("AnimationsByPlayer"));
+        settings.put("NoGuiMode", getConfig().getBoolean("NoGuiMode"));
 
-		settings.put("SerializeBase64", getConfig().getBoolean("SerializeBase64"));
-		settings.put("Rewards.AutoSorting", getConfig().getBoolean("Rewards.AutoSorting"));
-		settings.put("UseKeys", getConfig().getBoolean("UseKeys"));
+        settings.put("AnimationsByPlayer", getConfig().getBoolean("AnimationsByPlayer"));
 
-		settings.put("HDVisibleToAllPlayers", getConfig().getBoolean("Holograms.Duplication.VisibleToAllPlayers"));
+        settings.put("SerializeBase64", getConfig().getBoolean("SerializeBase64"));
+        settings.put("Rewards.AutoSorting", getConfig().getBoolean("Rewards.AutoSorting"));
+        settings.put("UseKeys", getConfig().getBoolean("UseKeys"));
 
-		settings.put("LiveGuiUpdates", getConfig().getBoolean("LiveGuiUpdates"));
+        settings.put("HDVisibleToAllPlayers", getConfig().getBoolean("Holograms.Duplication.VisibleToAllPlayers"));
 
-		settings.put("Rewards.Preview.Enabled", getConfig().getBoolean("Rewards.Preview.Enabled"));
+        settings.put("LiveGuiUpdates", getConfig().getBoolean("LiveGuiUpdates"));
 
-		settings.put("GiftCubeletsCommand", getConfig().getBoolean("GiftCubeletsCommand"));
+        settings.put("Rewards.Preview.Enabled", getConfig().getBoolean("Rewards.Preview.Enabled"));
+
+        settings.put("GiftCubeletsCommand", getConfig().getBoolean("GiftCubeletsCommand"));
 
         settings.put("GiftMenuSpareHeadType", getConfig().getString("GiftMenuSpareHeadType"));
         settings.put("GiftMenuSpareHeadValue", getConfig().getString("GiftMenuSpareHeadValue"));
-	}
+    }
 
-	public boolean isSetting(String key) {
-		return settings.containsKey(key) && (boolean) settings.get(key);
-	}
+    public boolean isSetting(String key) {
+        return settings.containsKey(key) && (boolean) settings.get(key);
+    }
 
-	public String getSetting(String key) {
-		return settings.containsKey(key) ? (String) settings.get(key) : "";
-	}
+    public String getSetting(String key) {
+        return settings.containsKey(key) ? (String) settings.get(key) : "";
+    }
 
-	public ProtocolManager getProtocolManager() {
-		return protocolManager;
-	}
+    public DatabaseHandler getDatabase() {
+        return databaseHandler;
+    }
 
-	public MetricsLite getMetrics() {
-		return metrics;
-	}
+    public CubeletMachineHandler getCubeletBoxHandler() {
+        return cubeletMachineHandler;
+    }
 
-	public LanguageHandler getLanguageHandler() {
-		return languageHandler;
-	}
+    public HologramImplementation getHologramImplementation() {
+        return hologramHandler.getImplementation();
+    }
 
-	public DatabaseHandler getDatabaseHandler() {
-		return databaseHandler;
-	}
+    public boolean playerHasPermission(Player p, String permission) {
+        return p.hasPermission(permission) || p.isOp();
+    }
 
-	public DatabaseHandler getDatabase() {
-		return databaseHandler;
-	}
+    private void registerCommands() {
+        Field bukkitCommandMap;
+        try {
+            bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
+            bukkitCommandMap.setAccessible(true);
+            commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
+            commandMap.register("acubelets", new me.davidml16.acubelets.commands.cubelets.CoreCommand(getConfig().getString("Commands.Cubelets")
+                    .toLowerCase()));
+            commandMap.register("acubelets", new me.davidml16.acubelets.commands.points.CoreCommand(getConfig().getString("Commands.Points")
+                    .toLowerCase()));
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+    }
 
-	public TransactionHandler getTransactionHandler() {
-		return transactionHandler;
-	}
-
-	public PlayerDataHandler getPlayerDataHandler() {
-		return playerDataHandler;
-	}
-
-	public CubeletTypesHandler getCubeletTypesHandler() {
-		return cubeletTypesHandler;
-	}
-
-	public CubeletRarityHandler getCubeletRarityHandler() {
-		return cubeletRarityHandler;
-	}
-
-	public CubeletRewardHandler getCubeletRewardHandler() {
-		return cubeletRewardHandler;
-	}
-
-	public CubeletMachineHandler getCubeletBoxHandler() {
-		return cubeletMachineHandler;
-	}
-
-	public HologramHandler getHologramHandler() {
-		return hologramHandler;
-	}
-
-	public HologramImplementation getHologramImplementation() {
-		return hologramHandler.getImplementation();
-	}
-
-	public CubeletOpenHandler getCubeletOpenHandler() {
-		return cubeletOpenHandler;
-	}
-
-	public AnimationHandler getAnimationHandler() {
-		return animationHandler;
-	}
-
-	public CubeletCraftingHandler getCubeletCraftingHandler() {
-		return cubeletCraftingHandler;
-	}
-
-	public EconomyHandler getEconomyHandler() {
-		return economyHandler;
-	}
-
-	public LayoutHandler getLayoutHandler() {
-		return layoutHandler;
-	}
-
-	public MenuHandler getMenuHandler() {
-		return menuHandler;
-	}
-
-	public ConversationHandler getConversationHandler() {
-		return conversationHandler;
-	}
-
-	public PluginHandler getPluginHandler() {
-		return pluginHandler;
-	}
-
-	public HologramTask getHologramTask() {
-		return hologramTask;
-	}
-
-	public LiveGuiTask getLiveGuiTask() {
-		return liveGuiTask;
-	}
-
-	public MachineEffectsTask getMachineEffectsTask() {
-		return machineEffectsTask;
-	}
-
-	public FireworkUtil getFireworkUtil() {
-		return fireworkUtil;
-	}
-
-	public int getPlayerCount() {
-		return playerCount;
-	}
-
-	public void setPlayerCount(int playerCount) {
-		this.playerCount = playerCount;
-	}
-
-	public List<String> getTemplates() {
-		return templates;
-	}
-
-	public boolean playerHasPermission(Player p, String permission) {
-		return p.hasPermission(permission) || p.isOp();
-	}
-
-	private void registerCommands() {
-		Field bukkitCommandMap;
-		try {
-			bukkitCommandMap = Bukkit.getServer().getClass().getDeclaredField("commandMap");
-			bukkitCommandMap.setAccessible(true);
-			commandMap = (CommandMap) bukkitCommandMap.get(Bukkit.getServer());
-			commandMap.register("acubelets", new me.davidml16.acubelets.commands.cubelets.CoreCommand(getConfig().getString("Commands.Cubelets")
-					.toLowerCase()));
-			commandMap.register("acubelets", new me.davidml16.acubelets.commands.points.CoreCommand(getConfig().getString("Commands.Points")
-					.toLowerCase()));
-		} catch (NoSuchFieldException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void registerEvents() {
-		Bukkit.getPluginManager().registerEvents(new Event_Interact(this), this);
-		Bukkit.getPluginManager().registerEvents(new Event_JoinQuit(this), this);
-		Bukkit.getPluginManager().registerEvents(new Event_Damage(), this);
-		Bukkit.getPluginManager().registerEvents(new Event_Menus(this), this);
-		Bukkit.getPluginManager().registerEvents(new Event_Block(this), this);
-	}
+    private void registerEvents() {
+        Bukkit.getPluginManager().registerEvents(new Event_Interact(this), this);
+        Bukkit.getPluginManager().registerEvents(new Event_JoinQuit(this), this);
+        Bukkit.getPluginManager().registerEvents(new Event_Damage(), this);
+        Bukkit.getPluginManager().registerEvents(new Event_Menus(this), this);
+        Bukkit.getPluginManager().registerEvents(new Event_Block(this), this);
+    }
 
 }

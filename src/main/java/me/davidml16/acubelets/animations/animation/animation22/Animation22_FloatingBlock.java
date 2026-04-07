@@ -1,37 +1,27 @@
 package me.davidml16.acubelets.animations.animation.animation22;
 
 import com.cryptomorin.xseries.XMaterial;
-import com.cryptomorin.xseries.particles.ParticleDisplay;
-import fr.skytasul.guardianbeam.Laser;
-import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
-import me.davidml16.acubelets.utils.LocationUtils;
 import me.davidml16.acubelets.utils.ParticlesAPI.Particles;
 import me.davidml16.acubelets.utils.ParticlesAPI.UtilParticles;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Particle;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.awt.*;
-import java.util.List;
 
 public class Animation22_FloatingBlock extends BukkitRunnable {
 
-    private Location center;
-    private Location spawnLocation;
-
-    private FallingBlock fallingBlock;
-    private Location corner;
-
+    private static final double yIncrement = 0.5;
+    private final Location center;
+    private final Location spawnLocation;
+    private final FallingBlock fallingBlock;
+    private final Location corner;
     private int stepGlobal;
     private int stepSpiral;
-
-    private static final double yIncrement = 0.5;
 
     public Animation22_FloatingBlock(Main main, Location center, Location spawnLocation, Location corner) {
         this.center = center;
@@ -122,8 +112,8 @@ public class Animation22_FloatingBlock extends BukkitRunnable {
             stepSpiral = 16;
         }
 
-        if(fallingBlock != null) {
-            if(stepGlobal % 2 == 0)
+        if (fallingBlock != null) {
+            if (stepGlobal % 2 == 0)
                 UtilParticles.drawParticleLine(fallingBlock.getLocation().clone().add(0.25, 0.5, 0.25), corner, Particles.REDSTONE, 10, Color.MAGENTA);
         }
 
@@ -131,10 +121,10 @@ public class Animation22_FloatingBlock extends BukkitRunnable {
 
         stepGlobal++;
 
-        if(stepGlobal >= 25) return;
+        if (stepGlobal >= 25) return;
 
         Vector vector = new Vector(0.0D, 0.75D, 0.0D);
-        if(fallingBlock != null)
+        if (fallingBlock != null)
             fallingBlock.setVelocity(vector.multiply(0.05D));
 
     }
