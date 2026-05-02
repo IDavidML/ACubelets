@@ -112,7 +112,7 @@ public class Main extends JavaPlugin {
         }
         reloadConfig();
 
-        if (!XMaterial.supports(16)) {
+        if (!XMaterial.supports(1, 16)) {
             getLogger().severe("***   Plugin only supports 1.16+ versions.");
             getLogger().severe("***   If you are using 1.8+ versions, please use the latest plugin version 2.1.8.");
             getLogger().severe("***   Or if you are using 1.13+ versions, please use the latest plugin version 2.4.7.");

@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "me.davidml16"
-version = "2.5.5"
+version = "2.5.6"
 description = "ACubelets"
 
 repositories {
@@ -29,8 +29,8 @@ dependencies {
     compileOnly("me.clip:placeholderapi:2.12.2")
     compileOnly("net.dmulloy2:ProtocolLib:5.4.0")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
-    implementation("io.github.bananapuncher714:nbteditor:7.20.3")
-    implementation("com.github.cryptomorin:XSeries:13.6.0")
+    implementation("io.github.bananapuncher714:nbteditor:8.0.0")
+    implementation("io.github.almighty-satan:XSeries:13.6.0+26.1")
     implementation("org.jetbrains:annotations:26.1.0")
     implementation("org.jsoup:jsoup:1.22.1")
     compileOnly("com.mojang:authlib:3.13.56")
@@ -39,13 +39,13 @@ dependencies {
 }
 
 java {
-    toolchain.languageVersion.set(JavaLanguageVersion.of(25))
+    toolchain.languageVersion.set(JavaLanguageVersion.of(21))
     withSourcesJar()
 }
 
 tasks.compileJava {
     options.encoding = "UTF-8"
-    options.release.set(25)
+    options.release.set(21)
 }
 
 tasks {

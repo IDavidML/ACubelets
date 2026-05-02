@@ -13,36 +13,10 @@ import java.util.regex.Pattern;
 
 public class Utils {
 
-    private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + String.valueOf('&') + "[0-9A-FK-OR]");
-
-    private static final Pattern hexPattern = Pattern.compile("\\{#" + "([A-Fa-f0-9]{6})" + "}");
-
     public static final char COLOR_CHAR = ChatColor.COLOR_CHAR;
-
-    private static String translateHexColorCodes(String message) {
-        Matcher matcher = hexPattern.matcher(message);
-        StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
-        while (matcher.find()) {
-            String group = matcher.group(1);
-            matcher.appendReplacement(buffer, COLOR_CHAR + "x"
-                    + COLOR_CHAR + group.charAt(0) + COLOR_CHAR + group.charAt(1)
-                    + COLOR_CHAR + group.charAt(2) + COLOR_CHAR + group.charAt(3)
-                    + COLOR_CHAR + group.charAt(4) + COLOR_CHAR + group.charAt(5)
-            );
-        }
-        return matcher.appendTail(buffer).toString();
-    }
-
-    public static String translate(String msg) {
-        if(XMaterial.supports(16)) msg = translateHexColorCodes(msg);
-        return ChatColor.translateAlternateColorCodes('&', msg);
-    }
-
-    public static String removeColors(String msg) {
-        return msg == null ? null : STRIP_COLOR_PATTERN.matcher(msg).replaceAll("");
-    }
-
-    private static Map<ChatColor, ColorSet<Integer, Integer, Integer>> colorMap = new HashMap<ChatColor, ColorSet<Integer, Integer, Integer>>();
+    private static final Pattern STRIP_COLOR_PATTERN = Pattern.compile("(?i)" + '&' + "[0-9A-FK-OR]");
+    private static final Pattern hexPattern = Pattern.compile("\\{#" + "([A-Fa-f0-9]{6})" + "}");
+    private static final Map<ChatColor, ColorSet<Integer, Integer, Integer>> colorMap = new HashMap<ChatColor, ColorSet<Integer, Integer, Integer>>();
 
     static {
         colorMap.put(ChatColor.BLACK, new ColorSet<Integer, Integer, Integer>(0, 0, 0));
@@ -63,29 +37,27 @@ public class Utils {
         colorMap.put(ChatColor.WHITE, new ColorSet<Integer, Integer, Integer>(255, 255, 255));
     }
 
-    public static class ColorSet<I extends Number, I1 extends Number, I2 extends Number> {
-        Integer red = 0;
-        Integer green = 0;
-        Integer blue = 0;
-
-        ColorSet(Integer red, Integer green, Integer blue) {
-            this.red = red;
-            this.green = green;
-            this.blue = blue;
+    private static String translateHexColorCodes(String message) {
+        Matcher matcher = hexPattern.matcher(message);
+        StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
+        while (matcher.find()) {
+            String group = matcher.group(1);
+            matcher.appendReplacement(buffer, COLOR_CHAR + "x"
+                    + COLOR_CHAR + group.charAt(0) + COLOR_CHAR + group.charAt(1)
+                    + COLOR_CHAR + group.charAt(2) + COLOR_CHAR + group.charAt(3)
+                    + COLOR_CHAR + group.charAt(4) + COLOR_CHAR + group.charAt(5)
+            );
         }
+        return matcher.appendTail(buffer).toString();
+    }
 
-        public Integer getRed() {
-            return red;
-        }
+    public static String translate(String msg) {
+        if (XMaterial.supports(1, 16)) msg = translateHexColorCodes(msg);
+        return ChatColor.translateAlternateColorCodes('&', msg);
+    }
 
-        public Integer getGreen() {
-            return green;
-        }
-
-        public Integer getBlue() {
-            return blue;
-        }
-
+    public static String removeColors(String msg) {
+        return msg == null ? null : STRIP_COLOR_PATTERN.matcher(msg).replaceAll("");
     }
 
     public static ChatColor fromRGB(int r, int g, int b) {
@@ -112,9 +84,34 @@ public class Utils {
     public static ConfigurationSection getConfigurationSection(Configuration config, String path) {
         ConfigurationSection section = config.getConfigurationSection(path);
 
-        if(section == null) section = config.createSection(path);
+        if (section == null) section = config.createSection(path);
 
         return section;
+    }
+
+    public static class ColorSet<I extends Number, I1 extends Number, I2 extends Number> {
+        Integer red = 0;
+        Integer green = 0;
+        Integer blue = 0;
+
+        ColorSet(Integer red, Integer green, Integer blue) {
+            this.red = red;
+            this.green = green;
+            this.blue = blue;
+        }
+
+        public Integer getRed() {
+            return red;
+        }
+
+        public Integer getGreen() {
+            return green;
+        }
+
+        public Integer getBlue() {
+            return blue;
+        }
+
     }
 
 }

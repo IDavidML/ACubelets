@@ -1,0 +1,118 @@
+type:
+  name: '&e&lExample Cubelet'
+  animation: animation2
+  expiration: 2w
+  icon:
+    texture: base64:eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWYyMmI2YTNhMGYyNGJkZWVhYjJhNmFjZDliMWY1MmJiOTU5NGQ1ZjZiMWUyYzA1ZGRkYjIxOTQxMGM4In19fQ==
+  description:
+    - '&7This is the most common type of'
+    - '&7Cubelet. Initial scans indicate'
+    - '&7that the contents of this cubelet'
+    - '&7will be probably basic.'
+  lore:
+    opening:
+      available:
+        - '&5Received: &a%received% ago'
+        - '&5Expires: &aIn %expires%'
+        - ''
+        - '%description%'
+        - ''
+        - '&6Click to open.'
+      expired:
+        - '&5Received: &a%received% ago'
+        - '&5Expires: &cExpired'
+        - ''
+        - '%description%'
+        - ''
+  rarities:
+    common:
+      name: '&bCommon'
+      chance: 55.4
+      duplicatePointsRange: 50-100
+    rare:
+      name: '&aRare'
+      chance: 23.4
+      duplicatePointsRange: 100-250
+    uncommon:
+      name: '&dUncommon'
+      chance: 17.4
+      duplicatePointsRange: 250-450
+    mythical:
+      name: '&4Mythical'
+      chance: 2.7
+      duplicatePointsRange: 450-650
+    legendary:
+      name: '&6Legendary'
+      chance: 1.1
+      duplicatePointsRange: 650-950
+  rewards:
+    reward_0:
+      name: Example uncommon
+      rarity: uncommon
+      rewardUUID: a961ff82-313d-40c8-a1d0-cb25760b529f
+      bypassDuplicationSystem: false
+      command:
+        - tell %player% GOLDEN APPLE!!
+      permission: []
+      item: []
+      icon:
+        material: GOLDEN_APPLE
+        damage: 1
+    reward_1:
+      name: Example common
+      rarity: common
+      rewardUUID: c6d16e31-5d7f-4834-b26b-fce7f5d775fe
+      bypassDuplicationSystem: false
+      command:
+        - give %player% diamond_block 1
+      permission: []
+      item: []
+      icon:
+        material: DIAMOND_BLOCK
+    reward_2:
+      name: Example legendary
+      rarity: legendary
+      rewardUUID: 376dfa6e-7cab-446e-9b3d-cba7f4483122
+      bypassDuplicationSystem: false
+      command:
+        - give %player% diamond 128
+      permission: []
+      item: []
+      icon:
+        material: CAKE
+    reward_3:
+      name: Example rare
+      rarity: rare
+      rewardUUID: b405837e-99fa-4603-acbc-89d204a26664
+      bypassDuplicationSystem: false
+      command: []
+      permission:
+        - essentials.kit.vip
+      item: []
+      icon:
+        material: DIAMOND_SWORD
+    reward_4:
+      name: Example mythical
+      rarity: mythical
+      rewardUUID: 2ff9aac2-804c-42c0-b6c6-f5ed17b31e96
+      bypassDuplicationSystem: false
+      command: []
+      permission:
+        - vanity.chestplate.orange
+      item: []
+      icon:
+        material: LEATHER_CHESTPLATE
+        color: 212, 87, 87
+  key:
+    material: TRIPWIRE_HOOK
+    name: §e§lExample Cubelet's key
+    lore:
+      - §8§oGo to a Cubelets Machine to
+      - §8§oopen this key.
+      - ' '
+      - '§a§lLeft-Click: §6Preview rewards'
+      - '§a§lRight-Click: §6Open cubelet key'
+    enchants:
+      DURABILITY: 1
+    flags:
+      - HIDE_ENCHANTS

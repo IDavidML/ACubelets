@@ -9,10 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class SimpleParticle {
-
-    private final Particle particle;
-    private final Object data;
+public record SimpleParticle(Particle particle, Object data) {
 
     public SimpleParticle(@NotNull Particle particle, @Nullable Object data) {
         this.particle = particle;
@@ -54,13 +51,15 @@ public class SimpleParticle {
         return new SimpleParticle(Particle.DUST, new Particle.DustOptions(color, size));
     }
 
+    @Override
     @NotNull
-    public Particle getParticle() {
+    public Particle particle() {
         return particle;
     }
 
+    @Override
     @Nullable
-    public Object getData() {
+    public Object data() {
         return data;
     }
 
@@ -89,50 +88,48 @@ public class SimpleParticle {
             World world = location.getWorld();
             if (world == null) return;
             try {
-                world.spawnParticle(this.getParticle(), location, amount, xOffset, yOffset, zOffset, speed, this.getData());
-            } catch (Exception e) {}
+                world.spawnParticle(this.particle(), location, amount, xOffset, yOffset, zOffset, speed, this.data());
+            } catch (Exception e) {
+            }
         } else {
             try {
-                player.spawnParticle(this.getParticle(), location, amount, xOffset, yOffset, zOffset, speed, this.getData());
-            } catch (Exception e) {}
+                player.spawnParticle(this.particle(), location, amount, xOffset, yOffset, zOffset, speed, this.data());
+            } catch (Exception e) {
+            }
         }
     }
 
     @NotNull
     public SimpleParticle parseData(@NotNull String from) {
         String[] split = from.split(" ");
-        Class<?> dataType = this.getParticle().getDataType();
+        Class<?> dataType = this.particle().getDataType();
         Object data = null;
         if (dataType == BlockData.class) {
             Material material = Material.getMaterial(from.toUpperCase());
             data = material != null ? material.createBlockData() : Material.STONE.createBlockData();
-        }
-        else if (dataType == Particle.DustOptions.class) {
+        } else if (dataType == Particle.DustOptions.class) {
             Color color = StringUtils.parseColor(split[0]);
             double size = split.length >= 2 ? StringUtils.getDouble(split[1], 1D) : 1D;
             data = new Particle.DustOptions(color, (float) size);
-        }
-        else if (XMaterial.supports(17) && dataType == Particle.DustTransition.class) {
+        } else if (XMaterial.supports(1, 17) && dataType == Particle.DustTransition.class) {
             Color colorStart = StringUtils.parseColor(split[0]);
             Color colorEnd = split.length >= 2 ? StringUtils.parseColor(split[1]) : colorStart;
             float size = split.length >= 3 ? StringUtils.getFloat(split[2], 1F) : 1F;
             data = new Particle.DustTransition(colorStart, colorEnd, size);
-        }
-        else if (dataType == ItemStack.class) {
+        } else if (dataType == ItemStack.class) {
             Material material = Material.getMaterial(from.toUpperCase());
             if (material != null && !material.isAir()) data = new ItemStack(material);
             else data = new ItemStack(Material.STONE);
-        }
-        else if (dataType != Void.class) return SimpleParticle.redstone(Color.AQUA, 1);
+        } else if (dataType != Void.class) return SimpleParticle.redstone(Color.AQUA, 1);
 
-        return SimpleParticle.of(this.getParticle(), data);
+        return SimpleParticle.of(this.particle(), data);
     }
 
     public boolean isClass(String className) {
-        try  {
+        try {
             Class.forName(className);
             return true;
-        }  catch (ClassNotFoundException e) {
+        } catch (ClassNotFoundException e) {
             return false;
         }
     }

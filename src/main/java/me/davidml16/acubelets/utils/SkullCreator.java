@@ -74,7 +74,7 @@ public class SkullCreator {
         notNull(base64, "base64");
 
         UUID hashAsId = new UUID(base64.hashCode(), base64.hashCode());
-        if (XMaterial.supports(16)) {
+        if (XMaterial.supports(1, 16)) {
             long m = hashAsId.getMostSignificantBits();
             long l = hashAsId.getLeastSignificantBits();
             int[] id = new int[]{(int) l, (int) (l >> 32), (int) m, (int) (m >> 32)};
@@ -155,7 +155,7 @@ public class SkullCreator {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
-        String toEncode = "{\"textures\":{\"SKIN\":{\"url\":\"" + actualUrl.toString() + "\"}}}";
+        String toEncode = "{\"textures\":{\"SKIN\":{\"url\":\"" + actualUrl + "\"}}}";
         return Base64.getEncoder().encodeToString(toEncode.getBytes());
     }
 
