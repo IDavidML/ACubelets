@@ -1,0 +1,19 @@
+@everyone
+## ACubelets 2.5.7
+
+This update includes some bug fixes.
+
+**Fixes:**
+- In the "Type Icon Creation" the "Item in Hand" option is now working.
+- Shift Left Click + Shift Right Click settings will work again.
+- More gui fixes and improvements.
+
+**Features:**
+- Added ability to bypassDuplicationSystem directly in the reward creation menu.
+- Finally updating this menu system to the new one, which will fix A LOT of weird bugs and issues that were present in the old one.
+
+**Changes:**
+- Plugin is now built on Java 21 again.
+
+-# Download on SpigotMC or BuiltByBit:
+-# [SpigotMC](<https://www.spigotmc.org/resources/acubelets.78092/>) | [BuiltByBit](<https://builtbybit.com/resources/acubelets.45566/>)

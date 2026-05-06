@@ -52,6 +52,12 @@ Commands:
       NoBalance: '%prefix% &6%player% &cdoes not have &6%amount%x Points&c. Currently balance: &6%balance%'
     Info: '%prefix% &6&l%player% &ahas &6%amount% &aPoints.'
 
+Admin:
+  Cubelet:
+    Setup:
+      TypeIcon:
+        ErrorHoldCorrectItem: '%prefix% &cYou must hold an item in your hand!'
+
 Cubelet:
   LoginReminder:
     - ''

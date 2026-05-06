@@ -24,233 +24,252 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class TypeIconConversation implements ConversationAbandonedListener, CommonPrompts {
 
-	private final Main main;
+    private final Main main;
 
-	public TypeIconConversation(Main main) {
-		this.main = main;
-	}
+    public TypeIconConversation(Main main) {
+        this.main = main;
+    }
 
-	public Conversation getConversation(Player paramPlayer, CubeletType type) {
-		Conversation conversation = (new ConversationFactory(main)).withModality(true)
-				.withLocalEcho(false)
-				.withFirstPrompt(new RenameMenuOptions())
-				.withTimeout(3600)
-				.thatExcludesNonPlayersWithMessage("")
-				.addConversationAbandonedListener(this)
-				.buildConversation(paramPlayer);
-		conversation.getContext().setSessionData("player", paramPlayer);
-		conversation.getContext().setSessionData("type", type);
-		if (main.getCubeletTypesHandler().getConfig(type.getId()).contains("type.icon.texture"))
-			conversation.getContext()
-					.setSessionData("texture", main.getCubeletTypesHandler()
-							.getConfig(type.getId())
-							.get("type.icon.texture"));
-		else conversation.getContext().setSessionData("icon", type.getIcon());
+    public Conversation getConversation(Player paramPlayer, CubeletType type) {
+        Conversation conversation = (new ConversationFactory(main)).withModality(true)
+                .withLocalEcho(false)
+                .withFirstPrompt(new RenameMenuOptions())
+                .withTimeout(3600)
+                .thatExcludesNonPlayersWithMessage("")
+                .addConversationAbandonedListener(this)
+                .buildConversation(paramPlayer);
+        conversation.getContext().setSessionData("player", paramPlayer);
+        conversation.getContext().setSessionData("type", type);
+        if (main.getCubeletTypesHandler().getConfig(type.getId()).contains("type.icon.texture"))
+            conversation.getContext()
+                    .setSessionData("texture", main.getCubeletTypesHandler()
+                            .getConfig(type.getId())
+                            .get("type.icon.texture"));
+        else conversation.getContext().setSessionData("icon", type.getIcon());
 
-		main.getConversationHandler().addConversation(paramPlayer);
+        main.getConversationHandler().addConversation(paramPlayer);
 
-		return conversation;
-	}
+        return conversation;
+    }
 
-	public Conversation getConversation(Player paramPlayer) {
-		return getConversation(paramPlayer, null);
-	}
+    public Conversation getConversation(Player paramPlayer) {
+        return getConversation(paramPlayer, null);
+    }
 
-	public void conversationAbandoned(ConversationAbandonedEvent paramConversationAbandonedEvent) {
-	}
+    public void conversationAbandoned(ConversationAbandonedEvent paramConversationAbandonedEvent) {
+    }
 
-	public class RenameMenuOptions extends FixedSetPrompt {
-		RenameMenuOptions() {
-			super("1", "2", "3", "4", "5", "6", "7");
-		}
+    public class RenameMenuOptions extends FixedSetPrompt {
+        RenameMenuOptions() {
+            super("1", "2", "3", "4", "5", "6", "7");
+        }
 
-		protected Prompt acceptValidatedInput(ConversationContext param1ConversationContext, String param1String) {
-			CubeletType cubeletType = (CubeletType) param1ConversationContext.getSessionData("type");
-			Player player = (Player) param1ConversationContext.getSessionData("player");
-			switch (param1String) {
-				case "1":
-					param1ConversationContext.setSessionData("item", "url");
-					return new MineSkinStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter mineskin direct link, \"cancel\" to return.\n\n ", "texture");
+        protected Prompt acceptValidatedInput(ConversationContext param1ConversationContext, String param1String) {
+            CubeletType cubeletType = (CubeletType) param1ConversationContext.getSessionData("type");
+            Player player = (Player) param1ConversationContext.getSessionData("player");
+            switch (param1String) {
+                case "1":
+                    Player p = (Player) param1ConversationContext.getSessionData("player");
+                    ItemStack hand = p.getInventory().getItemInMainHand();
 
-				case "2":
-					param1ConversationContext.setSessionData("method", "base64");
-					return new SkullStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter base64 texture string, \"cancel\" to return.\n\n ", "texture");
+                    if (hand == null || hand.getType().isAir()) {
+                        p.sendRawMessage(ChatColor.RED + "You are holding nothing!");
+                        Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+                                ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);
+                        return this;
+                    }
 
-				case "3":
-					param1ConversationContext.setSessionData("method", "uuid");
-					return new SkullStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter player uuid, \"cancel\" to return.\n\n ", "texture");
+                    param1ConversationContext.setSessionData("icon", hand.clone());
+                    param1ConversationContext.setSessionData("method", "item");
 
-				case "4":
-					param1ConversationContext.setSessionData("method", "name");
-					return new SkullStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter player name, \"cancel\" to return.\n\n ", "texture");
+                    param1ConversationContext.setSessionData("texture", null);
 
-				case "5":
-					param1ConversationContext.setSessionData("method", "url");
-					return new MineSkinStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter mineskin direct link, \"cancel\" to return.\n\n ", "texture");
+                    p.sendRawMessage(ChatColor.GREEN + "Item selected! Select 'Save and exit' to apply.");
+                    Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
+                            ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.CLICK, 10, 2);
+                    return this;
+                case "2":
+                    param1ConversationContext.setSessionData("method", "base64");
+                    return new SkullStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter base64 texture string, \"cancel\" to return.\n\n ", "texture");
 
-				case "6":
-					final String method = (String) param1ConversationContext.getSessionData("method");
+                case "3":
+                    param1ConversationContext.setSessionData("method", "uuid");
+                    return new SkullStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter player uuid, \"cancel\" to return.\n\n ", "texture");
 
-					if (!method.equalsIgnoreCase("item")) {
-						final String texture = (String) param1ConversationContext.getSessionData("texture");
+                case "4":
+                    param1ConversationContext.setSessionData("method", "name");
+                    return new SkullStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter player name, \"cancel\" to return.\n\n ", "texture");
 
-						if (!method.equalsIgnoreCase("url")) {
+                case "5":
+                    param1ConversationContext.setSessionData("method", "url");
+                    return new MineSkinStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter mineskin direct link, \"cancel\" to return.\n\n ", "texture");
 
-							main.getCubeletTypesHandler()
-									.getConfig(cubeletType.getId())
-									.set("type.icon.texture", method + ":" + texture);
+                case "6":
+                    final String method = (String) param1ConversationContext.getSessionData("method");
 
-							switch (method) {
+                    main.getCubeletTypesHandler().getConfig(cubeletType.getId()).set("type.icon", null);
 
-								case "base64":
-									cubeletType.setIcon(SkullUtils.itemFromBase64(texture));
-									break;
+                    if (!method.equalsIgnoreCase("item")) {
+                        final String texture = (String) param1ConversationContext.getSessionData("texture");
 
-								case "uuid":
-									cubeletType.setIcon(SkullUtils.itemFromUUID(UUID.fromString(texture)));
-									break;
+                        if (!method.equalsIgnoreCase("url")) {
 
-								case "name":
-									cubeletType.setIcon(SkullUtils.itemFromName(texture));
-									break;
+                            main.getCubeletTypesHandler()
+                                    .getConfig(cubeletType.getId())
+                                    .set("type.icon.texture", method + ":" + texture);
 
-							}
+                            switch (method) {
 
-							main.getCubeletTypesHandler().saveConfig(cubeletType.getId());
-							param1ConversationContext.getForWhom()
-									.sendRawMessage("\n" + Utils.translate(main.getLanguageHandler()
-											.getPrefix() + " &aSaved skull texture of cubelet type &e" + cubeletType.getId() + " &awithout errors!"));
+                                case "base64":
+                                    cubeletType.setIcon(SkullUtils.itemFromBase64(texture));
+                                    break;
 
-							Sounds.playSound(player, player.getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
+                                case "uuid":
+                                    cubeletType.setIcon(SkullUtils.itemFromUUID(UUID.fromString(texture)));
+                                    break;
 
-							main.getMenuHandler().reloadAllMenus(TypeConfigMenu.class);
-							main.getMenuHandler().reloadAllMenus(TypeSettingsMenu.class);
+                                case "name":
+                                    cubeletType.setIcon(SkullUtils.itemFromName(texture));
+                                    break;
 
-							TypeSettingsMenu typeSettingsMenu = new TypeSettingsMenu(main, player);
-							typeSettingsMenu.setAttribute(Menu.AttrType.CUSTOM_ID_ATTR, cubeletType.getId());
-							typeSettingsMenu.open();
+                            }
 
-						} else {
+                            main.getCubeletTypesHandler().saveConfig(cubeletType.getId());
+                            param1ConversationContext.getForWhom()
+                                    .sendRawMessage("\n" + Utils.translate(main.getLanguageHandler()
+                                            .getPrefix() + " &aSaved skull texture of cubelet type &e" + cubeletType.getId() + " &awithout errors!"));
 
-							Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
+                            Sounds.playSound(player, player.getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
 
-								DataOutputStream out = null;
-								BufferedReader reader = null;
+                            main.getMenuHandler().reloadAllMenus(TypeConfigMenu.class);
+                            main.getMenuHandler().reloadAllMenus(TypeSettingsMenu.class);
 
-								try {
+                            TypeSettingsMenu typeSettingsMenu = new TypeSettingsMenu(main, player);
+                            typeSettingsMenu.setAttribute(Menu.AttrType.CUSTOM_ID_ATTR, cubeletType.getId());
+                            typeSettingsMenu.open();
 
-									URL target = new URL("https://api.mineskin.org/generate/url");
-									HttpURLConnection con = (HttpURLConnection) target.openConnection();
-									con.setRequestMethod("POST");
-									con.setDoOutput(true);
-									con.setConnectTimeout(1000);
-									con.setReadTimeout(30000);
-									out = new DataOutputStream(con.getOutputStream());
-									out.writeBytes("url=" + URLEncoder.encode(texture, "UTF-8"));
-									out.close();
-									reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-									JSONObject output = (JSONObject) new JSONParser().parse(reader);
-									JSONObject data = (JSONObject) output.get("data");
-									JSONObject texture1 = (JSONObject) data.get("texture");
-									String textureEncoded = (String) texture1.get("value");
-									con.disconnect();
+                        } else {
 
-									Bukkit.getScheduler().runTask(main, () -> {
+                            Bukkit.getScheduler().runTaskAsynchronously(main, () -> {
 
-										main.getCubeletTypesHandler()
-												.getConfig(cubeletType.getId())
-												.set("type.icon.texture", "base64:" + textureEncoded);
-										cubeletType.setIcon(SkullUtils.itemFromBase64(textureEncoded));
+                                DataOutputStream out = null;
+                                BufferedReader reader = null;
 
-										main.getCubeletTypesHandler().saveConfig(cubeletType.getId());
-										param1ConversationContext.getForWhom()
-												.sendRawMessage("\n" + Utils.translate(main.getLanguageHandler()
-														.getPrefix() + " &aSaved skull texture of cubelet type &e" + cubeletType.getId() + " &awithout errors!"));
+                                try {
 
-										Sounds.playSound(player, player.getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
+                                    URL target = new URL("https://api.mineskin.org/generate/url");
+                                    HttpURLConnection con = (HttpURLConnection) target.openConnection();
+                                    con.setRequestMethod("POST");
+                                    con.setDoOutput(true);
+                                    con.setConnectTimeout(1000);
+                                    con.setReadTimeout(30000);
+                                    out = new DataOutputStream(con.getOutputStream());
+                                    out.writeBytes("url=" + URLEncoder.encode(texture, StandardCharsets.UTF_8));
+                                    out.close();
+                                    reader = new BufferedReader(new InputStreamReader(con.getInputStream()));
+                                    JSONObject output = (JSONObject) new JSONParser().parse(reader);
+                                    JSONObject data = (JSONObject) output.get("data");
+                                    JSONObject texture1 = (JSONObject) data.get("texture");
+                                    String textureEncoded = (String) texture1.get("value");
+                                    con.disconnect();
 
-										main.getMenuHandler().reloadAllMenus(TypeConfigMenu.class);
-										main.getMenuHandler().reloadAllMenus(TypeSettingsMenu.class);
+                                    Bukkit.getScheduler().runTask(main, () -> {
 
-										TypeSettingsMenu typeSettingsMenu = new TypeSettingsMenu(main, player);
-										typeSettingsMenu.setAttribute(Menu.AttrType.CUSTOM_ID_ATTR, cubeletType.getId());
-										typeSettingsMenu.open();
+                                        main.getCubeletTypesHandler()
+                                                .getConfig(cubeletType.getId())
+                                                .set("type.icon.texture", "base64:" + textureEncoded);
+                                        cubeletType.setIcon(SkullUtils.itemFromBase64(textureEncoded));
 
-									});
+                                        main.getCubeletTypesHandler().saveConfig(cubeletType.getId());
+                                        param1ConversationContext.getForWhom()
+                                                .sendRawMessage("\n" + Utils.translate(main.getLanguageHandler()
+                                                        .getPrefix() + " &aSaved skull texture of cubelet type &e" + cubeletType.getId() + " &awithout errors!"));
 
-								} catch (Throwable t) {
-									t.printStackTrace();
-								} finally {
-									if (out != null) {
-										try {
-											out.close();
-										} catch (IOException e) {
-										}
-									}
-									if (reader != null) {
-										try {
-											reader.close();
-										} catch (IOException e) {
-										}
-									}
-								}
+                                        Sounds.playSound(player, player.getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
 
-							});
+                                        main.getMenuHandler().reloadAllMenus(TypeConfigMenu.class);
+                                        main.getMenuHandler().reloadAllMenus(TypeSettingsMenu.class);
 
-						}
-					} else {
-						final ItemStack icon = (ItemStack) param1ConversationContext.getSessionData("icon");
+                                        TypeSettingsMenu typeSettingsMenu = new TypeSettingsMenu(main, player);
+                                        typeSettingsMenu.setAttribute(Menu.AttrType.CUSTOM_ID_ATTR, cubeletType.getId());
+                                        typeSettingsMenu.open();
 
-						XItemStack.serialize(icon, Utils.getConfigurationSection(main.getCubeletTypesHandler()
-								.getConfig(cubeletType.getId()), "type.icon"));
+                                    });
 
-						main.getCubeletTypesHandler().saveConfig(cubeletType.getId());
-						param1ConversationContext.getForWhom()
-								.sendRawMessage("\n" + Utils.translate(main.getLanguageHandler()
-										.getPrefix() + " &aSaved icon of cubelet type &e" + cubeletType.getId() + " &awithout errors!"));
+                                } catch (Throwable t) {
+                                    t.printStackTrace();
+                                } finally {
+                                    if (out != null) {
+                                        try {
+                                            out.close();
+                                        } catch (IOException e) {
+                                        }
+                                    }
+                                    if (reader != null) {
+                                        try {
+                                            reader.close();
+                                        } catch (IOException e) {
+                                        }
+                                    }
+                                }
 
-						Sounds.playSound(player, player.getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
+                            });
 
-						main.getMenuHandler().reloadAllMenus(TypeConfigMenu.class);
-						main.getMenuHandler().reloadAllMenus(TypeSettingsMenu.class);
+                        }
+                    } else {
+                        final ItemStack icon = (ItemStack) param1ConversationContext.getSessionData("icon");
 
-						TypeSettingsMenu typeSettingsMenu = new TypeSettingsMenu(main, player);
-						typeSettingsMenu.setAttribute(Menu.AttrType.CUSTOM_ID_ATTR, cubeletType.getId());
-						typeSettingsMenu.open();
-					}
+                        XItemStack.serialize(icon, Utils.getConfigurationSection(main.getCubeletTypesHandler()
+                                .getConfig(cubeletType.getId()), "type.icon"));
 
-					main.getConversationHandler().removeConversation(player);
+                        main.getCubeletTypesHandler().saveConfig(cubeletType.getId());
+                        param1ConversationContext.getForWhom()
+                                .sendRawMessage("\n" + Utils.translate(main.getLanguageHandler()
+                                        .getPrefix() + " &aSaved icon of cubelet type &e" + cubeletType.getId() + " &awithout errors!"));
 
-					return Prompt.END_OF_CONVERSATION;
+                        Sounds.playSound(player, player.getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
 
-				case "7":
-					return new CommonPrompts.ConfirmExitPrompt(main, this);
+                        main.getMenuHandler().reloadAllMenus(TypeConfigMenu.class);
+                        main.getMenuHandler().reloadAllMenus(TypeSettingsMenu.class);
 
-			}
-			return null;
-		}
+                        TypeSettingsMenu typeSettingsMenu = new TypeSettingsMenu(main, player);
+                        typeSettingsMenu.setAttribute(Menu.AttrType.CUSTOM_ID_ATTR, cubeletType.getId());
+                        typeSettingsMenu.open();
+                    }
+
+                    main.getConversationHandler().removeConversation(player);
+
+                    return Prompt.END_OF_CONVERSATION;
+
+                case "7":
+                    return new CommonPrompts.ConfirmExitPrompt(main, this);
+
+            }
+            return null;
+        }
 
 
-		public String getPromptText(ConversationContext param1ConversationContext) {
-			String cadena = "";
-			cadena += ChatColor.GOLD + "" + ChatColor.BOLD + "\n  CUBELET TYPE ICON MENU\n ";
-			cadena += ChatColor.GREEN + " \n ";
-			cadena += ChatColor.GREEN + "    1 " + ChatColor.GRAY + "- Item in hand\n ";
-			cadena += ChatColor.GREEN + "    2 " + ChatColor.GRAY + "- Base64 String\n ";
-			cadena += ChatColor.GREEN + "    3 " + ChatColor.GRAY + "- Player UUID\n ";
-			cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Player Name\n ";
-			cadena += ChatColor.GREEN + "    5 " + ChatColor.GRAY + "- Mineskin Direct Link\n ";
-			cadena += ChatColor.GREEN + " \n ";
-			cadena += ChatColor.GOLD + "    6 " + ChatColor.GRAY + "- Save and exit\n ";
-			cadena += ChatColor.GOLD + "    7 " + ChatColor.GRAY + "- Exit and discard\n ";
-			cadena += ChatColor.GREEN + "\n ";
-			cadena += ChatColor.GOLD + "" + ChatColor.YELLOW + "  Choose the option: \n ";
-			return cadena;
-		}
-	}
+        public String getPromptText(ConversationContext param1ConversationContext) {
+            String cadena = "";
+            cadena += ChatColor.GOLD + "" + ChatColor.BOLD + "\n  CUBELET TYPE ICON MENU\n ";
+            cadena += ChatColor.GREEN + " \n ";
+            cadena += ChatColor.GREEN + "    1 " + ChatColor.GRAY + "- Item in hand\n ";
+            cadena += ChatColor.GREEN + "    2 " + ChatColor.GRAY + "- Base64 String\n ";
+            cadena += ChatColor.GREEN + "    3 " + ChatColor.GRAY + "- Player UUID\n ";
+            cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Player Name\n ";
+            cadena += ChatColor.GREEN + "    5 " + ChatColor.GRAY + "- Mineskin Direct Link\n ";
+            cadena += ChatColor.GREEN + " \n ";
+            cadena += ChatColor.GOLD + "    6 " + ChatColor.GRAY + "- Save and exit\n ";
+            cadena += ChatColor.GOLD + "    7 " + ChatColor.GRAY + "- Exit and discard\n ";
+            cadena += ChatColor.GREEN + "\n ";
+            cadena += ChatColor.GOLD + "" + ChatColor.YELLOW + "  Choose the option: \n ";
+            return cadena;
+        }
+    }
 
 }

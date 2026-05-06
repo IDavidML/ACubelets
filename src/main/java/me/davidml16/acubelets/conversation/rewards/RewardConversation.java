@@ -16,7 +16,8 @@ import org.bukkit.inventory.ItemStack;
 
 public class RewardConversation implements ConversationAbandonedListener, CommonPrompts {
 
-    private Main main;
+    private final Main main;
+
     public RewardConversation(Main main) {
         this.main = main;
     }
@@ -27,91 +28,98 @@ public class RewardConversation implements ConversationAbandonedListener, Common
         conversation.getContext().setSessionData("player", paramPlayer);
         conversation.getContext().setSessionData("cubeletType", cubeletType);
 
+        conversation.getContext().setSessionData("bypassDuplication", false);
+
         main.getConversationHandler().addConversation(paramPlayer);
 
         return conversation;
 
     }
 
-    public Conversation getConversation(Player paramPlayer) { return getConversation(paramPlayer, null); }
+    public Conversation getConversation(Player paramPlayer) {
+        return getConversation(paramPlayer, null);
+    }
 
-    public void conversationAbandoned(ConversationAbandonedEvent paramConversationAbandonedEvent) {}
+    public void conversationAbandoned(ConversationAbandonedEvent paramConversationAbandonedEvent) {
+    }
+
+    private boolean rewardsIdExist(CubeletType cubeletType, String rewardID) {
+        for (Reward reward : cubeletType.getAllRewards()) {
+            if (reward.getId().equalsIgnoreCase(rewardID)) return true;
+        }
+        return false;
+    }
 
     public class RewardMenuOptions extends FixedSetPrompt {
-        RewardMenuOptions() { super("1", "2", "3", "4", "5"); }
+        RewardMenuOptions() {
+            super("1", "2", "3", "4", "5", "6");
+        }
 
         protected Prompt acceptValidatedInput(ConversationContext param1ConversationContext, String param1String) {
             CubeletType cubeletType = (CubeletType) param1ConversationContext.getSessionData("cubeletType");
-
             Player p = (Player) param1ConversationContext.getSessionData("player");
-            ItemStack itemHand = p.getInventory().getItemInHand();
 
             switch (param1String) {
                 case "1":
                     return new UncoloredStringPrompt(main, this, true, ChatColor.YELLOW + "  Enter reward name, \"cancel\" to return.\n\n ", "rewardName");
                 case "2":
-                    return new CommonStringPrompt(main,this, false, ChatColor.YELLOW + "  Enter reward rarity, \"cancel\" to return.\n  Available rarities: " + cubeletType.getRaritiesIDs() + "\n\n ", "rewardRarity");
+                    return new CommonStringPrompt(main, this, false, ChatColor.YELLOW + "  Enter reward rarity, \"cancel\" to return.\n  Available rarities: " + cubeletType.getRaritiesIDs() + "\n\n ", "rewardRarity");
                 case "3":
-                    if(itemHand == null || itemHand.getType() == Material.AIR) {
+                    ItemStack itemHand = p.getInventory().getItemInHand();
+                    if (itemHand == null || itemHand.getType() == Material.AIR) {
                         param1ConversationContext.getForWhom().sendRawMessage(ChatColor.RED + "  AIR icon not allowed!\n ");
-                        Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
-                                ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);
+                        Sounds.playSound(p, p.getLocation(), Sounds.MySound.NOTE_PLING, 10, 0);
                         return this;
                     }
-
                     param1ConversationContext.setSessionData("rewardIcon", itemHand.clone());
-                    param1ConversationContext.getForWhom().sendRawMessage(
-                            ChatColor.GREEN + "  Succesfully setup reward icon.");
-                    Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
-                            ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.CLICK, 10, 2);
-
+                    param1ConversationContext.getForWhom().sendRawMessage(ChatColor.GREEN + "  Succesfully setup reward icon.");
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
                     return this;
-                case "4":
-                    if(param1ConversationContext.getSessionData("rewardName") != null
+
+                case "4": // Toggle Bypass Duplication
+                    boolean currentBypass = (boolean) param1ConversationContext.getSessionData("bypassDuplication");
+                    param1ConversationContext.setSessionData("bypassDuplication", !currentBypass);
+                    Sounds.playSound(p, p.getLocation(), Sounds.MySound.CLICK, 10, 2);
+                    return this;
+
+                case "5": // Save
+                    if (param1ConversationContext.getSessionData("rewardName") != null
                             && param1ConversationContext.getSessionData("rewardRarity") != null
                             && param1ConversationContext.getSessionData("rewardIcon") != null) {
 
-                        if(cubeletType.getRarities().containsKey((String) param1ConversationContext.getSessionData("rewardRarity"))) {
+                        if (cubeletType.getRarities().containsKey((String) param1ConversationContext.getSessionData("rewardRarity"))) {
+                            String rewardID = "reward_" + cubeletType.getAllRewards().size();
+                            String rewardName = (String) param1ConversationContext.getSessionData("rewardName");
+                            String rewardRarity = (String) param1ConversationContext.getSessionData("rewardRarity");
+                            ItemStack rewardIcon = (ItemStack) param1ConversationContext.getSessionData("rewardIcon");
+                            boolean bypass = (boolean) param1ConversationContext.getSessionData("bypassDuplication");
 
-                            if (!rewardsIdExist(cubeletType, (String) param1ConversationContext.getSessionData("rewardID"))) {
+                            Reward reward = new Reward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), rewardIcon.clone(), cubeletType);
 
-                                String rewardID = "reward_" + cubeletType.getAllRewards().size();
-                                String rewardName = (String) param1ConversationContext.getSessionData("rewardName");
-                                String rewardRarity = (String) param1ConversationContext.getSessionData("rewardRarity");
-                                ItemStack rewardIcon = (ItemStack) param1ConversationContext.getSessionData("rewardIcon");
+                            reward.setBypassDuplicationSystem(bypass);
 
-                                Reward reward = new Reward(rewardID, rewardName, cubeletType.getRarities().get(rewardRarity), rewardIcon.clone(), cubeletType);
-                                cubeletType.addReward(rewardRarity, reward);
-                                cubeletType.saveType();
+                            cubeletType.addReward(rewardRarity, reward);
+                            cubeletType.saveType();
 
-                                param1ConversationContext.getForWhom().sendRawMessage("\n" + Utils.translate(main.getLanguageHandler().getPrefix()
-                                        + " &aYou added reward &e" + reward.getId() + " &ato rewards of cubelet type &e" + cubeletType.getId()));
+                            param1ConversationContext.getForWhom().sendRawMessage("\n" + Utils.translate(main.getLanguageHandler().getPrefix()
+                                    + " &aYou added reward &e" + reward.getId() + " &ato rewards of cubelet type &e" + cubeletType.getId()));
 
-                                Sounds.playSound((Player) param1ConversationContext.getSessionData("player"),
-                                        ((Player) param1ConversationContext.getSessionData("player")).getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
+                            Sounds.playSound(p, p.getLocation(), Sounds.MySound.ANVIL_USE, 10, 3);
+                            main.getMenuHandler().reloadAllMenus(RewardsMenu.class);
 
-                                main.getMenuHandler().reloadAllMenus(RewardsMenu.class);
+                            RewardsMenu rewardsMenu = new RewardsMenu(main, p);
+                            rewardsMenu.setAttribute(Menu.AttrType.CUSTOM_ID_ATTR, cubeletType.getId());
+                            rewardsMenu.open();
+                            main.getConversationHandler().removeConversation(p);
 
-                                Player player = (Player) param1ConversationContext.getSessionData("player");
-
-                                RewardsMenu rewardsMenu = new RewardsMenu(main, player);
-                                rewardsMenu.setAttribute(Menu.AttrType.CUSTOM_ID_ATTR, cubeletType.getId());
-                                rewardsMenu.open();
-
-                                main.getConversationHandler().removeConversation(player);
-
-                                return Prompt.END_OF_CONVERSATION;
-
-                            } else {
-                                return new ErrorPrompt(main, this, "\n" + ChatColor.RED + "  There is already a reward with that ID, please change it and try again\n  Write anything to continue\n ");
-                            }
+                            return Prompt.END_OF_CONVERSATION;
                         } else {
                             return new ErrorPrompt(main, this, "\n" + ChatColor.RED + "  This reward rarity not exist, please change it and try again\n  Write anything to continue\n ");
                         }
                     } else {
-                        return new ErrorPrompt(main, this, "\n" + ChatColor.RED + "  You need to setup ID, NAME, RARITY, ITEM and ICON to save reward!\n  Write anything to continue\n ");
+                        return new ErrorPrompt(main, this, "\n" + ChatColor.RED + "  You need to setup NAME, RARITY and ICON to save reward!\n  Write anything to continue\n ");
                     }
-                case "5":
+                case "6":
                     return new ConfirmExitPrompt(main, this);
             }
             return null;
@@ -119,41 +127,39 @@ public class RewardConversation implements ConversationAbandonedListener, Common
 
 
         public String getPromptText(ConversationContext param1ConversationContext) {
-            String cadena = "";
-            cadena += ChatColor.GOLD + "" + ChatColor.BOLD + "\n  CUBELET REWARD CREATION MENU\n";
-            cadena += ChatColor.GREEN + " \n";
+            StringBuilder cadena = new StringBuilder();
+            cadena.append(ChatColor.GOLD).append(ChatColor.BOLD).append("\n  CUBELET REWARD CREATION MENU\n");
+            cadena.append(ChatColor.GREEN).append(" \n");
+
             if (param1ConversationContext.getSessionData("rewardName") == null) {
-                cadena += ChatColor.RED + "    1 " + ChatColor.GRAY + "- Set reward name (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
+                cadena.append(ChatColor.RED).append("    1 ").append(ChatColor.GRAY).append("- Set reward name (").append(ChatColor.RED).append("none").append(ChatColor.GRAY).append(")\n");
             } else {
-                cadena += ChatColor.GREEN + "    1 " + ChatColor.GRAY + "- Set reward name (" + ChatColor.YELLOW + param1ConversationContext.getSessionData("rewardName") + ChatColor.GRAY + ")\n";
+                cadena.append(ChatColor.GREEN).append("    1 ").append(ChatColor.GRAY).append("- Set reward name (").append(ChatColor.YELLOW).append(param1ConversationContext.getSessionData("rewardName")).append(ChatColor.GRAY).append(")\n");
             }
 
             if (param1ConversationContext.getSessionData("rewardRarity") == null) {
-                cadena += ChatColor.RED + "    2 " + ChatColor.GRAY + "- Set reward rarity (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
+                cadena.append(ChatColor.RED).append("    2 ").append(ChatColor.GRAY).append("- Set reward rarity (").append(ChatColor.RED).append("none").append(ChatColor.GRAY).append(")\n");
             } else {
-                cadena += ChatColor.GREEN + "    2 " + ChatColor.GRAY + "- Set reward rarity (" + ChatColor.YELLOW + ChatColor.translateAlternateColorCodes('&', (String)param1ConversationContext.getSessionData("rewardRarity")) + ChatColor.GRAY + ")\n";
+                cadena.append(ChatColor.GREEN).append("    2 ").append(ChatColor.GRAY).append("- Set reward rarity (").append(ChatColor.YELLOW).append(ChatColor.translateAlternateColorCodes('&', (String) param1ConversationContext.getSessionData("rewardRarity"))).append(ChatColor.GRAY).append(")\n");
             }
 
             if (param1ConversationContext.getSessionData("rewardIcon") == null) {
-                cadena += ChatColor.RED + "    3 " + ChatColor.GRAY + "- Set reward icon 'Item in Hand' (" + ChatColor.RED + "none" + ChatColor.GRAY + ")\n";
+                cadena.append(ChatColor.RED).append("    3 ").append(ChatColor.GRAY).append("- Set reward icon 'Item in Hand' (").append(ChatColor.RED).append("none").append(ChatColor.GRAY).append(")\n");
             } else {
                 ItemStack icon = (ItemStack) param1ConversationContext.getSessionData("rewardIcon");
-                cadena += ChatColor.GREEN + "    3 " + ChatColor.GRAY + "- Set reward icon 'Item in Hand' (" + ChatColor.YELLOW + icon.getType().name() + ChatColor.GRAY + ")\n";
+                cadena.append(ChatColor.GREEN).append("    3 ").append(ChatColor.GRAY).append("- Set reward icon 'Item in Hand' (").append(ChatColor.YELLOW).append(icon.getType().name()).append(ChatColor.GRAY).append(")\n");
             }
 
-            cadena += ChatColor.GREEN + "    4 " + ChatColor.GRAY + "- Save\n";
-            cadena += ChatColor.GREEN + "    5 " + ChatColor.GRAY + "- Exit and discard\n";
-            cadena += ChatColor.GREEN + " \n";
-            cadena += ChatColor.GOLD + "" + ChatColor.YELLOW + "  Choose the option: \n";
-            cadena += ChatColor.GREEN + " \n";
-            return cadena;
-        }
-    }
+            boolean bypass = (boolean) param1ConversationContext.getSessionData("bypassDuplication");
+            cadena.append(ChatColor.GREEN).append("    4 ").append(ChatColor.GRAY).append("- Bypass Duplication: ")
+                    .append(bypass ? ChatColor.GREEN + "TRUE" : ChatColor.RED + "FALSE").append("\n");
 
-    private boolean rewardsIdExist(CubeletType cubeletType, String rewardID) {
-        for(Reward reward : cubeletType.getAllRewards()) {
-            if(reward.getId().equalsIgnoreCase(rewardID)) return true;
+            cadena.append(ChatColor.GREEN).append("    5 ").append(ChatColor.GRAY).append("- Save\n");
+            cadena.append(ChatColor.GREEN).append("    6 ").append(ChatColor.GRAY).append("- Exit and discard\n");
+            cadena.append(ChatColor.GREEN).append(" \n");
+            cadena.append(ChatColor.GOLD).append(ChatColor.YELLOW).append("  Choose the option: \n");
+
+            return cadena.toString();
         }
-        return false;
     }
 }
