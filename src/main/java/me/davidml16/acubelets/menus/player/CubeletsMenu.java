@@ -25,384 +25,384 @@ import java.util.*;
 
 public class CubeletsMenu extends Menu {
 
-	public CubeletsMenu(Main main, Player player) {
-		super(main, player);
-		setSize(6);
-	}
+    public CubeletsMenu(Main main, Player player) {
+        super(main, player);
+        setSize(6);
+    }
 
-	@Override
-	public void OnPageOpened(int page) {
+    @Override
+    public void OnPageOpened(int page) {
 
-		Player player = getOwner();
+        Player player = getOwner();
 
-		Profile profile = getMain().getPlayerDataHandler().getData(player.getUniqueId());
-		List<Cubelet> cubelets = profile.getCubelets();
+        Profile profile = getMain().getPlayerDataHandler().getData(player.getUniqueId());
+        List<Cubelet> cubelets = profile.getCubelets();
 
-		GUILayout guiLayout = getMain().getLayoutHandler().getLayout("opencubelet");
+        GUILayout guiLayout = getMain().getLayoutHandler().getLayout("opencubelet");
 
-		if (profile.getOrderBy().equalsIgnoreCase("date")) cubelets.sort(new CubeletDateComparator());
-		else if (profile.getOrderBy().equalsIgnoreCase("type")) cubelets.sort(new CubeletTypeComparator());
+        if (profile.getOrderBy().equalsIgnoreCase("date")) cubelets.sort(new CubeletDateComparator());
+        else if (profile.getOrderBy().equalsIgnoreCase("type")) cubelets.sort(new CubeletTypeComparator());
 
-		if (page < 0) {
-			openPage(0);
-			return;
-		}
+        if (page < 0) {
+            openPage(0);
+            return;
+        }
 
-		if (page > 0 && cubelets.size() < (page * getPageSize()) + 1) {
-			openPage(getPage() - 1);
-			return;
-		}
+        if (page > 0 && cubelets.size() < (page * getPageSize()) + 1) {
+            openPage(getPage() - 1);
+            return;
+        }
 
-		Inventory inventory = createInventory(getSize(), translateTitleVariables(guiLayout.getMessage("Title"), cubelets.size()));
+        Inventory inventory = createInventory(getSize(), translateTitleVariables(guiLayout.getMessage("Title"), cubelets.size()));
 
-		if (cubelets.size() > getPageSize())
-			cubelets = cubelets.subList(page * getPageSize(), Math.min(((page * getPageSize()) + getPageSize()), cubelets.size()));
+        if (cubelets.size() > getPageSize())
+            cubelets = cubelets.subList(page * getPageSize(), Math.min(((page * getPageSize()) + getPageSize()), cubelets.size()));
 
-		if (page > 0) {
+        if (page > 0) {
 
-			int amount = guiLayout.getBoolean("Items.PreviousPage.ShowPageNumber") ? page : 1;
+            int amount = guiLayout.getBoolean("Items.PreviousPage.ShowPageNumber") ? page : 1;
 
-			ItemStack item = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.PreviousPage.Material"))
-					.get()
-					.parseMaterial(), amount).setName(guiLayout.getMessage("Items.PreviousPage.Name")).toItemStack();
-			item = NBTEditor.set(item, "previous", NBTEditor.CUSTOM_DATA, "action");
+            ItemStack item = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.PreviousPage.Material"))
+                    .get()
+                    .parseMaterial(), amount).setName(guiLayout.getMessage("Items.PreviousPage.Name")).toItemStack();
+            item = NBTEditor.set(item, "previous", NBTEditor.CUSTOM_DATA, "action");
 
-			if (guiLayout.getSlot("PreviousPage") >= 0)
-				inventory.setItem(((getSize() - 10) + guiLayout.getSlot("PreviousPage")), item);
+            if (guiLayout.getSlot("PreviousPage") >= 0)
+                inventory.setItem(((getSize() - 10) + guiLayout.getSlot("PreviousPage")), item);
 
-		}
+        }
 
-		if (getMain().getPlayerDataHandler()
-				.getData(player.getUniqueId())
-				.getCubelets()
-				.size() > (page + 1) * getPageSize()) {
+        if (getMain().getPlayerDataHandler()
+                .getData(player.getUniqueId())
+                .getCubelets()
+                .size() > (page + 1) * getPageSize()) {
 
-			int amount = guiLayout.getBoolean("Items.NextPage.ShowPageNumber") ? (page + 2) : 1;
+            int amount = guiLayout.getBoolean("Items.NextPage.ShowPageNumber") ? (page + 2) : 1;
 
-			ItemStack item = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NextPage.Material"))
-					.get()
-					.parseMaterial(), amount).setName(guiLayout.getMessage("Items.NextPage.Name")).toItemStack();
-			item = NBTEditor.set(item, "next", NBTEditor.CUSTOM_DATA, "action");
+            ItemStack item = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NextPage.Material"))
+                    .get()
+                    .parseMaterial(), amount).setName(guiLayout.getMessage("Items.NextPage.Name")).toItemStack();
+            item = NBTEditor.set(item, "next", NBTEditor.CUSTOM_DATA, "action");
 
-			if (guiLayout.getSlot("NextPage") >= 0)
-				inventory.setItem((getSize() - 10) + guiLayout.getSlot("NextPage"), item);
+            if (guiLayout.getSlot("NextPage") >= 0)
+                inventory.setItem((getSize() - 10) + guiLayout.getSlot("NextPage"), item);
 
-		}
+        }
 
-		if (Main.get().isSetting("Crafting") && !getMain().getCubeletCraftingHandler().getCrafts().isEmpty()) {
+        if (Main.get().isSetting("Crafting") && !getMain().getCubeletCraftingHandler().getCrafts().isEmpty()) {
 
-			ItemStack crafting = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Crafting.Material"))
-					.get()
-					.parseItem()).setName(guiLayout.getMessage("Items.Crafting.Name"))
-					.setLore(guiLayout.getMessageList("Items.Crafting.Lore"))
-					.toItemStack();
-			crafting = NBTEditor.set(crafting, "crafting", NBTEditor.CUSTOM_DATA, "action");
+            ItemStack crafting = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Crafting.Material"))
+                    .get()
+                    .parseItem()).setName(guiLayout.getMessage("Items.Crafting.Name"))
+                    .setLore(guiLayout.getMessageList("Items.Crafting.Lore"))
+                    .toItemStack();
+            crafting = NBTEditor.set(crafting, "crafting", NBTEditor.CUSTOM_DATA, "action");
 
-			if (guiLayout.getBoolean("Items.Crafting.Enabled") && guiLayout.getSlot("Crafting") >= 0)
-				inventory.setItem((getSize() - 10) + guiLayout.getSlot("Crafting"), crafting);
+            if (guiLayout.getBoolean("Items.Crafting.Enabled") && guiLayout.getSlot("Crafting") >= 0)
+                inventory.setItem((getSize() - 10) + guiLayout.getSlot("Crafting"), crafting);
 
-		}
+        }
 
-		if (Main.get().isSetting("AnimationsByPlayer")) {
+        if (Main.get().isSetting("AnimationsByPlayer")) {
 
-			ItemStack animation = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Animations.Material"))
-					.get()
-					.parseItem()).setName(guiLayout.getMessage("Items.Animations.Name"))
-					.setLore(guiLayout.getMessageList("Items.Animations.Lore"))
-					.toItemStack();
-			animation = NBTEditor.set(animation, "animations", NBTEditor.CUSTOM_DATA, "action");
+            ItemStack animation = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Animations.Material"))
+                    .get()
+                    .parseItem()).setName(guiLayout.getMessage("Items.Animations.Name"))
+                    .setLore(guiLayout.getMessageList("Items.Animations.Lore"))
+                    .toItemStack();
+            animation = NBTEditor.set(animation, "animations", NBTEditor.CUSTOM_DATA, "action");
 
-			if (guiLayout.getBoolean("Items.Animations.Enabled") && guiLayout.getSlot("Animations") >= 0)
-				inventory.setItem((getSize() - 10) + guiLayout.getSlot("Animations"), animation);
+            if (guiLayout.getBoolean("Items.Animations.Enabled") && guiLayout.getSlot("Animations") >= 0)
+                inventory.setItem((getSize() - 10) + guiLayout.getSlot("Animations"), animation);
 
-		}
+        }
 
-		ItemStack close = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Close.Material"))
-				.get()
-				.parseItem()).setName(guiLayout.getMessage("Items.Close.Name"))
-				.setLore(guiLayout.getMessageList("Items.Close.Lore"))
-				.toItemStack();
-		close = NBTEditor.set(close, "close", NBTEditor.CUSTOM_DATA, "action");
+        ItemStack close = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Close.Material"))
+                .get()
+                .parseItem()).setName(guiLayout.getMessage("Items.Close.Name"))
+                .setLore(guiLayout.getMessageList("Items.Close.Lore"))
+                .toItemStack();
+        close = NBTEditor.set(close, "close", NBTEditor.CUSTOM_DATA, "action");
 
-		if (guiLayout.getBoolean("Items.Close.Enabled") && guiLayout.getSlot("Close") >= 0)
-			inventory.setItem((getSize() - 10) + guiLayout.getSlot("Close"), close);
+        if (guiLayout.getBoolean("Items.Close.Enabled") && guiLayout.getSlot("Close") >= 0)
+            inventory.setItem((getSize() - 10) + guiLayout.getSlot("Close"), close);
 
-		ItemStack history = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.LootHistory.Material"))
-				.get()
-				.parseItem()).setName(guiLayout.getMessage("Items.LootHistory.Name"))
-				.setLore(guiLayout.getMessageList("Items.LootHistory.Lore"))
-				.toItemStack();
-		history = NBTEditor.set(history, "loothistory", NBTEditor.CUSTOM_DATA, "action");
+        ItemStack history = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.LootHistory.Material"))
+                .get()
+                .parseItem()).setName(guiLayout.getMessage("Items.LootHistory.Name"))
+                .setLore(guiLayout.getMessageList("Items.LootHistory.Lore"))
+                .toItemStack();
+        history = NBTEditor.set(history, "loothistory", NBTEditor.CUSTOM_DATA, "action");
 
-		if (guiLayout.getBoolean("Items.LootHistory.Enabled") && guiLayout.getSlot("LootHistory") >= 0)
-			inventory.setItem((getSize() - 10) + guiLayout.getSlot("LootHistory"), history);
+        if (guiLayout.getBoolean("Items.LootHistory.Enabled") && guiLayout.getSlot("LootHistory") >= 0)
+            inventory.setItem((getSize() - 10) + guiLayout.getSlot("LootHistory"), history);
 
 
-		if (Main.get().isSetting("GiftCubeletsCommand")) {
+        if (Main.get().isSetting("GiftCubeletsCommand")) {
 
-			ItemStack gift = new ItemBuilder(SkullUtils.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmNlZjlhYTE0ZTg4NDc3M2VhYzEzNGE0ZWU4OTcyMDYzZjQ2NmRlNjc4MzYzY2Y3YjFhMjFhODViNyJ9fX0=")).setName(guiLayout.getMessage("Items.Gift.Name"))
-					.setLore(guiLayout.getMessageList("Items.Gift.Lore"))
-					.toItemStack();
-			gift = NBTEditor.set(gift, "gift", NBTEditor.CUSTOM_DATA, "action");
+            ItemStack gift = new ItemBuilder(SkullUtils.itemFromBase64("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNmNlZjlhYTE0ZTg4NDc3M2VhYzEzNGE0ZWU4OTcyMDYzZjQ2NmRlNjc4MzYzY2Y3YjFhMjFhODViNyJ9fX0=")).setName(guiLayout.getMessage("Items.Gift.Name"))
+                    .setLore(guiLayout.getMessageList("Items.Gift.Lore"))
+                    .toItemStack();
+            gift = NBTEditor.set(gift, "gift", NBTEditor.CUSTOM_DATA, "action");
 
-			if (guiLayout.getBoolean("Items.Gift.Enabled") && guiLayout.getSlot("Gift") >= 0)
-				inventory.setItem((getSize() - 10) + guiLayout.getSlot("Gift"), gift);
+            if (guiLayout.getBoolean("Items.Gift.Enabled") && guiLayout.getSlot("Gift") >= 0)
+                inventory.setItem((getSize() - 10) + guiLayout.getSlot("Gift"), gift);
 
-		}
+        }
 
-		for (int i = 0; i <= (getSize() - 10); i++)
-			inventory.setItem(i, null);
+        for (int i = 0; i <= (getSize() - 10); i++)
+            inventory.setItem(i, null);
 
-		if (getMain().getCubeletTypesHandler().getTypes().size() > 1) {
+        if (getMain().getCubeletTypesHandler().getTypes().size() > 1) {
 
-			if (guiLayout.getBoolean("Items.Ordered.Enabled")) {
+            if (guiLayout.getBoolean("Items.Ordered.Enabled")) {
 
-				if (profile.getOrderBy().equalsIgnoreCase("date")) {
+                if (profile.getOrderBy().equalsIgnoreCase("date")) {
 
-					ItemStack orderByDate = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Ordered.Date.Material"))
-							.get()
-							.parseItem()).setName(guiLayout.getMessage("Items.Ordered.Date.Name"))
-							.setLore(guiLayout.getMessageList("Items.Ordered.Date.Lore"))
-							.toItemStack();
+                    ItemStack orderByDate = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Ordered.Date.Material"))
+                            .get()
+                            .parseItem()).setName(guiLayout.getMessage("Items.Ordered.Date.Name"))
+                            .setLore(guiLayout.getMessageList("Items.Ordered.Date.Lore"))
+                            .toItemStack();
 
-					orderByDate = NBTEditor.set(orderByDate, "ordered", NBTEditor.CUSTOM_DATA, "action");
+                    orderByDate = NBTEditor.set(orderByDate, "ordered", NBTEditor.CUSTOM_DATA, "action");
 
-					inventory.setItem((getSize() - 10) + guiLayout.getSlot("Ordered"), orderByDate);
+                    inventory.setItem((getSize() - 10) + guiLayout.getSlot("Ordered"), orderByDate);
 
-				} else if (profile.getOrderBy().equalsIgnoreCase("type")) {
+                } else if (profile.getOrderBy().equalsIgnoreCase("type")) {
 
-					ItemStack orderByType = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Ordered.Type.Material"))
-							.get()
-							.parseItem()).setName(guiLayout.getMessage("Items.Ordered.Type.Name"))
-							.setLore(guiLayout.getMessageList("Items.Ordered.Type.Lore"))
-							.toItemStack();
+                    ItemStack orderByType = new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.Ordered.Type.Material"))
+                            .get()
+                            .parseItem()).setName(guiLayout.getMessage("Items.Ordered.Type.Name"))
+                            .setLore(guiLayout.getMessageList("Items.Ordered.Type.Lore"))
+                            .toItemStack();
 
-					orderByType = NBTEditor.set(orderByType, "ordered", NBTEditor.CUSTOM_DATA, "action");
+                    orderByType = NBTEditor.set(orderByType, "ordered", NBTEditor.CUSTOM_DATA, "action");
 
-					inventory.setItem((getSize() - 10) + guiLayout.getSlot("Ordered"), orderByType);
+                    inventory.setItem((getSize() - 10) + guiLayout.getSlot("Ordered"), orderByType);
 
-				}
+                }
 
-			} else {
+            } else {
 
-				cubelets.sort(new CubeletDateComparator());
+                cubelets.sort(new CubeletDateComparator());
 
-			}
+            }
 
-		}
+        }
 
-		ItemStack filler = XMaterial.GRAY_STAINED_GLASS_PANE.parseItem();
-		fillTopSide(filler, getSizeRows() - 2);
+        ItemStack filler = XMaterial.GRAY_STAINED_GLASS_PANE.parseItem();
+        fillTopSide(filler, getSizeRows() - 2);
 
-		List<DisplayedCubelet> displayedCubelets = new ArrayList<>();
+        List<DisplayedCubelet> displayedCubelets = new ArrayList<>();
 
-		if (cubelets.size() > 0) {
+        if (cubelets.size() > 0) {
 
-			for (Cubelet cubelet : cubelets) {
+            for (Cubelet cubelet : cubelets) {
 
-				CubeletType type = getMain().getCubeletTypesHandler().getTypeBydId(cubelet.getType());
+                CubeletType type = getMain().getCubeletTypesHandler().getTypeBydId(cubelet.getType());
 
-				List<String> lore = new ArrayList<>();
+                List<String> lore = new ArrayList<>();
 
-				if (cubelet.getExpire() < 0 || cubelet.getExpire() > System.currentTimeMillis()) {
+                if (cubelet.getExpire() < 0 || cubelet.getExpire() > System.currentTimeMillis()) {
 
-					for (String line : type.getLoreAvailable()) {
+                    for (String line : type.getLoreAvailable()) {
 
-						lore.add(Utils.translate(line.replaceAll("%received%", TimeUtils.millisToLongDHMS(System.currentTimeMillis() - cubelet.getReceived())))
-								.replaceAll("%expires%", (cubelet.getExpire() >= 0 ? TimeUtils.millisToLongDHMS(cubelet.getExpire() - System.currentTimeMillis()) : guiLayout.getMessage("NoneExpiration"))));
+                        lore.add(Utils.translate(line.replaceAll("%received%", TimeUtils.millisToLongDHMS(System.currentTimeMillis() - cubelet.getReceived())))
+                                .replaceAll("%expires%", (cubelet.getExpire() >= 0 ? TimeUtils.millisToLongDHMS(cubelet.getExpire() - System.currentTimeMillis()) : guiLayout.getMessage("NoneExpiration"))));
 
-					}
+                    }
 
-				} else {
+                } else {
 
-					for (String line : type.getLoreExpired()) {
+                    for (String line : type.getLoreExpired()) {
 
-						lore.add(Utils.translate(line.replaceAll("%received%", TimeUtils.millisToLongDHMS(System.currentTimeMillis() - cubelet.getReceived()))));
+                        lore.add(Utils.translate(line.replaceAll("%received%", TimeUtils.millisToLongDHMS(System.currentTimeMillis() - cubelet.getReceived()))));
 
-					}
+                    }
 
-				}
+                }
 
-				ItemStack item = new ItemBuilder(type.getIcon()).setName(Utils.translate(type.getName()))
-						.setLore(lore)
-						.toItemStack();
-				item = NBTEditor.set(item, cubelet.getUuid().toString(), NBTEditor.CUSTOM_DATA, "cubeletUUID");
-				item = NBTEditor.set(item, type.getId(), NBTEditor.CUSTOM_DATA, "typeID");
-				int slot = getNextAvailableSlot();
+                ItemStack item = new ItemBuilder(type.getIcon()).setName(Utils.translate(type.getName()))
+                        .setLore(lore)
+                        .toItemStack();
+                item = NBTEditor.set(item, cubelet.getUuid().toString(), NBTEditor.CUSTOM_DATA, "cubeletUUID");
+                item = NBTEditor.set(item, type.getId(), NBTEditor.CUSTOM_DATA, "typeID");
+                int slot = getNextAvailableSlot();
 
-				inventory.setItem(slot, item);
-				displayedCubelets.add(new DisplayedCubelet(cubelet, item, slot));
+                inventory.setItem(slot, item);
+                displayedCubelets.add(new DisplayedCubelet(cubelet, item, slot));
 
-			}
+            }
 
-		} else {
+        } else {
 
-			inventory.setItem(getCenterSlot(), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NoCubelets.Material"))
-					.get()
-					.parseItem()).setName(guiLayout.getMessage("Items.NoCubelets.Name"))
-					.setLore(guiLayout.getMessageList("Items.NoCubelets.Lore"))
-					.toItemStack());
+            inventory.setItem(getCenterSlot(), new ItemBuilder(XMaterial.matchXMaterial(guiLayout.getMessage("Items.NoCubelets.Material"))
+                    .get()
+                    .parseItem()).setName(guiLayout.getMessage("Items.NoCubelets.Name"))
+                    .setLore(guiLayout.getMessageList("Items.NoCubelets.Lore"))
+                    .toItemStack());
 
-		}
+        }
 
-		fillTopSide(null, getSizeRows() - 2);
+        fillTopSide(null, getSizeRows() - 2);
 
-		openInventory();
+        openInventory();
 
-		setAttribute(AttrType.CUBELET_DISPLAYED_CUBELETS_ATTR, displayedCubelets);
+        setAttribute(AttrType.CUBELET_DISPLAYED_CUBELETS_ATTR, displayedCubelets);
 
-	}
+    }
 
-	@Override
-	public void OnMenuClick(InventoryClickEvent event) {
+    @Override
+    public void OnMenuClick(InventoryClickEvent event) {
 
-		if (event.getCurrentItem() == null) return;
-		if (event.getCurrentItem().getType() == Material.AIR) return;
+        if (event.getCurrentItem() == null) return;
+        if (event.getCurrentItem().getType() == Material.AIR) return;
 
-		Player player = getOwner();
+        Player player = getOwner();
 
-		int slot = event.getRawSlot();
-		int size = player.getOpenInventory().getTopInventory().getSize();
-		GUILayout guiLayout = getMain().getLayoutHandler().getLayout("opencubelet");
+        int slot = event.getRawSlot();
+        int size = player.getOpenInventory().getTopInventory().getSize();
+        GUILayout guiLayout = getMain().getLayoutHandler().getLayout("opencubelet");
 
-		if (slot >= (size - 9) && slot <= size) {
+        if (slot >= (size - 9) && slot <= size) {
 
-			String action = NBTEditor.getString(event.getCurrentItem(), NBTEditor.CUSTOM_DATA, "action");
+            String action = NBTEditor.getString(event.getCurrentItem(), NBTEditor.CUSTOM_DATA, "action");
 
-			if (event.getClick() == ClickType.DOUBLE_CLICK) return;
+            if (event.getClick() == ClickType.DOUBLE_CLICK) return;
 
-			if (action == null) return;
+            if (action == null) return;
 
-			switch (action) {
+            switch (action) {
 
-				case "previous":
-					previousPage();
-					break;
+                case "previous":
+                    previousPage();
+                    break;
 
-				case "next":
-					nextPage();
-					break;
+                case "next":
+                    nextPage();
+                    break;
 
-				case "close":
-					player.closeInventory();
-					break;
+                case "close":
+                    player.closeInventory();
+                    break;
 
-				case "ordered":
-					Profile profile = getMain().getPlayerDataHandler().getData(player.getUniqueId());
-					if (profile.getOrderBy().equalsIgnoreCase("date")) profile.setOrderBy("type");
-					else if (profile.getOrderBy().equalsIgnoreCase("type")) profile.setOrderBy("date");
-					reloadMyMenu();
-					break;
+                case "ordered":
+                    Profile profile = getMain().getPlayerDataHandler().getData(player.getUniqueId());
+                    if (profile.getOrderBy().equalsIgnoreCase("date")) profile.setOrderBy("type");
+                    else if (profile.getOrderBy().equalsIgnoreCase("type")) profile.setOrderBy("date");
+                    reloadMyMenu();
+                    break;
 
-				case "crafting":
-					new CraftingMenu(getMain(), player).open();
-					break;
+                case "crafting":
+                    new CraftingMenu(getMain(), player).open();
+                    break;
 
-				case "loothistory":
-					LootHistoryMenu lootHistoryMenu = new LootHistoryMenu(getMain(), player);
-					lootHistoryMenu.setAttribute(AttrType.OPENED_EXTERNALLY_ATTR, Boolean.FALSE);
-					lootHistoryMenu.open();
-					break;
+                case "loothistory":
+                    LootHistoryMenu lootHistoryMenu = new LootHistoryMenu(getMain(), player);
+                    lootHistoryMenu.setAttribute(AttrType.OPENED_EXTERNALLY_ATTR, Boolean.FALSE);
+                    lootHistoryMenu.open();
+                    break;
 
-				case "animations":
-					new PlayerAnimationMenu(getMain(), player).open();
-					break;
+                case "animations":
+                    new PlayerAnimationMenu(getMain(), player).open();
+                    break;
 
-				case "gift":
-					new GiftPlayerMenu(getMain(), player).open();
-					break;
-			}
+                case "gift":
+                    new GiftPlayerMenu(getMain(), player).open();
+                    break;
+            }
 
-		} else if (slot >= 0 && slot <= (player.getOpenInventory().getTopInventory().getSize() - 10)) {
+        } else if (slot >= 0 && slot <= (player.getOpenInventory().getTopInventory().getSize() - 10)) {
 
-			if (getMain().getPlayerDataHandler().getData(player.getUniqueId()).getCubelets().size() > 0) {
+            if (getMain().getPlayerDataHandler().getData(player.getUniqueId()).getCubelets().size() > 0) {
 
-				String cubeletUUID = NBTEditor.getString(event.getCurrentItem(), NBTEditor.CUSTOM_DATA, "cubeletUUID");
-				String typeID = NBTEditor.getString(event.getCurrentItem(), NBTEditor.CUSTOM_DATA, "typeID");
-				CubeletType type = getMain().getCubeletTypesHandler().getTypeBydId(typeID);
+                String cubeletUUID = NBTEditor.getString(event.getCurrentItem(), NBTEditor.CUSTOM_DATA, "cubeletUUID");
+                String typeID = NBTEditor.getString(event.getCurrentItem(), NBTEditor.CUSTOM_DATA, "typeID");
+                CubeletType type = getMain().getCubeletTypesHandler().getTypeBydId(typeID);
 
-				if (event.getClick() != getMain().getMenuHandler().getRewardPreviewClickType()) {
+                if (event.getClick() != getMain().getMenuHandler().getRewardPreviewClickType()) {
 
-					Profile profile = getMain().getPlayerDataHandler().getData(player);
+                    Profile profile = getMain().getPlayerDataHandler().getData(player);
 
-					if (profile.getBoxOpened().isWaiting()) {
+                    if (profile.getBoxOpened().isWaiting()) {
 
-						Optional<Cubelet> cubelet = profile.getCubelets()
-								.stream()
-								.filter(cbl -> cbl.getUuid().toString().equalsIgnoreCase(cubeletUUID))
-								.findFirst();
+                        Optional<Cubelet> cubelet = profile.getCubelets()
+                                .stream()
+                                .filter(cbl -> cbl.getUuid().toString().equalsIgnoreCase(cubeletUUID))
+                                .findFirst();
 
-						if (cubelet.isPresent()) {
+                        if (cubelet.isPresent()) {
 
-							if (cubelet.get().getExpire() > System.currentTimeMillis() || cubelet.get()
-									.getExpire() == -1) {
+                            if (cubelet.get().getExpire() > System.currentTimeMillis() || cubelet.get()
+                                    .getExpire() == -1) {
 
-								if (type.getAllRewards().size() > 0) {
+                                if (type.getAllRewards().size() > 0) {
 
-									getMain().getCubeletOpenHandler()
-											.openAnimation(player, profile.getBoxOpened(), type, false);
+                                    getMain().getCubeletOpenHandler()
+                                            .openAnimation(player, profile.getBoxOpened(), type, false);
 
-									profile.getCubelets()
-											.removeIf(cblt -> cblt.getUuid().toString().equals(cubeletUUID));
+                                    profile.getCubelets()
+                                            .removeIf(cblt -> cblt.getUuid().toString().equals(cubeletUUID));
 
-									getMain().getDatabaseHandler()
-											.removeCubelet(player.getUniqueId(), UUID.fromString(Objects.requireNonNull(cubeletUUID)));
+                                    getMain().getDatabaseHandler()
+                                            .removeCubelet(player.getUniqueId(), UUID.fromString(Objects.requireNonNull(cubeletUUID)));
 
-									getMain().getHologramImplementation().reloadHolograms(player);
+                                    getMain().getHologramImplementation().reloadHolograms(player);
 
-									player.closeInventory();
+                                    player.closeInventory();
 
-								}
+                                }
 
-							}
+                            }
 
-						}
+                        }
 
-					} else {
+                    } else {
 
-						if (profile.getBoxOpened().getPlayerOpening().getUuid() == player.getUniqueId()) {
-							if (!getMain().getLanguageHandler().isEmptyMessage("Cubelet.BoxInUse.Me"))
-								player.sendMessage(getMain().getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));
-						} else {
-							if (!getMain().getLanguageHandler().isEmptyMessage("Cubelet.BoxInUse.Other"))
-								player.sendMessage(getMain().getLanguageHandler()
-										.getMessage("Cubelet.BoxInUse.Other")
-										.replaceAll("%player%", profile.getBoxOpened().getPlayerOpening().getName()));
-						}
+                        if (profile.getBoxOpened().getPlayerOpening().getUuid() == player.getUniqueId()) {
+                            if (!getMain().getLanguageHandler().isEmptyMessage("Cubelet.BoxInUse.Me"))
+                                player.sendMessage(getMain().getLanguageHandler().getMessage("Cubelet.BoxInUse.Me"));
+                        } else {
+                            if (!getMain().getLanguageHandler().isEmptyMessage("Cubelet.BoxInUse.Other"))
+                                player.sendMessage(getMain().getLanguageHandler()
+                                        .getMessage("Cubelet.BoxInUse.Other")
+                                        .replaceAll("%player%", profile.getBoxOpened().getPlayerOpening().getName()));
+                        }
 
-					}
+                    }
 
-				} else if (event.getClick() == getMain().getMenuHandler().getRewardPreviewClickType()) {
+                } else if (event.getClick() == getMain().getMenuHandler().getRewardPreviewClickType()) {
 
-					if (getMain().isSetting("Rewards.Preview.Enabled")) {
-						RewardsPreviewMenu rewardsPreviewMenu = new RewardsPreviewMenu(Main.get(), player);
-						rewardsPreviewMenu.setAttribute(Menu.AttrType.CUSTOM_ID_ATTR, typeID);
-						rewardsPreviewMenu.setAttribute(Menu.AttrType.OPENED_EXTERNALLY_ATTR, Boolean.FALSE);
-						rewardsPreviewMenu.open();
-						return;
-					}
+                    if (getMain().isSetting("Rewards.Preview.Enabled")) {
+                        RewardsPreviewMenu rewardsPreviewMenu = new RewardsPreviewMenu(Main.get(), player);
+                        rewardsPreviewMenu.setAttribute(Menu.AttrType.CUSTOM_ID_ATTR, typeID);
+                        rewardsPreviewMenu.setAttribute(Menu.AttrType.OPENED_EXTERNALLY_ATTR, Boolean.FALSE);
+                        rewardsPreviewMenu.open();
+                        return;
+                    }
 
-				}
+                }
 
-			} else {
+            } else {
 
-				if (slot == getCenterSlot()) {
+                if (slot == getCenterSlot()) {
 
-					player.closeInventory();
-					MessageUtils.sendShopMessage(player);
+                    player.closeInventory();
+                    MessageUtils.sendShopMessage(player);
 
-				}
+                }
 
-			}
+            }
 
-		}
+        }
 
-		player.updateInventory();
+        player.updateInventory();
 
-	}
+    }
 
-	@Override
-	public void OnMenuClosed() {
-	}
+    @Override
+    public void OnMenuClosed() {
+    }
 
 }

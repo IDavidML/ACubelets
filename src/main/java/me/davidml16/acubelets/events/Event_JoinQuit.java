@@ -2,7 +2,6 @@ package me.davidml16.acubelets.events;
 
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.menus.player.gifts.GiftPlayerMenu;
-import me.davidml16.acubelets.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,11 +9,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.plugin.PluginDescriptionFile;
 
 public class Event_JoinQuit implements Listener {
 
-    private Main main;
+    private final Main main;
+
     public Event_JoinQuit(Main main) {
         this.main = main;
     }
@@ -31,7 +30,6 @@ public class Event_JoinQuit implements Listener {
         main.getPlayerDataHandler().getDisconnectCacheTime().remove(player.getUniqueId());
 
         main.getMenuHandler().reloadAllMenus(GiftPlayerMenu.class);
-
     }
 
     @EventHandler
@@ -39,7 +37,7 @@ public class Event_JoinQuit implements Listener {
 
         Player player = e.getPlayer();
 
-        main.getMenuHandler().getOpenedMenus().remove(player);
+        main.getMenuHandler().forceRemoveMenu(player);
         main.getHologramImplementation().removeHolograms(player);
 
         main.getDatabaseHandler().saveProfileAsync(main.getPlayerDataHandler().getData(player));
@@ -51,7 +49,6 @@ public class Event_JoinQuit implements Listener {
         main.getDatabaseHandler().removeExpiredCubelets(player.getUniqueId());
 
         main.getMenuHandler().reloadAllMenus(GiftPlayerMenu.class);
-
     }
 
     @EventHandler

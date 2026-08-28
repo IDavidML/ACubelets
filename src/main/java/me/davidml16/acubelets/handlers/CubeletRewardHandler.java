@@ -1,6 +1,7 @@
 package me.davidml16.acubelets.handlers;
 
 import com.cryptomorin.xseries.XItemStack;
+import com.cryptomorin.xseries.XMaterial;
 import io.github.bananapuncher714.nbteditor.NBTEditor;
 import me.davidml16.acubelets.Main;
 import me.davidml16.acubelets.menus.player.LootHistoryMenu;
@@ -35,15 +36,15 @@ public class CubeletRewardHandler {
 
     public void loadRewards() {
         for (CubeletType cubeletType : main.getCubeletTypesHandler()
-            .getTypes()
-            .values()) {
+                .getTypes()
+                .values()) {
             loadReward(cubeletType);
         }
     }
 
     public void loadReward(CubeletType cubeletType) {
         FileConfiguration config = main.getCubeletTypesHandler()
-            .getConfig(cubeletType.getId());
+                .getConfig(cubeletType.getId());
 
         Map<String, List<Reward>> rewards = new HashMap<>();
         int rewardsLoaded = 0;
@@ -55,14 +56,14 @@ public class CubeletRewardHandler {
                 int iterator = 0;
 
                 for (String rewardid : config.getConfigurationSection("type.rewards")
-                    .getKeys(false)) {
+                        .getKeys(false)) {
 
                     if (validRewardData(config, rewardid)) {
 
                         String rarity = config.getString("type.rewards." + rewardid + ".rarity");
 
                         if (cubeletType.getRarities()
-                            .containsKey(rarity)) {
+                                .containsKey(rarity)) {
 
                             String name = config.getString("type.rewards." + rewardid + ".name");
 
@@ -81,17 +82,39 @@ public class CubeletRewardHandler {
                                             rewardIcon = SkullUtils.itemFromName(iconTexture[1]);
                                             break;
                                         default:
-                                            rewardIcon = XItemStack.deserialize(Utils.getConfigurationSection(config, "type.rewards." + rewardid + ".icon"));
+                                            try {
+                                                rewardIcon = XItemStack.deserialize(Utils.getConfigurationSection(config, "type.rewards." + rewardid + ".icon"));
+                                            } catch (IllegalArgumentException e) {
+                                                String material = config.getString("type.rewards." + rewardid + ".icon.material");
+                                                if (material != null) {
+                                                    rewardIcon = new ItemBuilder(XMaterial.matchXMaterial(material).orElse(XMaterial.STONE).parseMaterial())
+                                                            .setName(config.getString("type.rewards." + rewardid + ".name", "Unknown Reward"))
+                                                            .toItemStack();
+                                                } else {
+                                                    throw e;
+                                                }
+                                            }
                                             break;
                                     }
                                 } else {
-                                    rewardIcon = XItemStack.deserialize(Utils.getConfigurationSection(config, "type.rewards." + rewardid + ".icon"));
+                                    try {
+                                        rewardIcon = XItemStack.deserialize(Utils.getConfigurationSection(config, "type.rewards." + rewardid + ".icon"));
+                                    } catch (IllegalArgumentException e) {
+                                        String material = config.getString("type.rewards." + rewardid + ".icon.material");
+                                        if (material != null) {
+                                            rewardIcon = new ItemBuilder(XMaterial.matchXMaterial(material).orElse(XMaterial.STONE).parseMaterial())
+                                                    .setName(config.getString("type.rewards." + rewardid + ".name", "Unknown Reward"))
+                                                    .toItemStack();
+                                        } else {
+                                            throw e;
+                                        }
+                                    }
                                 }
                             } else {
                                 try {
                                     rewardIcon = ItemStack64.itemStackFromBase64(config.getString("type.rewards." + rewardid + ".icon"));
                                 } catch (
-                                    IOException e) {
+                                        IOException e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -99,7 +122,7 @@ public class CubeletRewardHandler {
                             try {
                                 rewardIcon = NBTEditor.set(rewardIcon, "reward_" + iterator, NBTEditor.CUSTOM_DATA, "rewardID");
                             } catch (
-                                IllegalArgumentException exception) {
+                                    IllegalArgumentException exception) {
                                 exception.printStackTrace();
                                 continue;
                             }
@@ -125,7 +148,7 @@ public class CubeletRewardHandler {
                                 getRewardItems(config, items, rewardid);
 
                             Reward reward = new Reward("reward_" + iterator, name, cubeletType.getRarities()
-                                .get(rarity), rewardIcon, cubeletType);
+                                    .get(rarity), rewardIcon, cubeletType);
                             reward.setCommands(commands);
                             reward.setPermissions(permissions);
                             reward.setItems(items);
@@ -191,7 +214,7 @@ public class CubeletRewardHandler {
         if (config.contains("type.rewards." + rewardid + ".item")) {
             if (config.getConfigurationSection("type.rewards." + rewardid + ".item") != null) {
                 for (String itemid : config.getConfigurationSection("type.rewards." + rewardid + ".item")
-                    .getKeys(false)) {
+                        .getKeys(false)) {
                     if (config.get("type.rewards." + rewardid + ".item." + itemid) instanceof MemorySection) {
                         list.add(new ItemObject("item-" + i, XItemStack.deserialize(Utils.getConfigurationSection(config, "type.rewards." + rewardid + ".item." + itemid))));
                     } else {
@@ -217,15 +240,15 @@ public class CubeletRewardHandler {
 
         Rarity randomRarity = chooseOnWeight(rarities);
         if (cubeletType.getRewards()
-            .containsKey(randomRarity.getId())) {
+                .containsKey(randomRarity.getId())) {
             List<Reward> rewards = cubeletType.getRewards()
-                .get(randomRarity.getId());
+                    .get(randomRarity.getId());
 
             if (rewards.size() <= 0)
                 return processReward(cubeletType);
 
             int randomElementIndex = ThreadLocalRandom.current()
-                .nextInt(rewards.size()) % rewards.size();
+                    .nextInt(rewards.size()) % rewards.size();
 
             return rewards.get(randomElementIndex);
         }
@@ -235,7 +258,7 @@ public class CubeletRewardHandler {
     public void giveReward(CubeletMachine cubeletMachine, CubeletType cubeletType, Reward reward) {
 
         UUID playerUUID = cubeletMachine.getPlayerOpening()
-            .getUuid();
+                .getUuid();
 
         Player target = Bukkit.getPlayer(playerUUID);
 
@@ -248,22 +271,22 @@ public class CubeletRewardHandler {
         if (main.isSetting("Rewards.Duplication.Enabled") && isDuplicated(cubeletMachine, reward)) {
 
             Bukkit.getServer()
-                .dispatchCommand(main.getServer()
-                    .getConsoleSender(), main.getSetting("Rewards.Duplication.PointsCommand")
-                    .replaceAll("%player%", cubeletMachine.getPlayerOpening()
-                        .getName())
-                    .replaceAll("%points%", "" + cubeletMachine.getLastDuplicationPoints()));
+                    .dispatchCommand(main.getServer()
+                            .getConsoleSender(), main.getSetting("Rewards.Duplication.PointsCommand")
+                            .replaceAll("%player%", cubeletMachine.getPlayerOpening()
+                                    .getName())
+                            .replaceAll("%points%", "" + cubeletMachine.getLastDuplicationPoints()));
 
             MessageUtils.sendLootMessage(cubeletMachine, cubeletType, reward);
 
             main.getDatabaseHandler()
-                .addLootHistory(playerUUID, lootHistory);
+                    .addLootHistory(playerUUID, lootHistory);
 
             if (target != null) {
                 Profile profile = main.getPlayerDataHandler()
-                    .getData(target);
+                        .getData(target);
                 profile.getLootHistory()
-                    .add(lootHistory);
+                        .add(lootHistory);
             }
 
             return;
@@ -272,54 +295,54 @@ public class CubeletRewardHandler {
 
         for (CommandObject commandObject : reward.getCommands())
             Bukkit.getServer()
-                .dispatchCommand(main.getServer()
-                    .getConsoleSender(), commandObject.getCommand()
-                    .replaceAll("%player%", cubeletMachine.getPlayerOpening()
-                        .getName()));
+                    .dispatchCommand(main.getServer()
+                            .getConsoleSender(), commandObject.getCommand()
+                            .replaceAll("%player%", cubeletMachine.getPlayerOpening()
+                                    .getName()));
 
         for (PermissionObject permissionObject : reward.getPermissions())
             Bukkit.getServer()
-                .dispatchCommand(main.getServer()
-                    .getConsoleSender(), main.getSetting("Rewards.PermissionCommand")
-                    .replaceAll("%player%", cubeletMachine.getPlayerOpening()
-                        .getName())
-                    .replaceAll("%permission%", permissionObject.getPermission()));
+                    .dispatchCommand(main.getServer()
+                            .getConsoleSender(), main.getSetting("Rewards.PermissionCommand")
+                            .replaceAll("%player%", cubeletMachine.getPlayerOpening()
+                                    .getName())
+                            .replaceAll("%permission%", permissionObject.getPermission()));
 
         for (ItemObject itemObject : reward.getItems()) {
             if (target == null)
                 cubeletMachine.getLocation()
-                    .getWorld()
-                    .dropItemNaturally(cubeletMachine.getLocation()
-                        .clone()
-                        .add(0.5, 1, 0.5), itemObject.getItemStack()
-                        .clone());
+                        .getWorld()
+                        .dropItemNaturally(cubeletMachine.getLocation()
+                                .clone()
+                                .add(0.5, 1, 0.5), itemObject.getItemStack()
+                                .clone());
             else if (target.getInventory()
-                .firstEmpty() >= 0)
+                    .firstEmpty() >= 0)
                 target.getInventory().addItem(itemObject.getItemStack().clone());
             else target.getLocation()
-                    .getWorld()
-                    .dropItemNaturally(target.getLocation(), itemObject.getItemStack()
-                        .clone());
+                        .getWorld()
+                        .dropItemNaturally(target.getLocation(), itemObject.getItemStack()
+                                .clone());
         }
 
         if (!reward.getItems().isEmpty()) {
             if (target != null)
                 Sounds.playSound(target, target.getLocation(), Sounds.MySound.ITEM_PICKUP, 0.5F, (float) ThreadLocalRandom.current()
-                    .nextDouble(1, 3));
+                        .nextDouble(1, 3));
         }
 
         MessageUtils.sendLootMessage(cubeletMachine, cubeletType, reward);
 
         main.getDatabaseHandler()
-            .addLootHistory(playerUUID, lootHistory);
+                .addLootHistory(playerUUID, lootHistory);
 
         if (target != null) {
             Profile profile = main.getPlayerDataHandler()
-                .getData(target);
+                    .getData(target);
             profile.getLootHistory()
-                .add(lootHistory);
+                    .add(lootHistory);
             main.getMenuHandler()
-                .reloadAllMenus(target, LootHistoryMenu.class);
+                    .reloadAllMenus(target, LootHistoryMenu.class);
         }
 
     }
@@ -329,7 +352,7 @@ public class CubeletRewardHandler {
         if (isDuplicated(cubeletMachine, reward)) {
 
             return main.getHologramImplementation()
-                .duplicationRewardHologram(cubeletMachine, reward);
+                    .duplicationRewardHologram(cubeletMachine, reward);
 
         }
 
@@ -340,8 +363,8 @@ public class CubeletRewardHandler {
     public boolean isDuplicated(CubeletMachine cubeletMachine, Reward reward) {
 
         Profile profile = main.getPlayerDataHandler()
-            .getData(cubeletMachine.getPlayerOpening()
-                .getUuid());
+                .getData(cubeletMachine.getPlayerOpening()
+                        .getUuid());
 
         if (profile == null) return true;
 
@@ -349,14 +372,14 @@ public class CubeletRewardHandler {
             return false;
 
         LootHistory lootHistory = profile.getLootHistory()
-            .stream()
-            .filter(history -> history.getRewardHistory()
-                .getUUID()
-                .toString()
-                .equalsIgnoreCase(reward.getRewardUUID()
-                    .toString()))
-            .findFirst()
-            .orElse(null);
+                .stream()
+                .filter(history -> history.getRewardHistory()
+                        .getUUID()
+                        .toString()
+                        .equalsIgnoreCase(reward.getRewardUUID()
+                                .toString()))
+                .findFirst()
+                .orElse(null);
 
         return lootHistory != null;
 
@@ -365,9 +388,9 @@ public class CubeletRewardHandler {
     public List<Rarity> getAvailableRarities(CubeletType cubeletType) {
         List<Rarity> rarities = new ArrayList<>();
         for (String idRarity : cubeletType.getRewards()
-            .keySet()) {
+                .keySet()) {
             rarities.add(cubeletType.getRarities()
-                .get(idRarity));
+                    .get(idRarity));
         }
         return rarities;
     }

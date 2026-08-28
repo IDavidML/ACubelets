@@ -72,21 +72,30 @@ public class MenuHandler {
 
         event.setCancelled(true);
 
-        switch (event.getClick()) {
-            case NUMBER_KEY -> {
-                player.getInventory().setItem(event.getHotbarButton(), new ItemStack(Material.AIR));
-                scheduleInventoryUpdate(player);
-            }
-            case SHIFT_LEFT, SHIFT_RIGHT -> {
-                if (event.getClickedInventory() != null
-                        && event.getClickedInventory().equals(player.getInventory())) {
-                    scheduleInventoryUpdate(player);
-                } else {
-                    menu.OnMenuClick(event);
-                }
-            }
-            default -> menu.OnMenuClick(event);
+        ClickType click = event.getClick();
+
+        if (event.getRawSlot() == -999) {
+            player.updateInventory();
+            return;
         }
+
+        if (click == ClickType.NUMBER_KEY || click == ClickType.DOUBLE_CLICK) {
+            scheduleInventoryCleanup(player);
+            return;
+        }
+
+        int topSize = player.getOpenInventory().getTopInventory().getSize();
+        if (event.getRawSlot() >= topSize) {
+            player.updateInventory();
+            return;
+        }
+
+        menu.OnMenuClick(event);
+
+        if (click == ClickType.SHIFT_LEFT || click == ClickType.SHIFT_RIGHT)
+            scheduleInventoryCleanup(player);
+        else
+            player.updateInventory();
     }
 
     public void handleMenuClose(Player player) {
@@ -117,23 +126,35 @@ public class MenuHandler {
         openedMenus.values().forEach(Menu::reloadMyMenu);
     }
 
-    private void scheduleInventoryUpdate(Player player) {
-        main.getServer().getScheduler().runTaskLater(main, player::updateInventory, 1L);
+    private void scheduleInventoryCleanup(Player player) {
+        main.getServer().getScheduler().runTaskLater(main, () -> {
+            cleanupAcubeletsFromPlayer(player);
+            player.updateInventory();
+        }, 1L);
     }
 
     private void cleanupAcubeletsFromPlayer(Player player) {
         ItemStack cursor = player.getItemOnCursor();
-        if (isAcubelet(cursor)) {
+        if (isGhostItem(cursor)) {
             player.setItemOnCursor(new ItemStack(Material.AIR));
         }
 
-        for (ItemStack item : player.getInventory().getContents()) {
-            if (isAcubelet(item)) item.setAmount(0);
+        ItemStack[] contents = player.getInventory().getContents();
+        for (int i = 0; i < contents.length; i++) {
+            if (isGhostItem(contents[i])) player.getInventory().setItem(i, null);
         }
     }
 
-    private boolean isAcubelet(ItemStack item) {
+    private boolean isGhostItem(ItemStack item) {
         if (item == null || item.getType() == Material.AIR) return false;
-        return NBTEditor.contains(item, NBTEditor.CUSTOM_DATA, "acubelets");
+        return NBTEditor.contains(item, NBTEditor.CUSTOM_DATA, "action")
+                || NBTEditor.contains(item, NBTEditor.CUSTOM_DATA, "cubeletUUID")
+                || NBTEditor.contains(item, NBTEditor.CUSTOM_DATA, "typeID")
+                || NBTEditor.contains(item, NBTEditor.CUSTOM_DATA, "cubeletType")
+                || NBTEditor.contains(item, NBTEditor.CUSTOM_DATA, "rewardID")
+                || NBTEditor.contains(item, NBTEditor.CUSTOM_DATA, "animation")
+                || NBTEditor.contains(item, NBTEditor.CUSTOM_DATA, "status")
+                || NBTEditor.contains(item, NBTEditor.CUSTOM_DATA, "randomUUID")
+                || NBTEditor.contains(item, NBTEditor.CUSTOM_DATA, "haveIngredients");
     }
 }
