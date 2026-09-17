@@ -177,7 +177,6 @@ public class CubeletRewardHandler {
 
         cubeletType.setRewards(rewards);
         cubeletType.saveType();
-
     }
 
     private void getRewardCommands(FileConfiguration config, List<CommandObject> list, String rewardid) {

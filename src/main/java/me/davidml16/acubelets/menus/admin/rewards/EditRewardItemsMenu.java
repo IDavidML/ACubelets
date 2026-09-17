@@ -33,7 +33,7 @@ public class EditRewardItemsMenu extends Menu {
 
         List<ItemObject> itemObjects = reward.getItems();
 
-        if(page > 0 && itemObjects.size() < (page * 21) + 1) {
+        if (page > 0 && itemObjects.size() < (page * 21) + 1) {
             openPage(getPage() - 1);
             return;
         }
@@ -66,9 +66,10 @@ public class EditRewardItemsMenu extends Menu {
 
         gui.setItem(40, back);
 
-        if (itemObjects.size() > 21) itemObjects = itemObjects.subList(page * 21, ((page * 21) + 21) > itemObjects.size() ? itemObjects.size() : (page * 21) + 21);
+        if (itemObjects.size() > 21)
+            itemObjects = itemObjects.subList(page * 21, ((page * 21) + 21) > itemObjects.size() ? itemObjects.size() : (page * 21) + 21);
 
-        if(itemObjects.size() > 0) {
+        if (itemObjects.size() > 0) {
 
             for (ItemObject itemObject : itemObjects) {
 
@@ -101,7 +102,7 @@ public class EditRewardItemsMenu extends Menu {
 
     @Override
     public void OnMenuClick(InventoryClickEvent event) {
-
+        System.out.println("HALLOOO");
         if (event.getCurrentItem() == null) return;
         if (event.getCurrentItem().getType() == Material.AIR) return;
 
@@ -133,7 +134,7 @@ public class EditRewardItemsMenu extends Menu {
             String itemID = ChatColor.stripColor(event.getCurrentItem().getItemMeta().getDisplayName());
             ItemObject itemObject = reward.getItem(itemID);
 
-            if(event.getClick() == ClickType.LEFT || event.getClick() == ClickType.SHIFT_LEFT) {
+            if (event.getClick() == ClickType.LEFT || event.getClick() == ClickType.SHIFT_LEFT) {
 
                 reward.getItems().remove(itemObject);
                 reward.recreateItems();

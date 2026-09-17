@@ -76,20 +76,17 @@ public class MenuHandler {
 
         if (event.getRawSlot() == -999) {
             player.updateInventory();
+            System.out.println("NAH");
             return;
         }
 
         if (click == ClickType.NUMBER_KEY || click == ClickType.DOUBLE_CLICK) {
+            System.out.println("NAH 2");
             scheduleInventoryCleanup(player);
             return;
         }
 
-        int topSize = player.getOpenInventory().getTopInventory().getSize();
-        if (event.getRawSlot() >= topSize) {
-            player.updateInventory();
-            return;
-        }
-
+        System.out.println("SOLLTE");
         menu.OnMenuClick(event);
 
         if (click == ClickType.SHIFT_LEFT || click == ClickType.SHIFT_RIGHT)
